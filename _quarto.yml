@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Open Engineering Academy"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+      - href: initiative.qmd
+        text: Initiative
+      - href: use-cases.qmd
+        text: Use Cases
+      - href: themes.qmd
+        text: Themes
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+execute:
+  freeze: auto
