@@ -215,3 +215,11 @@ without changing the Quarto content itself.
 Given how convention-driven the rest of Open Engineering is, I’d establish a dedicated Academy Course Convention from the outset. Every course, lesson, lab, and exercise would follow the same structure and include standard metadata (learning objectives, prerequisites, estimated duration, difficulty, related repositories, associated Open Engineering elements, and assessment criteria). That consistency will make it easier to author content, generate navigation automatically, and eventually enable AI assistants to reason about the curriculum just as they can reason about Open Engineering definitions and compositions.
 
 In other words, I would treat educational content as another first-class engineering artifact: declarative, composable, versioned, and machine-readable.
+
+**Update**: 
+```
+We now have https://github.com/open-engineering-conventions/
+  course-conventions
+  lesson-conventions
+  lab-conventions
+```
