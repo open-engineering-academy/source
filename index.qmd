@@ -1,0 +1,7 @@
+---
+title: "Open Engineering Academy"
+---
+
+This is an Open Engineering Academy website.
+
+To learn more about Open Engineering Academy visit <https://academy.open-engineering.io>.
