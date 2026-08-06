@@ -223,4 +223,5 @@ We now have https://github.com/open-engineering-conventions/
   exercise-conventions
   lab-conventions
   lesson-conventions
+  quiz-conventions
 ```
