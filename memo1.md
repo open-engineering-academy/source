@@ -220,7 +220,7 @@ In other words, I would treat educational content as another first-class enginee
 ```
 We now have https://github.com/open-engineering-conventions/
   course-conventions
-  curriculum conventions
+  curriculum-conventions
   exercise-conventions
   lab-conventions
   lesson-conventions
