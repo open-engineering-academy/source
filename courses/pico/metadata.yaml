@@ -1,0 +1,14 @@
+id: oe.course.pico
+title: Building Your First Pico
+level: beginner
+duration: 12h
+prerequisites:
+  - oe.course.kubernetes
+  - oe.course.crossplane
+teaches:
+  - Pico
+  - Rules
+  - Parser
+  - Composer
+produces:
+  - hello-world-pico
