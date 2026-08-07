@@ -8,6 +8,10 @@ project:
     - curriculum/index.qmd
     - courses/index.qmd
     - labs/index.qmd
+    - labs/hello-pico/index.qmd
+    - labs/hello-pico/objectives.qmd
+    - labs/hello-pico/walkthrough.qmd
+    - labs/hello-pico/solution.qmd
     - exercises/index.qmd
     - "!courses/pico/"
     - "!courses/kubernetes/"
@@ -15,7 +19,6 @@ project:
     - "!templates/"
     - "!shared/"
     - "!exercises/pico-first-rule/"
-    - "!labs/hello-pico/"
 
 website:
   title: "Open Engineering Academy"
