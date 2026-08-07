@@ -1,0 +1,35 @@
+---
+title: "Course template"
+---
+
+Starter files for a new course website. Copy this directory to
+`courses/<slug>/` and rename placeholders.
+
+## Files
+
+- `_quarto.yml` — course-level Quarto website configuration
+- `index.qmd` — course landing page
+- `metadata.yaml` — machine-readable course descriptor
+
+## Expected surrounding structure
+
+```
+courses/<slug>/
+  _quarto.yml
+  index.qmd
+  metadata.yaml
+  glossary.qmd
+  part-1/
+    index.qmd
+    01-<lesson-slug>/
+      index.qmd
+      exercise.qmd
+      lab.qmd
+      quiz.qmd
+      summary.qmd
+      assets/
+  labs/
+  assets/
+```
+
+The reference implementation is [`courses/pico/`](../../courses/pico/).

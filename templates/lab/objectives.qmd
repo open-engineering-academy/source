@@ -1,0 +1,22 @@
+---
+title: "Objectives & prerequisites"
+description: "What this lab teaches and what you need before you start."
+---
+
+## Learning objectives
+
+{{< include ../../shared/includes/objectives.qmd >}}
+
+## Prerequisites
+
+{{< include ../../shared/includes/prerequisites.qmd >}}
+
+## Environment
+
+- Operating system: any
+- Required tools: list them here
+- Estimated time: 30–60 minutes
+
+## Related lessons
+
+- Course lessons that use this lab

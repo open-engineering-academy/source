@@ -1,0 +1,23 @@
+---
+title: "Quiz template"
+---
+
+Starter for a **standalone quiz** artifact. Use this when the quiz is scoped
+to a whole part or course rather than a single lesson.
+
+## Files
+
+- `quiz.qmd` — quiz page with collapsible answer callouts
+- `metadata.yaml` — machine-readable quiz descriptor
+
+## Placement
+
+Place quiz artifacts in the course they belong to, for example:
+
+```
+courses/<slug>/part-1/quiz.qmd
+courses/<slug>/quiz.qmd
+```
+
+Lesson-embedded quizzes should use
+[`templates/lesson/quiz.qmd`](../lesson/quiz.qmd) instead.

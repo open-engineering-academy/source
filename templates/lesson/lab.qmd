@@ -1,0 +1,21 @@
+---
+title: "Lab: Lesson Title"
+description: "Hands-on lab for this lesson."
+---
+
+This lesson references the shared lab at
+[`labs/<lab-slug>/`](../../../labs/<lab-slug>/README.qmd).
+
+## Why this lab
+
+One paragraph on how the lab reinforces the lesson's objectives.
+
+## What to do
+
+Follow the lab's `objectives.qmd` and `walkthrough.qmd`, and return here when
+finished.
+
+## When you are done
+
+- Confirm the lab's "Expected result" section
+- Continue to the [quiz](quiz.qmd)

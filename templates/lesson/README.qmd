@@ -1,0 +1,20 @@
+---
+title: "Lesson template"
+---
+
+Starter files for a single lesson inside a course. Copy this directory to
+`courses/<course>/part-<n>/<NN>-<slug>/` and rename placeholders.
+
+## Files
+
+- `index.qmd` — lesson landing page and concepts
+- `exercise.qmd` — small, focused practice task
+- `lab.qmd` — pointer to a shared, reusable lab
+- `quiz.qmd` — short knowledge check
+- `summary.qmd` — recap and further reading
+- `metadata.yaml` — machine-readable lesson descriptor
+
+## Conventions
+
+Lesson directories use a two-digit ordering prefix (`01-`, `02-`, ...) so the
+filesystem order matches the intended reading order.

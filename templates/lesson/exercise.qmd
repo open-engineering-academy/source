@@ -1,0 +1,28 @@
+---
+title: "Exercise: Lesson Title"
+description: "Small, focused practice task for this lesson."
+---
+
+{{< include ../../shared/includes/tryit.qmd >}}
+
+## Task
+
+Describe the exercise in one or two paragraphs. Keep it small — a lab handles
+larger, multi-step work.
+
+## Steps
+
+1. First step
+2. Second step
+3. Third step
+
+## Expected result
+
+Describe what the learner should see when they succeed.
+
+## Hints
+
+::: {.callout-tip collapse="true"}
+## Hint 1
+Optional hint text.
+:::

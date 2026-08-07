@@ -1,0 +1,25 @@
+---
+title: "Lab Title"
+description: "One-line description of what this lab teaches."
+---
+
+## Overview
+
+Short introduction to the lab: what the learner will build, how long it takes,
+and what a successful outcome looks like.
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## Downloads
+
+Starter files live under `downloads/`. Screenshots referenced from the
+walkthrough live under `screenshots/`.
+
+## Metadata
+
+Machine-readable descriptor lives in `metadata.yaml` next to this file. See
+[`templates/README.qmd`](../README.qmd) for required fields.

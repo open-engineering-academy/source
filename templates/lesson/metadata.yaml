@@ -1,0 +1,8 @@
+id: oe.lesson.<course-slug>.<lesson-slug>
+title: Lesson Title
+course: oe.course.<slug>
+order: 1
+duration: 30m
+prerequisites: []
+teaches: []
+references_labs: []

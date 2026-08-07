@@ -1,0 +1,4 @@
+::: {.callout-note title="References"}
+- Reference one — short description and link
+- Reference two — short description and link
+:::

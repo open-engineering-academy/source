@@ -1,1 +1,75 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - glossary.qmd
+    - part-1/index.qmd
+    - part-1/01-introduction/index.qmd
+    - part-1/01-introduction/exercise.qmd
+    - part-1/01-introduction/lab.qmd
+    - part-1/01-introduction/summary.qmd
+    - part-1/01-introduction/quiz.qmd
+    - part-2/index.qmd
+    - part-3/index.qmd
+    - labs/index.qmd
 
+website:
+  title: "Pico"
+  description: "Building your first Pico — the reference Open Engineering Academy course."
+  site-url: "https://academy.open-engineering.io/courses/pico/"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: part-1/index.qmd
+        text: Part 1
+      - href: part-2/index.qmd
+        text: Part 2
+      - href: part-3/index.qmd
+        text: Part 3
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - section: "Part 1 — Foundations"
+        href: part-1/index.qmd
+        contents:
+          - section: "01 Introduction"
+            href: part-1/01-introduction/index.qmd
+            contents:
+              - href: part-1/01-introduction/exercise.qmd
+                text: Exercise
+              - href: part-1/01-introduction/lab.qmd
+                text: Lab
+              - href: part-1/01-introduction/summary.qmd
+                text: Summary
+              - href: part-1/01-introduction/quiz.qmd
+                text: Quiz
+      - section: "Part 2 — Building"
+        href: part-2/index.qmd
+      - section: "Part 3 — Extending"
+        href: part-3/index.qmd
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Pico — Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto

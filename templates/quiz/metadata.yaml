@@ -1,0 +1,7 @@
+id: oe.quiz.<slug>
+title: Quiz Title
+scope: course
+course: oe.course.<slug>
+lesson: null
+question_count: 3
+teaches: []

@@ -1,1 +1,61 @@
+---
+title: "Pico"
+subtitle: "Building your first Pico."
+---
 
+Welcome to **Pico**, the reference course of the Open Engineering Academy.
+This course teaches how to design and build your first Pico — a small,
+declarative, composable engineering artifact — and doubles as the canonical
+example for how every academy course website is structured.
+
+## What you will learn
+
+By the end of the course you will be able to:
+
+- Explain what a Pico is and how it fits into Open Engineering.
+- Author Rules, a Parser, and a Composer for a minimal Pico.
+- Produce a working `hello-world-pico` and describe it with metadata.
+
+See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
+machine-readable summary (id, level, duration, prerequisites, teaches,
+produces).
+
+## How this course is structured
+
+The course is organized into **parts**, each part into **lessons**, and each
+lesson into a consistent set of pages:
+
+```
+courses/pico/
+  _quarto.yml          # this course website
+  index.qmd            # you are here
+  metadata.yaml        # machine-readable course descriptor
+  glossary.qmd         # course glossary
+  part-1/              # section
+    index.qmd
+    01-introduction/   # lesson
+      index.qmd
+      exercise.qmd
+      lab.qmd
+      summary.qmd
+      quiz.qmd
+      assets/
+  part-2/
+  part-3/
+  labs/                # course-scoped labs
+  assets/              # course-scoped assets
+```
+
+## Start here
+
+- [Part 1 — Foundations](part-1/index.qmd)
+- [Part 2 — Building](part-2/index.qmd)
+- [Part 3 — Extending](part-3/index.qmd)
+- [Labs](labs/index.qmd) and the shared [Hello Pico lab](../../labs/hello-pico/).
+- [Glossary](glossary.qmd)
+
+## Reference course notice
+
+This course is the **reference implementation** for all other academy course
+websites. When authoring a new course under `courses/<name>/`, mirror the
+files, navigation, and lesson structure used here.

@@ -1,1 +1,34 @@
+---
+title: "Exercise · Introduction"
+---
 
+A short, guided task. Complete it before moving on to the lab.
+
+## Task
+
+Write a one-sentence description of a Pico **in your own words**, and list
+three examples of things in your day-to-day work that could plausibly be
+modeled as Picos.
+
+::: {.callout-note}
+There is no single correct answer. The goal is to internalize the
+"Rules → Parser → Composer → Pico" mental model from the
+[lesson](index.qmd).
+:::
+
+## Success criteria
+
+- [ ] Your description mentions that a Pico is **declarative** and
+      **composable**.
+- [ ] You can name at least **three** candidate Picos.
+- [ ] For at least one candidate, you can sketch what the Rules might look
+      like in YAML.
+
+## Reflect
+
+- Which of your three examples is the simplest to model?
+- Which one would be the hardest, and why?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

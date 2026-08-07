@@ -1,1 +1,24 @@
+---
+title: "Glossary"
+---
 
+Terms used across the Pico course. Course-specific vocabulary lives here so
+lessons can link to a single definition instead of redefining terms.
+
+## Composer
+A component that takes parsed Rules and produces a Pico output artifact.
+
+## Open Engineering
+The overarching approach of treating engineering artifacts as declarative,
+composable, versioned, and machine-readable definitions.
+
+## Parser
+A component that reads Rule definitions and turns them into an internal
+representation the Composer can operate on.
+
+## Pico
+The small, declarative engineering artifact this course teaches you to build.
+A Pico is defined by Rules and produced by a Parser + Composer pipeline.
+
+## Rule
+A single declarative statement that shapes the behavior or content of a Pico.

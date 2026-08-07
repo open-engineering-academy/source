@@ -1,0 +1,7 @@
+id: oe.course.<slug>
+title: Course Title
+level: beginner
+duration: 0h
+prerequisites: []
+teaches: []
+produces: []

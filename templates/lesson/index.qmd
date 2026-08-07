@@ -1,0 +1,31 @@
+---
+title: "Lesson Title"
+description: "One-line description of the lesson."
+order: 1
+---
+
+## Overview
+
+Short introduction to the topic of this lesson. State the problem, why it
+matters, and what the learner will do.
+
+## Learning objectives
+
+{{< include ../../shared/includes/objectives.qmd >}}
+
+## Prerequisites
+
+{{< include ../../shared/includes/prerequisites.qmd >}}
+
+## Concepts
+
+Explain the concept(s) with prose, diagrams, and callouts. Keep code samples
+minimal in the lesson body — hands-on work belongs in `exercise.qmd` and
+`lab.qmd`.
+
+## Next steps
+
+- Try the [exercise](exercise.qmd)
+- Complete the [lab](lab.qmd)
+- Check your understanding with the [quiz](quiz.qmd)
+- Read the [summary](summary.qmd)

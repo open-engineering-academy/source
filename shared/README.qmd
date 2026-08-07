@@ -1,0 +1,40 @@
+---
+title: "Shared academy assets"
+---
+
+Cross-course, reusable assets and Quarto includes. Anything under `shared/`
+can be referenced from the root academy site and from every course website.
+
+## Layout
+
+```
+shared/
+  css/         # Cross-course stylesheets (academy.css)
+  images/      # Cross-course images (logos, diagrams)
+  icons/       # Icon assets
+  javascript/  # Cross-course JS snippets
+  includes/    # Reusable Quarto include snippets
+```
+
+## Includes
+
+Include snippets under `shared/includes/` are meant to be pulled into pages
+with Quarto's include shortcode, for example:
+
+```
+{{{< include ../../shared/includes/prerequisites.qmd >}}}
+```
+
+Available includes:
+
+- `objectives.qmd` — learning objectives callout
+- `prerequisites.qmd` — prerequisites callout
+- `tryit.qmd` — "try it yourself" callout
+- `references.qmd` — further-reading callout
+- `warning.qmd` — heads-up warning callout
+
+## Styling
+
+`css/academy.css` holds the small set of cross-course styles. Courses may
+extend it via their own `format.html.css` entries but should not duplicate
+what is already defined here.
