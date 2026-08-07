@@ -17,23 +17,61 @@ description: "What Hello Pico teaches and what you need before starting."
 ## Prerequisites
 
 ::: {.callout-note title="Prerequisites"}
-- A working shell (bash, zsh, or fish).
+- A working shell (bash or zsh).
 - A text editor and comfort reading YAML.
+- **Python 3.8+** on your `PATH` — used by the reference `pico` CLI.
+- A local clone of this repository, which ships the reference `pico`
+  CLI under `bin/pico`.
 - Completion of the
-  [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd)
+  [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html)
   lesson (or equivalent).
+:::
+
+::: {.callout-warning title="Name collision with the pico editor"}
+On many macOS and Linux systems the bare name `pico` resolves to the
+Alpine/nano text editor at `/usr/bin/pico`. The walkthrough uses the
+reference `pico` CLI shipped in this repository at `bin/pico`, and
+tells you to prepend `bin/` to your `PATH` so that `pico` resolves to
+the Academy CLI instead of the editor. Verify with
+`command -v pico` — it should point inside this repository, not
+`/usr/bin/pico`.
 :::
 
 ## Environment
 
 - Operating system: macOS, Linux, or WSL.
-- Required tools: shell + text editor. No additional runtime is required
-  for this lab.
+- Required tools: bash or zsh, a text editor, and Python 3.8+.
 - Estimated time: **30–45 minutes**.
+
+## One-time setup
+
+From a fresh shell, clone the academy source repository (if you have
+not already) and put its `bin/` directory on your `PATH`:
+
+```bash
+git clone <academy-source-repo-url> oea
+cd oea
+export PATH="$PWD/bin:$PATH"
+command -v pico   # should print .../oea/bin/pico
+```
+
+**Placeholders**
+
+- `<academy-source-repo-url>` — the clone URL of the Open Engineering
+  Academy source repository you were given access to (for example,
+  `https://github.com/<org>/<repo>.git` or an SSH equivalent). The
+  academy's public-facing repository URL is not yet finalized; use
+  whichever clone URL your Academy contact provides. If you are
+  already working inside a clone of this repository, skip the
+  `git clone` line and start from the `export PATH=…` step.
+
+The `PATH` export lasts for the current shell session. Re-run it in
+new shells, or add it to your shell profile if you plan to work
+through the lab across multiple sessions.
 
 ## Related lessons
 
-- [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd)
+- [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html)
   — introduces the vocabulary this lab uses.
-- Future lessons in [Part 2](../../courses/pico/part-2/index.qmd) reuse the
+- Future lessons in [Part 2](../../courses/pico/part-2/index.html) reuse the
   `hello-world-pico` produced here.

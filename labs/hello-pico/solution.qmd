@@ -6,7 +6,7 @@ description: "Reference solution for Hello Pico."
 ## Reference solution
 
 A working solution consists of one Rule file, one parsed representation,
-and one composed Pico.
+and one composed Pico artifact.
 
 ### `rules/hello.yaml`
 
@@ -17,6 +17,10 @@ value: "Hello, Pico!"
 ```
 
 ### Commands
+
+Run from `work/hello-pico/` inside your local clone of the academy
+repository, with the [one-time setup](objectives.qmd#one-time-setup)
+applied so `pico` resolves to this repository's `bin/pico`:
 
 ```bash
 pico parse rules/hello.yaml --out build/parsed.json
@@ -35,13 +39,13 @@ Hello, Pico!
 - **Rule authoring**: `rules/hello.yaml` is a single, valid Rule.
 - **Parser stage**: `pico parse` produced a JSON representation the
   Composer accepts.
-- **Composer stage**: `pico compose` produced the
+- **Composer stage**: `pico compose` produced the executable
   `hello-world-pico` artifact named in the
   [pico course metadata](../../courses/pico/metadata.yaml)
   `produces` list.
 - **Pipeline reasoning**: The commands map one-to-one onto the
   Rules → Parser → Composer → Pico pipeline introduced in
-  [Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd).
+  [Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html).
 
 ## Verification
 
@@ -50,10 +54,15 @@ You can verify the solution matches this reference by:
 1. Diffing your `rules/hello.yaml` against the block above.
 2. Running the two `pico` commands and confirming the executable
    greeting matches the **Expected output**.
+3. Checking that `command -v pico` points at `bin/pico` inside your
+   clone (not `/usr/bin/pico`).
 
 ## Variations
 
 - **Two rules**: Add `rule.farewell` alongside `rule.hello` to
-  practice composing more than one Rule into a single Pico.
-- **Custom kind**: Change `kind: greeting` to a domain of your own
-  and adapt the Composer output accordingly.
+  practice composing more than one Rule into a single Pico. The
+  reference `pico` CLI does not compose multiple rules on its own;
+  treat the variation as an extension exercise for a later lab.
+- **Custom kind**: The reference Composer only handles
+  `kind: greeting`. Changing the kind is a good prompt to sketch what
+  a new Composer branch would look like.

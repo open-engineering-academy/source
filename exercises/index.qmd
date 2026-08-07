@@ -14,7 +14,7 @@ There are two valid locations, chosen to match how the exercise is used:
 1. **Inside a lesson** — the common case.
    `courses/<course>/part-<n>/<NN>-<slug>/exercise.qmd` is the
    lesson-scoped exercise. See the reference exercise in
-   [Pico · Part 1 · Introduction](../courses/pico/part-1/01-introduction/exercise.qmd).
+   [Pico · Part 1 · Introduction](../courses/pico/part-1/01-introduction/exercise.html).
 2. **Under `exercises/<slug>/`** — for reusable exercises that are
    referenced from more than one course, or that need starter files
    and a solution.
@@ -46,8 +46,10 @@ exercises/<slug>/
 ```
 
 The `metadata.yaml` schema follows the same shape as
-[labs](../templates/README.qmd), using
-`id: oe.exercise.<slug>`.
+[labs](../labs/index.qmd), using `id: oe.exercise.<slug>`. The full
+field list is documented in the source repository under
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page).
 
 ## Available exercise exemplars
 

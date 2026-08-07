@@ -12,7 +12,10 @@ Write a single Rule for a Pico of your choice. The Rule must:
 
 - Have a stable `id` in the form `rule.<slug>`.
 - Declare a `kind` you would recognize in a real system.
-- Include a `value` (or equivalent payload) the Composer could act on.
+- Include a **scalar** `value` (a single-line string) the Composer
+  could act on. The reference `bin/pico` parser only accepts the
+  flat `id` / `kind` / `value` shape used in
+  [`labs/hello-pico/`](../../labs/hello-pico/index.qmd).
 
 Save it as `rules/<your-slug>.yaml`.
 
@@ -22,6 +25,23 @@ Save it as `rules/<your-slug>.yaml`.
 - [ ] `id`, `kind`, and a payload field are all present.
 - [ ] You can explain, in one sentence, what the Composer would do with
       this Rule.
+
+## Automatable check
+
+Confirm the Rule is well-formed by parsing it with the reference `pico`
+CLI shipped in this repository. From the root of your local clone, with
+the [Hello Pico one-time setup](../../labs/hello-pico/objectives.qmd#one-time-setup)
+applied so `pico` resolves to `bin/pico`:
+
+```bash
+pico parse rules/<your-slug>.yaml --out /tmp/parsed.json \
+  && echo "OK: parsed $(basename rules/<your-slug>.yaml)"
+```
+
+The command exits with status `0` and prints an `OK:` line when the
+Rule declares the required `id`, `kind`, and `value` fields. Any other
+exit status means the Rule is missing a required field or uses an
+unsupported key — re-read the parser error and fix the Rule.
 
 ## Hints
 

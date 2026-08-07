@@ -11,8 +11,9 @@ representation, and use the Composer to produce a working
 `hello-world-pico`.
 
 The lab is intentionally small — 30 to 45 minutes — and is the reference
-implementation of the shared lab structure documented in
-[`templates/lab/`](../../templates/lab/README.qmd).
+implementation of the shared lab structure documented under
+`templates/lab/` in the source repository (in-repo scaffold, not
+published as a learner page).
 
 ## Structure
 
@@ -34,9 +35,10 @@ when empty so authors have a consistent place to add assets.
 ## Metadata
 
 Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
-Fields follow the schema in
-[`templates/README.qmd`](../../templates/README.qmd).
+Fields follow the schema documented in the source repository under
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page).
 
 ## Referenced from
 
-- [Pico course · Part 1 · Introduction · Lab](../../courses/pico/part-1/01-introduction/lab.qmd)
+- [Pico course · Part 1 · Introduction · Lab](../../courses/pico/part-1/01-introduction/lab.html)

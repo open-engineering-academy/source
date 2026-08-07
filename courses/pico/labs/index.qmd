@@ -4,7 +4,7 @@ title: "Labs"
 
 Labs referenced by the Pico course. Course-scoped labs live under
 `courses/pico/labs/`; reusable labs shared with other courses live under
-the repository-root [`labs/`](../../../labs/index.qmd) directory.
+the repository-root [`labs/`](../../../labs/index.html) directory.
 
 ## Referenced labs
 
