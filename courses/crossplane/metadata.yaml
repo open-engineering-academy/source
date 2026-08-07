@@ -20,4 +20,5 @@ produces:
   - hello-world-pico-on-kubernetes
 references_labs:
   - oe.lab.hello-pico
+  - oe.lab.hello-pico-on-kubernetes
 references_exercises: []

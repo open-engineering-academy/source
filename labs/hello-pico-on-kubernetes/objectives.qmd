@@ -83,7 +83,7 @@ The walkthrough was authored and verified against these versions. Newer
 versions are expected to work; older versions may not support the
 `Pipeline` composition mode or the referenced provider APIs.
 
-- Crossplane chart: **v1.20.0**
+- Crossplane chart: **v2.3.4**
 - Provider Kubernetes: **v0.18.0**
   (`xpkg.crossplane.io/crossplane-contrib/provider-kubernetes:v0.18.0`)
 - Function Patch and Transform: **v0.9.0**
