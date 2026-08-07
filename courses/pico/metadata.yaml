@@ -9,9 +9,7 @@ sections:
   - part-1
   - part-2
   - part-3
-prerequisites:
-  - oe.course.kubernetes
-  - oe.course.crossplane
+prerequisites: []
 teaches:
   - Pico
   - Rules
