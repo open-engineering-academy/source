@@ -1,0 +1,48 @@
+---
+title: "Resources"
+---
+
+Shared, reusable material that supports every course, lab, and exercise across
+the academy.
+
+## Templates
+
+Starter templates for new content live under `templates/`:
+
+- `templates/course/` — new course website scaffold.
+- `templates/lesson/` — standard lesson layout.
+- `templates/lab/` — standard lab layout.
+- `templates/quiz/` — standard quiz layout.
+
+Authors are expected to copy from these templates and follow the academy
+conventions rather than inventing new structures per course.
+
+## Shared assets
+
+Cross-course assets live under `shared/`:
+
+- `shared/images/` — reusable diagrams, screenshots, logos.
+- `shared/icons/` — icon set used across course sites.
+- `shared/css/` — shared stylesheets and theme overrides.
+- `shared/javascript/` — shared client-side helpers.
+- `shared/includes/` — reusable Quarto includes (callouts, prerequisites,
+  learning-objectives blocks, and other recurring content).
+
+## Conventions
+
+Open Engineering already publishes convention repositories that inform how
+academy content is structured:
+
+- [course-conventions](https://github.com/open-engineering-conventions/course-conventions)
+- [curriculum-conventions](https://github.com/open-engineering-conventions/curriculum-conventions)
+- [exercise-conventions](https://github.com/open-engineering-conventions/exercise-conventions)
+- [lab-conventions](https://github.com/open-engineering-conventions/lab-conventions)
+- [lesson-conventions](https://github.com/open-engineering-conventions/lesson-conventions)
+- [quiz-conventions](https://github.com/open-engineering-conventions/quiz-conventions)
+
+## Course metadata
+
+Each course carries a `metadata.yaml` descriptor (see `courses/pico/metadata.yaml`
+for the reference example). Machine-readable metadata is what will later drive
+curriculum maps, dependency graphs, and other automation without changing
+course content.

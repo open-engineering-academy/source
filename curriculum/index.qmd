@@ -1,0 +1,43 @@
+---
+title: "Curriculum"
+---
+
+The academy curriculum is organized around **learning paths**. Each path
+groups related courses that together move a learner from foundational ideas to
+real, working systems.
+
+## Planned learning paths
+
+The initial catalog of learning paths (in various stages of development):
+
+- Open Engineering Foundations
+- Kubernetes for Open Engineering
+- Crossplane
+- Declarative Infrastructure
+- Open Engineering Definitions
+- Open Engineering Conventions
+- Parsers
+- Rules
+- Capsules
+- Composers
+- Picos
+- Wrangler
+- Manifold
+- Home Assistant Integration
+- GitOps with FluxCD
+- Building AI-native Engineering Systems
+
+Each learning path can consist of multiple courses, and each course can be
+divided into sections, lessons, labs, and quizzes.
+
+## Reference course
+
+The [pico course](../courses/pico/) is the first fully normalized
+reference implementation and demonstrates the standard course-website
+structure.
+
+## Status
+
+This page is an overview. Detailed roadmaps, prerequisites, and dependencies
+between paths will be added as courses come online. See [Courses](../courses/index.qmd)
+for the current course catalog.
