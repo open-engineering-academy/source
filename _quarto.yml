@@ -27,6 +27,7 @@ website:
   title: "Open Engineering Academy"
   description: "Learning journeys for declarative, composable Open Engineering systems."
   site-url: "https://academy.open-engineering.io"
+  favicon: shared/images/open-engineering-mark.svg
   navbar:
     left:
       - href: index.qmd
