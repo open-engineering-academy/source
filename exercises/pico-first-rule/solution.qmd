@@ -10,24 +10,36 @@ A reference solution that satisfies the exercise's success criteria.
 # rules/kitchen-timer.yaml
 id: rule.kitchen-timer
 kind: timer
-value:
-  duration: 5m
-  message: "Time's up!"
+value: "Time's up! (5m)"
 ```
 
 ## Why it satisfies the criteria
 
-- **Valid YAML** — indentation and types match Quarto's YAML parser and
-  a Pico Parser's expectations.
+- **Valid YAML** — matches the flat `id` / `kind` / `value` shape the
+  reference `bin/pico` parser accepts.
 - **Stable `id`** — namespaced under `rule.` and named after the
   concept, not the implementation.
-- **Composer-actionable** — the Composer can read `duration` and
-  `message` and produce a Pico that beeps after five minutes.
+- **Composer-actionable** — a `timer`-aware Composer could read the
+  scalar `value` and emit a Pico that surfaces the message when the
+  duration elapses. The reference Composer in this repo only handles
+  `kind: greeting`, so this Rule intentionally targets a broader
+  design conversation rather than direct composition here.
+
+## Automatable check
+
+```bash
+pico parse rules/kitchen-timer.yaml --out /tmp/parsed.json \
+  && echo "OK: parsed rules/kitchen-timer.yaml"
+```
+
+Expected output ends with `OK: parsed rules/kitchen-timer.yaml` and
+the command exits with status `0`.
 
 ## Variations
 
 - Replace `timer` with a domain of your own (e.g. `greeting`,
-  `webhook`, `sensor`).
+  `webhook`, `sensor`) — keeping the flat `id` / `kind` / `value`
+  shape so `pico parse` still accepts it.
 - Add a second Rule and compose both into a single Pico, matching the
   "two rules" variation in
   [`labs/hello-pico/solution.qmd`](../../labs/hello-pico/solution.qmd#variations).

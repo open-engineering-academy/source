@@ -10,7 +10,8 @@ connecting a Pico to other Open Engineering artifacts.
 Lesson content for Part 3 is authored following the lesson layout established
 in [Part 1, lesson 1](../part-1/01-introduction/index.qmd).
 
-::: {.callout-note}
-Part 3 is intentionally scaffolded. It is included so the reference course
-demonstrates a multi-part structure that other course websites can mirror.
+::: {.callout-warning title="Scaffold — not yet runnable"}
+Part 3 is intentionally scaffolded. It is included so the reference
+course demonstrates a multi-part structure that other course websites
+can mirror, but it does **not** yet carry runnable learner content.
 :::

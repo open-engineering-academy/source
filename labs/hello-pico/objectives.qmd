@@ -55,6 +55,16 @@ export PATH="$PWD/bin:$PATH"
 command -v pico   # should print .../oea/bin/pico
 ```
 
+**Placeholders**
+
+- `<academy-source-repo-url>` — the clone URL of the Open Engineering
+  Academy source repository you were given access to (for example,
+  `https://github.com/<org>/<repo>.git` or an SSH equivalent). The
+  academy's public-facing repository URL is not yet finalized; use
+  whichever clone URL your Academy contact provides. If you are
+  already working inside a clone of this repository, skip the
+  `git clone` line and start from the `export PATH=…` step.
+
 The `PATH` export lasts for the current shell session. Re-run it in
 new shells, or add it to your shell profile if you plan to work
 through the lab across multiple sessions.

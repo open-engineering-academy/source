@@ -12,8 +12,10 @@ Lesson content for Part 2 is authored following the same lesson layout as
 [Part 1, lesson 1](../part-1/01-introduction/index.qmd). This page will list
 lessons as they are added.
 
-::: {.callout-note}
-Part 2 is intentionally scaffolded rather than written out in full. The
-[Introduction lesson](../part-1/01-introduction/index.qmd) is the
-canonical example of the lesson structure to follow.
+::: {.callout-warning title="Scaffold — not yet runnable"}
+Part 2 is intentionally scaffolded rather than written out in full. It
+is included so the reference course demonstrates a multi-part
+structure, but it does **not** yet carry runnable learner content.
+Use the [Introduction lesson](../part-1/01-introduction/index.qmd) as
+the canonical example of the lesson structure to follow.
 :::

@@ -15,7 +15,8 @@ encounter a consistent experience across the academy.
 ## Lab structure
 
 Each lab lives under `labs/<name>/` and follows the shared lab template
-under [`templates/lab/`](../templates/lab/README.qmd):
+under `templates/lab/` (in-repo scaffold, not published as a learner
+page):
 
 ```
 labs/<name>/

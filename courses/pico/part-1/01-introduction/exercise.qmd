@@ -24,6 +24,26 @@ There is no single correct answer. The goal is to internalize the
 - [ ] For at least one candidate, you can sketch what the Rules might look
       like in YAML.
 
+## Automatable check
+
+If you sketched at least one Rule in YAML, save it as
+`rules/<your-slug>.yaml` under a scratch working directory and confirm
+it matches the reference Parser's flat `id` / `kind` / `value` shape
+using the `pico` CLI shipped in this repository (see the
+[Hello Pico one-time setup](../../../../labs/hello-pico/objectives.qmd#one-time-setup)
+for the `PATH` export):
+
+```bash
+pico parse rules/<your-slug>.yaml --out /tmp/parsed.json \
+  && echo "OK: parsed rules/<your-slug>.yaml"
+```
+
+The command exits with status `0` and prints an `OK:` line when the
+sketch is well-formed. This is an optional accompaniment to the
+reflection questions — the exercise's primary goal remains
+internalizing the mental model, but any YAML you draft can now be
+mechanically validated.
+
 ## Reflect
 
 - Which of your three examples is the simplest to model?

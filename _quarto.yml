@@ -13,12 +13,13 @@ project:
     - labs/hello-pico/walkthrough.qmd
     - labs/hello-pico/solution.qmd
     - exercises/index.qmd
+    - exercises/pico-first-rule/index.qmd
+    - exercises/pico-first-rule/solution.qmd
     - "!courses/pico/"
     - "!courses/kubernetes/"
     - "!courses/crossplane/"
     - "!templates/"
     - "!shared/"
-    - "!exercises/pico-first-rule/"
 
 website:
   title: "Open Engineering Academy"

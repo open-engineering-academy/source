@@ -46,8 +46,10 @@ exercises/<slug>/
 ```
 
 The `metadata.yaml` schema follows the same shape as
-[labs](../templates/README.qmd), using
-`id: oe.exercise.<slug>`.
+[labs](../labs/index.qmd), using `id: oe.exercise.<slug>`. The full
+field list is documented in the source repository under
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page).
 
 ## Available exercise exemplars
 
