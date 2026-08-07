@@ -23,7 +23,7 @@ description: "What Hello Pico teaches and what you need before starting."
 - A local clone of this repository, which ships the reference `pico`
   CLI under `bin/pico`.
 - Completion of the
-  [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd)
+  [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html)
   lesson (or equivalent).
 :::
 
@@ -71,7 +71,7 @@ through the lab across multiple sessions.
 
 ## Related lessons
 
-- [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd)
+- [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html)
   — introduces the vocabulary this lab uses.
-- Future lessons in [Part 2](../../courses/pico/part-2/index.qmd) reuse the
+- Future lessons in [Part 2](../../courses/pico/part-2/index.html) reuse the
   `hello-world-pico` produced here.

@@ -45,7 +45,7 @@ Hello, Pico!
   `produces` list.
 - **Pipeline reasoning**: The commands map one-to-one onto the
   Rules → Parser → Composer → Pico pipeline introduced in
-  [Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd).
+  [Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html).
 
 ## Verification
 

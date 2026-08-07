@@ -30,7 +30,7 @@ If you sketched at least one Rule in YAML, save it as
 `rules/<your-slug>.yaml` under a scratch working directory and confirm
 it matches the reference Parser's flat `id` / `kind` / `value` shape
 using the `pico` CLI shipped in this repository (see the
-[Hello Pico one-time setup](../../../../labs/hello-pico/objectives.qmd#one-time-setup)
+[Hello Pico one-time setup](../../../../labs/hello-pico/objectives.html#one-time-setup)
 for the `PATH` export):
 
 ```bash

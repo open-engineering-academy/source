@@ -10,9 +10,9 @@ repository root so it can be reused from other courses.
 Open the [Hello Pico lab](../../../../labs/hello-pico/) and follow the
 walkthrough. It uses the shared lab template with these pages:
 
-- [Objectives](../../../../labs/hello-pico/objectives.qmd)
-- [Walkthrough](../../../../labs/hello-pico/walkthrough.qmd)
-- [Solution](../../../../labs/hello-pico/solution.qmd)
+- [Objectives](../../../../labs/hello-pico/objectives.html)
+- [Walkthrough](../../../../labs/hello-pico/walkthrough.html)
+- [Solution](../../../../labs/hello-pico/solution.html)
 
 ## What you will produce
 

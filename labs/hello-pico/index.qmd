@@ -41,4 +41,4 @@ page).
 
 ## Referenced from
 
-- [Pico course · Part 1 · Introduction · Lab](../../courses/pico/part-1/01-introduction/lab.qmd)
+- [Pico course · Part 1 · Introduction · Lab](../../courses/pico/part-1/01-introduction/lab.html)
