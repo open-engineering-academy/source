@@ -1,0 +1,76 @@
+name: Build and Publish Academy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Render academy site and pico course
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Show Quarto version
+        run: quarto --version
+
+      - name: Render root academy site
+        run: quarto render
+
+      - name: Render pico course website
+        run: quarto render courses/pico
+
+      - name: Verify root render output
+        run: |
+          test -f docs/index.html || {
+            echo "::error::Missing docs/index.html — root site render did not produce expected output"
+            exit 1
+          }
+
+      - name: Verify pico render output
+        run: |
+          test -f courses/pico/_site/index.html || {
+            echo "::error::Missing courses/pico/_site/index.html — pico render did not produce expected output"
+            exit 1
+          }
+
+      - name: Assemble combined site
+        run: |
+          mkdir -p docs/courses/pico
+          cp -R courses/pico/_site/. docs/courses/pico/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  publish:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
