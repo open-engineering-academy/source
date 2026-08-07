@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - shared/images/open-engineering-mark.svg
   render:
     - index.qmd
     - about.qmd

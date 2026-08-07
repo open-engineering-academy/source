@@ -3,6 +3,10 @@ title: "Open Engineering Academy"
 subtitle: "Learn to build declarative, composable systems."
 ---
 
+::: {.text-center .my-4}
+![](shared/images/open-engineering-mark.svg){width=120 fig-alt="Open Engineering mark"}
+:::
+
 The **Open Engineering Academy** teaches engineers how to design, build, and
 operate declarative, composable systems using open technologies and hands-on
 projects. It is the educational arm of the Open Engineering ecosystem.
