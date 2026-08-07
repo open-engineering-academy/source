@@ -1,0 +1,65 @@
+---
+title: "Crossplane"
+subtitle: "Run Hello Pico on Kubernetes with Crossplane."
+---
+
+Welcome to **Crossplane**, the second course of the Open Engineering Academy.
+This course teaches how to compose the reusable Hello Pico artifact from the
+[Pico course](../pico/index.html) so it can run on a local Kubernetes cluster,
+using **Crossplane** as the control-plane building block.
+
+## What you will learn
+
+By the end of the course you will be able to:
+
+- Describe what Crossplane provides on top of Kubernetes.
+- Explain how a Pico maps to Crossplane compositions and managed resources.
+- Compose a `hello-world-pico` deployment for a local Kubernetes cluster
+  (minikube) and verify it end-to-end in the Crossplane lab.
+
+See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
+machine-readable summary (id, level, duration, prerequisites, teaches,
+produces).
+
+## Prerequisites
+
+- Completion of the [Pico course](../pico/index.html), or equivalent
+  familiarity with Rules, the Parser, and the Composer.
+- Working shell (`bash` or `zsh`), a text editor, and Docker.
+- A local Kubernetes environment. Local **minikube** is the reference
+  environment used by the accompanying lab.
+
+## How this course is structured
+
+The course follows the shared academy course structure — parts, lessons, and
+per-lesson `index / exercise / lab / summary / quiz` pages:
+
+```
+courses/crossplane/
+  _quarto.yml          # this course website
+  index.qmd            # you are here
+  metadata.yaml        # machine-readable course descriptor
+  glossary.qmd         # course glossary
+  part-1/              # section
+    index.qmd
+    <lesson>/          # lesson (authored by the learner-path task)
+  part-2/
+  part-3/
+  labs/                # course-scoped labs
+```
+
+## Start here
+
+- [Part 1 — Crossplane on Kubernetes](part-1/index.qmd)
+- [Part 2 — Composing Hello Pico](part-2/index.qmd)
+- [Part 3 — Extending the composition](part-3/index.qmd)
+- [Labs](labs/index.qmd) — including the reusable
+  [Hello Pico lab](../../labs/hello-pico/) that this course builds on.
+- [Glossary](glossary.qmd)
+
+::: {.callout-note title="Course status"}
+This course is the initial Crossplane milestone. Part 1 is being authored
+alongside a runnable Crossplane lab that composes Hello Pico on Kubernetes.
+Parts 2 and 3 are intentionally scaffolded and are clearly labelled where
+learner-visible.
+:::

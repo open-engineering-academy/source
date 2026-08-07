@@ -1,0 +1,28 @@
+---
+title: "Labs"
+---
+
+Labs referenced by the Crossplane course. Course-scoped labs live under
+`courses/crossplane/labs/`; reusable labs shared with other courses live
+under the repository-root [`labs/`](../../../labs/index.html) directory.
+
+## Referenced labs
+
+- [Hello Pico](../../../labs/hello-pico/) — the introductory lab from the
+  [Pico course](../../pico/index.html). Crossplane reuses the
+  `hello-world-pico` artifact produced by this lab as the input to its
+  Kubernetes composition. Descriptor:
+  [`labs/hello-pico/metadata.yaml`](../../../labs/hello-pico/metadata.yaml).
+
+::: {.callout-warning title="Crossplane Kubernetes lab — coming soon"}
+The runnable Crossplane lab that composes Hello Pico onto a local
+Kubernetes cluster (minikube) is being authored separately and is not
+yet published as a learner page. Until it lands, treat this section as a
+scaffold: the reusable Hello Pico lab above still runs stand-alone.
+:::
+
+## Authoring course-scoped labs
+
+Course-scoped labs live in this directory and follow the shared lab
+template. Reuse a repository-root lab when the same lab is useful for more
+than one course.

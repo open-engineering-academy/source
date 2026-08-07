@@ -36,6 +36,9 @@ jobs:
       - name: Render pico course website
         run: quarto render courses/pico
 
+      - name: Render crossplane course website
+        run: quarto render courses/crossplane
+
       - name: Verify root render output
         run: |
           test -f docs/index.html || {
@@ -50,10 +53,19 @@ jobs:
             exit 1
           }
 
+      - name: Verify crossplane render output
+        run: |
+          test -f courses/crossplane/_site/index.html || {
+            echo "::error::Missing courses/crossplane/_site/index.html — crossplane render did not produce expected output"
+            exit 1
+          }
+
       - name: Assemble combined site
         run: |
           mkdir -p docs/courses/pico
           cp -R courses/pico/_site/. docs/courses/pico/
+          mkdir -p docs/courses/crossplane
+          cp -R courses/crossplane/_site/. docs/courses/crossplane/
 
       # The `pages` branch is the artifact consumed by a git-pages server
       # (https://codeberg.org/git-pages/git-pages). A git-pages server pulls

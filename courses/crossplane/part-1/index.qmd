@@ -1,0 +1,26 @@
+---
+title: "Part 1 — Crossplane on Kubernetes"
+---
+
+Part 1 introduces Crossplane on top of Kubernetes and sets up the mental
+model the rest of the course builds on: **Rules → Parser → Composer → Pico**
+(from the [Pico course](../../pico/index.html)) mapped onto **Composition →
+Composite Resource → Managed Resource** on a Kubernetes control plane.
+
+## Lessons
+
+Lessons for Part 1 are authored in the same lesson layout as the Pico
+reference course. See the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html)
+for the canonical page structure (`index`, `exercise`, `lab`, `summary`,
+`quiz`).
+
+Individual Part 1 lessons will be listed here as they are added.
+
+## Where the runnable lab lives
+
+The lab for Part 1 composes and runs `hello-world-pico` on Kubernetes with
+Crossplane. It is being built as a runnable experience against a local
+minikube environment; until it is published, learners should complete the
+reusable [Hello Pico lab](../../../labs/hello-pico/) to produce the
+`hello-world-pico` artifact this Part 1 lab consumes.
