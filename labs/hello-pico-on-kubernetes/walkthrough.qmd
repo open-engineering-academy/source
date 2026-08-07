@@ -1,0 +1,193 @@
+---
+title: "Walkthrough"
+description: "Compose Hello Pico onto a local Kubernetes cluster with Crossplane."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them
+to match your setup. The walkthrough assumes you have completed the
+[one-time environment setup](objectives.qmd#environment) and that
+`docker`, `minikube`, `kubectl`, and `helm` all resolve on your `PATH`.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [Hello Pico lab](../hello-pico/index.qmd) so the greeting
+value used here (`Hello, Pico!`) is meaningful. This lab reuses the
+same greeting on a Kubernetes cluster instead of on your laptop.
+:::
+
+## Step 1 — Create a working directory and copy the manifests
+
+From the root of your local clone of the academy repository:
+
+```bash
+mkdir -p work/hello-pico-on-kubernetes && cd work/hello-pico-on-kubernetes
+cp -r ../../labs/hello-pico-on-kubernetes/downloads/. .
+ls -1
+```
+
+Expected output (order-independent):
+
+```
+01-provider.yaml
+02-rbac.yaml
+03-xrd.yaml
+04-composition.yaml
+05-xr.yaml
+verify.sh
+```
+
+## Step 2 — Start a local minikube cluster
+
+Start a dedicated minikube profile so the lab does not interfere with
+other clusters you may run:
+
+```bash
+minikube start --profile crossplane-lab \
+  --driver=docker --cpus=4 --memory=6g \
+  --kubernetes-version=v1.31.0
+```
+
+Confirm the cluster is Ready:
+
+```bash
+kubectl config current-context
+kubectl get nodes
+```
+
+Expected output:
+
+```
+crossplane-lab
+NAME             STATUS   ROLES           AGE   VERSION
+crossplane-lab   Ready    control-plane   1m    v1.31.0
+```
+
+## Step 3 — Install Crossplane with helm
+
+```bash
+helm repo add crossplane-stable https://charts.crossplane.io/stable
+helm repo update crossplane-stable
+helm install crossplane crossplane-stable/crossplane \
+  --namespace crossplane-system --create-namespace \
+  --version 2.3.4 --wait --timeout 5m
+kubectl get pods -n crossplane-system
+```
+
+You should see `crossplane` and `crossplane-rbac-manager` pods `Running`.
+
+## Step 4 — Install the Kubernetes Provider and patch-and-transform function
+
+Apply `01-provider.yaml`, then wait for the Provider and Function to
+become Healthy:
+
+```bash
+kubectl apply -f 01-provider.yaml
+kubectl wait --for=condition=Healthy --timeout=120s \
+  provider.pkg.crossplane.io/provider-kubernetes \
+  function.pkg.crossplane.io/function-patch-and-transform
+```
+
+## Step 5 — Grant the provider RBAC and configure its identity
+
+`02-rbac.yaml` creates the pinned `provider-kubernetes` ServiceAccount,
+binds it to `cluster-admin`, and defines a `ProviderConfig` that tells
+the provider to act on the cluster it runs on:
+
+```bash
+kubectl apply -f 02-rbac.yaml
+# Ensure the provider is running under the pinned ServiceAccount:
+kubectl get deploy -n crossplane-system \
+  -o jsonpath='{range .items[?(@.spec.template.spec.serviceAccountName=="provider-kubernetes")]}{.metadata.name}{"\t"}{.spec.template.spec.serviceAccountName}{"\n"}{end}'
+```
+
+Expected output (deployment name suffix will vary):
+
+```
+provider-kubernetes-3c1712b01e08	provider-kubernetes
+```
+
+## Step 6 — Declare the new API and its Composition
+
+```bash
+kubectl apply -f 03-xrd.yaml
+kubectl wait --for=condition=Established --timeout=60s \
+  xrd/xhelloworldpicoes.oe.academy
+kubectl apply -f 04-composition.yaml
+```
+
+## Step 7 — Create the Composite Resource
+
+Create the XR — this is the Crossplane counterpart of the Rule you
+wrote in the Hello Pico lab:
+
+```bash
+kubectl apply -f 05-xr.yaml
+kubectl wait --for=condition=Ready --timeout=120s \
+  xhelloworldpico/hello
+```
+
+## Step 8 — Verify the composed Kubernetes Job printed the greeting
+
+```bash
+bash verify.sh
+```
+
+Expected output ends with:
+
+```
+Hello, Pico!
+verify: OK — greeting 'Hello, Pico!' printed by composed Job
+```
+
+## Step 9 — Capture the produced artifact
+
+Capture the manifests you applied and the observed greeting into a
+single `hello-world-pico-on-kubernetes/` directory — this is the
+lab's `produces:` artifact:
+
+```bash
+mkdir -p build/hello-world-pico-on-kubernetes/manifests
+cp 0*.yaml build/hello-world-pico-on-kubernetes/manifests/
+kubectl logs -n default job/hello-world-pico \
+  > build/hello-world-pico-on-kubernetes/greeting.txt
+grep -Fqx 'Hello, Pico!' build/hello-world-pico-on-kubernetes/greeting.txt \
+  && echo "artifact OK"
+ls -1 build/hello-world-pico-on-kubernetes build/hello-world-pico-on-kubernetes/manifests
+```
+
+## Step 10 — Cleanup
+
+```bash
+kubectl delete -f 05-xr.yaml --ignore-not-found
+kubectl delete -f 04-composition.yaml --ignore-not-found
+kubectl delete -f 03-xrd.yaml --ignore-not-found
+kubectl delete -f 02-rbac.yaml --ignore-not-found
+kubectl delete -f 01-provider.yaml --ignore-not-found
+helm uninstall crossplane -n crossplane-system
+minikube delete --profile crossplane-lab
+cd ../.. && rm -rf work/hello-pico-on-kubernetes
+```
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `kubectl wait ... xhelloworldpico/hello` times out with no
+  status conditions, restart Crossplane once and retry:
+  `kubectl rollout restart deploy/crossplane -n crossplane-system`.
+  The Crossplane controller occasionally needs a restart to pick up
+  a freshly-created XRD (observed on Crossplane v2.3.4).
+- If the `Object` MR reports a permissions error, re-apply
+  `02-rbac.yaml` and confirm the provider Deployment's
+  `serviceAccountName` is `provider-kubernetes` (Step 5).
+- If Steps 4 or 6 fail to pull an image, check network access to
+  `xpkg.crossplane.io`; version pins in `01-provider.yaml` do not
+  fall back to `latest`.
+- The composed `Job` name is immutable. If you change `spec.value`
+  and want a fresh Job run, first `kubectl delete job hello-world-pico`
+  in the `default` namespace and reapply the XR.
+:::
+
+## Next
+
+Compare your work against the [reference solution](solution.qmd).

@@ -1,0 +1,24 @@
+id: oe.course.crossplane
+slug: crossplane
+title: Running Hello Pico on Kubernetes with Crossplane
+level: intermediate
+duration: 8h
+entry: index.qmd
+glossary: glossary.qmd
+sections:
+  - part-1
+  - part-2
+  - part-3
+prerequisites:
+  - oe.course.pico
+teaches:
+  - Crossplane
+  - Composition
+  - Managed Resource
+  - Kubernetes control plane
+produces:
+  - hello-world-pico-on-kubernetes
+references_labs:
+  - oe.lab.hello-pico
+  - oe.lab.hello-pico-on-kubernetes
+references_exercises: []

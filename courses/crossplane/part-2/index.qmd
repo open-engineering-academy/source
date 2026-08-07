@@ -1,0 +1,22 @@
+---
+title: "Part 2 — Composing Hello Pico"
+---
+
+Part 2 walks through composing `hello-world-pico` into a runnable Kubernetes
+workload with Crossplane: authoring a Composition, applying the Composite
+Resource, and letting the Crossplane control plane reconcile the Managed
+Resources that back the deployment.
+
+## Lessons
+
+Lesson content for Part 2 follows the same lesson layout as
+[Part 1](../part-1/index.qmd) and the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
+
+::: {.callout-warning title="Scaffold — not yet runnable"}
+Part 2 is intentionally scaffolded so the Crossplane course demonstrates the
+multi-part structure. It does **not** yet carry runnable learner content.
+Use the [Hello Pico lab](../../../labs/hello-pico/) to produce the input
+artifact, then track [Part 1](../part-1/index.qmd) for the first runnable
+Crossplane lesson.
+:::

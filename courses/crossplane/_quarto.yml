@@ -7,19 +7,19 @@ project:
     - index.qmd
     - glossary.qmd
     - part-1/index.qmd
-    - part-1/01-introduction/index.qmd
-    - part-1/01-introduction/exercise.qmd
-    - part-1/01-introduction/lab.qmd
-    - part-1/01-introduction/summary.qmd
-    - part-1/01-introduction/quiz.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/index.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/exercise.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/lab.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/summary.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/quiz.qmd
     - part-2/index.qmd
     - part-3/index.qmd
     - labs/index.qmd
 
 website:
-  title: "Pico"
-  description: "Building your first Pico — the reference Open Engineering Academy course."
-  site-url: "https://academy.open-engineering.io/courses/pico/"
+  title: "Crossplane"
+  description: "Running Hello Pico on Kubernetes with Crossplane — the second Open Engineering Academy course."
+  site-url: "https://academy.open-engineering.io/courses/crossplane/"
   favicon: shared/images/open-engineering-mark.svg
   navbar:
     left:
@@ -43,30 +43,30 @@ website:
     contents:
       - href: index.qmd
         text: Overview
-      - section: "Part 1 — Foundations"
+      - section: "Part 1 — Crossplane on Kubernetes"
         href: part-1/index.qmd
         contents:
-          - section: "01 Introduction"
-            href: part-1/01-introduction/index.qmd
+          - section: "01 Composing Hello Pico on Kubernetes"
+            href: part-1/01-composing-hello-pico-on-kubernetes/index.qmd
             contents:
-              - href: part-1/01-introduction/exercise.qmd
+              - href: part-1/01-composing-hello-pico-on-kubernetes/exercise.qmd
                 text: Exercise
-              - href: part-1/01-introduction/lab.qmd
+              - href: part-1/01-composing-hello-pico-on-kubernetes/lab.qmd
                 text: Lab
-              - href: part-1/01-introduction/summary.qmd
+              - href: part-1/01-composing-hello-pico-on-kubernetes/summary.qmd
                 text: Summary
-              - href: part-1/01-introduction/quiz.qmd
+              - href: part-1/01-composing-hello-pico-on-kubernetes/quiz.qmd
                 text: Quiz
-      - section: "Part 2 — Building"
+      - section: "Part 2 — Composing Hello Pico"
         href: part-2/index.qmd
-      - section: "Part 3 — Extending"
+      - section: "Part 3 — Extending the composition"
         href: part-3/index.qmd
       - href: labs/index.qmd
         text: Labs
       - href: glossary.qmd
         text: Glossary
   page-footer:
-    left: "Pico — Open Engineering Academy"
+    left: "Crossplane — Open Engineering Academy"
     right: "Built with [Quarto](https://quarto.org)"
 
 format:

@@ -1,0 +1,123 @@
+---
+title: "1. Composing Hello Pico on Kubernetes"
+subtitle: "How Crossplane turns a Pico into a Kubernetes workload."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Describe what Crossplane adds on top of a Kubernetes cluster.
+- Name the Crossplane primitives — **Provider**, **XRD**, **Composition**,
+  **Composite Resource (XR)**, **Managed Resource** — and their role in a
+  composition.
+- Map each stage of the Pico pipeline (**Rules → Parser → Composer → Pico**)
+  onto its Crossplane counterpart.
+- Identify **local minikube** as the target Kubernetes environment the
+  follow-on lab will run on.
+
+## Prerequisites
+
+- Completion of the
+  [Pico · Part 1 · Introduction](../../../pico/part-1/01-introduction/index.html)
+  lesson (or equivalent familiarity with **Rules**, the **Parser**, and the
+  **Composer**).
+- Working shell (`bash` or `zsh`) and a text editor.
+- No cluster is required for **this lesson** — the lesson is conceptual.
+  The follow-on [Lab](lab.qmd) will target a local Kubernetes cluster.
+
+## Why Crossplane?
+
+The [Pico course](../../../pico/index.html) taught you how to describe a
+system declaratively (**Rules**) and produce a runnable artifact from it
+(**Composer**). Crossplane extends the same declarative idea to a full
+Kubernetes control plane: instead of producing a single artifact on your
+laptop, you declare *what should exist* and a controller reconciles the
+cluster toward that state.
+
+::: {.callout-tip title="One-sentence definition"}
+Crossplane is a Kubernetes add-on that lets you author higher-level,
+composable APIs and have the cluster produce the concrete resources they
+imply — exactly the same shape as the **Rules → Composer → Pico** pipeline,
+but running continuously on a Kubernetes control plane instead of once on
+your shell.
+:::
+
+## The Crossplane primitives
+
+The lesson uses five primitives. See the
+[Glossary](../../glossary.qmd) for the full definitions.
+
+- **Provider** — a Crossplane package that teaches the control plane about
+  a set of Managed Resources (for example, the Kubernetes Provider adds
+  in-cluster resources such as `Object`).
+- **XRD (CompositeResourceDefinition)** — defines the *shape* of a new,
+  higher-level API. For Hello Pico on Kubernetes, the XRD defines a
+  `HelloWorldPico` API with the same fields your Pico Rules already used.
+- **Composition** — declares *how* an instance of that new API is turned
+  into concrete Managed Resources. This is the moving part that plays the
+  role of the Pico **Composer**.
+- **Composite Resource (XR)** — a concrete instance of the XRD; the
+  learner authors one YAML file to ask the cluster for a
+  `hello-world-pico`.
+- **Managed Resource** — the low-level Kubernetes object(s) the Composition
+  actually creates (for example, a `ConfigMap` or a `Job` that prints
+  `Hello, Pico!`).
+
+## Mapping Pico onto Crossplane
+
+The two pipelines line up on purpose:
+
+```
+Pico course:      Rules   ──▶  Parser  ──▶  Composer     ──▶  Pico
+                  (YAML)       (validate)  (produce)          (hello-world-pico)
+
+Crossplane path:  XR      ──▶  XRD     ──▶  Composition  ──▶  Managed Resources
+                  (YAML)       (validate)  (produce)          (on the cluster)
+```
+
+- **Rules ↔ XR** — both are the declarative input the learner writes by
+  hand in YAML.
+- **Parser ↔ XRD** — both validate the shape of that input before anything
+  else runs. If the XR does not match the XRD, the control plane rejects
+  it, just as an ill-formed Rule fails the Parser.
+- **Composer ↔ Composition** — both take the validated input and produce
+  the concrete output. The Composer wrote a file called
+  `hello-world-pico`; the Composition writes Managed Resources into the
+  cluster that together *are* `hello-world-pico` running on Kubernetes.
+- **Pico artifact ↔ Managed Resources on the cluster** — the same
+  end-user-visible result, but continuously reconciled by Kubernetes
+  instead of built once on your laptop.
+
+::: {.callout-note title="Why the mapping matters"}
+Once you see the mapping, most of what makes Crossplane feel unfamiliar
+(XRDs, Compositions, providers) becomes "the Pico pipeline, on a control
+plane". You already know how to reason about it.
+:::
+
+## Where this lesson leads
+
+This lesson is the **conceptual half** of Part 1. It is deliberately
+Kubernetes-cluster-free so learners can build the mental model before
+touching a cluster.
+
+The **runnable half** is the accompanying [Lab](lab.qmd), which composes
+`hello-world-pico` on a real Kubernetes cluster using Crossplane. Local
+**minikube** is the reference environment for that lab — the smallest
+cluster that reproduces the full control-plane behavior on a laptop.
+
+## Lesson pages
+
+Every lesson in this course follows the same layout as the
+[Pico reference lesson](../../../pico/part-1/01-introduction/index.html):
+
+- [Exercise](exercise.qmd) — map the Pico pipeline onto Crossplane
+  primitives on paper.
+- [Lab](lab.qmd) — pointer to the runnable Crossplane lab (local
+  minikube).
+- [Summary](summary.qmd) — key takeaways.
+- [Quiz](quiz.qmd) — short knowledge check.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

@@ -1,0 +1,43 @@
+---
+title: "Glossary"
+---
+
+Terms used across the Crossplane course. Course-specific vocabulary lives here
+so lessons can link to a single definition instead of redefining terms. For
+Pico-side vocabulary (Rule, Parser, Composer, Pico), see the
+[Pico course glossary](../pico/glossary.html).
+
+## Composition
+A Crossplane resource that declares how one or more Managed Resources are
+created from a higher-level Composite Resource. Compositions are how a Pico
+becomes a runnable object on Kubernetes in this course.
+
+## Composite Resource (XR)
+A user-defined Kubernetes resource whose contents are produced by a
+Composition. In this course, `hello-world-pico` is expressed as a Composite
+Resource that a Composition resolves to concrete Kubernetes objects.
+
+## Control plane
+The set of Kubernetes controllers that reconcile declared state against the
+actual state of the cluster. Crossplane extends this control plane with its
+own controllers for cloud- and platform-managed resources.
+
+## Crossplane
+An open-source Kubernetes add-on that lets you declaratively manage
+infrastructure and platform APIs using the same Kubernetes control plane
+that runs workloads. Crossplane is the layer through which this course runs
+Hello Pico on Kubernetes.
+
+## Managed Resource
+A Kubernetes representation of an external resource managed by Crossplane.
+Compositions turn Composite Resources into Managed Resources.
+
+## minikube
+The local single-node Kubernetes environment used as the reference target
+for the Crossplane lab. It is small enough to run on a laptop and matches
+the runnable-contract expectations for local verification.
+
+## Provider
+A Crossplane package that adds support for a specific set of Managed
+Resources (for example, the Kubernetes Provider used in this course to
+compose in-cluster resources).

@@ -1,0 +1,35 @@
+---
+title: "Part 1 — Crossplane on Kubernetes"
+---
+
+Part 1 introduces Crossplane on top of Kubernetes and sets up the mental
+model the rest of the course builds on: **Rules → Parser → Composer → Pico**
+(from the [Pico course](../../pico/index.html)) mapped onto **Composition →
+Composite Resource → Managed Resource** on a Kubernetes control plane.
+
+## Lessons
+
+Lessons for Part 1 are authored in the same lesson layout as the Pico
+reference course. See the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html)
+for the canonical page structure (`index`, `exercise`, `lab`, `summary`,
+`quiz`).
+
+- [1. Composing Hello Pico on Kubernetes](01-composing-hello-pico-on-kubernetes/index.qmd)
+  — introduces the Crossplane primitives (Provider, XRD, Composition,
+  XR, Managed Resource) and maps them onto the Pico
+  Rules → Parser → Composer → Pico pipeline. The lesson is conceptual;
+  its accompanying [Lab](01-composing-hello-pico-on-kubernetes/lab.qmd)
+  points at the reusable, runnable
+  [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/) lab.
+
+## Where the runnable lab lives
+
+The lab for Part 1 composes and runs `hello-world-pico` on Kubernetes with
+Crossplane. It is the reusable
+[Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/) lab
+under the repository-root `labs/` directory, so other courses can point
+at the same runnable content. Learners who have not yet completed the
+introductory [Hello Pico lab](../../../labs/hello-pico/) should complete
+it first — the greeting value used by this lab is the same one produced
+there.

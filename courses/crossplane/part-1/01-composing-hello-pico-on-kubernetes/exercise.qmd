@@ -1,0 +1,88 @@
+---
+title: "Exercise · Mapping Pico onto Crossplane"
+---
+
+A short, pen-and-paper task. Complete it before moving on to the lab.
+
+## Task
+
+Take the same `rules/hello.yaml` you authored in the
+[Hello Pico lab](../../../../labs/hello-pico/walkthrough.html) — the flat
+`id` / `kind` / `value` shape — and sketch, in a scratch file, what each
+Crossplane counterpart would look like conceptually.
+
+You do **not** need a cluster for this exercise. The goal is to lock in
+the mapping from [the lesson](index.qmd) before touching Kubernetes in
+the lab.
+
+Sketch four things:
+
+1. **XR (Composite Resource)** — a YAML block that declares a
+   `HelloWorldPico` instance carrying the same `value` as your Rule.
+2. **XRD (CompositeResourceDefinition)** — one or two bullet points
+   describing which fields the XRD would need to accept for the XR
+   above to validate.
+3. **Composition** — one or two bullet points describing what the
+   Composition would produce on the cluster (for example, a single
+   Kubernetes `ConfigMap` or a `Job` that prints the value).
+4. **Provider** — one line naming which Provider is doing the work.
+   For the reference lab, this is the **Crossplane Kubernetes
+   Provider**.
+
+::: {.callout-note}
+There is no single correct answer — several shapes are valid. The goal
+is to internalize the mapping.
+:::
+
+## Success criteria
+
+- [ ] Your XR sketch declares a `HelloWorldPico` object (any group/version)
+      with a field carrying your greeting value.
+- [ ] Your XRD notes at least one field the XRD must accept.
+- [ ] Your Composition notes at least one concrete Kubernetes resource
+      the Composition would produce.
+- [ ] You can name the Provider that provides that Kubernetes resource
+      type.
+
+## Automatable check
+
+The exercise is conceptual, so its automatable check is deliberately
+lightweight — it only confirms your XR sketch is well-formed YAML with
+the required fields. Save your sketch as
+`work/crossplane-mapping/xr.yaml` under a scratch working directory,
+and run one of:
+
+```bash
+# Option 1 — if you already have yq installed
+yq eval '.kind == "HelloWorldPico" and .spec.value != null' \
+  work/crossplane-mapping/xr.yaml
+```
+
+```bash
+# Option 2 — no extra tools, using Python 3 which most learners already have
+python3 - <<'PY'
+import sys, yaml
+doc = yaml.safe_load(open("work/crossplane-mapping/xr.yaml"))
+ok = doc.get("kind") == "HelloWorldPico" and doc.get("spec", {}).get("value")
+print("OK" if ok else "FAIL")
+sys.exit(0 if ok else 1)
+PY
+```
+
+Either command exits `0` and prints `OK` (or `true`) when the sketch is
+well-formed. This is an optional accompaniment — the main goal of the
+exercise remains the mapping.
+
+## Reflect
+
+- Which Crossplane primitive plays the role of the Pico **Parser**, and
+  what happens if the XR does not match the XRD?
+- Which Crossplane primitive plays the role of the Pico **Composer**,
+  and where does its output land?
+- If the `hello-world-pico` artifact from the Pico lab is a single
+  script on disk, what is the equivalent "single thing on the cluster"
+  the Composition should produce?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

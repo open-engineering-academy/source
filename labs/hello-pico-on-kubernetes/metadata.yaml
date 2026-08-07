@@ -1,0 +1,18 @@
+id: oe.lab.hello-pico-on-kubernetes
+title: Hello Pico on Kubernetes with Crossplane
+level: intermediate
+duration: 90m
+prerequisites:
+  - oe.lab.hello-pico
+  - oe.course.crossplane
+teaches:
+  - Crossplane installation on Kubernetes
+  - CompositeResourceDefinition (XRD)
+  - Composition (pipeline mode)
+  - Composite Resource (XR)
+  - Managed Resource via provider-kubernetes
+produces:
+  - hello-world-pico-on-kubernetes
+referenced_by:
+  - oe.course.crossplane
+  - oe.lesson.crossplane.01-composing-hello-pico-on-kubernetes

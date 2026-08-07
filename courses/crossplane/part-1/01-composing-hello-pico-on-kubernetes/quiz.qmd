@@ -1,0 +1,56 @@
+---
+title: "Quiz · Composing Hello Pico on Kubernetes"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What does Crossplane add on top of a Kubernetes cluster?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Crossplane extends the Kubernetes control plane with the ability to
+author your own higher-level, composable APIs, and to declare how each
+API instance should be turned into concrete Managed Resources on the
+cluster.
+:::
+
+## 2. Which Crossplane primitive plays the role of the Pico **Composer**?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **Composition**. Just as the Pico Composer turns validated Rules
+into a `hello-world-pico` artifact on disk, a Crossplane Composition
+turns a validated Composite Resource (XR) into concrete Managed
+Resources on the cluster.
+:::
+
+## 3. Which Crossplane primitive plays the role of the Pico **Parser**?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **CompositeResourceDefinition (XRD)**. The XRD defines the shape
+that a Composite Resource must match; the control plane rejects an XR
+that does not match its XRD, in the same way the Pico Parser rejects
+ill-formed Rules.
+:::
+
+## 4. Which local Kubernetes environment is the reference target for the follow-on Crossplane lab?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**Local minikube.** It is small enough to run on a laptop and provides
+a full Kubernetes control plane, which is what Crossplane requires in
+order to install a Provider and reconcile Managed Resources.
+:::
+
+## 5. Where does the reusable Hello Pico on Kubernetes lab live in the repository, and why is it not under `courses/crossplane/labs/`?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+It lives at the repository root under
+`labs/hello-pico-on-kubernetes/`. Placing it at the root — instead
+of under `courses/crossplane/labs/` — lets other courses reference
+the same runnable lab. Course-scoped labs go under a course's own
+`labs/` directory only when they are specific to that one course.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Part 2](../../part-2/index.qmd).

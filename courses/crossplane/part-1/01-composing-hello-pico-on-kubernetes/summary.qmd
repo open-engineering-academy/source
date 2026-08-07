@@ -1,0 +1,44 @@
+---
+title: "Summary · Composing Hello Pico on Kubernetes"
+---
+
+## Key takeaways
+
+- **Crossplane** extends a Kubernetes control plane with the ability to
+  author your own higher-level, composable APIs and have the cluster
+  produce the concrete resources they imply.
+- The Crossplane primitives introduced in this lesson are **Provider**,
+  **XRD**, **Composition**, **Composite Resource (XR)**, and
+  **Managed Resource** — all defined in the
+  [Glossary](../../glossary.qmd).
+- The Crossplane path maps cleanly onto the Pico pipeline:
+  **Rules ↔ XR**, **Parser ↔ XRD**, **Composer ↔ Composition**,
+  **Pico artifact ↔ Managed Resources on the cluster**.
+- The **reference target environment** for the follow-on runnable lab
+  is **local minikube** — small enough for a laptop, full enough to
+  host a real Kubernetes control plane.
+- The Crossplane [Lab](lab.qmd) for this lesson is the reusable
+  [Hello Pico on Kubernetes](../../../../labs/hello-pico-on-kubernetes/index.html)
+  lab. It installs Crossplane on a local minikube cluster, declares an
+  `XHelloWorldPico` XRD and its Composition, and reconciles a single
+  Composite Resource into a Kubernetes `Job` that prints
+  `Hello, Pico!` — a full end-to-end runnable exercise of the
+  Rules ↔ XR / Parser ↔ XRD / Composer ↔ Composition /
+  Pico ↔ Managed Resources mapping.
+
+## What comes next
+
+- **Part 2 — Composing Hello Pico** will develop the Composition side of
+  the story once Part 1 is fully in place. See
+  [Part 2](../../part-2/index.qmd).
+- **Part 3 — Extending the composition** will layer additional Managed
+  Resources on top of the base composition. See
+  [Part 3](../../part-3/index.qmd).
+- The reusable Hello Pico on Kubernetes lab is now runnable end to
+  end on local minikube. See the lab's
+  [Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
+  page for the exact tool version pins used to verify it.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

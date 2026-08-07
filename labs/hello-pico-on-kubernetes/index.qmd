@@ -1,0 +1,56 @@
+---
+title: "Hello Pico on Kubernetes"
+description: "Compose the Hello Pico greeting onto a local Kubernetes cluster using Crossplane."
+---
+
+## Overview
+
+**Hello Pico on Kubernetes** is the first Crossplane lab of the Open
+Engineering Academy. You will install Crossplane on a local
+**minikube** cluster, install the Crossplane **Kubernetes Provider**,
+declare a **CompositeResourceDefinition (XRD)** for a new
+`XHelloWorldPico` API, register a **Composition** that turns that XR
+into concrete Managed Resources, and create one **Composite Resource**
+that reconciles into a Kubernetes `Job` printing `Hello, Pico!` from
+inside the cluster.
+
+This lab is **reusable across courses**: it lives at the repository
+root under `labs/hello-pico-on-kubernetes/` and is referenced from the
+[Crossplane course](../../courses/crossplane/index.html) and any other
+course that needs a first runnable Kubernetes composition.
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-world-pico-on-kubernetes` —
+matching the `produces` entry in the
+[crossplane course metadata](../../courses/crossplane/metadata.yaml).
+The directory contains:
+
+- the exact YAML manifests applied to the cluster
+  (Provider, ProviderConfig, RBAC, XRD, Composition, XR), and
+- the captured cluster evidence
+  (`greeting.txt` — the `Hello, Pico!` string printed by the composed
+  Kubernetes `Job`).
+
+## Downloads and screenshots
+
+Starter files live under [`downloads/`](downloads/). Screenshots
+referenced from the walkthrough live under `screenshots/`. Both
+directories are kept even when empty so authors have a consistent
+place to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the same schema as
+[`labs/hello-pico/metadata.yaml`](../hello-pico/metadata.yaml).
+
+## Referenced from
+
+- [Crossplane course · Part 1 · Composing Hello Pico on Kubernetes · Lab](../../courses/crossplane/part-1/01-composing-hello-pico-on-kubernetes/lab.html)

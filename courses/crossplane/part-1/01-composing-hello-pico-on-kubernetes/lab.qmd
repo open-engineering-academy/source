@@ -1,0 +1,49 @@
+---
+title: "Lab · Hello Pico on Kubernetes with Crossplane"
+---
+
+The lab for this lesson is the reusable **Hello Pico on Kubernetes**
+lab. It lives at the repository root so it can be reused from other
+courses that need a first runnable Kubernetes composition.
+
+## Where to go
+
+Open the [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+and follow the walkthrough. It uses the shared lab template with these
+pages:
+
+- [Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
+- [Walkthrough](../../../../labs/hello-pico-on-kubernetes/walkthrough.html)
+- [Solution](../../../../labs/hello-pico-on-kubernetes/solution.html)
+
+## Target environment
+
+The lab targets **local minikube** as its reference Kubernetes
+environment — small enough to run on a laptop, but a full Kubernetes
+control plane, which is what Crossplane extends. Version pins for
+`minikube`, the Kubernetes control plane, Crossplane, and the
+provider-kubernetes package are declared on the lab's
+[Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
+page.
+
+## What you will produce
+
+By the end of the lab you will have the artifact
+`hello-world-pico-on-kubernetes` — matching the `produces` entry in
+[`courses/crossplane/metadata.yaml`](../../metadata.yaml). The
+artifact is a directory containing the exact YAML manifests you
+applied to the cluster plus the captured greeting the composed
+Kubernetes `Job` printed.
+
+## Related content
+
+- Work through the reusable
+  [Hello Pico lab](../../../../labs/hello-pico/index.html) first if
+  you have not already — this lab reuses the same greeting value.
+- Complete the [Exercise](exercise.qmd) on this lesson to lock in the
+  mapping from the Pico pipeline onto Crossplane primitives before
+  running the cluster steps.
+
+## Next
+
+Continue with the [Summary](summary.qmd).
