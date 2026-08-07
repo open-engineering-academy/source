@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: _site
+  resources:
+    - shared/images/open-engineering-mark.svg
   render:
     - index.qmd
     - glossary.qmd
@@ -18,6 +20,7 @@ website:
   title: "Crossplane"
   description: "Running Hello Pico on Kubernetes with Crossplane — the second Open Engineering Academy course."
   site-url: "https://academy.open-engineering.io/courses/crossplane/"
+  favicon: shared/images/open-engineering-mark.svg
   navbar:
     left:
       - href: index.qmd
