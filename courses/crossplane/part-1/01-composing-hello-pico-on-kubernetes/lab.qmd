@@ -2,75 +2,47 @@
 title: "Lab · Hello Pico on Kubernetes with Crossplane"
 ---
 
-::: {.callout-warning title="Scaffold — not yet runnable"}
-The runnable Crossplane lab that composes Hello Pico onto a local
-Kubernetes cluster is being authored under a separate task and is **not
-yet published as a runnable page**. Per the Runnable Academy Contract
-this page is linked only from the course's own navigation and is
-clearly labelled as a scaffold; it does not yet meet the runnable
-contract (§7). It will be replaced by a fully runnable walkthrough
-once the follow-on lab lands.
-:::
+The lab for this lesson is the reusable **Hello Pico on Kubernetes**
+lab. It lives at the repository root so it can be reused from other
+courses that need a first runnable Kubernetes composition.
 
-## Where the lab will live
+## Where to go
 
-The Crossplane lab will be authored as a **reusable, cross-course
-lab** — the same pattern the Pico course uses for its shared Hello
-Pico lab — so that other courses can point at it too. When it lands,
-you will complete it by opening the shared lab page and following the
-walkthrough, exactly like the
-[Hello Pico lab](../../../../labs/hello-pico/index.html) works today.
+Open the [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+and follow the walkthrough. It uses the shared lab template with these
+pages:
+
+- [Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
+- [Walkthrough](../../../../labs/hello-pico-on-kubernetes/walkthrough.html)
+- [Solution](../../../../labs/hello-pico-on-kubernetes/solution.html)
 
 ## Target environment
 
-The lab will target **local minikube** as its reference Kubernetes
-environment:
+The lab targets **local minikube** as its reference Kubernetes
+environment — small enough to run on a laptop, but a full Kubernetes
+control plane, which is what Crossplane extends. Version pins for
+`minikube`, the Kubernetes control plane, Crossplane, and the
+provider-kubernetes package are declared on the lab's
+[Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
+page.
 
-- Small enough to run on a laptop — matches the academy's expectation
-  of a local runnable environment.
-- Provides the full Kubernetes control plane, which is what Crossplane
-  extends. A container-only runtime is not enough — Crossplane needs a
-  real control plane to install the Provider and reconcile Managed
-  Resources against.
-- Version pins for `minikube`, the Kubernetes control plane, and the
-  Crossplane Provider will be declared on the lab's Prerequisites page,
-  per the Runnable Academy Contract §2.
+## What you will produce
 
-## What you will produce (once the lab is published)
+By the end of the lab you will have the artifact
+`hello-world-pico-on-kubernetes` — matching the `produces` entry in
+[`courses/crossplane/metadata.yaml`](../../metadata.yaml). The
+artifact is a directory containing the exact YAML manifests you
+applied to the cluster plus the captured greeting the composed
+Kubernetes `Job` printed.
 
-- A running local **minikube** cluster with **Crossplane** installed.
-- The **Kubernetes Provider** installed via a Crossplane `Provider`
-  resource.
-- An **XRD** for `HelloWorldPico` and a **Composition** that turns any
-  `HelloWorldPico` XR into concrete Kubernetes resources.
-- A **Composite Resource** carrying the same greeting value you used in
-  the Pico lab, reconciled into Kubernetes resources that together
-  print `Hello, Pico!` from inside the cluster.
-- The course-scoped artifact
-  `hello-world-pico-on-kubernetes` (matching the `produces:` entry in
-  [`courses/crossplane/metadata.yaml`](../../metadata.yaml)).
+## Related content
 
-## What to do while the lab is not yet published
-
-- Complete the reusable
-  [Hello Pico lab](../../../../labs/hello-pico/index.html) to produce
-  the `hello-world-pico` artifact this lab will consume as its
-  greeting input.
-- Work through the [Exercise](exercise.qmd) on this lesson to lock in
-  the mapping from the Pico pipeline onto Crossplane primitives.
-- Install local minikube ahead of time if you want to be ready — the
-  upstream install guide is at
-  <https://minikube.sigs.k8s.io/docs/start/>. Version pins will be
-  published on the lab's Prerequisites page when it lands.
-
-::: {.callout-important title="Runnable contract note"}
-Because this page is a scaffold, it deliberately does **not** include a
-Prerequisites/Environment section with install commands, an
-executable walkthrough, or an automatable verification step. The
-follow-on lab task ("Build Crossplane lab to run Hello Pico in
-Kubernetes") owns those sections. Do not treat the copy above as a
-runnable walkthrough.
-:::
+- Work through the reusable
+  [Hello Pico lab](../../../../labs/hello-pico/index.html) first if
+  you have not already — this lab reuses the same greeting value.
+- Complete the [Exercise](exercise.qmd) on this lesson to lock in the
+  mapping from the Pico pipeline onto Crossplane primitives before
+  running the cluster steps.
 
 ## Next
 
