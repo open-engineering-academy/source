@@ -77,3 +77,35 @@ jobs:
           git -c commit.gpgsign=false commit -q -m "Publish site from ${GITHUB_SHA}"
           remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push --force -q "${remote}" pages
+
+      # Notify the git-pages server to pull the freshly-pushed `pages` branch.
+      # Uses the DNS-challenge auth model (Authorization: Pages <token>) and
+      # sends the private-repo clone URL as an application/x-www-form-urlencoded
+      # body per the git-pages README (PUT semantics). Skips with a notice
+      # when any of the three secrets is missing so the workflow keeps
+      # passing before the external DNS/hosting inputs land.
+      - name: Notify git-pages server (PUT trigger)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          PAGES_SITE_URL: ${{ secrets.PAGES_SITE_URL }}
+          PAGES_TOKEN: ${{ secrets.PAGES_TOKEN }}
+          GH_PAGES_CLONE_TOKEN: ${{ secrets.GH_PAGES_CLONE_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PAGES_SITE_URL:-}" ] || [ -z "${PAGES_TOKEN:-}" ] || [ -z "${GH_PAGES_CLONE_TOKEN:-}" ]; then
+            echo "::notice title=git-pages trigger skipped::One or more of PAGES_SITE_URL, PAGES_TOKEN, GH_PAGES_CLONE_TOKEN is not set. Skipping PUT."
+            exit 0
+          fi
+          clone_url="https://x-access-token:${GH_PAGES_CLONE_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          http_status="$(curl -sS -o /tmp/pages-response.txt -w '%{http_code}' \
+            -X PUT "${PAGES_SITE_URL}" \
+            -H "Authorization: Pages ${PAGES_TOKEN}" \
+            --data-urlencode "${clone_url}")"
+          if [ "${http_status}" -ge 200 ] && [ "${http_status}" -lt 300 ]; then
+            echo "git-pages PUT succeeded (HTTP ${http_status})."
+            cat /tmp/pages-response.txt
+          else
+            echo "::error title=git-pages PUT failed::HTTP ${http_status}"
+            cat /tmp/pages-response.txt
+            exit 1
+          fi
