@@ -10,17 +10,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: pages-branch
   cancel-in-progress: false
 
 jobs:
-  build:
-    name: Render academy site and pico course
+  build-and-publish:
+    name: Render academy site and publish to pages branch
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -57,20 +55,25 @@ jobs:
           mkdir -p docs/courses/pico
           cp -R courses/pico/_site/. docs/courses/pico/
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-  publish:
-    name: Deploy to GitHub Pages
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # The `pages` branch is the artifact consumed by a git-pages server
+      # (https://codeberg.org/git-pages/git-pages). A git-pages server pulls
+      # `refs/heads/pages` from this repository on trigger (PUT of the repo
+      # URL, or POST of a webhook payload). Server endpoint, authorization
+      # (DNS challenge or allowlist, or forge token), and clone credentials
+      # for this private repo are external inputs configured out-of-band.
+      - name: Publish assembled site to pages branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          publish_dir="$(mktemp -d)"
+          cp -R docs/. "${publish_dir}/"
+          cd "${publish_dir}"
+          git init -q -b pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git -c commit.gpgsign=false commit -q -m "Publish site from ${GITHUB_SHA}"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force -q "${remote}" pages
