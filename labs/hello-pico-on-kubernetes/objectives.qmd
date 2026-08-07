@@ -1,0 +1,107 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico on Kubernetes teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Install Crossplane on a local Kubernetes cluster.
+- Install the Crossplane **Kubernetes Provider** and grant it the
+  RBAC it needs to act on the cluster.
+- Declare a **CompositeResourceDefinition (XRD)** for a new
+  `XHelloWorldPico` API.
+- Author a **Composition** (pipeline mode, using
+  `function-patch-and-transform`) that turns an XR into a real
+  Kubernetes `Job`.
+- Create a **Composite Resource (XR)** carrying the same greeting
+  value you used in the Hello Pico lab and verify the composed `Job`
+  prints `Hello, Pico!` from inside the cluster.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the [Hello Pico lab](../hello-pico/index.qmd) — the
+  greeting value in this lab reuses the same `Hello, Pico!` string.
+- Completion of the
+  [Crossplane · Part 1 · 01 Composing Hello Pico on Kubernetes](../../courses/crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  lesson (or equivalent familiarity with Provider, XRD, Composition,
+  XR, and Managed Resource).
+:::
+
+## Environment
+
+- **Supported OS**: macOS (Apple Silicon or Intel), Linux, or WSL.
+- **Required shell**: `bash` 3.2+ or `zsh` 5.0+.
+- **Required tools** (all invoked directly by the walkthrough):
+  - `docker` v20.10+ (minikube's driver, and container runtime).
+  - `minikube` v1.34+ (v1.38.1 is the reference pin used to author this lab).
+  - `kubectl` v1.31+ (or newer; minikube ships one; `brew install kubectl` works too).
+  - `helm` v3.14+ (v3.16+ recommended; used to install Crossplane).
+  - `bash` and standard POSIX utilities (`grep`, `cat`, `mkdir`, `cp`).
+- **PATH expectation**: `docker`, `minikube`, `kubectl`, and `helm`
+  must all resolve on `PATH` after install.
+- **Estimated time**: **60–90 minutes** (of which the cluster start
+  and Crossplane install account for roughly 5–10 minutes).
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  minikube delete --profile crossplane-lab
+  rm -rf build/hello-world-pico-on-kubernetes work/hello-pico-on-kubernetes
+  ```
+
+## Install commands
+
+If any tool above is missing, install it using its upstream instructions
+before starting the walkthrough. On macOS with Homebrew:
+
+```bash
+brew install --cask docker
+brew install minikube kubectl helm
+```
+
+On Linux, follow the upstream install guides:
+
+- Docker Engine — <https://docs.docker.com/engine/install/>
+- minikube — <https://minikube.sigs.k8s.io/docs/start/>
+- kubectl — <https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/>
+- helm — <https://helm.sh/docs/intro/install/>
+
+Confirm each tool resolves before you begin:
+
+```bash
+command -v docker && docker version --format 'client: {{.Client.Version}}'
+command -v minikube && minikube version --short
+command -v kubectl && kubectl version --client --output=yaml | head -3
+command -v helm    && helm version --short
+```
+
+## Pinned versions (reference)
+
+The walkthrough was authored and verified against these versions. Newer
+versions are expected to work; older versions may not support the
+`Pipeline` composition mode or the referenced provider APIs.
+
+- Crossplane chart: **v1.20.0**
+- Provider Kubernetes: **v0.18.0**
+  (`xpkg.crossplane.io/crossplane-contrib/provider-kubernetes:v0.18.0`)
+- Function Patch and Transform: **v0.9.0**
+  (`xpkg.crossplane.io/crossplane-contrib/function-patch-and-transform:v0.9.0`)
+- Kubernetes API version in minikube: **v1.31.0**
+
+## One-time setup (optional)
+
+The walkthrough uses a dedicated minikube profile named
+`crossplane-lab` so it does not interfere with other clusters. If you
+prefer to use your existing minikube cluster, drop `--profile
+crossplane-lab` from every command. If you use a Kubernetes
+distribution other than minikube (kind, k3d, docker-desktop), all
+`kubectl`, `helm`, and `crossplane` steps below still apply.
+
+## Related lessons
+
+- [Crossplane · Part 1 · 01 Composing Hello Pico on Kubernetes](../../courses/crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  — the conceptual lesson this lab implements.
+- [Hello Pico lab](../hello-pico/index.qmd) — the same greeting value
+  produced on a laptop instead of on a cluster.

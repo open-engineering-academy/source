@@ -58,8 +58,9 @@ courses/crossplane/
 - [Glossary](glossary.qmd)
 
 ::: {.callout-note title="Course status"}
-This course is the initial Crossplane milestone. Part 1 is being authored
-alongside a runnable Crossplane lab that composes Hello Pico on Kubernetes.
-Parts 2 and 3 are intentionally scaffolded and are clearly labelled where
-learner-visible.
+This course is the initial Crossplane milestone. Part 1 is complete —
+its lesson and the accompanying runnable
+[Hello Pico on Kubernetes](../../labs/hello-pico-on-kubernetes/) lab
+are both published. Parts 2 and 3 are intentionally scaffolded and
+are clearly labelled where learner-visible.
 :::

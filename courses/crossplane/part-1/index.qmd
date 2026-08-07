@@ -20,13 +20,16 @@ for the canonical page structure (`index`, `exercise`, `lab`, `summary`,
   XR, Managed Resource) and maps them onto the Pico
   Rules → Parser → Composer → Pico pipeline. The lesson is conceptual;
   its accompanying [Lab](01-composing-hello-pico-on-kubernetes/lab.qmd)
-  is a scaffold pointing at the runnable Crossplane lab currently being
-  authored under a separate task.
+  points at the reusable, runnable
+  [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/) lab.
 
 ## Where the runnable lab lives
 
 The lab for Part 1 composes and runs `hello-world-pico` on Kubernetes with
-Crossplane. It is being built as a runnable experience against a local
-minikube environment; until it is published, learners should complete the
-reusable [Hello Pico lab](../../../labs/hello-pico/) to produce the
-`hello-world-pico` artifact this Part 1 lab consumes.
+Crossplane. It is the reusable
+[Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/) lab
+under the repository-root `labs/` directory, so other courses can point
+at the same runnable content. Learners who have not yet completed the
+introductory [Hello Pico lab](../../../labs/hello-pico/) should complete
+it first — the greeting value used by this lab is the same one produced
+there.

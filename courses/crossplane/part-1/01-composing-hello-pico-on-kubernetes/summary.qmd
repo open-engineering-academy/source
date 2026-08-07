@@ -17,11 +17,14 @@ title: "Summary · Composing Hello Pico on Kubernetes"
 - The **reference target environment** for the follow-on runnable lab
   is **local minikube** — small enough for a laptop, full enough to
   host a real Kubernetes control plane.
-- The Crossplane [Lab](lab.qmd) for this lesson is currently a
-  **scaffold**: it points at the runnable lab that is being authored
-  under a separate task. This is on purpose — the Runnable Academy
-  Contract requires that a lab either meets the runnable contract or
-  is explicitly labelled as a scaffold.
+- The Crossplane [Lab](lab.qmd) for this lesson is the reusable
+  [Hello Pico on Kubernetes](../../../../labs/hello-pico-on-kubernetes/index.html)
+  lab. It installs Crossplane on a local minikube cluster, declares an
+  `XHelloWorldPico` XRD and its Composition, and reconciles a single
+  Composite Resource into a Kubernetes `Job` that prints
+  `Hello, Pico!` — a full end-to-end runnable exercise of the
+  Rules ↔ XR / Parser ↔ XRD / Composer ↔ Composition /
+  Pico ↔ Managed Resources mapping.
 
 ## What comes next
 
@@ -31,9 +34,10 @@ title: "Summary · Composing Hello Pico on Kubernetes"
 - **Part 3 — Extending the composition** will layer additional Managed
   Resources on top of the base composition. See
   [Part 3](../../part-3/index.qmd).
-- The runnable Crossplane lab (owned by a separate task) will replace
-  the scaffold on this lesson's [Lab](lab.qmd) page and give you
-  end-to-end executable steps against local minikube.
+- The reusable Hello Pico on Kubernetes lab is now runnable end to
+  end on local minikube. See the lab's
+  [Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
+  page for the exact tool version pins used to verify it.
 
 ## Next
 

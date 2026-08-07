@@ -40,14 +40,14 @@ a full Kubernetes control plane, which is what Crossplane requires in
 order to install a Provider and reconcile Managed Resources.
 :::
 
-## 5. Why is the [Lab](lab.qmd) page for this lesson currently a scaffold and not a full walkthrough?
+## 5. Where does the reusable Hello Pico on Kubernetes lab live in the repository, and why is it not under `courses/crossplane/labs/`?
 
 ::: {.callout-tip collapse="true" title="Show answer"}
-The runnable Crossplane lab that composes Hello Pico onto Kubernetes is
-being authored under a separate task. Per the Runnable Academy Contract,
-a page in learner-facing navigation must either meet the runnable
-contract *or* be explicitly labelled as a scaffold — this lesson's Lab
-page is labelled as a scaffold on purpose until the runnable lab lands.
+It lives at the repository root under
+`labs/hello-pico-on-kubernetes/`. Placing it at the root — instead
+of under `courses/crossplane/labs/` — lets other courses reference
+the same runnable lab. Course-scoped labs go under a course's own
+`labs/` directory only when they are specific to that one course.
 :::
 
 ## Next

@@ -1,0 +1,110 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Pico on Kubernetes."
+---
+
+## Reference solution
+
+A working solution consists of the six files shipped under
+[`downloads/`](downloads/), applied in order against a local minikube
+cluster with Crossplane installed:
+
+1. [`01-provider.yaml`](downloads/01-provider.yaml) — installs the
+   Kubernetes Provider and the patch-and-transform function, and pins
+   the provider's ServiceAccount name via a `DeploymentRuntimeConfig`.
+2. [`02-rbac.yaml`](downloads/02-rbac.yaml) — creates the pinned
+   `provider-kubernetes` ServiceAccount, binds it to `cluster-admin`,
+   and defines a `ProviderConfig` that authenticates via injected
+   identity.
+3. [`03-xrd.yaml`](downloads/03-xrd.yaml) — the
+   `XHelloWorldPico` CompositeResourceDefinition (cluster-scoped).
+4. [`04-composition.yaml`](downloads/04-composition.yaml) — a
+   `Pipeline`-mode Composition that produces one cluster-scoped
+   `Object` MR which in turn creates a Kubernetes `Job` in the
+   `default` namespace.
+5. [`05-xr.yaml`](downloads/05-xr.yaml) — the Composite Resource
+   named `hello`, carrying `spec.value: "Hello, Pico!"`.
+6. [`verify.sh`](downloads/verify.sh) — the automatable verification
+   script the walkthrough runs in Step 8.
+
+### Commands (recap)
+
+Run from `work/hello-pico-on-kubernetes/` after copying the manifests
+in place (see the walkthrough for the full setup):
+
+```bash
+kubectl apply -f 01-provider.yaml
+kubectl wait --for=condition=Healthy --timeout=120s \
+  provider.pkg.crossplane.io/provider-kubernetes \
+  function.pkg.crossplane.io/function-patch-and-transform
+kubectl apply -f 02-rbac.yaml
+kubectl apply -f 03-xrd.yaml
+kubectl wait --for=condition=Established --timeout=60s \
+  xrd/xhelloworldpicoes.oe.academy
+kubectl apply -f 04-composition.yaml
+kubectl apply -f 05-xr.yaml
+kubectl wait --for=condition=Ready --timeout=120s xhelloworldpico/hello
+bash verify.sh
+```
+
+### Expected output
+
+The `Job` prints the greeting into its container logs:
+
+```
+Hello, Pico!
+```
+
+`verify.sh` waits for the XR to become Ready and the Job to
+Complete, then asserts the log line matches:
+
+```
+verify: OK — greeting 'Hello, Pico!' printed by composed Job
+```
+
+## Why this satisfies the objectives
+
+- **Crossplane installation**: Steps 2–3 of the walkthrough install
+  the control plane via helm and confirm the pods are Running.
+- **Provider + Function**: Step 4 installs `provider-kubernetes` and
+  `function-patch-and-transform`, both pinned to specific versions
+  from `xpkg.crossplane.io/crossplane-contrib/*`.
+- **XRD**: Step 6 registers `xhelloworldpicoes.oe.academy`, a new
+  higher-level Kubernetes API in the `oe.academy` group.
+- **Composition**: The same step registers the pipeline-mode
+  Composition that turns any `XHelloWorldPico` XR into a Kubernetes
+  `Job` via one `Object` Managed Resource.
+- **XR**: Step 7 creates the `hello` XR carrying the greeting.
+- **Verification**: Step 8 runs `verify.sh` — a shell command whose
+  exit status is `0` on success — satisfying §6 of the Runnable
+  Academy Contract.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Diffing your copy of each `downloads/*.yaml` against the versions
+   in the source repository. They should be byte-identical.
+2. Confirming `bash verify.sh` exits `0` with the `verify: OK` line.
+3. Confirming
+   `kubectl get object -o jsonpath='{.items[0].status.conditions[?(@.type=="Synced")].status}'`
+   returns `True` for the `hello-*` `Object` MR that the Composition
+   produced.
+
+## Variations
+
+- **Change the greeting**: Edit `spec.value` in `05-xr.yaml`, delete
+  the existing `job/hello-world-pico` (Job names are immutable), and
+  reapply the XR. The Composition will render a new Job with the new
+  greeting.
+- **Add a ConfigMap MR**: Add a second entry under `pipeline[0].input.
+  resources` in `04-composition.yaml` producing a `ConfigMap` holding
+  the greeting, and patch it from `spec.value` the same way the Job
+  is patched. This is the natural next step and is the entry point
+  for **Part 3 — Extending the composition** in the Crossplane course.
+- **Reuse the artifact from the Hello Pico lab**: The greeting value
+  in `05-xr.yaml` matches the `hello-world-pico` artifact produced by
+  the [Hello Pico lab](../hello-pico/index.qmd). Producing the same
+  greeting from the same declarative input, once on a laptop and once
+  on a cluster, is the point of the mapping the Crossplane lesson
+  teaches.

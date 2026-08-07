@@ -14,6 +14,10 @@ project:
     - labs/hello-pico/objectives.qmd
     - labs/hello-pico/walkthrough.qmd
     - labs/hello-pico/solution.qmd
+    - labs/hello-pico-on-kubernetes/index.qmd
+    - labs/hello-pico-on-kubernetes/objectives.qmd
+    - labs/hello-pico-on-kubernetes/walkthrough.qmd
+    - labs/hello-pico-on-kubernetes/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd

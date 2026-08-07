@@ -11,6 +11,13 @@ encounter a consistent experience across the academy.
 - **[Hello Pico](hello-pico/)** — a first Pico walkthrough,
   referenced from the [pico course](../courses/pico/). Machine-readable
   descriptor: [`labs/hello-pico/metadata.yaml`](hello-pico/metadata.yaml).
+- **[Hello Pico on Kubernetes](hello-pico-on-kubernetes/)** — the first
+  Crossplane lab: compose the same greeting onto a local Kubernetes
+  cluster using an `XHelloWorldPico` XRD, a pipeline-mode Composition,
+  and provider-kubernetes. Referenced from the
+  [crossplane course](../courses/crossplane/). Machine-readable
+  descriptor:
+  [`labs/hello-pico-on-kubernetes/metadata.yaml`](hello-pico-on-kubernetes/metadata.yaml).
 
 ## Lab structure
 
