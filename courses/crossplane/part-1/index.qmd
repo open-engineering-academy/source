@@ -15,7 +15,13 @@ reference course. See the
 for the canonical page structure (`index`, `exercise`, `lab`, `summary`,
 `quiz`).
 
-Individual Part 1 lessons will be listed here as they are added.
+- [1. Composing Hello Pico on Kubernetes](01-composing-hello-pico-on-kubernetes/index.qmd)
+  — introduces the Crossplane primitives (Provider, XRD, Composition,
+  XR, Managed Resource) and maps them onto the Pico
+  Rules → Parser → Composer → Pico pipeline. The lesson is conceptual;
+  its accompanying [Lab](01-composing-hello-pico-on-kubernetes/lab.qmd)
+  is a scaffold pointing at the runnable Crossplane lab currently being
+  authored under a separate task.
 
 ## Where the runnable lab lives
 

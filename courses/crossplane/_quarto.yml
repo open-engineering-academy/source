@@ -5,6 +5,11 @@ project:
     - index.qmd
     - glossary.qmd
     - part-1/index.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/index.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/exercise.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/lab.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/summary.qmd
+    - part-1/01-composing-hello-pico-on-kubernetes/quiz.qmd
     - part-2/index.qmd
     - part-3/index.qmd
     - labs/index.qmd
@@ -37,6 +42,18 @@ website:
         text: Overview
       - section: "Part 1 — Crossplane on Kubernetes"
         href: part-1/index.qmd
+        contents:
+          - section: "01 Composing Hello Pico on Kubernetes"
+            href: part-1/01-composing-hello-pico-on-kubernetes/index.qmd
+            contents:
+              - href: part-1/01-composing-hello-pico-on-kubernetes/exercise.qmd
+                text: Exercise
+              - href: part-1/01-composing-hello-pico-on-kubernetes/lab.qmd
+                text: Lab
+              - href: part-1/01-composing-hello-pico-on-kubernetes/summary.qmd
+                text: Summary
+              - href: part-1/01-composing-hello-pico-on-kubernetes/quiz.qmd
+                text: Quiz
       - section: "Part 2 — Composing Hello Pico"
         href: part-2/index.qmd
       - section: "Part 3 — Extending the composition"
