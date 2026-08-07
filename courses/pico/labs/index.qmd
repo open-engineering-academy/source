@@ -9,7 +9,8 @@ the repository-root [`labs/`](../../../labs/index.qmd) directory.
 ## Referenced labs
 
 - [Hello Pico](../../../labs/hello-pico/) — the introductory lab used from
-  [Part 1 · Introduction](../part-1/01-introduction/lab.qmd).
+  [Part 1 · Introduction](../part-1/01-introduction/lab.qmd). Descriptor:
+  [`labs/hello-pico/metadata.yaml`](../../../labs/hello-pico/metadata.yaml).
 
 ## Authoring course-scoped labs
 

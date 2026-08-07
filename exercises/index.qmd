@@ -1,0 +1,61 @@
+---
+title: "Exercises"
+---
+
+Exercises are **small, focused practice tasks**. They are shorter than
+[labs](../labs/index.qmd) and are typically completed inline inside a
+lesson without leaving the course website. Exercises may also live
+outside a course when they are useful across several courses.
+
+## Where exercises live
+
+There are two valid locations, chosen to match how the exercise is used:
+
+1. **Inside a lesson** — the common case.
+   `courses/<course>/part-<n>/<NN>-<slug>/exercise.qmd` is the
+   lesson-scoped exercise. See the reference exercise in
+   [Pico · Part 1 · Introduction](../courses/pico/part-1/01-introduction/exercise.qmd).
+2. **Under `exercises/<slug>/`** — for reusable exercises that are
+   referenced from more than one course, or that need starter files
+   and a solution.
+
+## Convention
+
+Every exercise has:
+
+- A short, testable **Task** section.
+- Explicit **Success criteria** the learner can self-check.
+- Optional **Reflect** or **Hints** callouts.
+- Optional **Solution** either inline (in a collapsed callout) or in a
+  separate `solution.qmd` for exercises under `exercises/<slug>/`.
+
+Exercises intentionally omit the full Objectives + Walkthrough +
+Solution split used by labs. That heavier structure belongs in
+[labs](../labs/index.qmd).
+
+## Exercise directory layout
+
+Reusable exercises use this minimal layout:
+
+```
+exercises/<slug>/
+  index.qmd          # Task, success criteria, hints
+  solution.qmd       # Optional: reference solution
+  metadata.yaml      # Optional: machine-readable descriptor
+  downloads/         # Optional: starter files
+```
+
+The `metadata.yaml` schema follows the same shape as
+[labs](../templates/README.qmd), using
+`id: oe.exercise.<slug>`.
+
+## Available exercise exemplars
+
+- **[Pico · First Rule](pico-first-rule/index.qmd)** — the reusable
+  reference exercise that demonstrates the convention.
+
+## See also
+
+- [Labs](../labs/index.qmd) — larger, hands-on activities.
+- [Courses](../courses/index.qmd) — course sites that embed
+  lesson-scoped exercises inline.

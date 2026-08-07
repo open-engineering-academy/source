@@ -1,0 +1,33 @@
+---
+title: "Solution · Your first Rule"
+---
+
+A reference solution that satisfies the exercise's success criteria.
+
+## Example rule
+
+```yaml
+# rules/kitchen-timer.yaml
+id: rule.kitchen-timer
+kind: timer
+value:
+  duration: 5m
+  message: "Time's up!"
+```
+
+## Why it satisfies the criteria
+
+- **Valid YAML** — indentation and types match Quarto's YAML parser and
+  a Pico Parser's expectations.
+- **Stable `id`** — namespaced under `rule.` and named after the
+  concept, not the implementation.
+- **Composer-actionable** — the Composer can read `duration` and
+  `message` and produce a Pico that beeps after five minutes.
+
+## Variations
+
+- Replace `timer` with a domain of your own (e.g. `greeting`,
+  `webhook`, `sensor`).
+- Add a second Rule and compose both into a single Pico, matching the
+  "two rules" variation in
+  [`labs/hello-pico/solution.qmd`](../../labs/hello-pico/solution.qmd#variations).

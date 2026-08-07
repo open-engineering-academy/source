@@ -19,3 +19,7 @@ teaches:
   - Composer
 produces:
   - hello-world-pico
+references_labs:
+  - oe.lab.hello-pico
+references_exercises:
+  - oe.exercise.pico-first-rule
