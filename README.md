@@ -18,6 +18,7 @@ websites, reusable labs and exercises, and shared templates and assets.
 ├── exercises/        # Smaller practice tasks
 ├── shared/           # Cross-course assets and includes
 ├── templates/        # Starter templates for new content
+├── bin/              # Runnable reference CLIs (e.g. bin/pico)
 └── .github/          # Build and publishing automation
 ```
 
@@ -40,4 +41,20 @@ quarto render courses/pico
 ```
 
 Rendered output for the root site lands in `docs/`.
+
+## Run the Pico reference path
+
+The Hello Pico lab uses a small reference CLI shipped at `bin/pico`.
+It is Python 3 (stdlib only) with subcommands `parse` and `compose`.
+Put `bin/` on your `PATH` before running the lab commands so `pico`
+resolves to the Academy CLI rather than the `/usr/bin/pico` text
+editor:
+
+```
+export PATH="$PWD/bin:$PATH"
+command -v pico   # should print .../bin/pico
+```
+
+See [`labs/hello-pico/`](labs/hello-pico/index.qmd) for the full
+walkthrough.
 

@@ -8,15 +8,23 @@ Follow along in your own environment. Copy the commands and adapt them
 to match your setup.
 :::
 
+::: {.callout-important title="Before you start"}
+Complete the [one-time setup](objectives.qmd#one-time-setup) so that
+`command -v pico` points at this repository's `bin/pico` and **not**
+at `/usr/bin/pico` (the Alpine/nano text editor).
+:::
+
 ## Step 1 — Set up your working directory
 
-Create a working directory for the lab and enter it:
+From the root of your local clone of the academy repository, create a
+scratch working directory for the lab and enter it:
 
 ```bash
-mkdir -p hello-pico && cd hello-pico
+mkdir -p work/hello-pico && cd work/hello-pico
 ```
 
-Starter files (if any) live under
+The `work/` directory is ignored by git so anything you create there
+stays local. Starter files (if any) live under
 [`downloads/`](downloads/). For Hello Pico the starter directory is
 intentionally empty — you will author the single Rule yourself.
 
@@ -43,7 +51,8 @@ pico parse rules/hello.yaml --out build/parsed.json
 ```
 
 Inspect `build/parsed.json` — it should contain the same `id`,
-`kind`, and `value` fields, plus parser-added metadata.
+`kind`, and `value` fields, plus parser-added metadata such as
+`_parsed_at` and `_parser_version`.
 
 ## Step 4 — Run the Composer
 
@@ -53,7 +62,7 @@ Turn the parsed representation into a Pico:
 pico compose build/parsed.json --out build/hello-world-pico
 ```
 
-The Composer writes the finished `hello-world-pico` artifact to
+The Composer writes an executable `hello-world-pico` artifact to
 `build/hello-world-pico`.
 
 ## Step 5 — Verify
@@ -68,12 +77,14 @@ Confirm the Pico prints the expected greeting:
 ## Troubleshooting
 
 ::: {.callout-warning title="Heads up"}
+- If `pico` opens a text editor instead of running, your shell is
+  still resolving `pico` to `/usr/bin/pico`. Re-run the `PATH`
+  export from [one-time setup](objectives.qmd#one-time-setup) and
+  confirm with `command -v pico`.
 - If `pico parse` fails, re-read `rules/hello.yaml` for YAML
-  indentation errors.
+  indentation errors or unsupported keys — the reference Parser
+  only accepts `id`, `kind`, and `value`.
 - If the Composer step fails, delete `build/` and re-run from Step 3.
-- The concrete `pico` CLI is provided by the course environment; if
-  it is not on your PATH, revisit the
-  [Prerequisites](objectives.qmd#prerequisites).
 :::
 
 ## Next
