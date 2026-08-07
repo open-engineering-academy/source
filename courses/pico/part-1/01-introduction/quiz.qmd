@@ -1,1 +1,37 @@
+---
+title: "Quiz · Introduction"
+---
 
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What is a Pico?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+A small, declarative, composable Open Engineering artifact described by
+Rules and produced by a Parser and a Composer.
+:::
+
+## 2. Name the three main components of the Pico pipeline.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**Rules**, **Parser**, and **Composer**.
+:::
+
+## 3. Which file describes the course in a machine-readable form?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+[`metadata.yaml`](../../metadata.yaml) at the root of the course.
+:::
+
+## 4. Where does the reusable "Hello Pico" lab live?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Under the repository-root [`labs/hello-pico/`](../../../../labs/hello-pico/)
+directory, so it can be referenced from more than one course.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Part 2](../../part-2/index.qmd).

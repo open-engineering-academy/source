@@ -1,0 +1,50 @@
+---
+title: "About the Academy"
+---
+
+## Mission
+
+The Open Engineering Academy teaches engineers how to build **declarative,
+composable systems** using Open Engineering principles, open technologies, and
+hands-on projects.
+
+The Academy is not just documentation. It offers complete learning journeys
+that take learners from foundational concepts to real, working systems.
+
+## Where the Academy fits
+
+Open Engineering separates responsibilities across a set of focused
+organizations. The Academy is the educational arm:
+
+| Organization | Responsibility |
+| --- | --- |
+| `open-engineering-conventions` | Standards and conventions |
+| `open-engineering-definitions` | Domain definitions and schemas |
+| `open-engineering-parser` | Parser implementations |
+| `open-engineering-rules` / `open-engineering-rule` | Rule definitions and implementations |
+| `open-engineering-picos` / `open-engineering-pico` | Pico definitions and implementations |
+| `open-engineering-composers` / `open-engineering-composer` | Composer definitions and implementations |
+| `open-engineering-academy` | Learning materials, courses, labs, workshops, certifications |
+
+The Academy does not define technologies — it teaches them. That keeps
+responsibilities clean and lets educational content evolve alongside the
+underlying engineering artifacts.
+
+## Site structure
+
+- **[Curriculum](curriculum/index.qmd)** — the overall learning roadmap across Open Engineering.
+- **[Courses](courses/index.qmd)** — the catalog of individual course websites.
+- **[Labs](labs/index.qmd)** — reusable, hands-on exercises referenced from courses.
+- **[Resources](resources.qmd)** — shared templates, assets, and conventions.
+
+Each course under `courses/` is a self-contained Quarto website. Course-level
+navigation, lessons, glossary, and assets live inside that course, so it can be
+authored, built, and published independently.
+
+## Principles
+
+- Treat educational content as a first-class engineering artifact: declarative,
+  composable, versioned, and machine-readable.
+- Reuse labs, exercises, and shared components across courses.
+- Follow a shared set of conventions for courses, lessons, labs, and quizzes so
+  new content can be added consistently.

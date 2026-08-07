@@ -1,0 +1,4 @@
+::: {.callout-note title="Prerequisites"}
+- Prerequisite one
+- Prerequisite two
+:::

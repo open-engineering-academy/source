@@ -1,0 +1,24 @@
+/* Open Engineering Academy — shared styles.
+ *
+ * Included by the root academy site and by course-level _quarto.yml files
+ * via `format.html.css`. Keep this small: only cross-course styles belong
+ * here. Course-specific styling should live inside the course directory.
+ */
+
+.academy-tagline {
+  font-size: 1.1rem;
+  color: var(--bs-secondary-color, #6c757d);
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.academy-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.academy-metadata {
+  font-size: 0.9rem;
+  color: var(--bs-secondary-color, #6c757d);
+}

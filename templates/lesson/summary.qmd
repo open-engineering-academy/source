@@ -1,0 +1,19 @@
+---
+title: "Summary: Lesson Title"
+description: "Recap and further reading."
+---
+
+## Key takeaways
+
+- Takeaway one
+- Takeaway two
+- Takeaway three
+
+## Where this leads
+
+One paragraph on how this lesson connects to the next one and to the course as
+a whole.
+
+## Further reading
+
+{{< include ../../shared/includes/references.qmd >}}

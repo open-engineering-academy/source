@@ -1,0 +1,41 @@
+---
+title: "Labs"
+---
+
+Labs are **reusable, hands-on exercises** that can be referenced from multiple
+courses. Each lab is self-contained and follows a shared structure so learners
+encounter a consistent experience across the academy.
+
+## Available labs
+
+- **[Hello Pico](hello-pico/)** — a first Pico walkthrough,
+  referenced from the [pico course](../courses/pico/). Machine-readable
+  descriptor: [`labs/hello-pico/metadata.yaml`](hello-pico/metadata.yaml).
+
+## Lab structure
+
+Each lab lives under `labs/<name>/` and follows the shared lab template
+under [`templates/lab/`](../templates/lab/README.qmd):
+
+```
+labs/<name>/
+  README.qmd         # Overview and entry point
+  objectives.qmd     # Learning objectives and prerequisites
+  walkthrough.qmd    # Step-by-step guidance
+  solution.qmd       # Reference solution
+  metadata.yaml      # Machine-readable descriptor (id: oe.lab.<slug>)
+  downloads/         # Starter files and downloads
+  screenshots/       # Screenshots used in the walkthrough
+```
+
+Labs are intentionally separate from courses so they can be reused: a single
+lab can appear in more than one course path. Cross-references (from lab to
+course, and from course to lab) live in the `referenced_by` /
+`references_labs` fields of the respective `metadata.yaml` files.
+
+## See also
+
+- [Exercises](../exercises/index.qmd) — smaller, focused practice tasks
+  standardized alongside labs. Reference exemplar:
+  [`exercises/pico-first-rule/`](../exercises/pico-first-rule/index.qmd).
+- [Courses](../courses/index.qmd) — course sites that reference these labs.

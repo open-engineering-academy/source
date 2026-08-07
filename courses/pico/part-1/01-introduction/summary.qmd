@@ -1,1 +1,24 @@
+---
+title: "Summary · Introduction"
+---
 
+## Key takeaways
+
+- A **Pico** is a small declarative, composable Open Engineering artifact.
+- A Pico is produced by a pipeline: **Rules → Parser → Composer → Pico**.
+- Rules are authored in YAML; the Parser and Composer do the mechanical
+  work of turning Rules into a Pico.
+- The Pico course website itself is the **reference structure** for every
+  academy course: parts, lessons, exercises, labs, summaries, quizzes,
+  glossary, and a machine-readable `metadata.yaml`.
+
+## What comes next
+
+- [Part 2 — Building](../../part-2/index.qmd) walks through the pipeline
+  end-to-end.
+- [Part 3 — Extending](../../part-3/index.qmd) covers composing multiple
+  Picos and connecting them to other artifacts.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

@@ -1,10 +1,15 @@
 id: oe.course.pico
+slug: pico
 title: Building Your First Pico
 level: beginner
 duration: 12h
-prerequisites:
-  - oe.course.kubernetes
-  - oe.course.crossplane
+entry: index.qmd
+glossary: glossary.qmd
+sections:
+  - part-1
+  - part-2
+  - part-3
+prerequisites: []
 teaches:
   - Pico
   - Rules
@@ -12,3 +17,7 @@ teaches:
   - Composer
 produces:
   - hello-world-pico
+references_labs:
+  - oe.lab.hello-pico
+references_exercises:
+  - oe.exercise.pico-first-rule

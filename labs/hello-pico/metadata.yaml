@@ -1,0 +1,15 @@
+id: oe.lab.hello-pico
+title: Hello Pico
+level: beginner
+duration: 45m
+prerequisites:
+  - oe.course.pico
+teaches:
+  - Rule authoring
+  - Parser
+  - Composer
+produces:
+  - hello-world-pico
+referenced_by:
+  - oe.course.pico
+  - oe.lesson.pico.01-introduction

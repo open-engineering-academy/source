@@ -1,1 +1,55 @@
+---
+title: "1. Introduction"
+subtitle: "What is a Pico, and why build one?"
+---
 
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Describe what a Pico is in one sentence.
+- Name the three main components (Rules, Parser, Composer) and their role.
+- Identify where a Pico sits in the Open Engineering ecosystem.
+
+## Prerequisites
+
+- A working shell and text editor.
+- Comfort reading YAML.
+- No prior Pico experience is required.
+
+## What is a Pico?
+
+A **Pico** is the smallest useful Open Engineering artifact: a declarative,
+composable unit described by **Rules** and produced by a **Parser** and a
+**Composer**. See the [Glossary](../../glossary.qmd) for full definitions of
+each term.
+
+::: {.callout-tip}
+If you can describe a thing with a handful of Rules and produce it from
+those Rules, you can model it as a Pico.
+:::
+
+## The Rules → Parser → Composer pipeline
+
+```
+Rules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico
+(YAML)         (reads Rules)   (produces output)  (hello-world-pico)
+```
+
+Part 2 walks through this pipeline in detail. This lesson focuses on
+vocabulary and the mental model.
+
+## Lesson pages
+
+Every lesson in this course has the same page layout. Use it as the
+reference when authoring lessons in other courses.
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — a longer, hands-on activity, often linking to a
+  reusable lab under `labs/`.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

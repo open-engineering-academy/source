@@ -1,0 +1,16 @@
+---
+title: "Part 3 — Extending"
+---
+
+Part 3 covers extending a Pico: adding rules, composing multiple Picos, and
+connecting a Pico to other Open Engineering artifacts.
+
+## Lessons
+
+Lesson content for Part 3 is authored following the lesson layout established
+in [Part 1, lesson 1](../part-1/01-introduction/index.qmd).
+
+::: {.callout-note}
+Part 3 is intentionally scaffolded. It is included so the reference course
+demonstrates a multi-part structure that other course websites can mirror.
+:::

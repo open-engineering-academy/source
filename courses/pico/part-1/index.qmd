@@ -1,0 +1,14 @@
+---
+title: "Part 1 — Foundations"
+---
+
+Part 1 introduces the vocabulary and mental model for Picos. It is designed
+to be completed before Parts 2 and 3.
+
+## Lessons
+
+- [1. Introduction](01-introduction/index.qmd) — what a Pico is, why it
+  exists, and how the pieces fit together.
+
+Each lesson in this course follows the same page layout — see the
+[course overview](../index.qmd) for the full pattern.

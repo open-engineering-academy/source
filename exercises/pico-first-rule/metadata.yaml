@@ -1,0 +1,13 @@
+id: oe.exercise.pico-first-rule
+title: Your first Rule
+level: beginner
+duration: 15m
+prerequisites:
+  - oe.course.pico
+  - oe.lab.hello-pico
+teaches:
+  - Rule authoring
+produces:
+  - a single validated Rule
+referenced_by:
+  - oe.lesson.pico.01-introduction

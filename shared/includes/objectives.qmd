@@ -1,0 +1,5 @@
+::: {.callout-note title="Learning objectives"}
+- Objective one
+- Objective two
+- Objective three
+:::

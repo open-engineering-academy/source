@@ -1,0 +1,105 @@
+---
+title: "Academy templates and conventions"
+---
+
+Starter templates for the academy's educational artifacts and the shared
+authoring conventions they follow.
+
+## Template catalog
+
+| Type   | Location             | Purpose                                    |
+| ------ | -------------------- | ------------------------------------------ |
+| Course | `templates/course/`  | Root of a self-contained course website    |
+| Lesson | `templates/lesson/`  | One lesson inside a course part            |
+| Lab    | `templates/lab/`     | A reusable, cross-course hands-on lab      |
+| Quiz   | `templates/quiz/`    | A standalone knowledge check               |
+
+Each template directory ships with a `README.qmd` describing its files and
+placement. The reference implementation for a course website is
+[`courses/pico/`](../courses/pico/).
+
+## Authoring conventions
+
+1. **Self-contained course websites.** Each course under `courses/<slug>/`
+   has its own `_quarto.yml` and renders independently of the root academy
+   site.
+2. **Lesson directories are ordered.** Use a two-digit prefix
+   (`01-<slug>`, `02-<slug>`, ...) so filesystem order matches reading order.
+3. **Lessons follow a fixed file set.** `index.qmd`, `exercise.qmd`,
+   `lab.qmd`, `quiz.qmd`, `summary.qmd`, plus optional `assets/`.
+4. **Labs are reusable.** Labs live under the repository-level `labs/`
+   directory and are referenced from lessons via `lab.qmd`.
+5. **Shared includes go through `shared/includes/`.** Do not copy include
+   snippets into individual courses; reference them with Quarto's
+   `include` shortcode.
+6. **Cross-course styling lives in `shared/css/academy.css`.** Course-level
+   CSS extends but does not duplicate it.
+7. **Front-matter is required.** Every `.qmd` page begins with a YAML block
+   containing at least `title`, and where useful `description` and `order`.
+
+## Metadata conventions
+
+Machine-readable metadata lives in `metadata.yaml` files next to the artifact
+it describes. The initial schema below is intentionally minimal; it is
+sufficient for the academy-wide curriculum map, dependency graphs, and future
+automation.
+
+### Common fields
+
+| Field           | Type            | Required | Notes                                       |
+| --------------- | --------------- | -------- | ------------------------------------------- |
+| `id`            | string          | yes      | Stable, namespaced identifier (see below)   |
+| `title`         | string          | yes      | Human-readable title                        |
+| `level`         | enum            | no       | `beginner` \| `intermediate` \| `advanced`  |
+| `duration`      | string          | no       | Approximate time, e.g. `30m`, `2h`, `12h`   |
+| `prerequisites` | list of `id`s   | no       | Other artifacts required first              |
+| `teaches`       | list of strings | no       | Concepts, tools, or skills covered          |
+| `produces`      | list of strings | no       | Artifacts the learner produces              |
+
+### `id` namespacing
+
+Ids use dot-separated segments, always prefixed with `oe.` (Open
+Engineering), then the artifact kind, then a stable slug:
+
+```
+oe.course.<slug>
+oe.lesson.<course-slug>.<lesson-slug>
+oe.lab.<slug>
+oe.quiz.<slug>
+```
+
+Ids MUST NOT be reused across artifacts.
+
+### Type-specific fields
+
+- **Course** (`oe.course.<slug>`) — see `templates/course/metadata.yaml`.
+- **Lesson** (`oe.lesson.<course>.<slug>`) — adds `course`, `order`,
+  `references_labs`.
+- **Lab** (`oe.lab.<slug>`) — adds `referenced_by` (course/lesson ids that
+  point at this lab).
+- **Quiz** (`oe.quiz.<slug>`) — adds `scope` (`course` \| `lesson`),
+  `course`, `lesson`, `question_count`.
+
+### Example
+
+```yaml
+id: oe.course.pico
+title: Building Your First Pico
+level: beginner
+duration: 12h
+prerequisites:
+  - oe.course.kubernetes
+  - oe.course.crossplane
+teaches: [Pico, Rules, Parser, Composer]
+produces: [hello-world-pico]
+```
+
+## Using a template
+
+1. Copy the relevant template directory to its destination
+   (`courses/<slug>/`, `courses/<course>/part-<n>/<NN>-<slug>/`,
+   `labs/<slug>/`, or into an existing course).
+2. Replace placeholder titles, descriptions, and metadata ids.
+3. Wire the new pages into the surrounding `_quarto.yml` navbar or sidebar.
+4. Render locally with `quarto render` (root site) or
+   `quarto render courses/<slug>` (course site) to verify.

@@ -1,0 +1,43 @@
+---
+title: "Courses"
+---
+
+Each course is a **self-contained Quarto website** with its own navigation,
+sections, lessons, glossary, and assets. The catalog below links to the entry
+page of each course website.
+
+## Reference course
+
+- **[Pico](pico/)** — Building your first Pico. The canonical reference
+  course website; other course sites should follow the same structure.
+
+## Additional courses
+
+- **Kubernetes for Open Engineering** — scaffold at `courses/kubernetes/`
+  (not yet a full course website).
+- **Crossplane** — scaffold at `courses/crossplane/` (not yet a full course
+  website).
+
+More course sites will be added as the corresponding learning paths on the
+[Curriculum](../curriculum/index.qmd) page are developed.
+
+## Authoring a new course
+
+New courses follow the shared course template under `templates/course/` and
+mirror the pico course structure:
+
+```
+courses/<name>/
+  _quarto.yml
+  index.qmd
+  metadata.yaml
+  part-1/
+  part-2/
+  ...
+  labs/
+  assets/
+  glossary.qmd
+```
+
+Each course carries a `metadata.yaml` descriptor so it can participate in the
+academy-wide curriculum map, dependency graphs, and future automation.

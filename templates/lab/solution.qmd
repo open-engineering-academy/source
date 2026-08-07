@@ -1,0 +1,17 @@
+---
+title: "Solution"
+description: "Reference solution for this lab."
+---
+
+## Reference solution
+
+Provide the complete, working solution. Explain the key decisions and how the
+solution satisfies the lab's objectives.
+
+## Verification
+
+Describe how a reader can confirm the reference solution is correct.
+
+## Variations
+
+Optional discussion of alternative solutions or extensions.

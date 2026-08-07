@@ -1,0 +1,37 @@
+---
+title: "Course Title"
+subtitle: "One-line pitch describing what the learner will build"
+description: "Longer description shown in link cards and search."
+---
+
+Welcome to **Course Title**. Replace this paragraph with a short introduction:
+who the course is for, what they will build, and how long it takes.
+
+## What you will learn
+
+- Learning outcome one
+- Learning outcome two
+- Learning outcome three
+
+## Prerequisites
+
+{{< include ../../shared/includes/prerequisites.qmd >}}
+
+## Course structure
+
+- **Part 1** — foundations
+- **Part 2** — building the system
+- **Part 3** — extending and shipping
+
+Each part contains lessons that follow the standard lesson structure:
+`index.qmd`, `exercise.qmd`, `lab.qmd`, `quiz.qmd`, `summary.qmd`.
+
+## Reference labs
+
+Cross-course, reusable labs live under the repository-level `labs/` directory
+and are linked from individual lessons.
+
+## Metadata
+
+Course-level metadata is declared in `metadata.yaml` next to this file. See
+[`templates/README.qmd`](../README.qmd) for the required fields.

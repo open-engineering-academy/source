@@ -1,0 +1,28 @@
+---
+title: "Walkthrough"
+description: "Step-by-step guidance."
+---
+
+{{< include ../../shared/includes/tryit.qmd >}}
+
+## Step 1 — Set up
+
+Describe the initial setup. Reference any starter files under `downloads/`.
+
+## Step 2 — Build
+
+Describe the core build steps.
+
+## Step 3 — Verify
+
+Describe how the learner confirms things are working.
+
+## Troubleshooting
+
+::: {.callout-warning}
+Common pitfalls and how to work around them.
+:::
+
+## Next
+
+Continue to the [solution](solution.qmd) to compare your result.

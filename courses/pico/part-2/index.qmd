@@ -1,0 +1,19 @@
+---
+title: "Part 2 — Building"
+---
+
+Part 2 walks through building your first Pico end-to-end: authoring Rules,
+running the Parser, and using the Composer to produce
+`hello-world-pico`.
+
+## Lessons
+
+Lesson content for Part 2 is authored following the same lesson layout as
+[Part 1, lesson 1](../part-1/01-introduction/index.qmd). This page will list
+lessons as they are added.
+
+::: {.callout-note}
+Part 2 is intentionally scaffolded rather than written out in full. The
+[Introduction lesson](../part-1/01-introduction/index.qmd) is the
+canonical example of the lesson structure to follow.
+:::

@@ -1,1 +1,81 @@
+---
+title: "Walkthrough"
+description: "Step-by-step guide to producing hello-world-pico."
+---
 
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them
+to match your setup.
+:::
+
+## Step 1 — Set up your working directory
+
+Create a working directory for the lab and enter it:
+
+```bash
+mkdir -p hello-pico && cd hello-pico
+```
+
+Starter files (if any) live under
+[`downloads/`](downloads/). For Hello Pico the starter directory is
+intentionally empty — you will author the single Rule yourself.
+
+## Step 2 — Author your first Rule
+
+Create `rules/hello.yaml` with a single Rule that declares a greeting:
+
+```yaml
+# rules/hello.yaml
+id: rule.hello
+kind: greeting
+value: "Hello, Pico!"
+```
+
+This is the minimum declarative input the Parser needs.
+
+## Step 3 — Run the Parser
+
+Run the Parser against the rule file to produce an internal
+representation:
+
+```bash
+pico parse rules/hello.yaml --out build/parsed.json
+```
+
+Inspect `build/parsed.json` — it should contain the same `id`,
+`kind`, and `value` fields, plus parser-added metadata.
+
+## Step 4 — Run the Composer
+
+Turn the parsed representation into a Pico:
+
+```bash
+pico compose build/parsed.json --out build/hello-world-pico
+```
+
+The Composer writes the finished `hello-world-pico` artifact to
+`build/hello-world-pico`.
+
+## Step 5 — Verify
+
+Confirm the Pico prints the expected greeting:
+
+```bash
+./build/hello-world-pico
+# → Hello, Pico!
+```
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `pico parse` fails, re-read `rules/hello.yaml` for YAML
+  indentation errors.
+- If the Composer step fails, delete `build/` and re-run from Step 3.
+- The concrete `pico` CLI is provided by the course environment; if
+  it is not on your PATH, revisit the
+  [Prerequisites](objectives.qmd#prerequisites).
+:::
+
+## Next
+
+Compare your result against the [reference solution](solution.qmd).

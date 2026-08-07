@@ -1,0 +1,25 @@
+---
+title: "Quiz: Lesson Title"
+description: "Check your understanding of this lesson."
+---
+
+Short lesson-level quiz. For a standalone quiz artifact, see
+[`templates/quiz/`](../quiz/README.qmd).
+
+## Question 1
+
+Question text.
+
+::: {.callout-note collapse="true"}
+## Answer
+Answer explanation.
+:::
+
+## Question 2
+
+Question text.
+
+::: {.callout-note collapse="true"}
+## Answer
+Answer explanation.
+:::

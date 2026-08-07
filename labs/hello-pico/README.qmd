@@ -1,1 +1,42 @@
+---
+title: "Hello Pico"
+description: "Author your first Pico from a single Rule and produce a hello-world-pico artifact."
+---
 
+## Overview
+
+**Hello Pico** is the introductory lab of the Open Engineering Academy.
+You will author one Rule, run the Parser to turn it into an internal
+representation, and use the Composer to produce a working
+`hello-world-pico`.
+
+The lab is intentionally small — 30 to 45 minutes — and is the reference
+implementation of the shared lab structure documented in
+[`templates/lab/`](../../templates/lab/README.qmd).
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact named `hello-world-pico` — matching the `produces`
+entry in the [pico course metadata](../../courses/pico/metadata.yaml).
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`. Screenshots referenced from the
+walkthrough live under `screenshots/`. Both directories are kept even
+when empty so authors have a consistent place to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the schema in
+[`templates/README.qmd`](../../templates/README.qmd).
+
+## Referenced from
+
+- [Pico course · Part 1 · Introduction · Lab](../../courses/pico/part-1/01-introduction/lab.qmd)

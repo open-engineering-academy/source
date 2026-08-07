@@ -1,0 +1,19 @@
+---
+title: "Labs"
+---
+
+Labs referenced by the Pico course. Course-scoped labs live under
+`courses/pico/labs/`; reusable labs shared with other courses live under
+the repository-root [`labs/`](../../../labs/index.qmd) directory.
+
+## Referenced labs
+
+- [Hello Pico](../../../labs/hello-pico/) — the introductory lab used from
+  [Part 1 · Introduction](../part-1/01-introduction/lab.qmd). Descriptor:
+  [`labs/hello-pico/metadata.yaml`](../../../labs/hello-pico/metadata.yaml).
+
+## Authoring course-scoped labs
+
+Course-scoped labs live in this directory and follow the shared lab
+template. Reuse a repository-root lab when the same lab is useful for more
+than one course.

@@ -1,0 +1,4 @@
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them to
+match your setup.
+:::

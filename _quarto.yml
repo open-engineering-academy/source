@@ -1,25 +1,49 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - about.qmd
+    - resources.qmd
+    - curriculum/index.qmd
+    - courses/index.qmd
+    - labs/index.qmd
+    - exercises/index.qmd
+    - "!courses/pico/"
+    - "!courses/kubernetes/"
+    - "!courses/crossplane/"
+    - "!templates/"
+    - "!shared/"
+    - "!exercises/pico-first-rule/"
+    - "!labs/hello-pico/"
 
 website:
   title: "Open Engineering Academy"
+  description: "Learning journeys for declarative, composable Open Engineering systems."
+  site-url: "https://academy.open-engineering.io"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
-      - href: initiative.qmd
-        text: Initiative
-      - href: use-cases.qmd
-        text: Use Cases
-      - href: themes.qmd
-        text: Themes
+      - href: about.qmd
+        text: About
+      - href: curriculum/index.qmd
+        text: Curriculum
+      - href: courses/index.qmd
+        text: Courses
+      - href: labs/index.qmd
+        text: Labs
+      - href: exercises/index.qmd
+        text: Exercises
+      - href: resources.qmd
+        text: Resources
+  page-footer:
+    left: "Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
 
 format:
   html:
     theme: cosmo
-    css: styles.css
     toc: true
 
 execute:

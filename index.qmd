@@ -1,7 +1,25 @@
 ---
 title: "Open Engineering Academy"
+subtitle: "Learn to build declarative, composable systems."
 ---
 
-This is an Open Engineering Academy website.
+The **Open Engineering Academy** teaches engineers how to design, build, and
+operate declarative, composable systems using open technologies and hands-on
+projects. It is the educational arm of the Open Engineering ecosystem.
 
-To learn more about Open Engineering Academy visit <https://academy.open-engineering.io>.
+## Start here
+
+- **[About](about.qmd)** — the academy mission and how it fits into Open Engineering.
+- **[Curriculum](curriculum/index.qmd)** — the overall learning roadmap.
+- **[Courses](courses/index.qmd)** — self-contained course websites, including the reference [pico course](courses/pico/).
+- **[Labs](labs/index.qmd)** — reusable, hands-on exercises referenced from courses.
+- **[Resources](resources.qmd)** — shared templates, assets, and conventions.
+
+## How the site is structured
+
+The academy is a family of Quarto sites. This root site is the entry point and
+directory; each course under `courses/` is published as its own self-contained
+Quarto website with its own navigation, glossary, labs, and assets. Shared
+templates, includes, and styling live under `templates/` and `shared/`.
+
+Visit the canonical academy site at <https://academy.open-engineering.io>.

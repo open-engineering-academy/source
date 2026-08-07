@@ -1,1 +1,24 @@
+---
+title: "Lab · Hello Pico"
+---
 
+The lab for this lesson is the shared **Hello Pico** lab. It lives at the
+repository root so it can be reused from other courses.
+
+## Where to go
+
+Open the [Hello Pico lab](../../../../labs/hello-pico/) and follow the
+walkthrough. It uses the shared lab template with these pages:
+
+- [Objectives](../../../../labs/hello-pico/objectives.qmd)
+- [Walkthrough](../../../../labs/hello-pico/walkthrough.qmd)
+- [Solution](../../../../labs/hello-pico/solution.qmd)
+
+## What you will produce
+
+By the end of the lab you will have a working `hello-world-pico` — the
+`produces` entry from the course [metadata](../../metadata.yaml).
+
+## Next
+
+Continue with the [Summary](summary.qmd).

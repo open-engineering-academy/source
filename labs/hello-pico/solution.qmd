@@ -1,1 +1,59 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Pico."
+---
 
+## Reference solution
+
+A working solution consists of one Rule file, one parsed representation,
+and one composed Pico.
+
+### `rules/hello.yaml`
+
+```yaml
+id: rule.hello
+kind: greeting
+value: "Hello, Pico!"
+```
+
+### Commands
+
+```bash
+pico parse rules/hello.yaml --out build/parsed.json
+pico compose build/parsed.json --out build/hello-world-pico
+./build/hello-world-pico
+```
+
+### Expected output
+
+```
+Hello, Pico!
+```
+
+## Why this satisfies the objectives
+
+- **Rule authoring**: `rules/hello.yaml` is a single, valid Rule.
+- **Parser stage**: `pico parse` produced a JSON representation the
+  Composer accepts.
+- **Composer stage**: `pico compose` produced the
+  `hello-world-pico` artifact named in the
+  [pico course metadata](../../courses/pico/metadata.yaml)
+  `produces` list.
+- **Pipeline reasoning**: The commands map one-to-one onto the
+  Rules → Parser → Composer → Pico pipeline introduced in
+  [Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd).
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Diffing your `rules/hello.yaml` against the block above.
+2. Running the two `pico` commands and confirming the executable
+   greeting matches the **Expected output**.
+
+## Variations
+
+- **Two rules**: Add `rule.farewell` alongside `rule.hello` to
+  practice composing more than one Rule into a single Pico.
+- **Custom kind**: Change `kind: greeting` to a domain of your own
+  and adapt the Composer output accordingly.

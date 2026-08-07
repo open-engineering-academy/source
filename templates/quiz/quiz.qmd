@@ -1,0 +1,39 @@
+---
+title: "Quiz Title"
+description: "Standalone knowledge check."
+---
+
+Standalone quiz artifact. Lesson-embedded quizzes should use
+[`templates/lesson/quiz.qmd`](../lesson/quiz.qmd).
+
+## Instructions
+
+- Answer each question below.
+- Expand the "Answer" callout under each question to check yourself.
+
+## Question 1
+
+Question text.
+
+::: {.callout-note collapse="true"}
+## Answer
+Answer explanation.
+:::
+
+## Question 2
+
+Question text.
+
+::: {.callout-note collapse="true"}
+## Answer
+Answer explanation.
+:::
+
+## Question 3
+
+Question text.
+
+::: {.callout-note collapse="true"}
+## Answer
+Answer explanation.
+:::

@@ -1,1 +1,39 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico teaches and what you need before starting."
+---
 
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Write a single **Rule** in YAML.
+- Run the Parser and read the internal representation it produces.
+- Use the Composer to turn the parsed Rule into a working
+  `hello-world-pico` artifact.
+- Explain each stage of the Rules → Parser → Composer → Pico pipeline in
+  your own words.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- A working shell (bash, zsh, or fish).
+- A text editor and comfort reading YAML.
+- Completion of the
+  [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd)
+  lesson (or equivalent).
+:::
+
+## Environment
+
+- Operating system: macOS, Linux, or WSL.
+- Required tools: shell + text editor. No additional runtime is required
+  for this lab.
+- Estimated time: **30–45 minutes**.
+
+## Related lessons
+
+- [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.qmd)
+  — introduces the vocabulary this lab uses.
+- Future lessons in [Part 2](../../courses/pico/part-2/index.qmd) reuse the
+  `hello-world-pico` produced here.
