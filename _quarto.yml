@@ -30,6 +30,10 @@ project:
     - labs/compose-sandcastle-request/objectives.qmd
     - labs/compose-sandcastle-request/walkthrough.qmd
     - labs/compose-sandcastle-request/solution.qmd
+    - labs/outer-delivery-loop/index.qmd
+    - labs/outer-delivery-loop/objectives.qmd
+    - labs/outer-delivery-loop/walkthrough.qmd
+    - labs/outer-delivery-loop/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd
