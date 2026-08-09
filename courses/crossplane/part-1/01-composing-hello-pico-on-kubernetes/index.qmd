@@ -52,8 +52,9 @@ The lesson uses five primitives. See the
   a set of Managed Resources (for example, the Kubernetes Provider adds
   in-cluster resources such as `Object`).
 - **XRD (CompositeResourceDefinition)** — defines the *shape* of a new,
-  higher-level API. For Hello Pico on Kubernetes, the XRD defines a
-  `HelloWorldPico` API with the same fields your Pico Rules already used.
+  higher-level API. For Hello Pico on Kubernetes, the XRD defines an
+  `XHelloWorldPico` API (Crossplane XR kinds conventionally start with
+  `X`) with the same fields your Pico Rules already used.
 - **Composition** — declares *how* an instance of that new API is turned
   into concrete Managed Resources. This is the moving part that plays the
   role of the Pico **Composer**.
