@@ -8,6 +8,22 @@ lessons can link to a single definition instead of redefining terms.
 ## Composer
 A component that takes parsed Rules and produces a Pico output artifact.
 
+## Constraint
+A condition a valid Element must satisfy (for example, "the Pico responds
+to the `hello` event"). See
+[Constructive realization](constructive-realization.qmd).
+
+## Definition
+What an artifact is supposed to be: purpose, intent, and expected outcome.
+In this course, a Pico's Rules together with the surrounding lesson framing
+state a Definition. See
+[Constructive realization](constructive-realization.qmd).
+
+## Element
+The concrete realized thing. In this course, a running `hello-world-pico`
+produced by the Rules → Parser → Composer pipeline is an Element. See
+[Constructive realization](constructive-realization.qmd).
+
 ## Open Engineering
 The overarching approach of treating engineering artifacts as declarative,
 composable, versioned, and machine-readable definitions.
@@ -20,5 +36,15 @@ representation the Composer can operate on.
 The small, declarative engineering artifact this course teaches you to build.
 A Pico is defined by Rules and produced by a Parser + Composer pipeline.
 
+## Realization
+The constructive path from a Definition to an Element. In this course, the
+Rules → Parser → Composer → Pico pipeline is the Realization. See
+[Constructive realization](constructive-realization.qmd).
+
 ## Rule
 A single declarative statement that shapes the behavior or content of a Pico.
+
+## Validation
+An executable or observable check that tests an Element against its
+Constraints (for example, a lab's `verify.sh` or a course quiz). See
+[Constructive realization](constructive-realization.qmd).

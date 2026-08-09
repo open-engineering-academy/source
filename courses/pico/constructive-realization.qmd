@@ -1,0 +1,109 @@
+---
+title: "Constructive realization"
+subtitle: "How Definition, Element, Realization, Constraint, and Validation fit the Pico story."
+---
+
+This page is the course-facing reference for the academy's small
+**constructive-realization** vocabulary. It is written for learners and
+course authors working in the Pico course; the underlying contract lives
+in [`templates/README.qmd`](../../templates/README.qmd) (Phase 1).
+
+Phase 1 is documentation and metadata only. Nothing here changes how a
+Pico is built; it names the concepts you are already using so lessons,
+labs, and metadata can point at them consistently.
+
+## The five terms
+
+- **Definition** — what an artifact is *supposed to be*: its purpose,
+  intent, and expected outcome. In this course, a Pico's Rules together
+  with the surrounding lesson framing state a Definition.
+- **Element** — the concrete realized thing. In this course, a running
+  `hello-world-pico` produced by the pipeline is an Element.
+- **Realization** — the constructive path from Definition to Element.
+  In this course, the **Rules → Parser → Composer → Pico** pipeline is
+  the Realization, and the [Hello Pico lab](../../labs/hello-pico/)
+  records it step by step.
+- **Constraint** — a condition a valid Element must satisfy (for
+  example: "the Pico responds to the `hello` event", "the Rules parse
+  without error").
+- **Validation** — an executable or observable check that tests an
+  Element against its Constraints (for example: a lab's `verify.sh`,
+  a course quiz, or an end-to-end lab walkthrough).
+
+## Mapping onto the Pico pipeline
+
+The pipeline you already know maps cleanly onto the vocabulary:
+
+```
+Rules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico
+(Definition)   (Realization)   (Realization)     (Element)
+```
+
+- **Rules** carry the Definition of the Pico you intend to build.
+- **Parser + Composer** are the Realization: the constructive path that
+  turns a Definition into an Element.
+- **Pico** (for example `hello-world-pico`) is the Element.
+- **Constraints** are the conditions the produced Pico must meet.
+- **Validations** are the checks — lab verifications, quizzes,
+  observable behavior — that confirm the Element satisfies its
+  Constraints.
+
+## Mapping onto compose → construct → behave
+
+The academy's three-layer story —
+**Crossplane composes**, **Sandcastle constructs**, **Picos behave** —
+is a story about Realization at three different scales:
+
+| Layer                     | Constructive-realization view                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| **Crossplane composes**   | Realization by **composition from sub-elements**; a composed resource is the Element.         |
+| **Sandcastle constructs** | The bounded engineering environment inside which Realizations safely run and produce Elements. |
+| **Picos behave**          | The Elements themselves at runtime; their behavior is the observable evidence of Realization. |
+
+Concretely, in this course:
+
+- The Pico course teaches how a single Pico Element behaves.
+- The [Crossplane course](../crossplane/index.html) teaches how such
+  Elements are composed on a control plane.
+- The [Sandcastle course](../sandcastle/index.html) teaches the
+  construction environment inside which Realization happens safely.
+
+## Where the terms show up in course material
+
+You will most often encounter these concepts in the places you already
+work:
+
+- **Course and lesson `index.qmd`** — typically states a Definition
+  (learning objectives, what the produced artifact is).
+- **`lab.qmd` and the shared `labs/`** — typically records a Realization
+  and the Element it produces.
+- **`metadata.yaml`** — the machine-readable side of the same story.
+  The Phase 1 fields (`constructive_role`, `realizes`, `constraints`,
+  `validated_by`, `realization_pattern`) are optional and additive;
+  see [`templates/README.qmd`](../../templates/README.qmd) for the
+  full contract.
+- **`quiz.qmd` and lab verifications** — natural places for
+  Validations that check an Element against its Constraints.
+
+## Authoring guidance for this course
+
+- Prefer natural-language Constraints in prose and named Validations
+  (a `verify.sh`, a quiz question, an observable behavior) over formal
+  schemas.
+- When a lesson `produces` a named artifact, treat that artifact name
+  as the Element identity; a downstream lab realizes the same
+  Definition when it lists it under `realizes` in its metadata.
+- Do not retrofit existing pico lessons or labs to the new metadata
+  fields as part of this reference — the Phase 1 fields are optional
+  and sit alongside existing metadata.
+
+## Out of scope on this page
+
+This page intentionally does **not**:
+
+- Introduce a formal ontology, schema, or conformance checker.
+- Change the Pico pipeline, lesson layout, or lab format.
+- Retrofit existing courses, lessons, or labs to the Phase 1 fields.
+
+See the [Glossary](glossary.qmd) for one-line definitions of these terms
+and the [course overview](index.qmd) for how the pieces fit together.
