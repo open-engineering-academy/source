@@ -8,6 +8,25 @@ This course teaches how to design and build your first Pico — a small,
 declarative, composable engineering artifact — and doubles as the canonical
 example for how every academy course website is structured.
 
+## Where this course fits
+
+Pico is the academy's **behaviour** layer. The three-layer story is:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+This course teaches what a Pico *does* at runtime — how a `hello-world-pico`
+receives events, evaluates rules, and produces actions. Its sibling courses
+teach the other two layers:
+
+- [Crossplane course](../crossplane/index.html) — declares and composes what
+  should exist on a control plane.
+- [Sandcastle course](../sandcastle/index.html) — the bounded engineering
+  environment inside which artifacts like Picos are safely built.
+
+Pico is the foundation for the other two: complete this course first so you
+know what a durable Pico artifact looks like before you compose it with
+Crossplane or construct it inside a Sandcastle.
+
 ## What you will learn
 
 By the end of the course you will be able to:

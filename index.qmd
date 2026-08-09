@@ -11,6 +11,22 @@ The **Open Engineering Academy** teaches engineers how to design, build, and
 operate declarative, composable systems using open technologies and hands-on
 projects. It is the educational arm of the Open Engineering ecosystem.
 
+## The academy story: compose → construct → behave
+
+Open Engineering separates three genuinely different phases of engineering, and
+the academy has one course per phase:
+
+| Phase | Question | Course |
+| --- | --- | --- |
+| **Compose** | *What should exist?* | [Crossplane](courses/crossplane/) |
+| **Construct** | *How is it safely built?* | [Sandcastle](courses/sandcastle/) |
+| **Behave** | *What does the resulting entity do?* | [Pico](courses/pico/) |
+
+In short: **Crossplane composes, Sandcastle constructs, Picos behave.** Each
+course teaches one layer; together they form a coherent path from declared
+intent, through safely constructed artifacts, to long-lived reactive
+behaviour.
+
 ## Start here
 
 - **[About](about.qmd)** — the academy mission and how it fits into Open Engineering.

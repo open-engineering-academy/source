@@ -6,6 +6,21 @@ The academy curriculum is organized around **learning paths**. Each path
 groups related courses that together move a learner from foundational ideas to
 real, working systems.
 
+## Compose → construct → behave
+
+The academy's three core courses map onto the three phases of Open
+Engineering — **Crossplane composes, Sandcastle constructs, Picos behave**:
+
+| Phase | Question | Course |
+| --- | --- | --- |
+| **Compose** | What should exist? | [Crossplane](../courses/crossplane/) |
+| **Construct** | How is it safely built? | [Sandcastle](../courses/sandcastle/) |
+| **Behave** | What does the resulting entity do? | [Pico](../courses/pico/) |
+
+The learning paths below expand on this backbone. Pico is the runtime/behaviour
+foundation for the other two, so learners generally take Pico first, then
+Crossplane and Sandcastle in either order depending on interest.
+
 ## Planned learning paths
 
 The initial catalog of learning paths (in various stages of development):

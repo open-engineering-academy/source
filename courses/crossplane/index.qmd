@@ -8,6 +8,22 @@ This course teaches how to compose the reusable Hello Pico artifact from the
 [Pico course](../pico/index.html) so it can run on a local Kubernetes cluster,
 using **Crossplane** as the control-plane building block.
 
+## Where this course fits
+
+Crossplane is the academy's **composition** layer. The three-layer story is:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+This course teaches how Crossplane declares and composes what should exist —
+turning a request for a `hello-world-pico` into the concrete Kubernetes
+resources needed to run it. Its sibling courses teach the other two layers:
+
+- [Pico course](../pico/index.html) — the runtime/behaviour layer: what the
+  resulting Pico artifact actually *does*.
+- [Sandcastle course](../sandcastle/index.html) — the construction layer:
+  how the durable artifacts a Crossplane composition needs are safely built
+  inside a bounded engineering environment.
+
 ## What you will learn
 
 By the end of the course you will be able to:
