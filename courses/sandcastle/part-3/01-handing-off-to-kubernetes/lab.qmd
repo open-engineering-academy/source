@@ -87,7 +87,7 @@ the generated XR is a drop-in replacement for the Kubernetes lab's
 ## Step 4 · (Optional) Apply on a Crossplane cluster
 
 If you already have the Crossplane cluster from the
-[Hello Pico on Kubernetes walkthrough](../../../../labs/hello-pico-on-kubernetes/walkthrough.qmd)
+[Hello Pico on Kubernetes walkthrough](../../../../labs/hello-pico-on-kubernetes/walkthrough.html)
 steps 1–4 running, you can apply the generated XR and reuse the
 Kubernetes lab's own `verify.sh`:
 
