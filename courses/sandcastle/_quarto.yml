@@ -1,0 +1,78 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - shared/images/open-engineering-mark.svg
+  render:
+    - index.qmd
+    - glossary.qmd
+    - part-1/index.qmd
+    - part-1/01-inside-a-sandcastle/index.qmd
+    - part-1/01-inside-a-sandcastle/exercise.qmd
+    - part-1/01-inside-a-sandcastle/lab.qmd
+    - part-1/01-inside-a-sandcastle/summary.qmd
+    - part-1/01-inside-a-sandcastle/quiz.qmd
+    - part-2/index.qmd
+    - part-3/index.qmd
+    - labs/index.qmd
+
+website:
+  title: "Sandcastle"
+  description: "Building safely inside Sandcastles — the Open Engineering Academy course on bounded engineering environments."
+  site-url: "https://academy.open-engineering.io/courses/sandcastle/"
+  favicon: shared/images/open-engineering-mark.svg
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: part-1/index.qmd
+        text: Part 1
+      - href: part-2/index.qmd
+        text: Part 2
+      - href: part-3/index.qmd
+        text: Part 3
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - section: "Part 1 — Inside a Sandcastle"
+        href: part-1/index.qmd
+        contents:
+          - section: "01 Inside a Sandcastle"
+            href: part-1/01-inside-a-sandcastle/index.qmd
+            contents:
+              - href: part-1/01-inside-a-sandcastle/exercise.qmd
+                text: Exercise
+              - href: part-1/01-inside-a-sandcastle/lab.qmd
+                text: Lab
+              - href: part-1/01-inside-a-sandcastle/summary.qmd
+                text: Summary
+              - href: part-1/01-inside-a-sandcastle/quiz.qmd
+                text: Quiz
+      - section: "Part 2 — Composing Sandcastles with Crossplane"
+        href: part-2/index.qmd
+      - section: "Part 3 — Delivering artifacts from a Sandcastle"
+        href: part-3/index.qmd
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Sandcastle — Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto

@@ -1,0 +1,244 @@
+---
+title: "1. Inside a Sandcastle"
+subtitle: "Isolated workspaces, repo/branch flow, tools/permissions, agent iteration, and artifact boundaries."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- State in one sentence what a **Sandcastle** is and how it differs
+  from a **Pico runtime** and from a **Crossplane composition**.
+- Name and explain the five construction-layer concerns a Sandcastle
+  addresses: **isolated workspaces**, **repo/branch flow**, **tools
+  and permissions**, **agent iteration**, and **artifact boundaries**.
+- Describe why a Sandcastle is *safe to be disposable* while its
+  output artifacts remain *durable*.
+- Identify which parts of the Sandcastle picture are conceptual in
+  this course and which parts are already provided by upstream
+  Sandcastle tooling.
+
+## Prerequisites
+
+- Completion of the
+  [Pico · Part 1 · Introduction](../../../pico/part-1/01-introduction/index.html)
+  lesson so you know what a durable Pico artifact looks like.
+- Reading familiarity with
+  [Crossplane · Part 1](../../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  is helpful — this lesson only refers to Crossplane conceptually.
+- Basic Git commands (`clone`, `branch`, `commit`, `push`) — no
+  advanced Git required.
+- No cluster or sandbox provider is required for **this lesson** —
+  the lesson is conceptual. The follow-on [Lab](lab.qmd) is a paper
+  walkthrough and is explicitly labelled as *not yet runnable*.
+
+## Why a Sandcastle?
+
+The [Pico course](../../../pico/index.html) taught you what an Open
+Engineering artifact *is* at runtime. The
+[Crossplane course](../../../crossplane/index.html) taught you how the
+control plane declares *what should exist*. Neither of those layers
+answers a different, very practical question:
+
+> When an artifact needs to be *built* or *changed* — especially by an
+> AI engineering agent — where does that construction work happen
+> safely?
+
+A **Sandcastle** is the bounded, disposable engineering environment
+that answers that question. Its purpose is to make it *safe* to run an
+engineering agent against a real repository, with real tools, and
+still guarantee that only the intended artifacts leave the workspace.
+
+::: {.callout-tip title="One-sentence definition"}
+A Sandcastle is an **isolated, disposable engineering workspace** that
+runs an engineering agent under **constrained tools and permissions**,
+uses a **branch on a target repository** as its input/output surface,
+and preserves the resulting engineering work as **durable Git
+artifacts**.
+:::
+
+## Where Sandcastle sits in the academy story
+
+The overall academy shape from `memo2.md` is:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+Mapped onto the three courses:
+
+```
+Crossplane course   ──▶  Sandcastle course   ──▶  Pico course
+(compose: what      (construct: how a         (behave: what the
+ should exist)       new artifact is           resulting artifact
+                     safely produced)          does at runtime)
+```
+
+The three layers are intentionally non-overlapping:
+
+| Layer            | Question                                | Course       |
+| ---------------- | --------------------------------------- | ------------ |
+| Composition      | *What should exist?*                    | Crossplane   |
+| **Construction** | *How is it safely built or changed?*    | **Sandcastle** |
+| Behaviour        | *What does the resulting entity do?*    | Pico         |
+
+## The five construction-layer concerns
+
+The rest of Part 1 develops these five concerns. Each is a
+first-class Sandcastle responsibility. Sketch them in your notes as
+you read — you will use them in the [Exercise](exercise.qmd).
+
+### 1. Isolated workspaces
+
+The Sandcastle's core primitive is an **isolated workspace**: a
+self-contained working directory in which the engineering agent can
+read, write, execute commands, and iterate — with **no side effects on
+the outside world**. The isolation boundary is provided by a
+**sandbox provider** (for example a local Docker or Podman container,
+a Vercel sandbox, or a custom provider). Choosing the provider is a
+runtime concern; the *shape* of the isolation is a Sandcastle
+concern.
+
+The isolation is what makes the Sandcastle safe to *dispose of*: when
+the workspace is torn down, nothing outside the committed artifacts
+survives, including anything the agent accidentally created.
+
+### 2. Repo/branch flow
+
+An isolated workspace on its own would be useless — the work has to
+move in and out somehow. Sandcastle uses a very ordinary shape for
+that: **Git**.
+
+The typical flow is:
+
+```
+target repo (durable)
+   │  clone
+   ▼
+sandbox workspace  ──▶  branch  ──▶  commits  ──▶  push branch (or PR)
+   │  (isolated,                                     │
+   │   disposable)                                   ▼
+   ▼                                        target repo (durable,
+disposed on teardown                         now carries the branch)
+```
+
+The **target repository is the durable side**; the workspace is the
+disposable side. Everything the agent produces must land on a
+dedicated **branch** so it can be reviewed, merged, or discarded like
+any other engineering change.
+
+### 3. Tools and permissions
+
+An isolated workspace with unrestricted tools and permissions is not
+safe — it is just isolated. The Sandcastle constrains **which
+executables are available**, **what network access the agent has**,
+**which secrets it may read**, and **how far the file system reach
+extends** (typically to the workspace only).
+
+Two useful rules of thumb:
+
+- **Provide only tools needed for the task.** A Sandcastle that
+  builds a Pico needs the Pico Composer and its parser dependencies;
+  it does not need cluster credentials.
+- **Provide only the permissions needed for the artifact.** A
+  Sandcastle producing a `hello-world-pico` branch needs Git write to
+  one branch on one repository; it does not need to publish to a
+  registry.
+
+Constraining tools and permissions is what makes it *safe* to run an
+agent on production-adjacent work.
+
+### 4. Agent iteration
+
+Inside the Sandcastle, the engineering agent runs a small **inner
+iteration loop**:
+
+```
+inspect conventions
+        │
+        ▼
+  generate / edit files
+        │
+        ▼
+  validate (parser, tests)
+        │
+        ▼
+        ├── OK ─▶ commit
+        │
+        └── FAIL ─▶ diagnose ─▶ back to top
+```
+
+This is separate from — and much smaller than — the surrounding
+Crossplane and Git-delivery loops. The Sandcastle owns *how* this
+inner loop runs (what tools it has, what it commits, how it decides
+"done") but does not own the outer loops.
+
+The important design decision is that **iteration lives inside the
+Sandcastle**. If an early attempt fails validation, the fix happens
+in the same workspace on the same branch — no external retry,
+re-queueing, or human hand-off is required for the inner loop.
+
+### 5. Artifact boundaries
+
+The final concern is the **artifact boundary**: the line between what
+survives the Sandcastle and what does not.
+
+Two rules define the boundary:
+
+- **Only committed Git content crosses the boundary.** Files that
+  were never committed are lost when the workspace is torn down.
+  This is intentional; it means learners and reviewers only ever
+  have to reason about the branch.
+- **The branch is the deliverable, not the workspace.** The
+  Sandcastle hands back a branch (or a pull request derived from
+  it). Everything else — the container, the temporary tools, the
+  agent's scratch state — is disposable.
+
+The artifact boundary is why the *castle* metaphor fits: the castle
+itself is temporary, but the sand-shaping performed inside it is
+preserved.
+
+## Putting the five concerns together
+
+The five concerns form a single picture:
+
+```
+┌──────────────────────────── Sandcastle ─────────────────────────────┐
+│                                                                     │
+│   ┌──────────────── isolated workspace ────────────────┐            │
+│   │                                                    │            │
+│   │   engineering agent                                │            │
+│   │   ┌─ inspect ─▶ generate ─▶ validate ─▶ commit ─┐  │            │
+│   │   └─────────────────  fail loop ◀───────────────┘  │            │
+│   │                                                    │            │
+│   │   tools & permissions constrained ──────────────── │            │
+│   │                                                    │            │
+│   └────────────── branch on target repo ───────────────┘            │
+│                                                                     │
+└──────────── artifact boundary: only the branch survives ────────────┘
+```
+
+## What upstream Sandcastle tooling already provides
+
+The concepts above are not invented for this course. The reference
+implementation this course is aligned with —
+[Sandcastle](https://github.com/mattpocock/sandcastle) — already
+provides a **sandbox-provider abstraction** (Docker, Podman, Vercel,
+custom), an **agent abstraction**, and helpers for **branches,
+commits, and iteration**. The academic value of this course is to
+teach the *concepts*, so that whatever tooling learners eventually
+use (Sandcastle itself, or a Sandcastle-shaped equivalent), the same
+five construction-layer concerns still guide safe use.
+
+## Where this lesson leads
+
+- The [Exercise](exercise.qmd) turns the five concerns into a
+  paper artifact you write yourself — a short "Sandcastle
+  blueprint" for constructing a `HelloWorldPico`.
+- The [Lab](lab.qmd) is a **structured paper walkthrough** of that
+  same construction, deliberately labelled as *not yet runnable*.
+  A future curriculum-verification wave will replace it with a
+  reusable, executable Sandcastle lab under `labs/`.
+- The [Summary](summary.qmd) and [Quiz](quiz.qmd) close the lesson.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

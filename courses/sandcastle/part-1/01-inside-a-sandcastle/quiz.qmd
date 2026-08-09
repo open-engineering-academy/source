@@ -1,0 +1,64 @@
+---
+title: "Quiz · Inside a Sandcastle"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you
+can self-grade after answering.
+
+## 1. Which academy layer does a Sandcastle occupy?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **construction** layer. Crossplane occupies the **composition**
+layer (what should exist), Sandcastle occupies the **construction**
+layer (how a new artifact is safely produced), and Pico occupies the
+**behaviour** layer (what the resulting entity does at runtime).
+:::
+
+## 2. What are the five construction-layer concerns a Sandcastle addresses?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+1. **Isolated workspaces** — the sandbox boundary.
+2. **Repo/branch flow** — how work moves in and out durably.
+3. **Tools and permissions** — what the engineering agent can and
+   cannot do.
+4. **Agent iteration** — the inspect → generate → validate → commit
+   inner loop.
+5. **Artifact boundaries** — only committed Git content crosses out.
+:::
+
+## 3. Why is it safe to dispose of a Sandcastle after it finishes?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because the artifact boundary guarantees that **only** committed Git
+content (a branch on the target repository, and optionally a PR)
+crosses out of the Sandcastle. The workspace, tools, and any agent
+scratch state are all disposable — nothing engineering-relevant is
+lost when the sandbox is torn down.
+:::
+
+## 4. If the agent's inner iteration loop fails validation, what happens next?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The loop **repeats inside the Sandcastle**: the agent diagnoses the
+failure and revises the files in the same isolated workspace on the
+same branch. The surrounding delivery pipeline (PR, merge, GitOps,
+Crossplane reconciliation) never sees the failed attempts.
+:::
+
+## 5. Why does the Sandcastle course not yet include a runnable Sandcastle lab, and where will one live when it does?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+This wave of the course delivers substantive **instruction** but
+intentionally defers a runnable Sandcastle lab to a later
+curriculum-verification wave. When a runnable lab lands it will live
+as a reusable lab under the repository-root `labs/` directory (for
+example, `labs/hello-world-pico-sandcastle/`) — the same convention
+used by [Hello Pico](../../../../labs/hello-pico/) and
+[Hello Pico on Kubernetes](../../../../labs/hello-pico-on-kubernetes/)
+— so it can be reused across courses.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Part 2](../../part-2/index.qmd).

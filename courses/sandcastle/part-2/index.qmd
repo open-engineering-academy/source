@@ -1,0 +1,34 @@
+---
+title: "Part 2 — Composing Sandcastles with Crossplane"
+---
+
+Part 2 will develop how the Crossplane composition layer *requests*
+engineering work from the Sandcastle construction layer. The intended
+learning arc is:
+
+- A learner authors a Crossplane Composite Resource asking for a
+  new Open Engineering artifact (for example, a new Pico kind).
+- The Composition turns that request into an **EngineeringTask**
+  (or equivalent) — a declarative record of the construction work
+  the cluster wants done.
+- A Sandcastle picks up the EngineeringTask, spins up an isolated
+  workspace with the right tools and permissions, runs an
+  engineering agent through the [Part 1 agent inner loop](../part-1/01-inside-a-sandcastle/index.qmd),
+  and returns durable Git artifacts.
+- Crossplane then reconciles those artifacts back onto the cluster,
+  closing the compose → construct → behave loop.
+
+## Lessons
+
+Lesson content for Part 2 will follow the same lesson layout as
+[Part 1](../part-1/index.qmd) and the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
+
+::: {.callout-warning title="Scaffold — not yet runnable"}
+Part 2 is intentionally scaffolded so the Sandcastle course
+demonstrates the shared multi-part academy structure. It does **not**
+yet carry runnable learner content. Follow
+[Part 1](../part-1/index.qmd) as the current substantive Sandcastle
+material; Part 2 will land alongside a runnable Sandcastle lab in a
+later curriculum wave.
+:::

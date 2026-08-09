@@ -1,0 +1,31 @@
+---
+title: "Part 3 — Delivering artifacts from a Sandcastle"
+---
+
+Part 3 will focus on what happens *after* the Sandcastle finishes: how
+the durable Git artifacts it produced are validated, delivered, and
+picked up by the surrounding Open Engineering pipelines.
+
+The intended learning arc is:
+
+- Compare the Sandcastle's inner iteration loop (agent → repo/branch →
+  commits) with the outer delivery loop (branch → PR → merge → GitOps
+  → Crossplane reconciliation).
+- Discuss when a Sandcastle should produce a **branch**, a **pull
+  request**, or a **release artifact**, and how each choice interacts
+  with the Pico runtime and Crossplane composition layers.
+- Layer additional guardrails: automated verification, review, and
+  policy checks that run against the branch the Sandcastle hands
+  back — outside the Sandcastle's own boundary.
+
+## Lessons
+
+Lesson content for Part 3 will follow the same lesson layout as
+[Part 1](../part-1/index.qmd) and the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
+
+::: {.callout-warning title="Scaffold — not yet runnable"}
+Part 3 is intentionally scaffolded. It is included so the Sandcastle
+course demonstrates a multi-part structure that other course websites
+can mirror, but it does **not** yet carry runnable learner content.
+:::

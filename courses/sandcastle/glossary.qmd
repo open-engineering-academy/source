@@ -1,0 +1,57 @@
+---
+title: "Glossary"
+---
+
+Terms used across the Sandcastle course. Course-specific vocabulary
+lives here so lessons can link to a single definition instead of
+redefining terms. For Pico-side vocabulary (Rule, Parser, Composer,
+Pico) see the [Pico course glossary](../pico/glossary.html); for
+Crossplane vocabulary (XRD, XR, Composition, Managed Resource) see the
+[Crossplane course glossary](../crossplane/glossary.html).
+
+## Artifact boundary
+The line between what a Sandcastle produces (durable, versioned Git
+artifacts such as Pico definitions and rulesets) and what happens
+elsewhere (runtime execution, control-plane reconciliation). The
+artifact boundary is what makes a Sandcastle disposable while its
+outputs remain durable.
+
+## Engineering agent
+The actor that performs work inside a Sandcastle — typically an AI
+coding agent, but the same abstraction covers a human developer
+constrained to the same isolated workspace. The agent operates on the
+Sandcastle's repo/branch with the Sandcastle's tools and permissions.
+
+## Isolated workspace
+The Sandcastle's core primitive: a self-contained working directory in
+which an engineering agent can read, write, run commands, and iterate
+without any effect on the outside world. When the workspace is torn
+down, only the committed artifacts survive.
+
+## Repo/branch flow
+The Git shape a Sandcastle uses to move work in and out: clone a
+target repository into the isolated workspace, work on a dedicated
+branch, commit iteratively, and hand back the branch (or a pull
+request) as the durable output. The repo/branch flow is how the
+Sandcastle preserves engineering intent across its disposable
+lifecycle.
+
+## Sandbox provider
+A pluggable back-end that supplies the isolated workspace — for
+example a local Docker container, a Podman container, a Vercel
+sandbox, or a custom provider. The choice of sandbox provider affects
+performance and cost but does not change what a Sandcastle *is*.
+
+## Sandcastle
+A bounded, disposable engineering environment that safely runs an
+engineering agent against an isolated workspace, controls what tools
+and permissions the agent has, and captures the resulting engineering
+work as durable Git artifacts. The name is intentional: the castle is
+temporary; the sand-shaping performed inside it is preserved as
+committed artifacts.
+
+## Tools and permissions
+The constrained set of executables, network access, secrets, and file
+system reach the engineering agent is allowed to use inside the
+Sandcastle. Constraining tools and permissions is what makes it
+*safe* to run an agent on production-adjacent work.

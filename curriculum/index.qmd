@@ -13,6 +13,7 @@ The initial catalog of learning paths (in various stages of development):
 - Open Engineering Foundations
 - Kubernetes for Open Engineering
 - Crossplane
+- Sandcastle
 - Declarative Infrastructure
 - Open Engineering Definitions
 - Open Engineering Conventions

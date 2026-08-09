@@ -1,0 +1,42 @@
+---
+title: "Labs"
+---
+
+Labs referenced by the Sandcastle course. Course-scoped labs live
+under `courses/sandcastle/labs/`; reusable labs shared with other
+courses live under the repository-root [`labs/`](../../../labs/index.html)
+directory.
+
+## Referenced labs
+
+There is no runnable Sandcastle lab yet.
+
+::: {.callout-warning title="Scaffold — no runnable Sandcastle lab yet"}
+This wave of the Sandcastle course delivers substantive Part 1
+**instruction** but does not yet include a runnable Sandcastle lab.
+The Part 1 lesson's [Lab page](../part-1/01-inside-a-sandcastle/lab.qmd)
+is a structured paper walkthrough, not an executable lab, and it is
+labelled as such. A reusable
+`labs/hello-world-pico-sandcastle/` (or equivalently named) runnable
+lab is planned for a later curriculum-verification wave.
+:::
+
+## Related reusable labs
+
+While no Sandcastle-specific lab exists yet, these existing reusable
+labs are useful context — they define the **artifact** a future
+Sandcastle lab will produce and the **cluster** it may hand off to:
+
+- [Hello Pico](../../../labs/hello-pico/) — produces the
+  `hello-world-pico` greeting artifact from the [Pico course](../../pico/index.html).
+  This is the artifact a future Sandcastle lab will construct.
+- [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/)
+  — composes `hello-world-pico` onto a local minikube cluster with
+  Crossplane. A future Sandcastle lab may hand its output to this
+  lab's Composition as its downstream reconciliation target.
+
+## Authoring course-scoped labs
+
+Course-scoped labs live in this directory and follow the shared lab
+template. Reuse a repository-root lab when the same lab is useful for
+more than one course.

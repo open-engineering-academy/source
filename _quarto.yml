@@ -24,6 +24,7 @@ project:
     - "!courses/pico/"
     - "!courses/kubernetes/"
     - "!courses/crossplane/"
+    - "!courses/sandcastle/"
     - "!templates/"
     - "!shared/"
 

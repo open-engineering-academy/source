@@ -16,6 +16,13 @@ page of each course website.
 - **[Crossplane](crossplane/)** — Running Hello Pico on Kubernetes with
   Crossplane. Builds on the Pico course. Part 1 is being authored alongside
   a runnable Crossplane lab; Parts 2 and 3 are explicitly scaffolded.
+- **[Sandcastle](sandcastle/)** — Building safely inside Sandcastles: the
+  academy's construction-layer course. Part 1 delivers substantive
+  instruction (isolated workspaces, repo/branch flow, tools/permissions,
+  agent iteration, artifact boundaries) with a paper exercise and a paper
+  lab walkthrough; a runnable Sandcastle lab is deferred to a later
+  curriculum wave and is clearly labelled on the course. Parts 2 and 3
+  are explicitly scaffolded.
 
 ## Additional courses
 
