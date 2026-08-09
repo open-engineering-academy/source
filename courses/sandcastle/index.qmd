@@ -83,7 +83,7 @@ courses/sandcastle/
 - [Labs](labs/index.qmd)
 - [Glossary](glossary.qmd)
 
-::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 (lesson 01) runnable; Part 3 lesson 02 instruction-first"}
+::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 runnable end-to-end"}
 Part 1 is **runnable** end-to-end via the Part 1
 [Lab](part-1/01-inside-a-sandcastle/lab.qmd), which links to the
 reusable
@@ -96,16 +96,22 @@ which takes a learner-authored Crossplane XR through an
 `EngineeringTask` and has a Sandcastle construct the requested
 artifact on a durable branch. Part 3's first lesson,
 [01 Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd),
-is also **runnable** end-to-end via the reusable
+is **runnable** end-to-end via the reusable
 [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/),
 which takes the branch produced by the Sandcastle lab and hands its
 greeting off as a Crossplane Composite Resource compatible with the
 [Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/).
 Part 3's second lesson,
 [02 The outer delivery loop](part-3/02-outer-delivery-loop/index.qmd),
-is **instruction-first**: it reuses the hand-off lab and the
-Kubernetes lab as its runnable endpoints and stays clear that a
-single reusable outer-loop lab is not yet packaged. Further Part 2
-lessons remain intentionally scaffolded for this wave and are clearly
-labelled where learner-visible.
+is now also **runnable** end-to-end via the reusable
+[Outer delivery loop lab](../../labs/outer-delivery-loop/), which
+carries the hand-off XR through branch → PR review → merge → GitOps
+delivery → downstream reconciliation against live GitHub. Its later
+delivery and reconciliation stages have honest hosted prerequisites:
+a learner-owned GitHub environment repo (`OE_ENV_REPO`), an
+authenticated `gh` CLI, and a Flux/Crossplane-capable cluster (the
+one from the Hello Pico on Kubernetes lab is sufficient); the
+review/merge stages can be practised on their own without a cluster.
+Further Part 2 lessons remain intentionally scaffolded for this wave
+and are clearly labelled where learner-visible.
 :::
