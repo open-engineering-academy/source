@@ -1,0 +1,124 @@
+---
+title: "Objectives & prerequisites"
+description: "What the outer-delivery-loop lab teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Take the Crossplane XR the
+  [hand-off lab](../handoff-sandcastle-to-kubernetes/) produced and
+  drive it through the four outer-loop stages against **live
+  infrastructure**.
+- Identify the environment repository (not the Sandcastle) as the
+  **source of truth** for the merged XR, and recognise merge as a
+  policy transition rather than a script step.
+- Attach the three outer-loop guardrails — **automated verification**
+  on the PR, **review** on the PR, and **policy** at cluster
+  admission — to concrete surfaces on GitHub and (optionally) on the
+  cluster.
+- Reconcile the merged XR onto the cluster via GitOps (Flux) or an
+  equivalent single-shot pull (`kubectl`), and confirm that
+  Crossplane closes the loop by composing the same Kubernetes `Job`
+  the [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/)
+  already verifies in isolation.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Sandcastle → Kubernetes hand-off lab](../handoff-sandcastle-to-kubernetes/)
+  — you need `work/handoff-sandcastle-to-kubernetes/build/xr.yaml`.
+  If it is missing, this lab's `verify.sh` will run the hand-off (and
+  the Sandcastle lab that feeds it) for you.
+- A **learner-controlled GitHub environment repository**. A private
+  repo dedicated to this lab is recommended. Create one with:
+
+  ```bash
+  gh repo create your-handle/oe-env-hello-world-pico \
+    --private --add-readme
+  ```
+
+  Export it once per shell:
+
+  ```bash
+  export OE_ENV_REPO=your-handle/oe-env-hello-world-pico
+  ```
+- `gh` CLI authenticated (`gh auth login`) with permission to push,
+  open PRs, and merge on that repo.
+- **Stages 3–4 only**: a Crossplane cluster set up per the
+  [Hello Pico on Kubernetes walkthrough](../hello-pico-on-kubernetes/walkthrough.qmd)
+  steps 1–4, plus either the `flux` CLI (preferred) or `kubectl`
+  pointed at that cluster. Without a cluster the lab is still
+  runnable through stages 1–2; `verify.sh` prints a NOTE and exits
+  cleanly.
+:::
+
+## Honest hosted dependencies
+
+- **GitHub is a real hosted dependency.** Every stage 1–2 command in
+  this lab creates real branches, real PRs, and real merge commits
+  on the repository you point `OE_ENV_REPO` at. Use a dedicated,
+  learner-owned repo — do **not** point this at a shared production
+  environment repo.
+- **The GitHub token** in your `gh` CLI session is the only
+  credential the lab uses; the lab writes no secrets to disk and
+  passes no tokens as command-line arguments.
+- **Flux and `kubectl`** are operator-controlled tools. If you use
+  Flux mode, Flux is installed on your cluster the usual way
+  (`flux install` or `flux bootstrap`); this lab does not bootstrap
+  Flux for you.
+
+## Environment
+
+- **Supported OS**: macOS (Apple Silicon or Intel), Linux, or WSL.
+- **Required shell**: `bash` 3.2+ or `zsh` 5.0+.
+- **Required tools**:
+  - `git`, `python3`, and standard POSIX utilities.
+  - `gh` (GitHub CLI) — real GitHub API access.
+  - Stages 3–4: `kubectl`; optionally `flux`.
+- **Estimated time**: **30–60 minutes**, depending on whether you
+  also run the cluster stages.
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  rm -rf work/outer-delivery-loop
+  # optional: remove the feature branch and Flux resources
+  gh api "repos/$OE_ENV_REPO/git/refs/heads/$(cat work/outer-delivery-loop/state/branch.txt 2>/dev/null)" \
+    -X DELETE || true
+  kubectl delete kustomization oe-env-hello-world-pico -n flux-system 2>/dev/null || true
+  kubectl delete gitrepository  oe-env-hello-world-pico -n flux-system 2>/dev/null || true
+  ```
+
+## Install commands
+
+On macOS with Homebrew:
+
+```bash
+brew install git python3 gh
+# Optional (stages 3–4):
+brew install kubernetes-cli fluxcd/tap/flux
+```
+
+On Linux, use your distribution's package manager, and follow the
+[GitHub CLI](https://cli.github.com/) and
+[Flux](https://fluxcd.io/flux/installation/) upstream instructions.
+Confirm each tool resolves and `gh` is authenticated:
+
+```bash
+command -v gh && gh --version
+gh auth status
+command -v kubectl && kubectl version --client=true --short 2>/dev/null || true
+command -v flux    && flux    --version 2>/dev/null || true
+```
+
+## Related lessons
+
+- [Sandcastle · Part 3 · 02 The outer delivery loop](../../courses/sandcastle/part-3/02-outer-delivery-loop/index.html)
+  — the conceptual lesson this lab implements.
+- [Sandcastle → Kubernetes hand-off lab](../handoff-sandcastle-to-kubernetes/index.qmd)
+  — produces the XR this lab pushes onto the env repo.
+- [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)
+  — supplies the Crossplane cluster this lab reconciles onto and the
+  cluster-side `verify.sh` this lab reuses unchanged.

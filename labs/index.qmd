@@ -44,6 +44,17 @@ encounter a consistent experience across the academy.
   [sandcastle course](../courses/sandcastle/). Machine-readable
   descriptor:
   [`labs/handoff-sandcastle-to-kubernetes/metadata.yaml`](handoff-sandcastle-to-kubernetes/metadata.yaml).
+- **[Outer delivery loop](outer-delivery-loop/)** — the first
+  runnable outer-loop lab: push the hand-off's XR onto a real
+  GitHub environment repo, open a real pull request, merge it, and
+  reconcile the merged XR onto the Crossplane cluster from the
+  [Hello Pico on Kubernetes lab](hello-pico-on-kubernetes/) via Flux
+  (or `kubectl` as a single-shot fallback). Live GitHub is a
+  prerequisite; the cluster stages run when a Crossplane cluster is
+  reachable. Referenced from the
+  [sandcastle course](../courses/sandcastle/). Machine-readable
+  descriptor:
+  [`labs/outer-delivery-loop/metadata.yaml`](outer-delivery-loop/metadata.yaml).
 
 ## Lab structure
 

@@ -49,17 +49,22 @@ reconciliation loop (stage 4) then composes it into concrete
 Kubernetes resources.
 :::
 
-## 5. The academy ships runnable labs for stages 0 (hand-off) and 4 (Crossplane reconciliation). Why does this lesson not add a runnable lab for stages 1–3?
+## 5. What honest prerequisites does the runnable outer-loop lab pull in that the hand-off lab did not?
 
 ::: {.callout-tip collapse="true" title="Show answer"}
-Because a truthful runnable outer-loop lab needs a real
-environment repository, a real reconciler, and a real cluster
-admission policy — none of which the academy currently packages as
-a single reusable lab. This lesson stays honest about that: stages
-1–3 are **inspectable** in the environment repo today but are not
-pretended to be end-to-end runnable. Packaging the outer loop as a
-single reusable lab is called out explicitly as a future Part 3
-addition.
+- A **learner-controlled GitHub environment repository** and an
+  authenticated `gh` CLI — because stages 1–2 create a real branch,
+  a real pull request, and a real merge commit that only make sense
+  on a real hosted repo.
+- For stages 3–4, a **Crossplane cluster** (from the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/))
+  and either the `flux` CLI or `kubectl` — because those stages
+  reconcile the merged XR onto a real cluster.
+
+The lab keeps stages 1–2 runnable without a cluster (a `verify.sh
+--skip-cluster` mode exits cleanly with GitHub-only assertions) so
+learners can practise the review/merge half of the loop before
+setting up the reconciler half.
 :::
 
 ## Next

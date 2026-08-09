@@ -1,0 +1,80 @@
+---
+title: "Outer delivery loop (PR → merge → GitOps → reconcile)"
+description: "Take the Crossplane XR the hand-off produced and drive it through a real GitHub PR, a real merge, and a GitOps sync onto the Crossplane cluster from the Hello Pico on Kubernetes lab."
+---
+
+## Overview
+
+**Outer delivery loop** is the first runnable Sandcastle lab that
+exercises the four stages that begin exactly where the Sandcastle
+ends:
+
+1. **Review / PR** — the durable Sandcastle branch (materialised as
+   an XR by the [hand-off lab](../handoff-sandcastle-to-kubernetes/))
+   is pushed to a real GitHub environment repository and opened as a
+   pull request.
+2. **Merge** — the PR is merged, moving the environment repo's
+   source of truth forward.
+3. **GitOps delivery** — a reconciler (Flux by default, `kubectl`
+   fallback) pulls the merged XR onto the target cluster.
+4. **Downstream Crossplane reconciliation** — Crossplane composes
+   the XR into the Kubernetes `Job` that prints `Hello, Pico!`.
+
+The whole loop runs against **live GitHub** and, when a cluster is
+available, against a **live Crossplane** installation from the
+[Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/). The
+Sandcastle is not re-invoked at any stage — the merged branch is the
+outer loop's only interface back.
+
+This lab is deliberately scoped to the loop itself. The construction
+stage is verified by the
+[Sandcastle lab](../hello-world-pico-sandcastle/), the promotion into
+a Crossplane XR is verified by the
+[hand-off lab](../handoff-sandcastle-to-kubernetes/), and the
+downstream reconcile is verified by the
+[Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/).
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+- A real GitHub **pull request** on your environment repository whose
+  head branch carries the hand-off's `xr.yaml` at `envs/dev/xr.yaml`
+  and whose base is the repo's default branch.
+- A **merge commit** on the environment repo's default branch that
+  becomes the source of truth for the XR.
+- Either a Flux `GitRepository` + `Kustomization` pair reconciling
+  the merged path, or a `kubectl apply` from a fresh clone of the
+  merged branch — both drive `hello-world-pico-on-kubernetes-xr`
+  onto the cluster in the same shape the
+  [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/)
+  reconciles it in isolation.
+
+## Downloads and screenshots
+
+Runnable files live under `downloads/`:
+
+- [`push-branch.sh`](downloads/push-branch.sh) — pushes the hand-off's
+  XR to a feature branch on your GitHub env repo.
+- [`open-pr.sh`](downloads/open-pr.sh) — opens the PR via `gh`.
+- [`merge-pr.sh`](downloads/merge-pr.sh) — merges the PR via `gh`.
+- [`gitops-sync.sh`](downloads/gitops-sync.sh) — reconciles the merged
+  XR onto the cluster (Flux mode, `kubectl` fallback).
+- [`verify.sh`](downloads/verify.sh) — automatable end-to-end check
+  for the whole loop. Skips cluster stages if no cluster is reachable
+  (or force with `--with-cluster` / `--skip-cluster`).
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml). Fields
+follow the same schema as
+[`labs/hello-pico/metadata.yaml`](../hello-pico/metadata.yaml).
+
+## Referenced from
+
+- [Sandcastle course · Part 3 · The outer delivery loop · Lab](../../courses/sandcastle/part-3/02-outer-delivery-loop/lab.html)
+- [Sandcastle course · Labs](../../courses/sandcastle/labs/index.html)

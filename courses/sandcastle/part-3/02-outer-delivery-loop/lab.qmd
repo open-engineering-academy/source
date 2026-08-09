@@ -1,149 +1,191 @@
 ---
-title: "Lab · Trace the outer delivery loop against real tooling"
+title: "Lab · Drive the outer delivery loop end-to-end"
 ---
 
-::: {.callout-note title="Scaffold — paper walkthrough, not runnable end-to-end"}
-This lesson does **not** ship a new reusable lab. The runnable
-pieces the academy publishes today cover one segment of the outer
-loop each:
+::: {.callout-tip title="Runnable — do this lab in the reusable lab page"}
+The runnable version of this lab lives at
+[`labs/outer-delivery-loop/`](../../../../labs/outer-delivery-loop/).
+It drives the four outer-loop stages against **live GitHub** — a
+real branch, a real pull request, a real merge — and, when a
+Crossplane cluster is reachable, reconciles the merged XR onto the
+cluster via Flux (or `kubectl` as a single-shot fallback). It
+ships an automatable
+[`verify.sh`](../../../../labs/outer-delivery-loop/downloads/verify.sh)
+you can run against just the hosted-GitHub stages (no cluster
+required) or against the full pipeline.
 
-- Stage 0 (hand-off) — runnable via the
-  [Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/).
-- Stage 4 (Crossplane reconciliation) — runnable via the
-  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/).
-- Stages 1–3 (review, merge, GitOps delivery) — inspectable in
-  this repository and any GitOps setup you already have, but not
-  yet packaged as a single automatable lab.
-
-The steps below are therefore an **inspection walkthrough**: you
-map each outer-loop stage onto artifacts you can already see, and
-you note where a runnable extension would slot in later.
+Start there when you are ready to run the lab. The steps below
+mirror the runnable lab so you can follow along with either page.
 :::
 
-## What you will do
+## What you will run through
 
-Walk each outer-loop stage against something concrete: the branch
-from the previous lab, this repository's CI, and the Crossplane
-apply from the Kubernetes lab. At the end you will have a written
-picture of what is runnable today and what is scaffolded.
+You will take the Crossplane XR the
+[Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/)
+produced and drive it through the outer loop's four stages against
+live infrastructure:
 
-## Step 1 · Inspect the branch the outer loop starts with
+1. **Stage 1 · Review / PR** — push the XR to a real GitHub env
+   repo you control and open a real pull request.
+2. **Stage 2 · Merge** — merge the PR; the env repo's default
+   branch now owns the desired state.
+3. **Stage 3 · GitOps delivery** — a Flux `GitRepository` +
+   `Kustomization` pair polls the merged branch and applies the
+   XR onto the cluster (or a single-shot `kubectl` clone-and-apply
+   if Flux is not installed).
+4. **Stage 4 · Crossplane reconciliation** — Crossplane composes
+   the XR into the Kubernetes `Job` that prints `Hello, Pico!`,
+   verified by the unchanged
+   [Hello Pico on Kubernetes](../../../../labs/hello-pico-on-kubernetes/)
+   `verify.sh`.
 
-The outer loop's only input is the durable branch the previous
-lesson's hand-off produced:
+The Sandcastle is not re-invoked at any stage. The merged branch on
+the env repo is the outer loop's only input from here on.
+
+## Step 1 · Point at a learner-owned env repo (stage 1 setup)
+
+Create a private env repo once and export it. Both `gh repo create`
+and the export happen **outside** the Sandcastle — this env repo is
+the outer loop's source of truth, not the Sandcastle:
 
 ```bash
-git -C work/hello-world-pico-sandcastle/target-repo \
-    log --oneline sandcastle/hello-world-pico | head -5
+gh repo create your-handle/oe-env-hello-world-pico --private --add-readme
+export OE_ENV_REPO=your-handle/oe-env-hello-world-pico
 ```
 
-Note in your walkthrough: *this branch is the entire interface
-between the Sandcastle and everything that follows.* Everything the
-outer loop does from here on can (and should) be reconstructed
-from this branch alone.
+Rule from [the lesson](index.qmd) being exercised: **guardrails
+live outside the Sandcastle boundary** — the env repo is where PR
+review, merge policy, and (later) cluster admission will attach.
 
-Rule from [the lesson](index.qmd) being exercised: **the branch is
-the only interface**.
+## Step 2 · Push the feature branch (stage 1)
 
-## Step 2 · Read this repository's CI as the review-stage guardrail
+```bash
+bash labs/outer-delivery-loop/downloads/push-branch.sh
+cat work/outer-delivery-loop/state/branch.txt
+```
 
-The academy's own CI in
-[`.github/workflows/build-and-publish.yml`](../../../../.github/workflows/build-and-publish.yml)
-runs on every PR against `main` and builds the course sites. That
-is a real example of an **automated-verification** guardrail
-attached to the review stage — it lives in the environment
-repository, not inside any Sandcastle.
+The script commits the hand-off's XR to `envs/dev/xr.yaml` on a
+timestamped feature branch and pushes it. Nothing in this step
+reaches back into the Sandcastle: the XR file is read from the
+hand-off lab's `work/` output only.
 
-Note in your walkthrough: *which parts of this workflow would you
-extend to also re-run the hand-off's `verify.sh` on the merged
-XR?* You do not have to implement it — the goal is to see where
-the extension slot is.
+Rule being exercised: **the branch is the only interface**.
+
+## Step 3 · Open the pull request (stage 1 · review surface)
+
+```bash
+bash labs/outer-delivery-loop/downloads/open-pr.sh
+open "$(cat work/outer-delivery-loop/state/pr-url.txt)"
+```
+
+The PR is a real GitHub PR against the env repo's default branch.
+This is where the **automated verification** and **review**
+guardrails attach in production: required checks and required
+reviewers on this env repo's branch-protection settings would gate
+the merge. On a learner-owned solo repo, the next step merges
+directly; on a shared env repo you would let humans and CI drive
+the merge instead.
 
 Rule being exercised: **guardrails live outside the Sandcastle
 boundary**.
 
-## Step 3 · Read the merge stage as a policy, not a step
-
-Open the repository on GitHub and inspect the branch-protection
-rules on `main`. Merge is not a script you run — it is a policy
-the environment repository enforces. In a real delivery setup, the
-same policy would attach required reviewers, required checks, and
-optionally a required signed commit.
-
-Note in your walkthrough: *the outer loop's merge stage is a
-policy configuration on the environment repository, not code that
-lives in the Sandcastle or in the hand-off.*
-
-Rule being exercised: **guardrails live outside the Sandcastle
-boundary**.
-
-## Step 4 · Map the GitOps delivery stage onto a manual apply
-
-The academy does not yet ship a GitOps reconciler as part of a
-runnable lab. The closest concrete equivalent you can inspect
-today is the manual apply from the Kubernetes lab's own
-walkthrough:
+## Step 4 · Merge the pull request (stage 2 · source of truth moves)
 
 ```bash
-kubectl apply -f labs/hello-pico-on-kubernetes/downloads/05-xr.yaml
+bash labs/outer-delivery-loop/downloads/merge-pr.sh
+gh pr view "$(cat work/outer-delivery-loop/state/pr-number.txt)" \
+   --repo "$OE_ENV_REPO" --json state,merged,mergeCommit
 ```
 
-Read this line as *the reconciler's job on your behalf*. In a
-real GitOps setup, Flux or Argo CD would watch the merged branch
-and issue exactly this apply — with the added benefit that a
-cluster-side admission policy (OPA / Kyverno) can reject the XR
-before Crossplane sees it.
+The merge commit's SHA on the default branch is the moment the XR
+transitions from a proposal to the environment's desired state.
+The Sandcastle has no opinion on this transition; it happens
+entirely on GitHub.
 
-Note in your walkthrough: *the outer loop does not care whether
-this apply is manual, GitOps-driven, or policy-gated — as long as
-the XR that reaches the cluster is byte-equivalent to the one the
-previous lesson's hand-off produced.*
+Rule being exercised: **no reach-back into the Sandcastle**.
+
+## Step 5 · Reconcile onto the cluster (stage 3 · GitOps delivery)
+
+If you have the Crossplane cluster from the
+[Hello Pico on Kubernetes walkthrough](../../../../labs/hello-pico-on-kubernetes/walkthrough.html)
+running, either as a Flux-managed cluster or with plain `kubectl`:
+
+```bash
+bash labs/outer-delivery-loop/downloads/gitops-sync.sh
+```
+
+The script prefers Flux (`flux create source git` + `flux create
+kustomization` on the merged branch) and falls back to a `kubectl`
+apply from a fresh clone if `flux` is missing. Either path
+preserves the outer-loop rule that the merged env repo is the
+only input — the reconciler pulls, it does not receive a push from
+the hand-off.
 
 Rule being exercised: **cluster reconciliation is Crossplane's
 job**.
 
-## Step 5 · Confirm Crossplane closes the loop
-
-If you have the Crossplane cluster from the
-[Hello Pico on Kubernetes walkthrough](../../../../labs/hello-pico-on-kubernetes/walkthrough.html)
-running, reuse its `verify.sh` unchanged:
+## Step 6 · Confirm Crossplane closes the loop (stage 4)
 
 ```bash
 bash labs/hello-pico-on-kubernetes/downloads/verify.sh
 ```
 
-Note in your walkthrough: *the same downstream verification
-`verify.sh` works whether the XR arrived via a manual apply, a
-GitOps sync, or a hypothetical future outer-loop lab.* That
-independence is the outer loop's payoff.
+This is the Kubernetes lab's own verifier, unchanged. Reusing it
+demonstrates that the composed `Job` behaves identically whether
+the XR arrived via this outer loop, via a manual `kubectl apply`,
+or via any other GitOps setup pointed at the same env repo.
 
-Rule being exercised: **cluster reconciliation is Crossplane's
-job**.
+## Step 7 · Run the automatable verification
 
-## Success criteria (paper walkthrough)
+Re-run the full path under the packaged verifier:
 
-- [ ] You produced a one-page written map that annotates each of
-      the four outer-loop stages with a concrete artifact you
-      inspected in this repository or in the Kubernetes lab.
-- [ ] Your map marks stages **0** (hand-off) and **4**
-      (Crossplane reconciliation) as **runnable today**, and stages
-      **1–3** (review, merge, GitOps delivery) as **inspectable
-      but scaffolded**.
-- [ ] You can name where a future runnable outer-loop lab would
-      attach in each of the three scaffolded stages.
+```bash
+export OE_ENV_REPO=your-handle/oe-env-hello-world-pico
+bash labs/outer-delivery-loop/downloads/verify.sh                # auto
+bash labs/outer-delivery-loop/downloads/verify.sh --skip-cluster # PR/merge only
+```
+
+`verify.sh` runs stages 0–2 against live GitHub and asserts:
+
+1. The hand-off XR exists (running the hand-off — and the
+   Sandcastle — if needed).
+2. `push-branch.sh`, `open-pr.sh`, and `merge-pr.sh` succeed
+   against `OE_ENV_REPO`.
+3. GitHub reports the PR as **merged** and the merge commit is on
+   the default branch.
+4. The merged XR fetched from GitHub is byte-equivalent (on
+   `apiVersion`, `kind`, `metadata.name`, and `spec.value`) to the
+   hand-off XR.
+
+When a cluster is reachable it additionally runs `gitops-sync.sh`
+and the Kubernetes lab's own `verify.sh` (stages 3–4). A final
+`verify: OK` line and exit code `0` are the pass.
+
+## Success criteria (runnable)
+
+- [ ] `bash labs/outer-delivery-loop/downloads/verify.sh
+      --skip-cluster` exits `0` with a `verify: OK — outer loop
+      stages 1–2 complete` line and a merged PR on `OE_ENV_REPO`.
+- [ ] The merged XR on `OE_ENV_REPO`'s default branch matches the
+      hand-off's `work/handoff-sandcastle-to-kubernetes/build/xr.yaml`
+      on its four boundary fields.
+- [ ] If you have a Crossplane cluster reachable, `bash
+      labs/outer-delivery-loop/downloads/verify.sh --with-cluster`
+      exits `0` with a `verify: OK — outer loop stages 1–4
+      complete` line.
 
 ## Related content
 
 - Complete the [Exercise](exercise.qmd) trace first — this
   walkthrough intentionally follows the same stage order as the
   exercise table.
-- The runnable segments of this picture live in
-  [`labs/handoff-sandcastle-to-kubernetes/`](../../../../labs/handoff-sandcastle-to-kubernetes/)
-  and
-  [`labs/hello-pico-on-kubernetes/`](../../../../labs/hello-pico-on-kubernetes/).
-- A future Part 3 lesson may package the outer loop as a single
-  reusable lab; this lesson deliberately does not pre-empt that
-  work.
+- Compare against the runnable
+  [Outer delivery loop lab](../../../../labs/outer-delivery-loop/).
+- The upstream construct → compose boundary this loop feeds from
+  lives in
+  [Sandcastle → Kubernetes hand-off](../../../../labs/handoff-sandcastle-to-kubernetes/).
+- The downstream cluster reconcile this loop feeds into lives in
+  [Hello Pico on Kubernetes](../../../../labs/hello-pico-on-kubernetes/).
 
 ## Next
 

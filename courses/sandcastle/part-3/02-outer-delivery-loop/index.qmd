@@ -33,10 +33,20 @@ By the end of this lesson you will be able to:
 - Reading familiarity with
   [Crossplane · Part 1](../../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
   — the downstream reconciler the outer loop feeds.
-- Basic understanding of pull requests and merges. No GitOps tooling
-  needs to be installed for this lesson.
-- No cluster is required for **this lesson**; a cluster only enters
-  the picture at the last stage of the outer loop.
+- Basic understanding of pull requests and merges. This lesson can
+  be read without running anything, but the accompanying
+  [runnable lab](../../../../labs/outer-delivery-loop/) drives all
+  four stages against live GitHub (and optionally a Crossplane
+  cluster).
+- A learner-controlled GitHub environment repository (private is
+  recommended) and an authenticated `gh` CLI, if you plan to run
+  the lab. See the lab's
+  [Objectives page](../../../../labs/outer-delivery-loop/objectives.html)
+  for the full prerequisite list and honest hosted-dependency notes.
+- No cluster is required to complete stages 1–2 of the runnable
+  path; stages 3–4 add a Crossplane cluster (per the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/))
+  and, optionally, the `flux` CLI.
 
 ## Why an outer-loop lesson?
 
@@ -159,20 +169,22 @@ one addition for each outer-loop stage:
 
 ## What is out of scope for this lesson
 
-- **A runnable end-to-end outer-loop lab.** This lesson is
-  instruction-first and remains scaffolded: the runnable pieces the
-  academy ships today are the Sandcastle lab, the hand-off lab, and
-  the Kubernetes lab — each of which owns one segment of the
-  picture. A single reusable outer-loop lab is a natural future
-  addition and is deliberately not invented here.
-- **Multi-artifact PRs.** The lesson describes the outer loop for
-  the single-rule `hello-world-pico` case. Multi-artifact
-  hand-offs and their delivery implications belong to a later Part 3
-  lesson.
-- **Choosing a specific GitOps or policy tool.** The lesson names
-  Flux / Argo CD and OPA / Kyverno as examples so the shape is
-  concrete, but the outer-loop *shape* is what the lesson teaches,
-  not tool selection.
+- **Bootstrapping the hosted dependencies.** The lesson (and its
+  runnable [lab](../../../../labs/outer-delivery-loop/)) require a
+  learner-owned GitHub env repo and an authenticated `gh` session,
+  and — for stages 3–4 — a Crossplane cluster from the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  plus optionally the `flux` CLI. Installing and authenticating
+  those tools is a documented prerequisite, not a step this lesson
+  walks through.
+- **Multi-artifact / multi-environment PRs.** The lesson and its
+  lab drive a single-XR promotion into a single `envs/dev/xr.yaml`
+  path. Multi-artifact hand-offs and multi-environment promotion
+  (dev → staging → prod) belong to a later Part 3 lesson.
+- **Full policy demo.** The lesson names OPA, Kyverno, and
+  Gatekeeper as examples of the admission-time policy guardrail so
+  the shape is concrete, but the runnable lab does not ship a
+  concrete policy. Adding one is a reasonable extension exercise.
 
 ## Next
 

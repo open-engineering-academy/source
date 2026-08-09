@@ -21,29 +21,35 @@ title: "Summary · The outer delivery loop"
   composition from the delivery side — the same rule the
   [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
   already relies on in isolation.
-- The academy ships runnable coverage of the **endpoints** of this
-  picture — the
+- The academy ships **end-to-end runnable coverage** of the whole
+  picture. The
   [Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/)
-  at stage 0 and the
+  produces the XR at stage 0; the
+  [outer-delivery-loop lab](../../../../labs/outer-delivery-loop/)
+  drives stages 1–3 (real GitHub PR, real merge, GitOps sync via
+  Flux or `kubectl`); and the
   [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
-  at stage 4. Stages 1–3 (review, merge, GitOps delivery) are
-  **inspectable in the environment repository today** but are not
-  yet packaged as a single reusable outer-loop lab.
+  verifies stage 4 (Crossplane composes the `Job`). Stages 1–2 are
+  runnable without a cluster; stages 3–4 add a Crossplane cluster
+  (and optionally the `flux` CLI) as a documented prerequisite.
 
 ## What comes next
 
 - Part 3 will continue with lessons on **multi-artifact hand-offs**
-  and on **packaging the outer loop as a runnable lab**. See
-  [Part 3](../index.qmd) for the current scaffolded outline.
+  and **multi-environment promotion** (dev → staging → prod), which
+  build on the outer-loop shape this lesson pins down. See
+  [Part 3](../index.qmd) for the current outline.
 - Downstream cluster verification of the composed artifact continues
   to live in
   [`labs/hello-pico-on-kubernetes/`](../../../../labs/hello-pico-on-kubernetes/),
-  and the hand-off that seeds the outer loop continues to live in
-  [`labs/handoff-sandcastle-to-kubernetes/`](../../../../labs/handoff-sandcastle-to-kubernetes/).
-- Policy tooling (OPA, Kyverno, Gatekeeper) and GitOps tooling
-  (Flux, Argo CD) are named here as concrete examples of the
-  outer-loop guardrail and delivery stages; specific tool
-  walkthroughs are natural extensions for later Part 3 lessons.
+  the hand-off that seeds the outer loop lives in
+  [`labs/handoff-sandcastle-to-kubernetes/`](../../../../labs/handoff-sandcastle-to-kubernetes/),
+  and the outer loop itself lives in
+  [`labs/outer-delivery-loop/`](../../../../labs/outer-delivery-loop/).
+- Policy tooling (OPA, Kyverno, Gatekeeper) is named here as a
+  concrete example of the admission-time guardrail; a concrete
+  policy demo is a reasonable extension exercise on top of this
+  lab's `gitops-sync.sh`.
 
 ## Next
 

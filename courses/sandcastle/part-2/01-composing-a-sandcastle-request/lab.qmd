@@ -127,7 +127,7 @@ bash labs/compose-sandcastle-request/downloads/verify.sh
 
 `verify.sh` runs `compose.sh` and `sandcastle-run.sh` and asserts the
 five boundary invariants from
-[`labs/compose-sandcastle-request/walkthrough.qmd`](../../../../labs/compose-sandcastle-request/walkthrough.qmd#step-5-run-the-automatable-verification):
+[`labs/compose-sandcastle-request/walkthrough.qmd`](../../../../labs/compose-sandcastle-request/walkthrough.html#step-5-run-the-automatable-verification):
 
 1. The emitted task matches the reference shape on the boundary
    fields.

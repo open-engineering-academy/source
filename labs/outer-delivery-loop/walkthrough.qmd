@@ -1,0 +1,174 @@
+---
+title: "Walkthrough"
+description: "Drive the Sandcastle-produced XR through the four outer-loop stages against live GitHub and (optionally) a live Crossplane cluster."
+---
+
+## Overview of what you will do
+
+1. Confirm the hand-off lab has produced its XR
+   (`work/handoff-sandcastle-to-kubernetes/build/xr.yaml`).
+2. Export `OE_ENV_REPO` and confirm your `gh` session can reach it.
+3. Push a feature branch that carries the XR to your env repo
+   (**stage 1**).
+4. Open a real GitHub pull request against the env repo's default
+   branch (**stage 1** review surface).
+5. Merge the PR — the env repo now owns the desired state (**stage
+   2**).
+6. Reconcile the merged XR onto the cluster (**stage 3**) via Flux or
+   `kubectl`.
+7. Confirm Crossplane closes the loop by composing the same
+   Kubernetes `Job` the hand-off lab targets (**stage 4**), reusing
+   the [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/)'s
+   `verify.sh` unchanged.
+
+Run every command from the root of your local clone of the academy
+repository.
+
+## Step 0 · Confirm the hand-off XR exists
+
+```bash
+test -f work/handoff-sandcastle-to-kubernetes/build/xr.yaml \
+  && cat work/handoff-sandcastle-to-kubernetes/build/xr.yaml
+```
+
+If the file is missing, run the hand-off lab first (it will also
+run the Sandcastle lab if needed):
+
+```bash
+bash labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh
+```
+
+Rule from [the lesson](../../courses/sandcastle/part-3/02-outer-delivery-loop/index.qmd)
+being exercised: **the branch is the only interface** — everything
+that follows reads only from `xr.yaml` and the merged env repo.
+
+## Step 1 · Point at a learner-owned env repo
+
+Create the env repo once (private is recommended) and export it:
+
+```bash
+gh repo create your-handle/oe-env-hello-world-pico --private --add-readme
+export OE_ENV_REPO=your-handle/oe-env-hello-world-pico
+gh auth status
+gh repo view "$OE_ENV_REPO" --json name,visibility --jq '"\(.name) (\(.visibility))"'
+```
+
+Rule being exercised: **guardrails live outside the Sandcastle
+boundary** — the env repo, not the Sandcastle, is where PR review,
+merge policy, and (later) cluster admission will attach.
+
+## Step 2 · Push the feature branch (stage 1)
+
+```bash
+bash labs/outer-delivery-loop/downloads/push-branch.sh
+```
+
+The script clones your env repo, creates a branch named
+`sandcastle/hello-world-pico-<timestamp>`, commits the hand-off's
+XR to `envs/dev/xr.yaml`, and pushes. It writes the branch, base,
+repo, and commit into `work/outer-delivery-loop/state/`.
+
+## Step 3 · Open the pull request (stage 1 · review surface)
+
+```bash
+bash labs/outer-delivery-loop/downloads/open-pr.sh
+open "$(cat work/outer-delivery-loop/state/pr-url.txt)"
+```
+
+The PR is a real GitHub PR against the env repo's default branch.
+This is the review surface: reviewers, required checks, and any
+CODEOWNERS policy attach here — **not** to the Sandcastle.
+
+Rule being exercised: **guardrails live outside the Sandcastle
+boundary**.
+
+## Step 4 · Merge the pull request (stage 2 · source of truth moves)
+
+```bash
+bash labs/outer-delivery-loop/downloads/merge-pr.sh
+```
+
+By default `merge-pr.sh` uses `gh pr merge --squash --admin
+--delete-branch`. On a real environment repo with branch protection
+you would remove `--admin` (set `MERGE_FLAGS=--delete-branch`) and
+let the required reviewers and checks drive the merge. The merged
+commit SHA is written to `work/outer-delivery-loop/state/merge-sha.txt`.
+
+Rule being exercised: **no reach-back into the Sandcastle** — the
+merge operates on the branch, not on the Sandcastle that produced it.
+
+## Step 5 · Reconcile onto the cluster (stage 3 · GitOps delivery)
+
+If you have the Crossplane cluster from
+[Hello Pico on Kubernetes](../hello-pico-on-kubernetes/) running:
+
+```bash
+bash labs/outer-delivery-loop/downloads/gitops-sync.sh
+```
+
+The script prefers Flux (`flux create source git` + `flux create
+kustomization` on the merged branch) and falls back to `kubectl
+apply` on a fresh clone if `flux` is not installed. Either path
+respects the outer-loop rule that the merged env repo is the only
+input — no re-invocation of the hand-off or the Sandcastle is
+possible.
+
+Rule being exercised: **cluster reconciliation is Crossplane's
+job** — the reconciler hands the XR to Crossplane and stops.
+
+## Step 6 · Confirm Crossplane closes the loop (stage 4)
+
+```bash
+bash labs/hello-pico-on-kubernetes/downloads/verify.sh
+```
+
+This is the existing Kubernetes lab's verifier, unchanged. It
+asserts that the composed `Job` ran and printed `Hello, Pico!` — the
+same downstream behaviour the reconciler is expected to converge on
+whether the XR arrived via this outer loop, via a manual apply, or
+via any other GitOps setup.
+
+## Step 7 · Cleanup
+
+```bash
+rm -rf work/outer-delivery-loop
+
+# Optional: remove the Flux resources and any lingering feature branch.
+kubectl delete kustomization oe-env-hello-world-pico -n flux-system 2>/dev/null || true
+kubectl delete gitrepository  oe-env-hello-world-pico -n flux-system 2>/dev/null || true
+```
+
+The env repo itself is deliberately left alone — the merge commit
+is now part of your environment's history.
+
+## Automatable verification
+
+The lab ships an end-to-end
+[`verify.sh`](downloads/verify.sh) that runs stages 0–2 against
+live GitHub and asserts the merged XR content matches the hand-off
+XR byte-for-byte on the boundary fields. If a cluster is reachable
+it also runs stages 3–4:
+
+```bash
+export OE_ENV_REPO=your-handle/oe-env-hello-world-pico
+bash labs/outer-delivery-loop/downloads/verify.sh                # auto
+bash labs/outer-delivery-loop/downloads/verify.sh --skip-cluster # PR/merge only
+bash labs/outer-delivery-loop/downloads/verify.sh --with-cluster # require cluster
+```
+
+Expected final line (stages 1–2 only):
+
+```
+verify: OK — outer loop stages 1–2 complete on <repo> PR #<n> (cluster stages skipped)
+```
+
+Expected final line (stages 1–4):
+
+```
+verify: OK — outer loop stages 1–4 complete on <repo> PR #<n> (merge sha <sha>)
+```
+
+## Next
+
+Continue with the [Solution](solution.qmd), or return to the
+[Sandcastle · Part 3 · Lesson 02](../../courses/sandcastle/part-3/02-outer-delivery-loop/index.html).

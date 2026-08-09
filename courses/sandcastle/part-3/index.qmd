@@ -33,24 +33,29 @@ The intended learning arc is:
   stages — **review / PR**, **merge**, **GitOps delivery**, and
   **downstream Crossplane reconciliation** — and the three
   guardrails (**automated verification**, **review**, **policy**)
-  that surround them, all outside the Sandcastle boundary. This
-  lesson is **instruction-first**: it reuses the existing runnable
-  labs at both ends of the picture and does not ship a new
-  outer-loop lab.
+  that surround them, all outside the Sandcastle boundary. Ships
+  with a runnable
+  [Outer delivery loop lab](../../../labs/outer-delivery-loop/)
+  that drives stages 1–2 against live GitHub without a cluster and
+  stages 3–4 against a Crossplane cluster when one is reachable.
 
 Additional Part 3 lesson content will follow the same lesson layout
 as [Part 1](../part-1/index.qmd) and the
 [Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
 
-::: {.callout-note title="Scaffold — Part 3 partially runnable"}
-Lesson 01 (Handing off to Kubernetes) is **runnable** end-to-end via
-its accompanying
+::: {.callout-note title="Part 3 — end-to-end runnable"}
+Both current Part 3 lessons ship runnable labs. Lesson 01 (Handing
+off to Kubernetes) is runnable via the
 [Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
-Lesson 02 (The outer delivery loop) is **instruction-first and
-scaffolded**: it reuses the hand-off lab and the
-[Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
-as its runnable endpoints, and stays honest that a single reusable
-outer-loop lab is not yet packaged. Further Part 3 lessons on
-multi-artifact hand-offs and a packaged outer-loop lab remain
-intentionally scaffolded for a later curriculum wave.
+Lesson 02 (The outer delivery loop) is runnable via the
+[Outer delivery loop lab](../../../labs/outer-delivery-loop/),
+which drives real GitHub PR/merge and reconciles the merged XR onto
+the cluster from
+[Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/).
+The outer-loop lab is honest about its hosted prerequisites (a
+learner-controlled GitHub env repo + authenticated `gh` CLI, plus a
+Crossplane cluster and optionally `flux` for stages 3–4). Further
+Part 3 lessons on multi-artifact hand-offs and multi-environment
+promotion remain intentionally scaffolded for a later curriculum
+wave.
 :::

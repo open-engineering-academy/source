@@ -3,7 +3,7 @@ title: "Exercise · Map the outer delivery loop on paper"
 ---
 
 A short, pen-and-paper task. Complete it before moving on to the
-scaffolded [Lab](lab.qmd) walkthrough.
+runnable [Lab](lab.qmd) walkthrough.
 
 ## Task
 
@@ -136,5 +136,5 @@ undoing the previous lesson's cluster-independence rule.
 
 ## Next
 
-Walk through the scaffolded [Lab](lab.qmd) to see how the outer
-loop maps onto tooling learners can inspect today.
+Walk through the runnable [Lab](lab.qmd) to drive the outer loop
+against live GitHub (and, optionally, a Crossplane cluster).

@@ -38,6 +38,17 @@ directory.
   [`verify.sh`](../../../labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh)
   and is exercised from Part 3's
   [Lab page](../part-3/01-handing-off-to-kubernetes/lab.qmd).
+- **[Outer delivery loop](../../../labs/outer-delivery-loop/)** —
+  the first runnable outer-loop lab. Takes the XR the hand-off lab
+  produced, drives it through a real GitHub pull request and merge
+  on a learner-controlled env repo, and reconciles the merged XR
+  onto the Crossplane cluster from
+  [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/)
+  via Flux (with a `kubectl` fallback). Ships an automatable
+  [`verify.sh`](../../../labs/outer-delivery-loop/downloads/verify.sh)
+  that runs stages 1–2 against live GitHub without requiring a
+  cluster, and is exercised from Part 3's
+  [Lab page](../part-3/02-outer-delivery-loop/lab.qmd).
 
 ## Related reusable labs
 
