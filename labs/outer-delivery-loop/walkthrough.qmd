@@ -38,7 +38,7 @@ run the Sandcastle lab if needed):
 bash labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh
 ```
 
-Rule from [the lesson](../../courses/sandcastle/part-3/02-outer-delivery-loop/index.qmd)
+Rule from [the lesson](../../courses/sandcastle/part-3/02-outer-delivery-loop/index.html)
 being exercised: **the branch is the only interface** — everything
 that follows reads only from `xr.yaml` and the merged env repo.
 
