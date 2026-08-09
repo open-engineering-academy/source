@@ -45,7 +45,7 @@ verification lives.
 
 ## Downloads and screenshots
 
-Runnable files live under [`downloads/`](downloads/):
+Runnable files live under `downloads/`:
 
 - [`handoff.sh`](downloads/handoff.sh) — reads the greeting value from
   the Sandcastle-produced branch and writes the Crossplane XR.

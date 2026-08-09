@@ -6,8 +6,8 @@ description: "Reference solution for Hello Pico on Kubernetes."
 ## Reference solution
 
 A working solution consists of the six files shipped under
-[`downloads/`](downloads/), applied in order against a local minikube
-cluster with Crossplane installed:
+`downloads/`, applied in order against a local minikube cluster with
+Crossplane installed:
 
 1. [`01-provider.yaml`](downloads/01-provider.yaml) — installs the
    Kubernetes Provider and the patch-and-transform function, and pins

@@ -40,7 +40,7 @@ printed by the recomposed Pico).
 
 ## Downloads and screenshots
 
-Runnable files live under [`downloads/`](downloads/):
+Runnable files live under `downloads/`:
 
 - [`blueprint.yaml`](downloads/blueprint.yaml) — a filled-in
   Sandcastle blueprint following the shape from the Sandcastle

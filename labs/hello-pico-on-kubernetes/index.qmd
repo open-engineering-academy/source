@@ -40,10 +40,10 @@ The directory contains:
 
 ## Downloads and screenshots
 
-Starter files live under [`downloads/`](downloads/). Screenshots
-referenced from the walkthrough live under `screenshots/`. Both
-directories are kept even when empty so authors have a consistent
-place to add assets.
+The six starter manifests for this lab ship under `downloads/` — see
+the [Solution](solution.qmd) for the numbered list applied in order
+against the cluster. Screenshots referenced from the walkthrough live
+under `screenshots/`.
 
 ## Metadata
 

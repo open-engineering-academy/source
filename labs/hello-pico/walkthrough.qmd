@@ -24,9 +24,9 @@ mkdir -p work/hello-pico && cd work/hello-pico
 ```
 
 The `work/` directory is ignored by git so anything you create there
-stays local. Starter files (if any) live under
-[`downloads/`](downloads/). For Hello Pico the starter directory is
-intentionally empty — you will author the single Rule yourself.
+stays local. Starter files (if any) live under `downloads/`. For
+Hello Pico the starter directory is intentionally empty — you will
+author the single Rule yourself.
 
 ## Step 2 — Author your first Rule
 
