@@ -112,7 +112,8 @@ jobs:
           http_status="$(curl -sS -o /tmp/pages-response.txt -w '%{http_code}' \
             -X PUT "${PAGES_SITE_URL}" \
             -H "Authorization: Pages ${PAGES_TOKEN}" \
-            --data-urlencode "${clone_url}")"
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-raw "${clone_url}")"
           if [ "${http_status}" -ge 200 ] && [ "${http_status}" -lt 300 ]; then
             echo "git-pages PUT succeeded (HTTP ${http_status})."
             cat /tmp/pages-response.txt
