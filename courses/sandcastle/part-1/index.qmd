@@ -16,9 +16,11 @@ suitable for safely producing Open Engineering artifacts:
    torn down.
 
 The single Part 1 lesson develops the mental model the rest of the
-course will build on. It is intentionally instruction-first: the
-runnable Sandcastle lab is planned for a later curriculum wave and is
-clearly labelled in [Lesson 1's Lab page](01-inside-a-sandcastle/lab.qmd).
+course will build on. The lesson is instruction-first, followed by a
+paper exercise and then a runnable Sandcastle lab: Lesson 1's
+[Lab page](01-inside-a-sandcastle/lab.qmd) now links to the reusable
+[Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/),
+which executes the full Sandcastle path end-to-end.
 
 ## Lessons
 
@@ -31,12 +33,12 @@ and the [Crossplane Part 1 lesson](../../crossplane/part-1/01-composing-hello-pi
   how it sits between the Crossplane composition layer and the Pico
   runtime layer.
 
-## Where the runnable lab will live
+## Where the runnable lab lives
 
-Once a first runnable Sandcastle lab is authored, it will be published
-as a reusable lab under the repository-root `labs/` directory (for
-example, `labs/hello-world-pico-sandcastle/`) so it can be reused from
-other courses. Until then, Lesson 1's [Lab page](01-inside-a-sandcastle/lab.qmd)
-is a **structured paper walkthrough** rather than an executable lab —
-it is deliberately labelled as *not yet runnable* so it is never
-mistaken for a runnable-contract entry.
+The first runnable Sandcastle lab is published as a reusable lab under
+the repository-root `labs/` directory at
+[`labs/hello-world-pico-sandcastle/`](../../../labs/hello-world-pico-sandcastle/)
+so it can be reused from other courses. Lesson 1's
+[Lab page](01-inside-a-sandcastle/lab.qmd) links to it directly and
+keeps the earlier paper walkthrough as an optional pre-run rehearsal
+of the same five construction-layer concerns.

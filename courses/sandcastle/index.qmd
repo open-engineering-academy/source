@@ -83,15 +83,13 @@ courses/sandcastle/
 - [Labs](labs/index.qmd)
 - [Glossary](glossary.qmd)
 
-::: {.callout-warning title="Course status — instruction, not yet runnable"}
-This is the first wave of the Sandcastle course. Part 1 delivers
-substantive learner-facing **instruction** about the Sandcastle
-construction layer, including a paper exercise. It does **not** yet
-include a runnable Sandcastle lab — no reusable
-`labs/hello-world-pico-sandcastle/` exists yet, and the Part 1
-[Lab](part-1/01-inside-a-sandcastle/lab.qmd) page is a **structured
-walkthrough on paper**, not an executable lab. Parts 2 and 3 are
-intentionally scaffolded and are clearly labelled where
-learner-visible. A runnable Sandcastle lab is planned for a later
-curriculum-verification wave.
+::: {.callout-note title="Course status — Part 1 now runnable; Parts 2 and 3 scaffolded"}
+Part 1 is now **runnable** end-to-end. The Part 1
+[Lab](part-1/01-inside-a-sandcastle/lab.qmd) links to the reusable
+[Hello World Pico Sandcastle lab](../../labs/hello-world-pico-sandcastle/),
+which runs a real Sandcastle path (isolated workspace, PATH
+allowlist, agent inner loop, artifact hand-off, sandbox teardown)
+and includes an automatable `verify.sh` check. Parts 2 and 3 are
+intentionally scaffolded for this wave and are clearly labelled
+where learner-visible.
 :::

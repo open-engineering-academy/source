@@ -29,8 +29,11 @@ By the end of this lesson you will be able to:
 - Basic Git commands (`clone`, `branch`, `commit`, `push`) — no
   advanced Git required.
 - No cluster or sandbox provider is required for **this lesson** —
-  the lesson is conceptual. The follow-on [Lab](lab.qmd) is a paper
-  walkthrough and is explicitly labelled as *not yet runnable*.
+  the lesson is conceptual. The follow-on [Lab](lab.qmd) links to
+  the runnable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/),
+  which needs only `bash`, `git`, and `python3` (no cluster or
+  container runtime).
 
 ## Why a Sandcastle?
 
@@ -233,10 +236,11 @@ five construction-layer concerns still guide safe use.
 - The [Exercise](exercise.qmd) turns the five concerns into a
   paper artifact you write yourself — a short "Sandcastle
   blueprint" for constructing a `HelloWorldPico`.
-- The [Lab](lab.qmd) is a **structured paper walkthrough** of that
-  same construction, deliberately labelled as *not yet runnable*.
-  A future curriculum-verification wave will replace it with a
-  reusable, executable Sandcastle lab under `labs/`.
+- The [Lab](lab.qmd) links to the runnable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/)
+  under `labs/`, which executes the same construction end-to-end
+  with an automatable verification. The Lab page also keeps the
+  earlier paper walkthrough as an optional pre-run rehearsal.
 - The [Summary](summary.qmd) and [Quiz](quiz.qmd) close the lesson.
 
 ## Next

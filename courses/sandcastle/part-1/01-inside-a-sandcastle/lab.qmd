@@ -1,23 +1,20 @@
 ---
-title: "Lab · Constructing HelloWorldPico inside a Sandcastle (paper walkthrough)"
+title: "Lab · Constructing HelloWorldPico inside a Sandcastle"
 ---
 
-::: {.callout-warning title="Not yet runnable — paper walkthrough only"}
-This lab is a **structured paper walkthrough**, not an executable
-lab. It is deliberately included at this point in the Sandcastle
-course so the lesson structure matches the other academy courses,
-but it does **not** satisfy the academy's runnable contract and is
-labelled here so learners are not misled.
+::: {.callout-tip title="Runnable — do this lab in the reusable lab page"}
+The runnable version of this lab lives at
+[`labs/hello-world-pico-sandcastle/`](../../../../labs/hello-world-pico-sandcastle/).
+It executes the full Sandcastle path end-to-end (isolated workspace,
+PATH allowlist, agent inner loop, artifact hand-off, sandbox
+teardown) and ships an automatable
+[`verify.sh`](../../../../labs/hello-world-pico-sandcastle/downloads/verify.sh).
+Start there when you are ready to run the lab.
 
-A reusable, executable Sandcastle lab (planned location:
-`labs/hello-world-pico-sandcastle/`) will be authored in a later
-curriculum-verification wave. When it lands, this page will link to
-it and be re-classified as a runnable lab.
-
-Meanwhile, the paper walkthrough below is genuinely useful: it makes
-you rehearse each of the five construction-layer concerns from
-[Lesson 1](index.qmd) on the same `HelloWorldPico` artifact you built
-in the [Hello Pico lab](../../../../labs/hello-pico/).
+The paper walkthrough below remains available as an **optional
+pre-run rehearsal** — it makes you name each of the five
+construction-layer concerns from [Lesson 1](index.qmd) before you
+watch them happen in the runnable lab.
 :::
 
 ## What you will walk through
@@ -155,16 +152,17 @@ that your blueprint did not list under `survives`?*
 
 ## Related content
 
-- Complete the [Exercise](exercise.qmd) blueprint first — this
-  walkthrough uses your blueprint as its input.
+- Complete the [Exercise](exercise.qmd) blueprint first — the paper
+  walkthrough uses your blueprint as its input, and the runnable
+  lab ships a filled-in `blueprint.yaml` with the same shape.
 - Compare this walkthrough against the actual hand-built
   [Hello Pico lab](../../../../labs/hello-pico/) walkthrough. Every
   file the agent commits in step 4 is the same file you produced
   by hand there.
-- When a runnable Sandcastle lab lands (planned:
-  `labs/hello-world-pico-sandcastle/`), it will drop into the
-  [Labs](../../labs/index.qmd) page of this course and this page
-  will link out to it.
+- Run the full path end-to-end in the reusable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/) —
+  also linked from this course's
+  [Labs](../../labs/index.qmd) page.
 
 ## Next
 

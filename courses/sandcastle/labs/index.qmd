@@ -9,31 +9,31 @@ directory.
 
 ## Referenced labs
 
-There is no runnable Sandcastle lab yet.
-
-::: {.callout-warning title="Scaffold — no runnable Sandcastle lab yet"}
-This wave of the Sandcastle course delivers substantive Part 1
-**instruction** but does not yet include a runnable Sandcastle lab.
-The Part 1 lesson's [Lab page](../part-1/01-inside-a-sandcastle/lab.qmd)
-is a structured paper walkthrough, not an executable lab, and it is
-labelled as such. A reusable
-`labs/hello-world-pico-sandcastle/` (or equivalently named) runnable
-lab is planned for a later curriculum-verification wave.
-:::
+- **[Hello World Pico Sandcastle](../../../labs/hello-world-pico-sandcastle/)**
+  — the first runnable Sandcastle lab. Runs a real Sandcastle
+  end-to-end (isolated workspace, PATH allowlist, agent inner loop,
+  artifact hand-off, sandbox teardown) to construct the
+  `hello-world-pico` artifact on a dedicated
+  `sandcastle/hello-world-pico` branch. Ships an automatable
+  [`verify.sh`](../../../labs/hello-world-pico-sandcastle/downloads/verify.sh)
+  and is exercised from Part 1's
+  [Lab page](../part-1/01-inside-a-sandcastle/lab.qmd).
 
 ## Related reusable labs
 
-While no Sandcastle-specific lab exists yet, these existing reusable
-labs are useful context — they define the **artifact** a future
-Sandcastle lab will produce and the **cluster** it may hand off to:
+These reusable labs give useful context — they define the
+**artifact** the Sandcastle lab produces and the **cluster** a
+follow-on lab may hand off to:
 
 - [Hello Pico](../../../labs/hello-pico/) — produces the
-  `hello-world-pico` greeting artifact from the [Pico course](../../pico/index.html).
-  This is the artifact a future Sandcastle lab will construct.
+  `hello-world-pico` greeting artifact by hand from the
+  [Pico course](../../pico/index.html). This is the same artifact
+  the Sandcastle lab above constructs under an agent.
 - [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/)
   — composes `hello-world-pico` onto a local minikube cluster with
-  Crossplane. A future Sandcastle lab may hand its output to this
-  lab's Composition as its downstream reconciliation target.
+  Crossplane. A follow-on Sandcastle wave may hand the branch
+  produced by the Sandcastle lab into this lab's Composition as its
+  downstream reconciliation target.
 
 ## Authoring course-scoped labs
 

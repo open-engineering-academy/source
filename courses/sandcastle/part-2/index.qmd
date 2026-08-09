@@ -24,11 +24,12 @@ Lesson content for Part 2 will follow the same lesson layout as
 [Part 1](../part-1/index.qmd) and the
 [Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
 
-::: {.callout-warning title="Scaffold — not yet runnable"}
+::: {.callout-warning title="Scaffold — Part 2 not yet runnable"}
 Part 2 is intentionally scaffolded so the Sandcastle course
 demonstrates the shared multi-part academy structure. It does **not**
-yet carry runnable learner content. Follow
-[Part 1](../part-1/index.qmd) as the current substantive Sandcastle
-material; Part 2 will land alongside a runnable Sandcastle lab in a
-later curriculum wave.
+yet carry runnable learner content of its own. Follow
+[Part 1](../part-1/index.qmd) — including its runnable
+[Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/) —
+as the current substantive Sandcastle material; Part 2's own
+runnable content will land in a later curriculum wave.
 :::

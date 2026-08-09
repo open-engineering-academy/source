@@ -25,11 +25,11 @@ title: "Summary · Inside a Sandcastle"
   generate → validate → commit) but does **not** own the
   surrounding delivery loop (branch → PR → merge → GitOps →
   Crossplane reconciliation).
-- This wave of the course delivers **substantive instruction** and a
-  paper [Exercise](exercise.qmd) plus paper [Lab](lab.qmd)
-  walkthrough. It intentionally does not include a runnable
-  Sandcastle lab yet — a reusable, executable lab is planned for a
-  later curriculum-verification wave and will land under `labs/`.
+- This wave of the course delivers **substantive instruction**, a
+  paper [Exercise](exercise.qmd) blueprint, and a runnable
+  Sandcastle [Lab](lab.qmd) that links to the reusable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/)
+  under `labs/`.
 
 ## What comes next
 

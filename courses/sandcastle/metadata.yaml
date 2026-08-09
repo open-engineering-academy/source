@@ -19,5 +19,6 @@ teaches:
   - Artifact boundary
 produces:
   - hello-world-pico-sandcastle-blueprint
-references_labs: []
+references_labs:
+  - oe.lab.hello-world-pico-sandcastle
 references_exercises: []

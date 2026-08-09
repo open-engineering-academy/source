@@ -1,0 +1,18 @@
+id: oe.lab.hello-world-pico-sandcastle
+title: Hello World Pico Sandcastle
+level: intermediate
+duration: 60m
+prerequisites:
+  - oe.lab.hello-pico
+  - oe.course.sandcastle
+teaches:
+  - Isolated workspace
+  - Repo/branch flow
+  - Tools and permissions
+  - Agent iteration
+  - Artifact boundary
+produces:
+  - hello-world-pico-sandcastle-branch
+referenced_by:
+  - oe.course.sandcastle
+  - oe.lesson.sandcastle.01-inside-a-sandcastle
