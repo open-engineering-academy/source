@@ -7,6 +7,7 @@ project:
     - index.qmd
     - glossary.qmd
     - constructive-realization.qmd
+    - hello-pico-exemplar.qmd
     - part-1/index.qmd
     - part-1/01-introduction/index.qmd
     - part-1/01-introduction/exercise.qmd
@@ -36,6 +37,8 @@ website:
         text: Labs
       - href: constructive-realization.qmd
         text: Model
+      - href: hello-pico-exemplar.qmd
+        text: Exemplar
       - href: glossary.qmd
         text: Glossary
     right:
@@ -68,6 +71,8 @@ website:
         text: Labs
       - href: constructive-realization.qmd
         text: Model
+      - href: hello-pico-exemplar.qmd
+        text: Exemplar
       - href: glossary.qmd
         text: Glossary
   page-footer:

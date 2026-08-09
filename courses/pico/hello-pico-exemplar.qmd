@@ -1,0 +1,142 @@
+---
+title: "Hello Pico as a constructive exemplar"
+subtitle: "The first concrete Definition → Realization → Element in this course."
+---
+
+This page is the course's **first explicit constructive exemplar**. It
+takes the [constructive-realization vocabulary](constructive-realization.qmd)
+(Definition, Element, Realization, Constraint, Validation) and points each
+term at a concrete piece of the existing Hello Pico material — the same
+Rule, pipeline, and executable you build in
+[Part 1 · Introduction](part-1/01-introduction/index.qmd) and the
+[Hello Pico lab](../../labs/hello-pico/index.html).
+
+Phase 1 is documentation and metadata only. Nothing here changes how you
+build a Pico; it names, for one worked example, the things you are
+already doing so lessons, labs, and metadata can point at them
+consistently.
+
+## The Hello Pico Definition
+
+The Hello Pico Definition is: *"a minimal Pico that, given a single
+greeting Rule, produces an executable artifact named
+`hello-world-pico` that prints a greeting to standard output."*
+
+Where this Definition already lives in the course:
+
+- The course descriptor names the artifact in
+  [`courses/pico/metadata.yaml`](metadata.yaml) under
+  `produces: [hello-world-pico]`.
+- [Part 1 · Introduction](part-1/01-introduction/index.qmd) states the
+  learning objectives that frame the Definition.
+- The [Hello Pico lab objectives](../../labs/hello-pico/objectives.html)
+  restate the Definition from the learner's perspective.
+
+## The Hello Pico Realization
+
+The Realization is the constructive path from that Definition to a
+running Element. In Hello Pico it is the familiar
+**Rules → Parser → Composer → Pico** pipeline, driven by the
+reference `pico` CLI shipped at `bin/pico`.
+
+```
+rules/hello.yaml  ─▶  pico parse  ─▶  build/parsed.json  ─▶  pico compose  ─▶  build/hello-world-pico
+   (Definition)          (Realization step 1)                    (Realization step 2)         (Element)
+```
+
+The concrete Rule that seeds the Realization is the one Rule you author
+in the lab walkthrough:
+
+```yaml
+# rules/hello.yaml
+id: rule.hello
+kind: greeting
+value: "Hello, Pico!"
+```
+
+The two Realization commands are the ones documented in the
+[Hello Pico walkthrough](../../labs/hello-pico/walkthrough.html):
+
+```bash
+pico parse rules/hello.yaml --out build/parsed.json
+pico compose build/parsed.json --out build/hello-world-pico
+```
+
+This maps onto the Phase 1 metadata field `realization_pattern`, for
+which the label used here is `rules-parser-composer-pipeline`.
+
+## The Hello Pico Element
+
+The Element is the concrete `build/hello-world-pico` executable produced
+by `pico compose`. Its identity — the name `hello-world-pico` — is the
+same name the [pico course metadata](metadata.yaml) lists under
+`produces`, and the same name the
+[Hello Pico lab metadata](../../labs/hello-pico/metadata.yaml) lists
+under `produces`. That shared name is what makes the lab a Realization
+of the course-level Definition.
+
+## Constraints on a valid Hello Pico Element
+
+A valid Hello Pico Element must satisfy all of the following, each
+directly implied by the existing lab material:
+
+- **Well-formed Rule** — `rules/hello.yaml` uses the flat
+  `id` / `kind` / `value` shape the reference Parser accepts.
+- **Supported kind** — the Rule's `kind` is `greeting`, the only kind
+  the reference Composer handles.
+- **Successful pipeline** — both `pico parse` and `pico compose` exit
+  with status `0`.
+- **Produced artifact exists** — `build/hello-world-pico` is created
+  by the Composer and is executable.
+- **Observable behavior** — running `./build/hello-world-pico` prints
+  exactly `Hello, Pico!` on standard output.
+
+These are the Constraints named in the sense of
+[constructive realization](constructive-realization.qmd#the-five-terms):
+conditions a valid Element must satisfy. They are natural-language on
+purpose — Phase 1 does not introduce formal schemas.
+
+## Validations that check the Element
+
+Each Constraint above is checked by something a learner already runs.
+Validations are pointed at by the Phase 1 `validated_by` field on the
+Hello Pico lab metadata.
+
+| Constraint                     | Validation (what the learner runs)                                                 |
+| ------------------------------ | ----------------------------------------------------------------------------------- |
+| Well-formed Rule               | [Walkthrough Step 3](../../labs/hello-pico/walkthrough.html) — `pico parse` succeeds. |
+| Supported kind                 | [Walkthrough Step 4](../../labs/hello-pico/walkthrough.html) — `pico compose` succeeds. |
+| Successful pipeline            | Non-zero exit codes surfaced in [Troubleshooting](../../labs/hello-pico/walkthrough.html#troubleshooting). |
+| Produced artifact exists       | [Walkthrough Step 4](../../labs/hello-pico/walkthrough.html) — `build/hello-world-pico` is written. |
+| Observable behavior            | [Walkthrough Step 5](../../labs/hello-pico/walkthrough.html) and the [Solution](../../labs/hello-pico/solution.html) — `./build/hello-world-pico` prints `Hello, Pico!`. |
+| Rule shape (learner-authored)  | The Introduction lesson [exercise](part-1/01-introduction/exercise.qmd) — `pico parse` on the learner's own YAML. |
+| Terminology understanding      | The Introduction lesson [quiz](part-1/01-introduction/quiz.qmd).                    |
+
+## Where compose / construct / behave fit
+
+Hello Pico teaches the **behave** layer of
+**Crossplane composes, Sandcastle constructs, Picos behave**:
+
+- The Element (`hello-world-pico`) is the *behaviour* — a runnable
+  Pico that prints its greeting.
+- Sibling courses reuse the *same* Hello Pico Element as an input to
+  their own Realizations: the
+  [Crossplane course](../crossplane/index.html) composes it onto a
+  control plane, and the
+  [Sandcastle course](../sandcastle/index.html) shows how it is
+  constructed inside a sandboxed engineering environment.
+
+The Definition stays the same across all three layers; only the
+Realization changes.
+
+## What Phase 1 does *not* add here
+
+- No new Pico pipeline stages, CLI flags, or lab steps.
+- No formal schema validation of `metadata.yaml`.
+- No retrofit of other courses, lessons, or labs to the Phase 1
+  vocabulary.
+
+See the [constructive-realization reference](constructive-realization.qmd)
+for the full Phase 1 scope, and
+[`templates/README.qmd`](../../templates/README.qmd) for the underlying
+metadata contract.

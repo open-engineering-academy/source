@@ -13,3 +13,12 @@ produces:
 referenced_by:
   - oe.course.pico
   - oe.lesson.pico.01-introduction
+constructive_role: realization
+realizes:
+  - oe.course.pico
+realization_pattern: rules-parser-composer-pipeline
+validated_by:
+  - "walkthrough.qmd Step 3 — pico parse rules/hello.yaml"
+  - "walkthrough.qmd Step 4 — pico compose build/parsed.json"
+  - "walkthrough.qmd Step 5 — ./build/hello-world-pico prints 'Hello, Pico!'"
+  - "solution.qmd Verification — diff and re-run against reference"

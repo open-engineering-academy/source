@@ -107,3 +107,6 @@ This page intentionally does **not**:
 
 See the [Glossary](glossary.qmd) for one-line definitions of these terms
 and the [course overview](index.qmd) for how the pieces fit together.
+For a fully worked example that points each term at concrete Hello Pico
+material, see
+[Hello Pico as a constructive exemplar](hello-pico-exemplar.qmd).
