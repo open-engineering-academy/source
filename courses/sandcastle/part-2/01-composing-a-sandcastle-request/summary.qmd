@@ -1,0 +1,53 @@
+---
+title: "Summary · Composing a Sandcastle request"
+---
+
+## Key takeaways
+
+- The **compose → construct** boundary is where the academy story
+  _Crossplane composes, Sandcastle constructs, Picos behave_ turns a
+  declarative request into engineering work. Crossplane owns the
+  request; the Sandcastle owns the work.
+- Crossplane's Composition emits an **EngineeringTask** — a
+  declarative record of the construction work the cluster wants done.
+  It writes no code and touches no repository.
+- The Sandcastle reads the EngineeringTask (never the original XR),
+  runs the same inspect → generate → validate → commit inner loop
+  from [Part 1 · Lesson 1](../../part-1/01-inside-a-sandcastle/index.qmd),
+  and returns a durable Git branch. The sandbox is then disposed.
+- The construction stage is **parametric on the request**: the
+  greeting the branch's `rules/hello.yaml` carries is the greeting
+  the XR asked for, not a hard-coded string in the agent.
+- The compose → construct hand-off is exactly two files:
+  `xr-request.yaml` on the compose side and `engineering-task.yaml`
+  as the boundary artifact. Nothing else crosses.
+- This lesson is **runnable** end-to-end via the reusable
+  [Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/),
+  whose
+  [`verify.sh`](../../../../labs/compose-sandcastle-request/downloads/verify.sh)
+  asserts the four hand-off rules programmatically.
+
+## What comes next
+
+- **Part 3 · Lesson 1 — Handing off to Kubernetes** covers the
+  reverse-direction boundary: how the durable branch this lesson
+  produces later becomes a Crossplane XR that the cluster composes
+  into a runtime `Job`. See
+  [Part 3 · Lesson 1](../../part-3/01-handing-off-to-kubernetes/index.qmd)
+  and the runnable
+  [Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/).
+- **Part 3 · Lesson 2 — The outer delivery loop** develops the
+  guardrails that live outside the Sandcastle's boundary — PR
+  review, GitOps promotion, Crossplane reconciliation — and reuses
+  both this lesson's lab and the Kubernetes lab as its runnable
+  endpoints. See
+  [Part 3 · Lesson 2](../../part-3/02-outer-delivery-loop/index.qmd).
+- **Cluster-backed variants** — this lesson's `compose.sh` is a
+  local simulation of a Crossplane Composition. A cluster-backed
+  variant that runs a real Composition emitting a real
+  EngineeringTask CR is a natural Part 2 follow-up but is
+  intentionally out of scope for this lesson.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

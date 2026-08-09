@@ -25,6 +25,15 @@ encounter a consistent experience across the academy.
   [sandcastle course](../courses/sandcastle/). Machine-readable
   descriptor:
   [`labs/hello-world-pico-sandcastle/metadata.yaml`](hello-world-pico-sandcastle/metadata.yaml).
+- **[Compose a Sandcastle request](compose-sandcastle-request/)** — the
+  first runnable compose → construct lab: turn a learner-authored
+  Crossplane `XHelloWorldPico` XR into an `EngineeringTask`, have a
+  Sandcastle pick up the task and construct the requested
+  `rules/hello.yaml` on a dedicated branch, then dispose of the
+  sandbox. Referenced from the
+  [sandcastle course](../courses/sandcastle/). Machine-readable
+  descriptor:
+  [`labs/compose-sandcastle-request/metadata.yaml`](compose-sandcastle-request/metadata.yaml).
 - **[Sandcastle → Kubernetes hand-off](handoff-sandcastle-to-kubernetes/)**
   — the first runnable Sandcastle-to-Crossplane hand-off lab: take the
   durable branch produced by the Sandcastle lab and promote its

@@ -33,10 +33,12 @@ title: "Summary · Inside a Sandcastle"
 
 ## What comes next
 
-- **Part 2 — Composing Sandcastles with Crossplane** will develop
-  how a Crossplane Composition can *request* engineering work from
-  a Sandcastle and reconcile the returned artifacts. See
-  [Part 2](../../part-2/index.qmd) for the scaffolded outline.
+- **Part 2 — Composing Sandcastles with Crossplane** develops how a
+  Crossplane Composition *requests* engineering work from a
+  Sandcastle. Its first lesson,
+  [01 Composing a Sandcastle request](../../part-2/01-composing-a-sandcastle-request/index.qmd),
+  is runnable end-to-end via the reusable
+  [Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/).
 - **Part 3 — Delivering artifacts from a Sandcastle** will develop
   the outer delivery loop and the guardrails that live outside the
   Sandcastle's boundary. See [Part 3](../../part-3/index.qmd).

@@ -1,0 +1,198 @@
+---
+title: "Walkthrough"
+description: "Step-by-step guide to running Compose a Sandcastle request."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt
+them to match your setup.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [one-time setup](objectives.qmd#one-time-setup) so that
+`command -v pico` points at this repository's `bin/pico` and **not**
+at `/usr/bin/pico` (the Alpine/nano text editor).
+:::
+
+::: {.callout-note title="Isolation scope for this lab"}
+This lab uses the `local-scratch-dir` sandbox provider — a scoped
+local scratch directory plus a **PATH allowlist**, not a container
+— exactly like the
+[Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/).
+Container-backed providers are tracked as a Sandcastle curriculum
+follow-up. Only the `workspace.sandboxProvider` field in the
+generated EngineeringTask changes when they land; the walkthrough
+below stays the same.
+:::
+
+## Step 1 — Inspect the Crossplane request
+
+From the root of your local clone, open
+[`labs/compose-sandcastle-request/downloads/xr-request.yaml`](downloads/xr-request.yaml):
+
+```bash
+cat labs/compose-sandcastle-request/downloads/xr-request.yaml
+```
+
+The XR is an `XHelloWorldPico` — the same `apiVersion` and `kind` used
+by [`labs/hello-pico-on-kubernetes/downloads/05-xr.yaml`](../hello-pico-on-kubernetes/downloads/05-xr.yaml).
+The greeting is deliberately different from `Hello, Pico!` so you can
+see the Sandcastle honour whatever the request asks for.
+
+## Step 2 — Compose the EngineeringTask (Crossplane side)
+
+Run the simulated composition against the XR:
+
+```bash
+bash labs/compose-sandcastle-request/downloads/compose.sh \
+     labs/compose-sandcastle-request/downloads/xr-request.yaml \
+     work/compose-sandcastle-request
+```
+
+Expected tail of the output:
+
+```
+compose: wrote work/compose-sandcastle-request/task/engineering-task.yaml (kind=EngineeringTask name=greetings-de greeting=Hallo\,\ Pico\! branch=sandcastle/hello-world-pico-greetings-de)
+compose: the composition wrote no code and touched no repository.
+```
+
+Inspect the emitted EngineeringTask:
+
+```bash
+cat work/compose-sandcastle-request/task/engineering-task.yaml
+```
+
+The task is a **declarative record of construction work**, not a copy
+of the XR. It carries the greeting under
+`spec.inputs.greeting`, names the target branch under
+`spec.target.branch`, and keeps `spec.requestedBy` as a provenance
+pointer back to the XR — no code has been written.
+
+## Step 3 — Run the Sandcastle against the EngineeringTask
+
+Run the driver against the task. It provisions the isolated workspace,
+copies the task file into the sandbox as the only compose-side input,
+runs the agent under a PATH allowlist, hands the branch back, and
+disposes of the workspace.
+
+```bash
+bash labs/compose-sandcastle-request/downloads/sandcastle-run.sh \
+     work/compose-sandcastle-request/task/engineering-task.yaml \
+     work/compose-sandcastle-request
+```
+
+Expected tail of the driver output:
+
+```
+[agent] inspect: greeting requested by task = Hallo, Pico!
+[agent] validate: OK (parser accepted the rule)
+[agent] compose: artifact prints Hallo, Pico!
+[agent] commit: adding rules/hello.yaml on branch sandcastle/hello-world-pico-greetings-de
+sandcastle-run: done. sandbox destroyed; durable artifacts under work/compose-sandcastle-request/results/
+```
+
+The `[agent]` lines come from `sandcastle-agent.sh` running *inside*
+the sandbox; the `sandcastle-run:` lines come from the driver
+running *outside* the sandbox. The agent never sees the XR — it only
+reads the task file mounted at `./.engineering-task.yaml`.
+
+## Step 4 — Confirm the durable branch matches the request
+
+After the driver returns, the sandbox is gone. Only the target repo
+and its captured evidence remain:
+
+```bash
+ls work/compose-sandcastle-request/
+# → bin-allowlist  results  target-repo  task
+test ! -d work/compose-sandcastle-request/sandbox && echo "sandbox: disposed"
+```
+
+Inspect the durable branch on the target repo:
+
+```bash
+git -C work/compose-sandcastle-request/target-repo \
+    log --oneline sandcastle/hello-world-pico-greetings-de
+git -C work/compose-sandcastle-request/target-repo \
+    show sandcastle/hello-world-pico-greetings-de:rules/hello.yaml
+```
+
+The rule's `value:` field matches `spec.value` from the XR — proof
+that the construction stage honoured the request.
+
+The driver also recomposed the Pico from a fresh clone of the target
+branch. Confirm the greeting it captured matches what the XR asked
+for:
+
+```bash
+cat work/compose-sandcastle-request/results/pico-output.txt
+# → Hallo, Pico!
+```
+
+## Step 5 — Run the automatable verification
+
+Re-run the full path under the packaged verifier:
+
+```bash
+bash labs/compose-sandcastle-request/downloads/verify.sh
+```
+
+`verify.sh` runs `compose.sh` and `sandcastle-run.sh` and asserts:
+
+1. The generated EngineeringTask matches the reference shape on the
+   fields that cross the compose → construct boundary.
+2. `sandcastle/hello-world-pico-<name>` exists on the target repo with
+   `rules/hello.yaml` carrying the greeting the XR asked for.
+3. Recomposing from a fresh clone of that branch prints the same
+   greeting.
+4. The sandbox workspace is gone.
+5. The construction stage never saw the XR — no XR shape and no
+   `.engineering-task.yaml` leaked across the artifact boundary.
+
+On success it exits `0` and prints a line beginning with
+`verify: OK — branch=...`.
+
+## Try it with a different greeting
+
+Change `spec.value` in
+[`xr-request.yaml`](downloads/xr-request.yaml) and re-run the three
+commands from Steps 2, 3 and 5. Nothing else changes: the
+composition emits a task carrying your new greeting, the Sandcastle
+constructs a branch whose rule uses that greeting, and `verify.sh`
+still exits `0`.
+
+## Screenshot targets
+
+Three terminal moments in this walkthrough make good screenshots for
+future revisions of the lab. They are catalogued in
+[`screenshots/README.md`](screenshots/README.md) with intended
+filenames, capture regions, and alt text:
+
+- **Step 2** → `screenshots/01-compose-task.png` — `compose.sh`'s
+  `wrote ...engineering-task.yaml` line and the emitted YAML.
+- **Step 3** → `screenshots/02-agent-run.png` — the agent's
+  `greeting requested by task = ...` line and `sandcastle-run: done.`
+  teardown line.
+- **Step 5** → `screenshots/03-verify-ok.png` — the final
+  `verify: OK — branch=…` line from `verify.sh`.
+
+No image files ship with this lab yet; the lab renders and runs
+without them.
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `pico` opens a text editor instead of running, your shell is
+  still resolving `pico` to `/usr/bin/pico`. Re-run the `PATH` export
+  from [one-time setup](objectives.qmd#one-time-setup) and confirm
+  with `command -v pico`.
+- If `sandcastle-run.sh` fails at *required host tool not on PATH:
+  &lt;name&gt;*, install that tool (or make it discoverable on `PATH`)
+  and re-run.
+- If `verify.sh` fails at assertion 4 with *"sandbox workspace should
+  have been disposed"*, the driver was interrupted mid-run. Delete
+  `work/compose-sandcastle-request` and re-run.
+:::
+
+## Next
+
+Compare your result against the [reference solution](solution.qmd).

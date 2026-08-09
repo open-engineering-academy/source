@@ -83,12 +83,18 @@ courses/sandcastle/
 - [Labs](labs/index.qmd)
 - [Glossary](glossary.qmd)
 
-::: {.callout-note title="Course status — Parts 1 and 3 (lesson 01) runnable; Part 3 lesson 02 instruction-first; Part 2 scaffolded"}
+::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 (lesson 01) runnable; Part 3 lesson 02 instruction-first"}
 Part 1 is **runnable** end-to-end via the Part 1
 [Lab](part-1/01-inside-a-sandcastle/lab.qmd), which links to the
 reusable
 [Hello World Pico Sandcastle lab](../../labs/hello-world-pico-sandcastle/).
-Part 3's first lesson,
+Part 2's first lesson,
+[01 Composing a Sandcastle request](part-2/01-composing-a-sandcastle-request/index.qmd),
+is **runnable** end-to-end via the reusable
+[Compose a Sandcastle request lab](../../labs/compose-sandcastle-request/),
+which takes a learner-authored Crossplane XR through an
+`EngineeringTask` and has a Sandcastle construct the requested
+artifact on a durable branch. Part 3's first lesson,
 [01 Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd),
 is also **runnable** end-to-end via the reusable
 [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/),
@@ -99,7 +105,7 @@ Part 3's second lesson,
 [02 The outer delivery loop](part-3/02-outer-delivery-loop/index.qmd),
 is **instruction-first**: it reuses the hand-off lab and the
 Kubernetes lab as its runnable endpoints and stays clear that a
-single reusable outer-loop lab is not yet packaged. Part 2 remains
-intentionally scaffolded for this wave and is clearly labelled where
-learner-visible.
+single reusable outer-loop lab is not yet packaged. Further Part 2
+lessons remain intentionally scaffolded for this wave and are clearly
+labelled where learner-visible.
 :::

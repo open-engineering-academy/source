@@ -26,6 +26,10 @@ project:
     - labs/handoff-sandcastle-to-kubernetes/objectives.qmd
     - labs/handoff-sandcastle-to-kubernetes/walkthrough.qmd
     - labs/handoff-sandcastle-to-kubernetes/solution.qmd
+    - labs/compose-sandcastle-request/index.qmd
+    - labs/compose-sandcastle-request/objectives.qmd
+    - labs/compose-sandcastle-request/walkthrough.qmd
+    - labs/compose-sandcastle-request/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd

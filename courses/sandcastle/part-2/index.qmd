@@ -20,16 +20,22 @@ learning arc is:
 
 ## Lessons
 
-Lesson content for Part 2 will follow the same lesson layout as
-[Part 1](../part-1/index.qmd) and the
-[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
+- [01 Composing a Sandcastle request](01-composing-a-sandcastle-request/index.qmd)
+  — the first Part 2 lesson. Covers the compose → construct
+  boundary: how a Crossplane XR becomes an **EngineeringTask**, how
+  a Sandcastle consumes the task (never the XR), and how the
+  construction stage stays parametric on the request. Runnable
+  end-to-end via the reusable
+  [Compose a Sandcastle request lab](../../../labs/compose-sandcastle-request/).
 
-::: {.callout-warning title="Scaffold — Part 2 not yet runnable"}
-Part 2 is intentionally scaffolded so the Sandcastle course
-demonstrates the shared multi-part academy structure. It does **not**
-yet carry runnable learner content of its own. Follow
-[Part 1](../part-1/index.qmd) — including its runnable
-[Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/) —
-as the current substantive Sandcastle material; Part 2's own
-runnable content will land in a later curriculum wave.
+::: {.callout-note title="Status — Part 2 lesson 01 runnable; further lessons scaffolded"}
+[Lesson 01](01-composing-a-sandcastle-request/index.qmd) is
+**runnable** end-to-end via the reusable
+[Compose a Sandcastle request lab](../../../labs/compose-sandcastle-request/),
+whose
+[`verify.sh`](../../../labs/compose-sandcastle-request/downloads/verify.sh)
+asserts the four hand-off rules programmatically. Further Part 2
+lessons (for example, a cluster-backed variant using a real
+Crossplane Composition emitting a real `EngineeringTask` CR) remain
+intentionally scaffolded for this wave.
 :::

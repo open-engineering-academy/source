@@ -13,6 +13,11 @@ project:
     - part-1/01-inside-a-sandcastle/summary.qmd
     - part-1/01-inside-a-sandcastle/quiz.qmd
     - part-2/index.qmd
+    - part-2/01-composing-a-sandcastle-request/index.qmd
+    - part-2/01-composing-a-sandcastle-request/exercise.qmd
+    - part-2/01-composing-a-sandcastle-request/lab.qmd
+    - part-2/01-composing-a-sandcastle-request/summary.qmd
+    - part-2/01-composing-a-sandcastle-request/quiz.qmd
     - part-3/index.qmd
     - part-3/01-handing-off-to-kubernetes/index.qmd
     - part-3/01-handing-off-to-kubernetes/exercise.qmd
@@ -69,6 +74,18 @@ website:
                 text: Quiz
       - section: "Part 2 — Composing Sandcastles with Crossplane"
         href: part-2/index.qmd
+        contents:
+          - section: "01 Composing a Sandcastle request"
+            href: part-2/01-composing-a-sandcastle-request/index.qmd
+            contents:
+              - href: part-2/01-composing-a-sandcastle-request/exercise.qmd
+                text: Exercise
+              - href: part-2/01-composing-a-sandcastle-request/lab.qmd
+                text: Lab
+              - href: part-2/01-composing-a-sandcastle-request/summary.qmd
+                text: Summary
+              - href: part-2/01-composing-a-sandcastle-request/quiz.qmd
+                text: Quiz
       - section: "Part 3 — Delivering artifacts from a Sandcastle"
         href: part-3/index.qmd
         contents:

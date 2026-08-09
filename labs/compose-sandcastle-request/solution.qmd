@@ -1,0 +1,160 @@
+---
+title: "Solution"
+description: "Reference solution for the Compose a Sandcastle request lab."
+---
+
+## Reference solution
+
+A working solution consists of:
+
+1. The lab's shipped [`xr-request.yaml`](downloads/xr-request.yaml)
+   used as input.
+2. An emitted `work/compose-sandcastle-request/task/engineering-task.yaml`
+   whose fields match [`expected-task.yaml`](downloads/expected-task.yaml)
+   on `kind`, `metadata.name`, `spec.requestedBy.{apiVersion,kind,name}`,
+   `spec.artifact.kind`, `spec.inputs.greeting`, and
+   `spec.target.branch`.
+3. A durable branch (`sandcastle/hello-world-pico-greetings-de`) on
+   the local target repo at
+   `work/compose-sandcastle-request/target-repo`, containing exactly
+   one committed file (`rules/hello.yaml`).
+4. A `results/pico-output.txt` capturing `Hallo, Pico!` printed by
+   the recomposed Pico artifact.
+5. A disposed sandbox (`work/compose-sandcastle-request/sandbox/` no
+   longer exists).
+
+### `engineering-task.yaml` (compose-side output)
+
+```yaml
+kind: EngineeringTask
+metadata:
+  name: greetings-de
+spec:
+  requestedBy:
+    apiVersion: oe.academy/v1alpha1
+    kind: XHelloWorldPico
+    name: greetings-de
+  artifact:
+    kind: hello-world-pico
+    producesFiles:
+      - rules/hello.yaml
+  inputs:
+    greeting: "Hallo, Pico!"
+  target:
+    repo: file://./work/compose-sandcastle-request/target-repo
+    branch: sandcastle/hello-world-pico-greetings-de
+  workspace:
+    sandboxProvider: local-scratch-dir
+    tools: [pico, git, python3]
+    permissions:
+      - git.read:file:./target-repo
+      - git.write:branch:sandcastle/hello-world-pico-greetings-de
+      - fs.write:workspace-only
+  artifactBoundary:
+    survives: [branch]
+    disposed: [workspace, tools, scratch_state]
+```
+
+### `rules/hello.yaml` (on `sandcastle/hello-world-pico-greetings-de`)
+
+```yaml
+id: rule.hello
+kind: greeting
+value: "Hallo, Pico!"
+```
+
+### Commands
+
+Run from the root of your local clone of the academy repository,
+with the [one-time setup](objectives.qmd#one-time-setup) applied so
+`pico` resolves to this repository's `bin/pico`:
+
+```bash
+bash labs/compose-sandcastle-request/downloads/compose.sh \
+     labs/compose-sandcastle-request/downloads/xr-request.yaml \
+     work/compose-sandcastle-request
+
+bash labs/compose-sandcastle-request/downloads/sandcastle-run.sh \
+     work/compose-sandcastle-request/task/engineering-task.yaml \
+     work/compose-sandcastle-request
+
+bash labs/compose-sandcastle-request/downloads/verify.sh
+```
+
+### Expected `verify.sh` output (final line)
+
+```
+verify: OK — branch=sandcastle/hello-world-pico-greetings-de commit=<sha> greeting=Hallo\,\ Pico\! task=…/engineering-task.yaml sandbox=disposed
+```
+
+`<sha>` is the commit hash of the single agent commit on the branch.
+
+## Why this satisfies the objectives
+
+- **Compose → construct boundary preserved**: `compose.sh` only reads
+  the XR and writes YAML; it neither touches the repo nor generates a
+  Pico rule. The Sandcastle only reads the EngineeringTask; the XR is
+  never copied into the sandbox.
+- **Parametric construction**: the greeting comes from
+  `spec.inputs.greeting` in the task, which came from `spec.value` in
+  the XR. Change `spec.value` in the XR and both the task and the
+  branch's rule change with no other edits.
+- **Artifact boundary intact** (from
+  [Sandcastle · Part 1 · Lesson 1](../../courses/sandcastle/part-1/01-inside-a-sandcastle/index.html)):
+  only `rules/hello.yaml` was `git add`ed and committed; the
+  `.engineering-task.yaml`, the sandbox's `build/`, its
+  `bin-allowlist/`, and everything else were disposed with the
+  workspace.
+- **Provenance retained**: `spec.requestedBy` in the task lets a
+  reviewer trace the branch back to the exact XR that requested it,
+  without the Sandcastle needing to reason about the XR shape.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Running `bash labs/compose-sandcastle-request/downloads/verify.sh`
+   and checking the final `verify: OK` line and exit status `0`.
+2. Diffing the emitted task against the reference:
+   `diff -u labs/compose-sandcastle-request/downloads/expected-task.yaml work/compose-sandcastle-request/task/engineering-task.yaml`.
+   Comments and the provenance header line will differ; the fields
+   above should match.
+3. Confirming `test ! -d work/compose-sandcastle-request/sandbox`.
+4. Confirming `grep -Fqx 'Hallo, Pico!' work/compose-sandcastle-request/results/pico-output.txt`.
+
+## Variations
+
+- **Different greeting**: change `spec.value` in
+  [`xr-request.yaml`](downloads/xr-request.yaml) and re-run the three
+  commands above. Update `EXPECTED_VALUE` in `verify.sh` invocations
+  only if you also change the reference `expected-task.yaml`.
+- **Different request name**: change `metadata.name` in the XR. The
+  target branch becomes `sandcastle/hello-world-pico-<new-name>`
+  automatically. Update `expected-task.yaml` to match if you want
+  assertion 1 to keep passing.
+- **Wire into the Kubernetes lab**: the branch this lab produces has
+  the same `rules/hello.yaml` shape as the
+  [Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/).
+  Set `BRANCH=sandcastle/hello-world-pico-greetings-de` and
+  `SANDCASTLE_WORK=work/compose-sandcastle-request` when calling
+  [`labs/handoff-sandcastle-to-kubernetes/downloads/handoff.sh`](../handoff-sandcastle-to-kubernetes/downloads/handoff.sh)
+  to promote the greeting into an `XHelloWorldPico` XR for the
+  [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/).
+
+## Not covered by this lab (intentional)
+
+- A container-backed **sandbox provider** — this lab uses
+  `local-scratch-dir` for the same reasons the
+  [Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/)
+  does. Only the `workspace.sandboxProvider` field in the emitted
+  EngineeringTask needs to change when a container-backed provider
+  lands.
+- A **real Crossplane cluster** running a real Composition emitting
+  a real EngineeringTask CR — that is scoped to a later Part 2
+  lesson. `compose.sh` is deliberately a local simulation of the
+  Composition step so the boundary can be studied end-to-end without
+  a cluster.
+- **Multi-artifact requests** — one XR could ask for more than one
+  file, or for multiple related artifacts. Multi-artifact requests
+  are a natural extension but are out of scope for the first
+  runnable compose → construct lab.

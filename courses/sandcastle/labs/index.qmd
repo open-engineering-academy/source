@@ -18,6 +18,16 @@ directory.
   [`verify.sh`](../../../labs/hello-world-pico-sandcastle/downloads/verify.sh)
   and is exercised from Part 1's
   [Lab page](../part-1/01-inside-a-sandcastle/lab.qmd).
+- **[Compose a Sandcastle request](../../../labs/compose-sandcastle-request/)**
+  — the first runnable compose → construct lab. Takes a
+  learner-authored Crossplane `XHelloWorldPico` XR, has a simulated
+  Composition emit an `EngineeringTask`, and has a Sandcastle pick
+  up the task and construct the requested `rules/hello.yaml` on a
+  dedicated `sandcastle/hello-world-pico-<name>` branch. Ships an
+  automatable
+  [`verify.sh`](../../../labs/compose-sandcastle-request/downloads/verify.sh)
+  and is exercised from Part 2's
+  [Lab page](../part-2/01-composing-a-sandcastle-request/lab.qmd).
 - **[Sandcastle → Kubernetes hand-off](../../../labs/handoff-sandcastle-to-kubernetes/)**
   — the first runnable Sandcastle-to-Crossplane hand-off lab. Takes
   the durable branch the Sandcastle lab produced and promotes its
