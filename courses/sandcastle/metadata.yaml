@@ -21,4 +21,5 @@ produces:
   - hello-world-pico-sandcastle-blueprint
 references_labs:
   - oe.lab.hello-world-pico-sandcastle
+  - oe.lab.handoff-sandcastle-to-kubernetes
 references_exercises: []

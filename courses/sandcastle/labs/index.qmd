@@ -18,12 +18,22 @@ directory.
   [`verify.sh`](../../../labs/hello-world-pico-sandcastle/downloads/verify.sh)
   and is exercised from Part 1's
   [Lab page](../part-1/01-inside-a-sandcastle/lab.qmd).
+- **[Sandcastle → Kubernetes hand-off](../../../labs/handoff-sandcastle-to-kubernetes/)**
+  — the first runnable Sandcastle-to-Crossplane hand-off lab. Takes
+  the durable branch the Sandcastle lab produced and promotes its
+  greeting `value` into a Crossplane `XHelloWorldPico` Composite
+  Resource that drops into the
+  [Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
+  without modification. Ships an automatable
+  [`verify.sh`](../../../labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh)
+  and is exercised from Part 3's
+  [Lab page](../part-3/01-handing-off-to-kubernetes/lab.qmd).
 
 ## Related reusable labs
 
 These reusable labs give useful context — they define the
-**artifact** the Sandcastle lab produces and the **cluster** a
-follow-on lab may hand off to:
+**artifact** the Sandcastle lab produces and the **cluster** the
+hand-off lab targets:
 
 - [Hello Pico](../../../labs/hello-pico/) — produces the
   `hello-world-pico` greeting artifact by hand from the
@@ -31,9 +41,8 @@ follow-on lab may hand off to:
   the Sandcastle lab above constructs under an agent.
 - [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/)
   — composes `hello-world-pico` onto a local minikube cluster with
-  Crossplane. A follow-on Sandcastle wave may hand the branch
-  produced by the Sandcastle lab into this lab's Composition as its
-  downstream reconciliation target.
+  Crossplane. The hand-off lab above produces exactly the XR this
+  lab consumes, so the two labs meet at a file-level contract.
 
 ## Authoring course-scoped labs
 

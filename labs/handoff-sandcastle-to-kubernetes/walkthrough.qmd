@@ -1,0 +1,121 @@
+---
+title: "Walkthrough"
+description: "Take the Sandcastle-produced branch and turn its greeting into a Crossplane XR ready for the Hello Pico on Kubernetes composition."
+---
+
+## Overview of what you will do
+
+1. Confirm the Sandcastle lab has produced its durable branch.
+2. Run `handoff.sh` to read the greeting `value` and emit a
+   Crossplane XR (`work/handoff-sandcastle-to-kubernetes/build/xr.yaml`).
+3. Diff the generated XR against the reference `05-xr.yaml` from the
+   Kubernetes lab.
+4. (Optional) Apply the generated XR on a running Crossplane cluster
+   configured from the
+   [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd).
+
+Run every command from the root of your local clone of the academy
+repository.
+
+## Step 1 · Confirm the Sandcastle branch exists
+
+```bash
+git -C work/hello-world-pico-sandcastle/target-repo \
+    rev-parse sandcastle/hello-world-pico
+
+git -C work/hello-world-pico-sandcastle/target-repo \
+    show sandcastle/hello-world-pico:rules/hello.yaml
+```
+
+You should see one commit hash and a three-line YAML with
+`value: "Hello, Pico!"`. If the branch does not exist, run the
+[Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/walkthrough.qmd)
+first, or let this lab's `verify.sh` do it for you.
+
+## Step 2 · Run the hand-off
+
+```bash
+bash labs/handoff-sandcastle-to-kubernetes/downloads/handoff.sh
+```
+
+The script reads the `value:` field from the rule on the branch and
+writes an `XHelloWorldPico` XR:
+
+```bash
+cat work/handoff-sandcastle-to-kubernetes/build/xr.yaml
+```
+
+Expected output (the leading comment lines are informational):
+
+```yaml
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: hello
+spec:
+  value: "Hello, Pico!"
+```
+
+## Step 3 · Diff against the reference XR
+
+The reference XR the Kubernetes lab already ships lives at
+`labs/hello-pico-on-kubernetes/downloads/05-xr.yaml`. The generated XR
+must match its `apiVersion`, `kind`, `metadata.name`, and `spec.value`:
+
+```bash
+diff -u \
+  <(grep -E '^(apiVersion|kind|  name|  value):' \
+        labs/hello-pico-on-kubernetes/downloads/05-xr.yaml) \
+  <(grep -E '^(apiVersion|kind|  name|  value):' \
+        work/handoff-sandcastle-to-kubernetes/build/xr.yaml)
+```
+
+An empty diff (exit code 0) is the pass. The lab's automatable
+[`verify.sh`](downloads/verify.sh) performs the equivalent check
+programmatically.
+
+## Step 4 · (Optional) Apply on a real cluster
+
+If you already have a Crossplane cluster set up per the
+[Hello Pico on Kubernetes walkthrough](../hello-pico-on-kubernetes/walkthrough.qmd)
+steps 1–4, you can apply the generated XR without modification:
+
+```bash
+kubectl apply -f work/handoff-sandcastle-to-kubernetes/build/xr.yaml
+
+bash labs/hello-pico-on-kubernetes/downloads/verify.sh
+```
+
+Cluster-side verification is intentionally delegated to the
+Kubernetes lab so this lab stays scoped to the hand-off boundary.
+
+## Step 5 · Cleanup
+
+```bash
+rm -rf work/handoff-sandcastle-to-kubernetes
+```
+
+The Sandcastle lab's `work/` root is intentionally left untouched — it
+is still the durable input to this hand-off.
+
+## Automatable verification
+
+The lab ships an end-to-end
+[`verify.sh`](downloads/verify.sh) that runs the Sandcastle lab (if
+needed), runs the hand-off, and asserts the generated XR matches the
+Kubernetes lab's `05-xr.yaml`:
+
+```bash
+bash labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh
+```
+
+Expected final line:
+
+```
+verify: OK — xr=<path>/xr.yaml value="Hello, Pico!" (matches labs/hello-pico-on-kubernetes/downloads/05-xr.yaml)
+```
+
+## Next
+
+Continue with the [Solution](solution.qmd), or return to the
+[Sandcastle · Part 3 lesson](../../courses/sandcastle/part-3/01-handing-off-to-kubernetes/index.html).

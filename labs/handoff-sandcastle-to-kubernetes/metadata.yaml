@@ -1,0 +1,17 @@
+id: oe.lab.handoff-sandcastle-to-kubernetes
+title: Sandcastle → Kubernetes hand-off
+level: intermediate
+duration: 30m
+prerequisites:
+  - oe.lab.hello-world-pico-sandcastle
+  - oe.lab.hello-pico-on-kubernetes
+teaches:
+  - Artifact hand-off (construct → compose)
+  - Sandcastle branch as durable input
+  - Crossplane XR as composition request
+  - Value promotion (rule.value → xr.spec.value)
+produces:
+  - hello-world-pico-on-kubernetes-xr
+referenced_by:
+  - oe.course.sandcastle
+  - oe.lesson.sandcastle.03-handing-off-to-kubernetes

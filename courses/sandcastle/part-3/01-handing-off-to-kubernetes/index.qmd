@@ -1,0 +1,141 @@
+---
+title: "1. Handing off to Kubernetes"
+subtitle: "How a Sandcastle-produced branch becomes a Crossplane composition request."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Describe where the **construction → composition** boundary sits in
+  the academy story _Crossplane composes, Sandcastle constructs, Picos
+  behave_, and why the Sandcastle's Git branch is the right shape for
+  it.
+- Trace the concrete hand-off from `rules/hello.yaml` on the
+  `sandcastle/hello-world-pico` branch to the `spec.value` field of a
+  Crossplane `XHelloWorldPico` Composite Resource.
+- Argue why the hand-off must **not** reach back into the sandbox and
+  what would go wrong if it did.
+- Recognise the reusable
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  as the downstream composition path the hand-off targets.
+
+## Prerequisites
+
+- Completion of
+  [Sandcastle · Part 1 · 01 Inside a Sandcastle](../../part-1/01-inside-a-sandcastle/index.qmd)
+  and its runnable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/).
+- Reading familiarity with
+  [Crossplane · Part 1](../../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  — the composition path the hand-off targets.
+- Basic Git commands (`clone`, `branch`, `show`) — no advanced Git
+  required.
+- No cluster is required for **this lesson** and the accompanying
+  [Lab](lab.qmd); a cluster is only required if you choose to apply
+  the generated XR downstream in the Kubernetes lab.
+
+## Why a hand-off lesson?
+
+The Sandcastle course's Part 1 lesson stopped where the Sandcastle
+does: at a durable branch on the target repository. Part 3 picks up
+exactly there and asks: _who consumes that branch, and in what
+shape?_
+
+The academy already has a runnable answer for the **composition** side
+of the story: the
+[Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+reconciles an `XHelloWorldPico` Composite Resource into a Kubernetes
+`Job` that prints `Hello, Pico!` from inside the cluster. What is
+missing is a concrete, runnable **hand-off** between the two: a small,
+disciplined step that reads the Sandcastle's output and produces the
+exact XR the Kubernetes lab already knows how to compose.
+
+That hand-off is the topic of this lesson, and the topic of the
+accompanying runnable
+[Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/).
+
+## Where the hand-off sits in the academy story
+
+The three-layer story:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+Two boundaries sit between the three layers:
+
+1. **Construct → compose** — how a durable artifact produced by the
+   Sandcastle enters the composition layer as a request for something
+   to exist on the cluster. **This lesson is about that boundary.**
+2. **Compose → behave** — how the composition layer turns that request
+   into a concrete runtime artifact. That boundary is the topic of the
+   [Crossplane · Part 1 lesson](../../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+   and the [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/).
+
+## The concrete hand-off
+
+The Sandcastle lab produces exactly one Git artifact: the branch
+`sandcastle/hello-world-pico` containing `rules/hello.yaml` with a
+single greeting `value`:
+
+```yaml
+id: rule.hello
+kind: greeting
+value: "Hello, Pico!"
+```
+
+The Kubernetes lab reconciles exactly one Composite Resource whose
+`spec.value` field is the greeting the composed `Job` will print:
+
+```yaml
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: hello
+spec:
+  value: "Hello, Pico!"
+```
+
+The hand-off is the smallest thing that makes those two files agree:
+**read `rules/hello.yaml` from the branch, extract `.value`, and emit
+the XR YAML.** Nothing else needs to cross the boundary.
+
+## Rules for a well-behaved hand-off
+
+The hand-off is a good place to be strict, because every guarantee the
+Sandcastle gave you at the construction boundary should still hold as
+you cross into composition:
+
+- **Read-only against the Sandcastle side.** The hand-off must never
+  reach back into the disposed sandbox. It reads the branch on the
+  durable target repository and nothing else.
+- **Deterministic against the branch.** Given the same branch, the
+  hand-off must always produce the same XR. If it does not, either the
+  branch is not durable or the hand-off has hidden inputs.
+- **Byte-equivalent to the downstream contract.** The generated XR
+  must match the shape the Kubernetes lab already ships (`05-xr.yaml`)
+  so it drops in without modification.
+- **Cluster-independent.** The hand-off itself does not need a cluster
+  to run. Cluster reconciliation is the Kubernetes lab's job, not the
+  hand-off's.
+
+The runnable
+[Hello Pico on Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/)
+enforces all four rules with an automatable `verify.sh`.
+
+## What is out of scope for this lesson
+
+- **Multi-artifact hand-off.** Real Sandcastles will one day produce
+  more than one rule, and future compositions will require more than
+  one XR. Multi-artifact hand-off is a later Part 3 lesson.
+- **GitOps promotion.** A real deployment might promote the Sandcastle
+  branch by opening a PR into a GitOps repo the cluster is already
+  reconciling. This lesson uses a direct, in-repo hand-off so learners
+  can see the boundary clearly.
+- **Cluster-side verification.** That belongs to the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  and is intentionally not repeated here.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd), then the [Lab](lab.qmd)
+and [Summary](summary.qmd), and finish with the [Quiz](quiz.qmd).

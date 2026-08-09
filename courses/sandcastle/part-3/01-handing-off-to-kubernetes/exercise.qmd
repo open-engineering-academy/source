@@ -1,0 +1,129 @@
+---
+title: "Exercise · Trace the Sandcastle → Kubernetes hand-off on paper"
+---
+
+A short, pen-and-paper task. Complete it before moving on to the
+runnable [Lab](lab.qmd).
+
+## Task
+
+Trace, on paper, the concrete hand-off from the Sandcastle branch to a
+Crossplane Composite Resource, then use the trace to spot two
+_boundary violations_ this lab intentionally rules out.
+
+You do **not** need a cluster or the runnable lab for this exercise.
+The goal is to lock in the construct → compose boundary as a
+one-page picture before touching any tooling.
+
+## Step 1 · List the boundary inputs and outputs
+
+Copy this table into your notes and fill in the blanks:
+
+| Position    | File on disk                                              | Field  |
+|-------------|-----------------------------------------------------------|--------|
+| Sandcastle output | `rules/hello.yaml` on branch `___________________`  | `___` |
+| Crossplane input  | `05-xr.yaml`                                        | `___` |
+
+Answer in your notes: *how many fields cross the boundary?* (Answer:
+one — the greeting `value`.)
+
+## Step 2 · Diagram the hand-off
+
+Sketch a two-arrow diagram:
+
+```
+   [Sandcastle target repo]        [Crossplane XR file]
+   branch: sandcastle/hello-world-pico
+       │
+       │ (1) read rules/hello.yaml
+       ▼
+   [.value = "Hello, Pico!"]
+       │
+       │ (2) write spec.value into an XHelloWorldPico XR
+       ▼
+   apiVersion: oe.academy/v1alpha1
+   kind: XHelloWorldPico
+   metadata: { name: hello }
+   spec: { value: "Hello, Pico!" }
+```
+
+Answer in your notes: *what would you need to change on either side of
+the diagram if the greeting were different?* (Answer: only the
+`value:` field; the surrounding shape is fixed by the XRD.)
+
+## Step 3 · Spot the boundary violations
+
+For each of the following hypothetical hand-off implementations, mark
+✅ if it is well-behaved or ❌ if it violates one of the four rules
+from [the lesson](index.qmd) (read-only against the sandbox,
+deterministic, byte-equivalent to the downstream contract,
+cluster-independent). For each ❌, name which rule.
+
+### Case 1
+
+The hand-off script clones the sandbox directory to re-read
+`rules/hello.yaml` from there because it is "faster than a Git read".
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **read-only against the Sandcastle side** — the sandbox
+is disposed by design; reaching into it makes the hand-off
+non-reproducible.
+:::
+
+### Case 2
+
+The hand-off script reads `rules/hello.yaml` from the branch, then
+also appends the current timestamp to the XR's `spec.value` so the
+greeting is unique per run.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **deterministic against the branch** — the same branch
+should always produce the same XR.
+:::
+
+### Case 3
+
+The hand-off script emits an XR that uses `oe.academy/v1beta1`
+instead of `v1alpha1` because "the beta version is nicer".
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **byte-equivalent to the downstream contract** — the
+Kubernetes lab's XRD only serves `v1alpha1`; the XR would fail
+admission on the cluster.
+:::
+
+### Case 4
+
+The hand-off script requires `kubectl` to be pointed at a running
+cluster before it will produce the XR file.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **cluster-independent** — the hand-off is a
+file-in-file-out step; cluster reconciliation is the Kubernetes
+lab's responsibility.
+:::
+
+### Case 5
+
+The hand-off script reads `rules/hello.yaml` from the branch,
+extracts `.value`, writes the XR YAML, and exits.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+✅ Well-behaved — this is exactly what
+[`handoff.sh`](../../../../labs/handoff-sandcastle-to-kubernetes/downloads/handoff.sh)
+does.
+:::
+
+## Success criteria (paper)
+
+- [ ] You can name which single field crosses the construct → compose
+      boundary in the hand-off and where it lands on the composition
+      side.
+- [ ] You can draw the two-arrow diagram from Step 2 without looking
+      back at this page.
+- [ ] You can name the four hand-off rules from [the lesson](index.qmd)
+      and give one hypothetical violation of each.
+
+## Next
+
+Run the hand-off end-to-end in the [Lab](lab.qmd).

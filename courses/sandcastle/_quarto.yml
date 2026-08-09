@@ -14,6 +14,11 @@ project:
     - part-1/01-inside-a-sandcastle/quiz.qmd
     - part-2/index.qmd
     - part-3/index.qmd
+    - part-3/01-handing-off-to-kubernetes/index.qmd
+    - part-3/01-handing-off-to-kubernetes/exercise.qmd
+    - part-3/01-handing-off-to-kubernetes/lab.qmd
+    - part-3/01-handing-off-to-kubernetes/summary.qmd
+    - part-3/01-handing-off-to-kubernetes/quiz.qmd
     - labs/index.qmd
 
 website:
@@ -61,6 +66,18 @@ website:
         href: part-2/index.qmd
       - section: "Part 3 — Delivering artifacts from a Sandcastle"
         href: part-3/index.qmd
+        contents:
+          - section: "01 Handing off to Kubernetes"
+            href: part-3/01-handing-off-to-kubernetes/index.qmd
+            contents:
+              - href: part-3/01-handing-off-to-kubernetes/exercise.qmd
+                text: Exercise
+              - href: part-3/01-handing-off-to-kubernetes/lab.qmd
+                text: Lab
+              - href: part-3/01-handing-off-to-kubernetes/summary.qmd
+                text: Summary
+              - href: part-3/01-handing-off-to-kubernetes/quiz.qmd
+                text: Quiz
       - href: labs/index.qmd
         text: Labs
       - href: glossary.qmd

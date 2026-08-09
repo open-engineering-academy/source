@@ -22,6 +22,10 @@ project:
     - labs/hello-world-pico-sandcastle/objectives.qmd
     - labs/hello-world-pico-sandcastle/walkthrough.qmd
     - labs/hello-world-pico-sandcastle/solution.qmd
+    - labs/handoff-sandcastle-to-kubernetes/index.qmd
+    - labs/handoff-sandcastle-to-kubernetes/objectives.qmd
+    - labs/handoff-sandcastle-to-kubernetes/walkthrough.qmd
+    - labs/handoff-sandcastle-to-kubernetes/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd

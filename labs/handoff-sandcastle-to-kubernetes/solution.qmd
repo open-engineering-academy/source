@@ -1,0 +1,110 @@
+---
+title: "Solution"
+description: "Reference solution for the Sandcastle → Kubernetes hand-off lab."
+---
+
+## Reference solution
+
+A working solution consists of:
+
+1. The Sandcastle-produced branch `sandcastle/hello-world-pico` on
+   `work/hello-world-pico-sandcastle/target-repo`, containing exactly
+   one committed file (`rules/hello.yaml`).
+2. A generated Crossplane XR at
+   `work/handoff-sandcastle-to-kubernetes/build/xr.yaml` whose
+   `apiVersion`, `kind`, `metadata.name`, and `spec.value` match
+   `labs/hello-pico-on-kubernetes/downloads/05-xr.yaml`.
+3. A clean `verify.sh` exit (`exit code 0`) with a `verify: OK` final
+   line.
+
+### Generated XR (byte-equivalent to the K8s lab's `05-xr.yaml`)
+
+```yaml
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: hello
+spec:
+  value: "Hello, Pico!"
+```
+
+### Commands
+
+Run from the root of your local clone of the academy repository:
+
+```bash
+bash labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh
+```
+
+### Expected `verify.sh` output (final line)
+
+```
+verify: OK — xr=<path>/xr.yaml value="Hello, Pico!" (matches labs/hello-pico-on-kubernetes/downloads/05-xr.yaml)
+```
+
+## Why this satisfies the objectives
+
+- **Sandcastle branch as durable input**: the hand-off never touches
+  the sandbox — it reads only what survived the Sandcastle's
+  `artifact_boundary`, namely the branch. If the sandbox is gone, the
+  hand-off still works, because the branch is the whole surface.
+- **Value promotion**: the `value:` field written by the engineering
+  agent inside the Sandcastle becomes the `spec.value` field of the
+  Crossplane XR. Nothing else about the Sandcastle's inner iteration
+  leaks across the boundary.
+- **Byte-equivalence with the K8s lab's `05-xr.yaml`**: the generated
+  XR is a drop-in replacement, so the cluster-side composition path
+  the Kubernetes lab already verifies applies unchanged.
+- **Construct → compose boundary**: the Sandcastle **constructs** the
+  durable rule; the hand-off promotes it to a Crossplane
+  **composition request**; Crossplane then **composes** the Kubernetes
+  `Job` the Pico artifact **behaves** as.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Running `bash labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh`
+   and checking the final `verify: OK` line and exit status `0`.
+2. Diffing the four key fields of the generated XR against the
+   Kubernetes lab's `05-xr.yaml`:
+   ```bash
+   diff -u \
+     <(grep -E '^(apiVersion|kind|  name|  value):' \
+           labs/hello-pico-on-kubernetes/downloads/05-xr.yaml) \
+     <(grep -E '^(apiVersion|kind|  name|  value):' \
+           work/handoff-sandcastle-to-kubernetes/build/xr.yaml)
+   ```
+3. Optionally, applying the generated XR on a Crossplane cluster set up
+   per the
+   [Hello Pico on Kubernetes walkthrough](../hello-pico-on-kubernetes/walkthrough.qmd)
+   steps 1–4, then running that lab's `verify.sh` to confirm the
+   composed Kubernetes `Job` still prints `Hello, Pico!`.
+
+## Variations
+
+- **Different greeting**: change the agent's greeting in
+  [`sandcastle-agent.sh`](../hello-world-pico-sandcastle/downloads/sandcastle-agent.sh),
+  rerun the Sandcastle lab, then rerun the hand-off with
+  `EXPECTED_VALUE='Hello, World!' bash .../verify.sh`.
+- **Different XR name**: override `XR_NAME` when invoking `handoff.sh`
+  (`XR_NAME=greetings bash .../handoff.sh`). Update the K8s lab's
+  `verify.sh` `XR_NAME` accordingly if you apply it to a cluster.
+- **Different Sandcastle work-root**: set `SANDCASTLE_WORK` when
+  invoking either script to point at another Sandcastle run's target
+  repository.
+
+## Not covered by this lab (intentional)
+
+- **Cluster-side reconciliation** — verifying that the composed Job
+  runs and prints `Hello, Pico!` is the job of the
+  [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd),
+  not this one. Scoping the hand-off lab to the boundary keeps
+  verification small and realistic.
+- **GitOps / PR-based hand-off** — a real deployment might promote the
+  Sandcastle branch by opening a pull request into a GitOps repo the
+  cluster is already reconciling. That is a natural extension for a
+  later Part 3 lesson but is out of scope for this first hand-off lab.
+- **Multi-rule / multi-artifact hand-off** — this lab handles a single
+  greeting value. Composing multi-rule Sandcastle output into a set of
+  XRs is a later curriculum wave.

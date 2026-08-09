@@ -1,0 +1,46 @@
+---
+title: "Summary · Handing off to Kubernetes"
+---
+
+## Key takeaways
+
+- The **construct → compose** boundary in the academy story
+  _Crossplane composes, Sandcastle constructs, Picos behave_ is a Git
+  branch on a durable target repository — nothing more.
+- The concrete hand-off from the
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/)
+  to the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  is a single field promotion: `value` from `rules/hello.yaml` on the
+  Sandcastle branch becomes `spec.value` on an `XHelloWorldPico`
+  Composite Resource.
+- A well-behaved hand-off is **read-only against the Sandcastle side**,
+  **deterministic against the branch**, **byte-equivalent to the
+  downstream contract**, and **cluster-independent**.
+- Cluster-side reconciliation belongs to the Kubernetes lab, not to
+  the hand-off. Keeping that separation is what makes the hand-off
+  reusable across future compositions.
+- The runnable
+  [Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/)
+  enforces all four rules with an automatable `verify.sh` and
+  produces an XR that drops into the Kubernetes lab without
+  modification.
+
+## What comes next
+
+- The rest of **Part 3** will develop the surrounding outer delivery
+  loop (branch → PR → merge → GitOps → Crossplane reconciliation) and
+  the guardrails that live outside the Sandcastle's boundary. See
+  [Part 3](../../part-3/index.qmd) for the scaffolded outline.
+- Downstream cluster verification of the composed artifact continues
+  to live in
+  [`labs/hello-pico-on-kubernetes/`](../../../../labs/hello-pico-on-kubernetes/),
+  and the Sandcastle side that produces the branch continues to live
+  in
+  [`labs/hello-world-pico-sandcastle/`](../../../../labs/hello-world-pico-sandcastle/).
+- Multi-rule / multi-artifact hand-off, and GitOps-based promotion,
+  are natural extensions for a later Part 3 lesson.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

@@ -20,12 +20,24 @@ The intended learning arc is:
 
 ## Lessons
 
-Lesson content for Part 3 will follow the same lesson layout as
-[Part 1](../part-1/index.qmd) and the
+- [01 Handing off to Kubernetes](01-handing-off-to-kubernetes/index.qmd)
+  — the first runnable Part 3 lesson. Teaches the concrete
+  **construct → compose** boundary: how the durable Git branch the
+  [Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/)
+  produced is promoted into a Crossplane Composite Resource the
+  [Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
+  already knows how to compose. Ships with a runnable
+  [Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
+
+Additional Part 3 lesson content will follow the same lesson layout
+as [Part 1](../part-1/index.qmd) and the
 [Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
 
-::: {.callout-warning title="Scaffold — Part 3 not yet runnable"}
-Part 3 is intentionally scaffolded. It is included so the Sandcastle
-course demonstrates a multi-part structure that other course websites
-can mirror, but it does **not** yet carry runnable learner content.
+::: {.callout-note title="Scaffold — Part 3 partially runnable"}
+Lesson 01 (Handing off to Kubernetes) is **runnable** end-to-end via
+its accompanying
+[Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
+Additional Part 3 lessons on the outer delivery loop (PR / GitOps /
+policy) remain intentionally scaffolded for a later curriculum wave
+and are not yet exposed as learner content.
 :::
