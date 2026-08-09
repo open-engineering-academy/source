@@ -1,0 +1,174 @@
+---
+title: "1. Composing a Sandcastle request"
+subtitle: "How Crossplane requests engineering work from a Sandcastle without doing the engineering itself."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Describe where the **compose → construct** boundary sits in the
+  academy story _Crossplane composes, Sandcastle constructs, Picos
+  behave_, and why the compose side must not write code.
+- Explain what an **EngineeringTask** is, why it is a declarative
+  record rather than an imperative script, and why the Sandcastle
+  reads the task instead of the original XR.
+- Trace the concrete hand-off from an `XHelloWorldPico` XR through a
+  Composition-produced EngineeringTask to a durable `rules/hello.yaml`
+  file on a Sandcastle branch, and confirm the greeting the branch
+  carries came from the request.
+- Recognise the reusable
+  [Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/)
+  as the runnable exercise of this boundary.
+
+## Prerequisites
+
+- Completion of
+  [Sandcastle · Part 1 · 01 Inside a Sandcastle](../../part-1/01-inside-a-sandcastle/index.qmd)
+  and its runnable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/).
+- Reading familiarity with
+  [Crossplane · Part 1](../../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  — the XR shape this lesson's request uses.
+- Basic Git commands (`clone`, `branch`, `show`) — no advanced Git
+  required.
+- No cluster is required for **this lesson** or the accompanying
+  [Lab](lab.qmd). `compose.sh` is a local simulation of the
+  Composition step; a real cluster only becomes relevant if you
+  wire the resulting branch into the downstream Kubernetes lab.
+
+## Why a compose → construct lesson?
+
+Part 1 taught you what a Sandcastle *is* and had you drive one with a
+static blueprint. Part 2 asks the different question the shape of
+`memo2.md` demands:
+
+> Who is *asking* the Sandcastle to do work, and in what shape?
+
+The `memo2.md` answer is unambiguous: **Crossplane** asks, by
+requesting a resource whose Composition determines that construction
+work needs to happen. Crossplane itself does not write any Pico code.
+It causes a declarative **EngineeringTask** to exist. The Sandcastle
+then picks up that task and does the construction under the same
+five concerns you learned in
+[Part 1 · Lesson 1](../../part-1/01-inside-a-sandcastle/index.qmd).
+
+## Where the boundary sits in the academy story
+
+The three-layer story from `memo2.md`:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+Two boundaries sit between the three layers. Part 3 · Lesson 1 covers
+the *construct → compose* boundary; this lesson covers the other
+direction:
+
+1. **Compose → construct** — how a request on the composition layer
+   becomes construction work the Sandcastle picks up. **This lesson
+   is about that boundary.**
+2. **Construct → compose** — how a durable artifact produced by the
+   Sandcastle enters the composition layer as a request for something
+   to exist on the cluster. That is the topic of
+   [Part 3 · Lesson 1 · Handing off to Kubernetes](../../part-3/01-handing-off-to-kubernetes/index.qmd).
+
+The two boundaries together are what memo2 calls
+_compose → construct → behave, with Git/artifacts forming the durable
+boundary between construction and runtime_.
+
+## The concrete compose → construct hand-off
+
+The runnable
+[Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/)
+walks a specific case end-to-end.
+
+The **XR** the learner authors:
+
+```yaml
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: greetings-de
+spec:
+  value: "Hallo, Pico!"
+```
+
+The Composition (`compose.sh`) reads the XR and emits an
+**EngineeringTask** — a declarative record of the construction work
+required to satisfy the request, not a script that does the work:
+
+```yaml
+kind: EngineeringTask
+metadata:
+  name: greetings-de
+spec:
+  requestedBy:
+    apiVersion: oe.academy/v1alpha1
+    kind: XHelloWorldPico
+    name: greetings-de
+  artifact:
+    kind: hello-world-pico
+    producesFiles: [rules/hello.yaml]
+  inputs:
+    greeting: "Hallo, Pico!"
+  target:
+    branch: sandcastle/hello-world-pico-greetings-de
+    # ...
+```
+
+The Sandcastle reads the **EngineeringTask** and drives the same
+inner iteration loop from
+[Part 1 · Lesson 1](../../part-1/01-inside-a-sandcastle/index.qmd) —
+inspect the task, generate `rules/hello.yaml` carrying the requested
+greeting, validate with the reference `pico` CLI, commit on the
+requested branch, dispose of the sandbox.
+
+The hand-off across the boundary is exactly two files:
+
+1. `xr-request.yaml` — the compose-side input.
+2. `engineering-task.yaml` — the compose-side output *and* the
+   construct-side input.
+
+Nothing else crosses.
+
+## Rules for a well-behaved compose → construct hand-off
+
+Crossplane requests engineering work; the Sandcastle does it. Every
+rule below is what makes that separation honest:
+
+- **Compose emits declaration only.** The Composition writes YAML.
+  It does not write Pico code, does not touch the target repository,
+  and does not run the reference `pico` CLI.
+- **Construct sees only the task.** The Sandcastle receives the
+  EngineeringTask and no other artifact from the compose side. The
+  original XR must not appear inside the sandbox.
+- **Parametric on the request.** The greeting the branch's
+  `rules/hello.yaml` carries must be the greeting the XR asked for,
+  not a hard-coded string in the agent script.
+- **Provenance retained but disposable.** The task's
+  `spec.requestedBy` lets a reviewer trace the branch back to the
+  XR, but that provenance record does not need to survive the
+  sandbox teardown — only the branch does.
+
+The runnable
+[Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/)
+enforces all four rules with an automatable `verify.sh`.
+
+## What is out of scope for this lesson
+
+- **A real Crossplane cluster and a real EngineeringTask CR.**
+  `compose.sh` is a local simulation of a Composition step so the
+  boundary can be studied end-to-end without a cluster. A
+  cluster-backed variant is a later Part 2 follow-up.
+- **Multi-artifact requests.** One XR could ask for more than one
+  file, or for multiple related artifacts. The runnable lab
+  intentionally stays on a single-artifact request so the boundary
+  stays legible.
+- **Construct → compose direction.** How the branch this lesson
+  produces later becomes a Crossplane XR for the cluster is the
+  topic of
+  [Part 3 · Lesson 1](../../part-3/01-handing-off-to-kubernetes/index.qmd).
+
+## Next
+
+Continue with the [Exercise](exercise.qmd), then the [Lab](lab.qmd)
+and [Summary](summary.qmd), and finish with the [Quiz](quiz.qmd).

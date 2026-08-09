@@ -18,6 +18,43 @@ encounter a consistent experience across the academy.
   [crossplane course](../courses/crossplane/). Machine-readable
   descriptor:
   [`labs/hello-pico-on-kubernetes/metadata.yaml`](hello-pico-on-kubernetes/metadata.yaml).
+- **[Hello World Pico Sandcastle](hello-world-pico-sandcastle/)** — the
+  first runnable Sandcastle lab: run a Sandcastle end-to-end to
+  construct the same `hello-world-pico` artifact on a dedicated
+  branch, then dispose of the sandbox. Referenced from the
+  [sandcastle course](../courses/sandcastle/). Machine-readable
+  descriptor:
+  [`labs/hello-world-pico-sandcastle/metadata.yaml`](hello-world-pico-sandcastle/metadata.yaml).
+- **[Compose a Sandcastle request](compose-sandcastle-request/)** — the
+  first runnable compose → construct lab: turn a learner-authored
+  Crossplane `XHelloWorldPico` XR into an `EngineeringTask`, have a
+  Sandcastle pick up the task and construct the requested
+  `rules/hello.yaml` on a dedicated branch, then dispose of the
+  sandbox. Referenced from the
+  [sandcastle course](../courses/sandcastle/). Machine-readable
+  descriptor:
+  [`labs/compose-sandcastle-request/metadata.yaml`](compose-sandcastle-request/metadata.yaml).
+- **[Sandcastle → Kubernetes hand-off](handoff-sandcastle-to-kubernetes/)**
+  — the first runnable Sandcastle-to-Crossplane hand-off lab: take the
+  durable branch produced by the Sandcastle lab and promote its
+  greeting `value` into an `XHelloWorldPico` Composite Resource that
+  drops into the
+  [Hello Pico on Kubernetes lab](hello-pico-on-kubernetes/) without
+  modification. Referenced from the
+  [sandcastle course](../courses/sandcastle/). Machine-readable
+  descriptor:
+  [`labs/handoff-sandcastle-to-kubernetes/metadata.yaml`](handoff-sandcastle-to-kubernetes/metadata.yaml).
+- **[Outer delivery loop](outer-delivery-loop/)** — the first
+  runnable outer-loop lab: push the hand-off's XR onto a real
+  GitHub environment repo, open a real pull request, merge it, and
+  reconcile the merged XR onto the Crossplane cluster from the
+  [Hello Pico on Kubernetes lab](hello-pico-on-kubernetes/) via Flux
+  (or `kubectl` as a single-shot fallback). Live GitHub is a
+  prerequisite; the cluster stages run when a Crossplane cluster is
+  reachable. Referenced from the
+  [sandcastle course](../courses/sandcastle/). Machine-readable
+  descriptor:
+  [`labs/outer-delivery-loop/metadata.yaml`](outer-delivery-loop/metadata.yaml).
 
 ## Lab structure
 

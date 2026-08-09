@@ -1,0 +1,56 @@
+---
+title: "Summary · The outer delivery loop"
+---
+
+## Key takeaways
+
+- The **outer delivery loop** has four stages that begin exactly
+  where the Sandcastle ends: **review / PR**, **merge**, **GitOps
+  delivery**, and **downstream Crossplane reconciliation**.
+- The **only artifact that crosses the boundary** between the
+  Sandcastle and the outer loop is the durable Git branch produced
+  by the [previous lesson's hand-off](../01-handing-off-to-kubernetes/index.qmd).
+  Everything the outer loop does is derived from that branch or
+  supplied by the environment.
+- Three guardrails surround the outer loop and all live **outside
+  the Sandcastle boundary**: **automated verification** and
+  **review** attach to the PR, **policy** attaches at cluster
+  admission before Crossplane sees the XR.
+- **Cluster reconciliation remains Crossplane's job.** The outer
+  loop hands the XR over once and does not try to short-circuit
+  composition from the delivery side — the same rule the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  already relies on in isolation.
+- The academy ships **end-to-end runnable coverage** of the whole
+  picture. The
+  [Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/)
+  produces the XR at stage 0; the
+  [outer-delivery-loop lab](../../../../labs/outer-delivery-loop/)
+  drives stages 1–3 (real GitHub PR, real merge, GitOps sync via
+  Flux or `kubectl`); and the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  verifies stage 4 (Crossplane composes the `Job`). Stages 1–2 are
+  runnable without a cluster; stages 3–4 add a Crossplane cluster
+  (and optionally the `flux` CLI) as a documented prerequisite.
+
+## What comes next
+
+- Part 3 will continue with lessons on **multi-artifact hand-offs**
+  and **multi-environment promotion** (dev → staging → prod), which
+  build on the outer-loop shape this lesson pins down. See
+  [Part 3](../index.qmd) for the current outline.
+- Downstream cluster verification of the composed artifact continues
+  to live in
+  [`labs/hello-pico-on-kubernetes/`](../../../../labs/hello-pico-on-kubernetes/),
+  the hand-off that seeds the outer loop lives in
+  [`labs/handoff-sandcastle-to-kubernetes/`](../../../../labs/handoff-sandcastle-to-kubernetes/),
+  and the outer loop itself lives in
+  [`labs/outer-delivery-loop/`](../../../../labs/outer-delivery-loop/).
+- Policy tooling (OPA, Kyverno, Gatekeeper) is named here as a
+  concrete example of the admission-time guardrail; a concrete
+  policy demo is a reasonable extension exercise on top of this
+  lab's `gitops-sync.sh`.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

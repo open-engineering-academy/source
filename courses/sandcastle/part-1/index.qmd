@@ -1,0 +1,44 @@
+---
+title: "Part 1 — Inside a Sandcastle"
+---
+
+Part 1 establishes what a **Sandcastle** is and what it isn't, and
+walks through the five construction-layer concerns that make it
+suitable for safely producing Open Engineering artifacts:
+
+1. **Isolated workspaces** — the sandbox boundary.
+2. **Repo/branch flow** — how work moves in and out durably.
+3. **Tools and permissions** — what the engineering agent can and
+   cannot do.
+4. **Agent iteration** — the inner loop the agent runs inside the
+   Sandcastle.
+5. **Artifact boundaries** — what survives when the Sandcastle is
+   torn down.
+
+The single Part 1 lesson develops the mental model the rest of the
+course will build on. The lesson is instruction-first, followed by a
+paper exercise and then a runnable Sandcastle lab: Lesson 1's
+[Lab page](01-inside-a-sandcastle/lab.qmd) now links to the reusable
+[Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/),
+which executes the full Sandcastle path end-to-end.
+
+## Lessons
+
+Lessons in Part 1 use the same lesson layout as the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html)
+and the [Crossplane Part 1 lesson](../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html).
+
+- [1. Inside a Sandcastle](01-inside-a-sandcastle/index.qmd) —
+  introduces the Sandcastle construction layer, its five concerns, and
+  how it sits between the Crossplane composition layer and the Pico
+  runtime layer.
+
+## Where the runnable lab lives
+
+The first runnable Sandcastle lab is published as a reusable lab under
+the repository-root `labs/` directory at
+[`labs/hello-world-pico-sandcastle/`](../../../labs/hello-world-pico-sandcastle/)
+so it can be reused from other courses. Lesson 1's
+[Lab page](01-inside-a-sandcastle/lab.qmd) links to it directly and
+keeps the earlier paper walkthrough as an optional pre-run rehearsal
+of the same five construction-layer concerns.

@@ -1,0 +1,12 @@
+# Reference XR shape the hand-off must produce for the greeting
+# `Hello, Pico!`. verify.sh compares handoff.sh's generated XR against
+# this file (spec.value, apiVersion, and kind must all match).
+#
+# This is the same shape as labs/hello-pico-on-kubernetes/downloads/05-xr.yaml
+# so the generated XR drops in without modification.
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: hello
+spec:
+  value: "Hello, Pico!"

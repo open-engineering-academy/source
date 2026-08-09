@@ -18,12 +18,29 @@ project:
     - labs/hello-pico-on-kubernetes/objectives.qmd
     - labs/hello-pico-on-kubernetes/walkthrough.qmd
     - labs/hello-pico-on-kubernetes/solution.qmd
+    - labs/hello-world-pico-sandcastle/index.qmd
+    - labs/hello-world-pico-sandcastle/objectives.qmd
+    - labs/hello-world-pico-sandcastle/walkthrough.qmd
+    - labs/hello-world-pico-sandcastle/solution.qmd
+    - labs/handoff-sandcastle-to-kubernetes/index.qmd
+    - labs/handoff-sandcastle-to-kubernetes/objectives.qmd
+    - labs/handoff-sandcastle-to-kubernetes/walkthrough.qmd
+    - labs/handoff-sandcastle-to-kubernetes/solution.qmd
+    - labs/compose-sandcastle-request/index.qmd
+    - labs/compose-sandcastle-request/objectives.qmd
+    - labs/compose-sandcastle-request/walkthrough.qmd
+    - labs/compose-sandcastle-request/solution.qmd
+    - labs/outer-delivery-loop/index.qmd
+    - labs/outer-delivery-loop/objectives.qmd
+    - labs/outer-delivery-loop/walkthrough.qmd
+    - labs/outer-delivery-loop/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd
     - "!courses/pico/"
     - "!courses/kubernetes/"
     - "!courses/crossplane/"
+    - "!courses/sandcastle/"
     - "!templates/"
     - "!shared/"
 

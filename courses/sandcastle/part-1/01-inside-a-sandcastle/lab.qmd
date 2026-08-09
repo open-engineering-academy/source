@@ -1,0 +1,169 @@
+---
+title: "Lab · Constructing HelloWorldPico inside a Sandcastle"
+---
+
+::: {.callout-tip title="Runnable — do this lab in the reusable lab page"}
+The runnable version of this lab lives at
+[`labs/hello-world-pico-sandcastle/`](../../../../labs/hello-world-pico-sandcastle/).
+It executes the full Sandcastle path end-to-end (isolated workspace,
+PATH allowlist, agent inner loop, artifact hand-off, sandbox
+teardown) and ships an automatable
+[`verify.sh`](../../../../labs/hello-world-pico-sandcastle/downloads/verify.sh).
+Start there when you are ready to run the lab.
+
+The paper walkthrough below remains available as an **optional
+pre-run rehearsal** — it makes you name each of the five
+construction-layer concerns from [Lesson 1](index.qmd) before you
+watch them happen in the runnable lab.
+:::
+
+## What you will walk through
+
+You will trace what a Sandcastle would do to produce the same
+`hello-world-pico` artifact you already built by hand in the
+[Hello Pico lab](../../../../labs/hello-pico/) — but this time
+mediated by an isolated workspace, constrained tools, and a
+disciplined repo/branch flow. The walkthrough uses the
+[blueprint](exercise.qmd) you wrote in the exercise as its input.
+
+## The paper walkthrough
+
+Work through the six steps below on paper (or in a scratch note).
+Each step names which of the five concerns from
+[Lesson 1](index.qmd) it exercises.
+
+### Step 1 · Provision the isolated workspace
+
+Concern: **isolated workspace**.
+
+Sketch what happens when the Sandcastle starts:
+
+- The sandbox provider from your blueprint (`docker`, `podman`,
+  `vercel`, or `custom`) creates a fresh container/environment.
+- The Sandcastle mounts an empty scratch directory as the working
+  directory. Nothing from the host is visible unless explicitly
+  granted.
+- No network access is enabled beyond what your `permissions` list
+  allows.
+
+Answer in your notes: *what visible thing would prove to you that
+this step succeeded?* (Example: `pwd` prints a Sandcastle-internal
+path, `ls /` shows an image-provided root, not your laptop's.)
+
+### Step 2 · Clone the target repository on a dedicated branch
+
+Concern: **repo/branch flow**.
+
+Sketch:
+
+- The Sandcastle clones `target.repo` from your blueprint into the
+  workspace using a **narrow, branch-scoped** Git credential.
+- It creates and checks out `target.branch` (from your blueprint) —
+  never the default branch.
+- No other repositories are cloned. No pushes have happened yet.
+
+Answer: *if the Sandcastle were killed right now, what artifacts
+would exist on the target repository?* (Answer: none — the branch
+has not been pushed.)
+
+### Step 3 · Grant only the tools the artifact needs
+
+Concern: **tools and permissions**.
+
+Sketch:
+
+- The `tools` list from your blueprint is materialized inside the
+  workspace: the Pico Composer, the Rules parser, and their
+  language runtime.
+- No cluster credentials are mounted. No container registry token
+  is present. No SSH keys other than the branch-scoped Git token.
+- The workspace's file system reach is limited to the workspace
+  directory.
+
+Answer: *name one thing the agent would fail to do if it tried,
+because you deliberately did not grant the tool or permission.*
+
+### Step 4 · Run the agent's inner iteration loop
+
+Concern: **agent iteration**.
+
+Trace the loop on paper for building `rules/hello.yaml`:
+
+1. **Inspect conventions** — the agent reads the repository's
+   existing Rule files (if any) or the Pico course
+   [Introduction lesson](../../../pico/part-1/01-introduction/index.html)
+   to learn the expected `id / kind / value` shape.
+2. **Generate** — the agent writes `rules/hello.yaml` with a
+   greeting `value` of `Hello, Pico!` (matching the reference
+   solution from the [Hello Pico lab](../../../../labs/hello-pico/solution.html)).
+3. **Validate** — the agent runs the Pico Parser against
+   `rules/hello.yaml`. On failure, it revises the file and repeats
+   step 3.
+4. **Commit** — the agent commits the validated file to
+   `target.branch` with a message such as
+   `Add hello-world-pico rule`.
+
+Answer: *what happens if validation keeps failing?* (Answer: the
+loop repeats **inside the Sandcastle** — the surrounding delivery
+pipeline never sees the failed attempts.)
+
+### Step 5 · Push the branch and hand back
+
+Concern: **repo/branch flow**, again.
+
+Sketch:
+
+- The Sandcastle pushes `target.branch` to the target repository
+  using the branch-scoped credential.
+- Optionally, the Sandcastle opens a pull request from
+  `target.branch` into the default branch.
+- The Sandcastle marks itself ready for teardown.
+
+Answer: *from the target repository's point of view, what has
+changed?* (Answer: exactly one new branch — and optionally one PR
+— containing the committed files. Nothing else.)
+
+### Step 6 · Dispose of the Sandcastle
+
+Concern: **artifact boundaries**.
+
+Sketch:
+
+- The sandbox provider destroys the container/environment.
+- The scratch working directory, the temporary tools, and any
+  agent scratch state are all lost.
+- The **only** thing that survives is the branch (and any PR)
+  from step 5.
+
+Answer: *walk the `artifact_boundary` section of your blueprint
+against what actually survived — did anything cross the boundary
+that your blueprint did not list under `survives`?*
+
+## Success criteria (paper)
+
+- [ ] You can name which concern each of steps 1–6 exercises without
+      looking back at this page.
+- [ ] You can describe, in one sentence, why disposing of the
+      Sandcastle after step 5 does **not** lose the engineering
+      work.
+- [ ] You can identify at least one thing that would have crossed
+      the artifact boundary if the blueprint had granted a broader
+      permission or tool than the artifact needs.
+
+## Related content
+
+- Complete the [Exercise](exercise.qmd) blueprint first — the paper
+  walkthrough uses your blueprint as its input, and the runnable
+  lab ships a filled-in `blueprint.yaml` with the same shape.
+- Compare this walkthrough against the actual hand-built
+  [Hello Pico lab](../../../../labs/hello-pico/) walkthrough. Every
+  file the agent commits in step 4 is the same file you produced
+  by hand there.
+- Run the full path end-to-end in the reusable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/) —
+  also linked from this course's
+  [Labs](../../labs/index.qmd) page.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

@@ -1,0 +1,89 @@
+---
+title: "Objectives & prerequisites"
+description: "What the Sandcastle → Kubernetes hand-off lab teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Identify a Sandcastle-produced Git branch as the **durable input**
+  the composition layer consumes.
+- Promote the greeting `value` from `rules/hello.yaml` on that branch
+  into the `spec.value` field of a Crossplane
+  **CompositeResource** (`XHelloWorldPico`).
+- Demonstrate that the generated XR is byte-equivalent to the reference
+  `05-xr.yaml` the
+  [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)
+  ships — so it drops in without modification.
+- Recognise that the hand-off itself is the **construct → compose**
+  boundary in the academy story _Crossplane composes, Sandcastle
+  constructs, Picos behave_.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/index.qmd)
+  — you need the durable `sandcastle/hello-world-pico` branch on
+  `work/hello-world-pico-sandcastle/target-repo`. If it is missing,
+  the lab's `verify.sh` will run the Sandcastle lab for you.
+- Familiarity with the
+  [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)
+  at the level of its walkthrough steps 1–4 (install Crossplane,
+  install the Kubernetes provider, register the XRD and Composition).
+  A cluster is **not** required for this lab; it is required if you
+  choose to apply the generated XR in the cluster afterwards.
+:::
+
+## Environment
+
+- **Supported OS**: macOS (Apple Silicon or Intel), Linux, or WSL.
+- **Required shell**: `bash` 3.2+ or `zsh` 5.0+.
+- **Required tools** (all invoked directly by the walkthrough):
+  - `bash` and standard POSIX utilities (`grep`, `sed`, `cat`).
+  - `git` — reads the Sandcastle-produced branch.
+  - `python3` — parses the rule value and validates the generated XR.
+- **PATH expectation**: `bash`, `git`, and `python3` must all resolve
+  on `PATH`. No cluster tooling (`kubectl`, `helm`, `minikube`) is
+  required for this lab.
+- **Estimated time**: **15–30 minutes**.
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  rm -rf work/handoff-sandcastle-to-kubernetes
+  ```
+
+## Install commands
+
+If any tool above is missing, install it using its upstream instructions
+before starting the walkthrough. On macOS with Homebrew:
+
+```bash
+brew install git python3
+```
+
+On Linux, use your distribution's package manager (`apt`, `dnf`, etc.).
+Confirm each tool resolves before you begin:
+
+```bash
+command -v bash    && bash --version | head -1
+command -v git     && git --version
+command -v python3 && python3 --version
+```
+
+## One-time setup (optional)
+
+The hand-off script reads the Sandcastle-produced branch from
+`work/hello-world-pico-sandcastle/target-repo` by default. If your
+Sandcastle work-root is elsewhere, set `SANDCASTLE_WORK` when invoking
+`handoff.sh` or `verify.sh`.
+
+## Related lessons
+
+- [Sandcastle · Part 3 · 01 Handing off to Kubernetes](../../courses/sandcastle/part-3/01-handing-off-to-kubernetes/index.html)
+  — the conceptual lesson this lab implements.
+- [Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/index.qmd)
+  — produces the branch this lab consumes.
+- [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)
+  — consumes the XR this lab produces and reconciles it on a cluster.

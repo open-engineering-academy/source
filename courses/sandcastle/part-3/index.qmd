@@ -1,0 +1,61 @@
+---
+title: "Part 3 — Delivering artifacts from a Sandcastle"
+---
+
+Part 3 will focus on what happens *after* the Sandcastle finishes: how
+the durable Git artifacts it produced are validated, delivered, and
+picked up by the surrounding Open Engineering pipelines.
+
+The intended learning arc is:
+
+- Compare the Sandcastle's inner iteration loop (agent → repo/branch →
+  commits) with the outer delivery loop (branch → PR → merge → GitOps
+  → Crossplane reconciliation).
+- Discuss when a Sandcastle should produce a **branch**, a **pull
+  request**, or a **release artifact**, and how each choice interacts
+  with the Pico runtime and Crossplane composition layers.
+- Layer additional guardrails: automated verification, review, and
+  policy checks that run against the branch the Sandcastle hands
+  back — outside the Sandcastle's own boundary.
+
+## Lessons
+
+- [01 Handing off to Kubernetes](01-handing-off-to-kubernetes/index.qmd)
+  — the first runnable Part 3 lesson. Teaches the concrete
+  **construct → compose** boundary: how the durable Git branch the
+  [Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/)
+  produced is promoted into a Crossplane Composite Resource the
+  [Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
+  already knows how to compose. Ships with a runnable
+  [Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
+- [02 The outer delivery loop](02-outer-delivery-loop/index.qmd)
+  — picks up where the hand-off ends. Teaches the four outer-loop
+  stages — **review / PR**, **merge**, **GitOps delivery**, and
+  **downstream Crossplane reconciliation** — and the three
+  guardrails (**automated verification**, **review**, **policy**)
+  that surround them, all outside the Sandcastle boundary. Ships
+  with a runnable
+  [Outer delivery loop lab](../../../labs/outer-delivery-loop/)
+  that drives stages 1–2 against live GitHub without a cluster and
+  stages 3–4 against a Crossplane cluster when one is reachable.
+
+Additional Part 3 lesson content will follow the same lesson layout
+as [Part 1](../part-1/index.qmd) and the
+[Pico Introduction lesson](../../pico/part-1/01-introduction/index.html).
+
+::: {.callout-note title="Part 3 — end-to-end runnable"}
+Both current Part 3 lessons ship runnable labs. Lesson 01 (Handing
+off to Kubernetes) is runnable via the
+[Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
+Lesson 02 (The outer delivery loop) is runnable via the
+[Outer delivery loop lab](../../../labs/outer-delivery-loop/),
+which drives real GitHub PR/merge and reconciles the merged XR onto
+the cluster from
+[Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/).
+The outer-loop lab is honest about its hosted prerequisites (a
+learner-controlled GitHub env repo + authenticated `gh` CLI, plus a
+Crossplane cluster and optionally `flux` for stages 3–4). Further
+Part 3 lessons on multi-artifact hand-offs and multi-environment
+promotion remain intentionally scaffolded for a later curriculum
+wave.
+:::

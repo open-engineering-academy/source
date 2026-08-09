@@ -1,0 +1,169 @@
+---
+title: "Lab · Composing a Sandcastle request"
+---
+
+::: {.callout-tip title="Runnable — do this lab in the reusable lab page"}
+The runnable version of this lab lives at
+[`labs/compose-sandcastle-request/`](../../../../labs/compose-sandcastle-request/).
+It executes the full compose → construct path end-to-end (Crossplane
+XR → EngineeringTask → Sandcastle branch → recomposed Pico
+verification, sandbox disposed) and ships an automatable
+[`verify.sh`](../../../../labs/compose-sandcastle-request/downloads/verify.sh).
+Start there when you are ready to run the lab.
+:::
+
+## What you will run through
+
+You will take a learner-authored `XHelloWorldPico` XR, have a small
+local simulation of a Crossplane Composition emit an
+**EngineeringTask** from it, and have a Sandcastle pick up that task
+and construct the requested `rules/hello.yaml` on a dedicated branch.
+The greeting the branch carries comes from the XR, not from a
+hard-coded string in the agent.
+
+The hand-off is deliberately narrow: three files cross the boundary
+in either direction — one XR, one EngineeringTask, one durable
+branch — and the sandbox is disposed after the push. No cluster is
+required.
+
+## Step 1 · Inspect the Crossplane request
+
+The lab's only compose-side input is the shipped XR:
+
+```bash
+cat labs/compose-sandcastle-request/downloads/xr-request.yaml
+```
+
+You should see an `XHelloWorldPico` with `metadata.name: greetings-de`
+and `spec.value: "Hallo, Pico!"` — the same `apiVersion` and `kind`
+used by the
+[Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)'s
+[`05-xr.yaml`](../../../../labs/hello-pico-on-kubernetes/downloads/05-xr.yaml),
+with a deliberately different greeting so you can see the Sandcastle
+honour the request.
+
+Rule from [the lesson](index.qmd) being exercised: **compose emits
+declaration only** — the XR is the learner's declaration of what
+should exist; no Pico code is written by hand.
+
+## Step 2 · Compose the EngineeringTask
+
+Run the simulated composition against the XR:
+
+```bash
+bash labs/compose-sandcastle-request/downloads/compose.sh \
+     labs/compose-sandcastle-request/downloads/xr-request.yaml \
+     work/compose-sandcastle-request
+```
+
+Inspect the emitted task:
+
+```bash
+cat work/compose-sandcastle-request/task/engineering-task.yaml
+```
+
+It is an `EngineeringTask` carrying the greeting under
+`spec.inputs.greeting` and the target branch under
+`spec.target.branch`. It also carries `spec.requestedBy` as a
+provenance pointer back to the XR — no code has been written and no
+repository has been touched.
+
+Rule being exercised: **compose emits declaration only** — you can
+grep `compose.sh` for `pico`, `git commit`, or `write file`; you will
+find none.
+
+## Step 3 · Run the Sandcastle against the EngineeringTask
+
+Run the driver against the task. It provisions the isolated
+workspace, copies the task file in as the only compose-side input,
+runs the agent under a PATH allowlist, and disposes of the workspace
+after the push:
+
+```bash
+bash labs/compose-sandcastle-request/downloads/sandcastle-run.sh \
+     work/compose-sandcastle-request/task/engineering-task.yaml \
+     work/compose-sandcastle-request
+```
+
+The `[agent] ...` lines come from
+[`sandcastle-agent.sh`](../../../../labs/compose-sandcastle-request/downloads/sandcastle-agent.sh)
+running *inside* the sandbox; the `sandcastle-run: ...` lines come
+from the driver running *outside* the sandbox. Look for
+`greeting requested by task = Hallo, Pico!` — the agent reads it from
+the task file, not from the XR.
+
+Rules being exercised: **construct sees only the task** — the driver
+mounts only the task inside the sandbox — and **parametric on the
+request** — the greeting on the emitted rule matches the XR's
+`spec.value`, byte for byte.
+
+## Step 4 · Confirm the durable branch matches the request
+
+After the driver returns, the sandbox is gone. Only the target repo
+and the captured evidence remain:
+
+```bash
+test ! -d work/compose-sandcastle-request/sandbox && echo "sandbox: disposed"
+git -C work/compose-sandcastle-request/target-repo \
+    show sandcastle/hello-world-pico-greetings-de:rules/hello.yaml
+cat work/compose-sandcastle-request/results/pico-output.txt
+```
+
+The rule's `value:` field and the recomposed Pico's output both
+match `Hallo, Pico!` — proof the construction stage honoured the
+request end-to-end.
+
+Rule being exercised: **artifact boundary intact** — only the branch
+survived; the sandbox, the task file inside it, and the agent's
+scratch state were disposed.
+
+## Step 5 · Run the automatable verification
+
+Re-run the full path under the packaged verifier:
+
+```bash
+bash labs/compose-sandcastle-request/downloads/verify.sh
+```
+
+`verify.sh` runs `compose.sh` and `sandcastle-run.sh` and asserts the
+five boundary invariants from
+[`labs/compose-sandcastle-request/walkthrough.qmd`](../../../../labs/compose-sandcastle-request/walkthrough.html#step-5-run-the-automatable-verification):
+
+1. The emitted task matches the reference shape on the boundary
+   fields.
+2. The branch on the target repo carries the greeting the XR asked
+   for.
+3. Recomposing from a fresh clone of the branch prints the same
+   greeting.
+4. The sandbox workspace is gone.
+5. The construction stage never saw the XR.
+
+Empty diff, exit code `0`, and a final `verify: OK — branch=...` line
+are the pass.
+
+## Success criteria (runnable)
+
+- [ ] `bash labs/compose-sandcastle-request/downloads/verify.sh`
+      exits `0` with a final `verify: OK` line.
+- [ ] The durable branch on
+      `work/compose-sandcastle-request/target-repo` contains exactly
+      one committed file, `rules/hello.yaml`, whose `value:` matches
+      `spec.value` from
+      [`xr-request.yaml`](../../../../labs/compose-sandcastle-request/downloads/xr-request.yaml).
+- [ ] `work/compose-sandcastle-request/sandbox/` no longer exists.
+
+## Related content
+
+- Complete the [Exercise](exercise.qmd) trace first — the lab
+  mirrors the three-arrow diagram you drew there.
+- Compare against the runnable
+  [Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/).
+- The upstream construction-layer concerns this lab reuses live in
+  [Part 1 · Lesson 1](../../part-1/01-inside-a-sandcastle/index.qmd).
+- The downstream Kubernetes composition path that could consume the
+  branch this lab produces lives in the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/).
+
+## Next
+
+Continue with the [Summary](summary.qmd).

@@ -1,0 +1,128 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - shared/images/open-engineering-mark.svg
+  render:
+    - index.qmd
+    - glossary.qmd
+    - part-1/index.qmd
+    - part-1/01-inside-a-sandcastle/index.qmd
+    - part-1/01-inside-a-sandcastle/exercise.qmd
+    - part-1/01-inside-a-sandcastle/lab.qmd
+    - part-1/01-inside-a-sandcastle/summary.qmd
+    - part-1/01-inside-a-sandcastle/quiz.qmd
+    - part-2/index.qmd
+    - part-2/01-composing-a-sandcastle-request/index.qmd
+    - part-2/01-composing-a-sandcastle-request/exercise.qmd
+    - part-2/01-composing-a-sandcastle-request/lab.qmd
+    - part-2/01-composing-a-sandcastle-request/summary.qmd
+    - part-2/01-composing-a-sandcastle-request/quiz.qmd
+    - part-3/index.qmd
+    - part-3/01-handing-off-to-kubernetes/index.qmd
+    - part-3/01-handing-off-to-kubernetes/exercise.qmd
+    - part-3/01-handing-off-to-kubernetes/lab.qmd
+    - part-3/01-handing-off-to-kubernetes/summary.qmd
+    - part-3/01-handing-off-to-kubernetes/quiz.qmd
+    - part-3/02-outer-delivery-loop/index.qmd
+    - part-3/02-outer-delivery-loop/exercise.qmd
+    - part-3/02-outer-delivery-loop/lab.qmd
+    - part-3/02-outer-delivery-loop/summary.qmd
+    - part-3/02-outer-delivery-loop/quiz.qmd
+    - labs/index.qmd
+
+website:
+  title: "Sandcastle"
+  description: "Building safely inside Sandcastles — the Open Engineering Academy course on bounded engineering environments."
+  site-url: "https://academy.open-engineering.io/courses/sandcastle/"
+  favicon: shared/images/open-engineering-mark.svg
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: part-1/index.qmd
+        text: Part 1
+      - href: part-2/index.qmd
+        text: Part 2
+      - href: part-3/index.qmd
+        text: Part 3
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - section: "Part 1 — Inside a Sandcastle"
+        href: part-1/index.qmd
+        contents:
+          - section: "01 Inside a Sandcastle"
+            href: part-1/01-inside-a-sandcastle/index.qmd
+            contents:
+              - href: part-1/01-inside-a-sandcastle/exercise.qmd
+                text: Exercise
+              - href: part-1/01-inside-a-sandcastle/lab.qmd
+                text: Lab
+              - href: part-1/01-inside-a-sandcastle/summary.qmd
+                text: Summary
+              - href: part-1/01-inside-a-sandcastle/quiz.qmd
+                text: Quiz
+      - section: "Part 2 — Composing Sandcastles with Crossplane"
+        href: part-2/index.qmd
+        contents:
+          - section: "01 Composing a Sandcastle request"
+            href: part-2/01-composing-a-sandcastle-request/index.qmd
+            contents:
+              - href: part-2/01-composing-a-sandcastle-request/exercise.qmd
+                text: Exercise
+              - href: part-2/01-composing-a-sandcastle-request/lab.qmd
+                text: Lab
+              - href: part-2/01-composing-a-sandcastle-request/summary.qmd
+                text: Summary
+              - href: part-2/01-composing-a-sandcastle-request/quiz.qmd
+                text: Quiz
+      - section: "Part 3 — Delivering artifacts from a Sandcastle"
+        href: part-3/index.qmd
+        contents:
+          - section: "01 Handing off to Kubernetes"
+            href: part-3/01-handing-off-to-kubernetes/index.qmd
+            contents:
+              - href: part-3/01-handing-off-to-kubernetes/exercise.qmd
+                text: Exercise
+              - href: part-3/01-handing-off-to-kubernetes/lab.qmd
+                text: Lab
+              - href: part-3/01-handing-off-to-kubernetes/summary.qmd
+                text: Summary
+              - href: part-3/01-handing-off-to-kubernetes/quiz.qmd
+                text: Quiz
+          - section: "02 The outer delivery loop"
+            href: part-3/02-outer-delivery-loop/index.qmd
+            contents:
+              - href: part-3/02-outer-delivery-loop/exercise.qmd
+                text: Exercise
+              - href: part-3/02-outer-delivery-loop/lab.qmd
+                text: Lab
+              - href: part-3/02-outer-delivery-loop/summary.qmd
+                text: Summary
+              - href: part-3/02-outer-delivery-loop/quiz.qmd
+                text: Quiz
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Sandcastle — Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto

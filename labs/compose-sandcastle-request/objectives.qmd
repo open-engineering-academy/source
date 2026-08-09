@@ -1,0 +1,95 @@
+---
+title: "Objectives & prerequisites"
+description: "What Compose a Sandcastle request teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Run an end-to-end path in which a Crossplane XR is turned into an
+  EngineeringTask and a Sandcastle constructs the requested artifact.
+- Observe that Crossplane's composition **requests** engineering work
+  by declaring an EngineeringTask; it does not write any Pico code.
+- Observe that the Sandcastle only sees the EngineeringTask — the XR
+  never crosses the compose → construct boundary.
+- Confirm that the construction stage is **parametric on the
+  request**: change `spec.value` in the XR and the durable branch's
+  `rules/hello.yaml` changes to match, without touching any script.
+- Confirm that the artifact boundary from
+  [Sandcastle · Part 1 · Lesson 1](../../courses/sandcastle/part-1/01-inside-a-sandcastle/index.html)
+  still holds: only the branch survives; the sandbox and the task file
+  inside it are disposed.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/)
+  — this lab reuses the same PATH-allowlist Sandcastle shape, but
+  driven by an EngineeringTask instead of a static blueprint.
+- Reading familiarity with
+  [Crossplane · Part 1](../../courses/crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  so the `XHelloWorldPico` XR shape is recognisable.
+- A working shell (`bash` or `zsh`).
+- **`git` 2.30+** and **`python3` 3.8+** on your `PATH`.
+- A local clone of this repository, which ships the reference `pico`
+  CLI under `bin/pico`.
+:::
+
+## Environment
+
+- **Supported OS:** macOS, Linux, or WSL.
+- **Required shell:** `bash` 3.2+ or `zsh` 5+.
+- **Required tools:**
+  - `bash` (POSIX shell) — invoked by the driver and by
+    `./build/hello-world-pico`.
+  - `git` **2.30+** — seeds the local target repo, commits the branch
+    inside the sandbox, and pushes it back.
+  - `python3` **3.8+** — used by `compose.sh` to extract fields from
+    the XR, by `sandcastle-run.sh` to read the EngineeringTask, and
+    by `bin/pico`.
+  - `pico` (this repository's reference CLI, shipped under
+    `bin/pico`) — parses `rules/*.yaml` and composes the
+    `hello-world-pico` artifact.
+- **PATH expectation:** after one-time setup, `command -v pico`
+  resolves to `<repo>/bin/pico`, not `/usr/bin/pico` (the Alpine/nano
+  text editor).
+- **Estimated time:** 30–45 minutes.
+- **No cluster, container, or network access is required.** The
+  entire lab runs against a local target repo under `work/`.
+
+## One-time setup
+
+From a fresh shell, in a local clone of the academy source
+repository, put its `bin/` directory on your `PATH`:
+
+```bash
+export PATH="$PWD/bin:$PATH"
+command -v pico   # should print .../bin/pico
+```
+
+The `PATH` export lasts for the current shell session; re-run it in
+new shells. This is the same one-time setup used by the
+[Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/objectives.html#one-time-setup).
+
+## Cleanup
+
+The lab writes only inside the repository-ignored `work/` directory.
+To remove everything the lab produced:
+
+```bash
+rm -rf work/compose-sandcastle-request
+```
+
+The `sandcastle-run.sh` driver already deletes its own sandbox
+workspace at the end of each run; the command above additionally
+removes the seeded local target repo, the emitted EngineeringTask,
+and the captured evidence.
+
+## Related lessons and labs
+
+- [Sandcastle · Part 2 · Lesson 1 · Composing a Sandcastle request](../../courses/sandcastle/part-2/01-composing-a-sandcastle-request/index.html) — the concepts this lab makes runnable.
+- [Sandcastle · Part 1 · Lesson 1](../../courses/sandcastle/part-1/01-inside-a-sandcastle/index.html) — the five construction-layer concerns this lab reuses on the construction side.
+- [Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/) — the static-blueprint sibling of this lab.
+- [Sandcastle → Kubernetes hand-off lab](../handoff-sandcastle-to-kubernetes/) — the reverse-direction lab that promotes a Sandcastle branch back into a Crossplane XR for the Kubernetes composition path.

@@ -6,16 +6,37 @@ Each course is a **self-contained Quarto website** with its own navigation,
 sections, lessons, glossary, and assets. The catalog below links to the entry
 page of each course website.
 
+## Compose → construct → behave
+
+The three core courses map one-to-one onto the academy's three-layer story —
+**Crossplane composes, Sandcastle constructs, Picos behave**:
+
+| Phase | Course | Teaches |
+| --- | --- | --- |
+| **Compose** | [Crossplane](crossplane/) | Declaring and composing what should exist |
+| **Construct** | [Sandcastle](sandcastle/) | Safely building artifacts inside bounded engineering environments |
+| **Behave** | [Pico](pico/) | Long-lived reactive entities that react to events |
+
 ## Reference course
 
-- **[Pico](pico/)** — Building your first Pico. The canonical reference
-  course website; other course sites should follow the same structure.
+- **[Pico](pico/)** — Building your first Pico: the **behaviour** layer.
+  Teaches Rules, the Parser, and the Composer that produce a `hello-world-pico`
+  runtime artifact. Also the canonical reference course website; other course
+  sites should follow the same structure.
 
 ## Available courses
 
 - **[Crossplane](crossplane/)** — Running Hello Pico on Kubernetes with
-  Crossplane. Builds on the Pico course. Part 1 is being authored alongside
-  a runnable Crossplane lab; Parts 2 and 3 are explicitly scaffolded.
+  Crossplane: the **composition** layer. Builds on the Pico course. Part 1
+  is complete and ships with a runnable Crossplane lab; Parts 2 and 3 are
+  explicitly scaffolded.
+- **[Sandcastle](sandcastle/)** — Building safely inside Sandcastles: the
+  academy's **construction** layer. Part 1 delivers substantive
+  instruction (isolated workspaces, repo/branch flow, tools/permissions,
+  agent iteration, artifact boundaries) with a paper exercise and a paper
+  lab walkthrough; a runnable Sandcastle lab is deferred to a later
+  curriculum wave and is clearly labelled on the course. Parts 2 and 3
+  are explicitly scaffolded.
 
 ## Additional courses
 

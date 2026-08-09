@@ -16,3 +16,5 @@ produces:
 referenced_by:
   - oe.course.crossplane
   - oe.lesson.crossplane.01-composing-hello-pico-on-kubernetes
+  - oe.lab.handoff-sandcastle-to-kubernetes
+  - oe.lesson.sandcastle.03-handing-off-to-kubernetes

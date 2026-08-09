@@ -1,0 +1,95 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello World Pico Sandcastle teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Execute a real end-to-end Sandcastle path that exercises the five
+  construction-layer concerns from
+  [Sandcastle · Part 1 · Lesson 1](../../courses/sandcastle/part-1/01-inside-a-sandcastle/index.html):
+  isolated workspace, repo/branch flow, tools and permissions, agent
+  iteration, and artifact boundary.
+- Observe an engineering agent's inner iteration loop (inspect →
+  generate → validate → commit) running inside a scoped workspace
+  with a PATH allowlist.
+- Confirm that only the committed branch survives the workspace
+  teardown, and that the same branch — cloned back out afresh —
+  still produces a working `hello-world-pico` when passed through the
+  reference `pico` CLI.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the [Hello Pico lab](../hello-pico/) — this lab
+  produces the same `hello-world-pico` artifact, but under a
+  Sandcastle instead of by hand.
+- Completion of the
+  [Sandcastle · Part 1 · Exercise](../../courses/sandcastle/part-1/01-inside-a-sandcastle/exercise.html)
+  is recommended — the blueprint you wrote there matches the shape
+  of [`downloads/blueprint.yaml`](downloads/blueprint.yaml).
+- A working shell (`bash` or `zsh`).
+- **`git` 2.30+** and **`python3` 3.8+** on your `PATH`.
+- A local clone of this repository, which ships the reference `pico`
+  CLI under `bin/pico`.
+:::
+
+## Environment
+
+- **Supported OS:** macOS, Linux, or WSL.
+- **Required shell:** `bash` 3.2+ or `zsh` 5+.
+- **Required tools:**
+  - `bash` (POSIX shell) — invoked by the driver and by
+    `./build/hello-world-pico`.
+  - `git` **2.30+** — clones the local target repo, commits on the
+    branch, and pushes it back.
+  - `python3` **3.8+** — used by the driver to read the blueprint
+    fields and by `bin/pico`.
+  - `pico` (this repository's reference CLI, shipped under
+    `bin/pico`) — parses `rules/*.yaml` and composes the
+    `hello-world-pico` artifact.
+- **PATH expectation:** after one-time setup, `command -v pico`
+  resolves to `<repo>/bin/pico` (not `/usr/bin/pico`, which is the
+  Alpine/nano text editor). `git` and `python3` resolve to their
+  standard system paths.
+- **Estimated time:** 45–60 minutes.
+- **No cluster, container, or network access is required.** The
+  entire lab runs against a local target repo under `work/`.
+
+## One-time setup
+
+From a fresh shell, in a local clone of the academy source
+repository, put its `bin/` directory on your `PATH`:
+
+```bash
+export PATH="$PWD/bin:$PATH"
+command -v pico   # should print .../bin/pico
+```
+
+The `PATH` export lasts for the current shell session; re-run it in
+new shells. This is the same one-time setup used by the
+[Hello Pico lab](../hello-pico/objectives.html#one-time-setup).
+
+## Cleanup
+
+The lab writes only inside the repository-ignored `work/` directory.
+To remove everything the lab produced:
+
+```bash
+rm -rf work/hello-world-pico-sandcastle
+```
+
+The `sandcastle-run.sh` driver already deletes its own sandbox
+workspace at the end of each run; the command above additionally
+removes the seeded local target repo and the captured evidence.
+
+## Related lessons and labs
+
+- [Sandcastle · Part 1 · Lesson 1 · Inside a Sandcastle](../../courses/sandcastle/part-1/01-inside-a-sandcastle/index.html) — the
+  concepts this lab makes runnable.
+- [Sandcastle · Part 1 · Lesson 1 · Exercise](../../courses/sandcastle/part-1/01-inside-a-sandcastle/exercise.html) — the paper
+  blueprint whose shape this lab's `blueprint.yaml` mirrors.
+- [Hello Pico lab](../hello-pico/) — the same `hello-world-pico`
+  artifact, produced by hand.

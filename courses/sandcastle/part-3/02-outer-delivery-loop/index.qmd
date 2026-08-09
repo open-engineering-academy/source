@@ -1,0 +1,192 @@
+---
+title: "2. The outer delivery loop"
+subtitle: "What happens to the Sandcastle branch after the hand-off: review, merge, GitOps, and cluster reconciliation — all outside the Sandcastle boundary."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Name the four stages of the **outer delivery loop** that begin
+  where the Sandcastle stops: **review / PR**, **merge**, **GitOps
+  delivery**, and **downstream Crossplane reconciliation**.
+- Explain why every stage of the outer loop lives **outside** the
+  Sandcastle boundary — and why that is the same architectural choice
+  that makes the Sandcastle itself disposable.
+- Locate the three guardrails that surround the outer loop —
+  **automated verification**, **review**, and **policy** — and say
+  which stage each one gates.
+- Argue why the branch produced by the
+  [previous lesson's hand-off](../01-handing-off-to-kubernetes/index.qmd)
+  is the only durable interface between the Sandcastle and the outer
+  loop, and what would go wrong if the loop reached back into the
+  Sandcastle.
+
+## Prerequisites
+
+- Completion of
+  [Sandcastle · Part 3 · 01 Handing off to Kubernetes](../01-handing-off-to-kubernetes/index.qmd)
+  and its runnable
+  [Sandcastle → Kubernetes hand-off lab](../../../../labs/handoff-sandcastle-to-kubernetes/).
+  This lesson picks up exactly where that one ends: with an XR that
+  is byte-equivalent to the Kubernetes lab's `05-xr.yaml`.
+- Reading familiarity with
+  [Crossplane · Part 1](../../../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html)
+  — the downstream reconciler the outer loop feeds.
+- Basic understanding of pull requests and merges. This lesson can
+  be read without running anything, but the accompanying
+  [runnable lab](../../../../labs/outer-delivery-loop/) drives all
+  four stages against live GitHub (and optionally a Crossplane
+  cluster).
+- A learner-controlled GitHub environment repository (private is
+  recommended) and an authenticated `gh` CLI, if you plan to run
+  the lab. See the lab's
+  [Objectives page](../../../../labs/outer-delivery-loop/objectives.html)
+  for the full prerequisite list and honest hosted-dependency notes.
+- No cluster is required to complete stages 1–2 of the runnable
+  path; stages 3–4 add a Crossplane cluster (per the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/))
+  and, optionally, the `flux` CLI.
+
+## Why an outer-loop lesson?
+
+The previous lesson stopped at the smallest possible hand-off: read
+one field off a durable branch, write one field into a Crossplane
+Composite Resource. That step is complete on its own, but in a real
+organisation nobody applies XRs to production directly from a hand-off
+script. The branch must first be **reviewed**, **merged**, **delivered
+by a reconciler**, and finally **reconciled by Crossplane** onto the
+cluster. Those four stages are the outer delivery loop.
+
+This lesson makes the outer loop explicit so learners understand what
+the Sandcastle's durable Git artifact actually plugs into — and, just
+as importantly, what it deliberately does **not** own.
+
+## Where the outer loop sits in the architecture
+
+The [memo2 framing](../../index.qmd) describes two long-running
+reconciliation loops in the academy story:
+
+- The **Crossplane reconciliation loop** — desired resources versus
+  actual cluster state.
+- The **Pico event loop** — events versus rules versus behaviour.
+
+The Sandcastle sits **outside both**. It runs a bounded piece of
+engineering work, hands back a durable Git branch, and disappears.
+The outer delivery loop is the machinery that carries that branch
+across the gap between the Sandcastle (which is now gone) and the
+Crossplane loop (which is always on).
+
+Concretely, for the running `hello-world-pico` example:
+
+```
+[Sandcastle]                 (disposed after Part 1 lab)
+     │
+     │ durable branch: sandcastle/hello-world-pico
+     ▼
+[Hand-off]                   (Part 3 · Lesson 01)
+     │
+     │ Crossplane XR file
+     ▼
+─────────── outer delivery loop starts here ──────────
+     │
+     ▼
+[Review / PR]  →  [Merge]  →  [GitOps delivery]  →  [Crossplane reconciliation]
+     │              │                │                       │
+     ▼              ▼                ▼                       ▼
+  approvals     source-of-truth   cluster receives       XR → composed
+  + checks      moves forward     desired state          Kubernetes Job
+```
+
+## The four stages, in order
+
+### 1. Review / PR
+
+The branch the hand-off produced becomes a **pull request** against
+the environment repository (or the `main` branch of the delivery
+repo). Reviewers and CI both operate on this PR — not on the
+Sandcastle, which is no longer running.
+
+Two guardrails attach here: **automated verification** (the
+hand-off's `verify.sh` and any environment-level checks re-run on
+the PR) and **review** (the human or policy approval that gates
+merge).
+
+### 2. Merge
+
+Merge is the point at which the branch becomes the **source of
+truth** for the environment. Before merge the XR is a proposal;
+after merge it is the desired state the reconciler is expected to
+enforce. The Sandcastle has no opinion on this transition — it is
+owned entirely by the environment repo's branch protection and
+merge policy.
+
+### 3. GitOps delivery
+
+A GitOps reconciler (for example Flux or Argo CD) watches the
+merged state and applies the XR to the target cluster. This is the
+first stage of the outer loop that actually touches a cluster. It
+is intentionally the reconciler's job, not the hand-off's — the
+hand-off remains cluster-independent, as the previous lesson
+insisted.
+
+The third guardrail attaches here: **policy** (for example OPA /
+Kyverno / Gatekeeper) can reject the XR at admission if it
+violates cluster-wide rules the environment repo does not
+otherwise encode.
+
+### 4. Downstream Crossplane reconciliation
+
+Once the XR is admitted, Crossplane's own reconciliation loop takes
+over: the `XHelloWorldPico` XR is composed into a Kubernetes `Job`
+that prints `Hello, Pico!`, exactly as the
+[Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+demonstrates in isolation.
+
+This is the loop that keeps running long after the Sandcastle, the
+PR, and the delivery run are all done.
+
+## Rules the outer loop must respect
+
+The four hand-off rules from the previous lesson carry forward, with
+one addition for each outer-loop stage:
+
+- **No reach-back into the Sandcastle.** The Sandcastle is gone. If
+  any outer-loop stage needs to re-read something from the sandbox,
+  the hand-off did not capture enough on the branch.
+- **The branch is the only interface.** Review, merge, delivery, and
+  reconciliation all operate on the branch (and then the merged
+  state). None of them may call back into the hand-off script or the
+  Sandcastle to "regenerate" the XR.
+- **Guardrails live outside the Sandcastle boundary.** Automated
+  verification runs on the PR, review runs on the PR, and policy
+  runs at cluster admission. None of them belong inside the
+  Sandcastle — putting them there would re-couple construction to
+  delivery.
+- **Cluster reconciliation is Crossplane's job.** The outer loop
+  hands off to Crossplane once and does not try to short-circuit
+  reconciliation from the delivery side.
+
+## What is out of scope for this lesson
+
+- **Bootstrapping the hosted dependencies.** The lesson (and its
+  runnable [lab](../../../../labs/outer-delivery-loop/)) require a
+  learner-owned GitHub env repo and an authenticated `gh` session,
+  and — for stages 3–4 — a Crossplane cluster from the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)
+  plus optionally the `flux` CLI. Installing and authenticating
+  those tools is a documented prerequisite, not a step this lesson
+  walks through.
+- **Multi-artifact / multi-environment PRs.** The lesson and its
+  lab drive a single-XR promotion into a single `envs/dev/xr.yaml`
+  path. Multi-artifact hand-offs and multi-environment promotion
+  (dev → staging → prod) belong to a later Part 3 lesson.
+- **Full policy demo.** The lesson names OPA, Kyverno, and
+  Gatekeeper as examples of the admission-time policy guardrail so
+  the shape is concrete, but the runnable lab does not ship a
+  concrete policy. Adding one is a reasonable extension exercise.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd), then the [Lab](lab.qmd)
+and [Summary](summary.qmd), and finish with the [Quiz](quiz.qmd).

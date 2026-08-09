@@ -1,0 +1,73 @@
+---
+title: "Quiz · The outer delivery loop"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you
+can self-grade after answering.
+
+## 1. What are the four stages of the outer delivery loop, in order?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+1. **Review / PR** — the branch becomes a pull request that
+   automated verification and human review both operate on.
+2. **Merge** — the merged branch becomes the environment's source
+   of truth.
+3. **GitOps delivery** — a reconciler applies the merged XR to the
+   target cluster.
+4. **Downstream Crossplane reconciliation** — Crossplane composes
+   the XR into concrete Kubernetes resources.
+:::
+
+## 2. What is the single artifact that crosses the boundary from the Sandcastle into the outer loop?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **durable Git branch** produced by the Sandcastle (and read by
+the previous lesson's hand-off). Everything the outer loop does is
+derived from that branch or supplied by the environment
+repository. If any outer-loop stage needs to reach back into the
+Sandcastle, the hand-off did not capture enough on the branch.
+:::
+
+## 3. Why do the outer loop's guardrails belong outside the Sandcastle boundary?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because the Sandcastle is bounded and disposable *by design*.
+Putting automated verification, review, or policy inside the
+Sandcastle would couple construction to delivery and delivery
+policy to construction — losing the separation that makes the
+Sandcastle safe to dispose of and the outer loop safe to change
+independently.
+:::
+
+## 4. Which stage of the outer loop is the first one that actually touches a cluster?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**Stage 3 — GitOps delivery.** Stages 1 (review / PR) and 2
+(merge) are entirely repo-shaped. The cluster only appears when
+the reconciler applies the merged XR, and Crossplane's own
+reconciliation loop (stage 4) then composes it into concrete
+Kubernetes resources.
+:::
+
+## 5. What honest prerequisites does the runnable outer-loop lab pull in that the hand-off lab did not?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+- A **learner-controlled GitHub environment repository** and an
+  authenticated `gh` CLI — because stages 1–2 create a real branch,
+  a real pull request, and a real merge commit that only make sense
+  on a real hosted repo.
+- For stages 3–4, a **Crossplane cluster** (from the
+  [Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/))
+  and either the `flux` CLI or `kubectl` — because those stages
+  reconcile the merged XR onto a real cluster.
+
+The lab keeps stages 1–2 runnable without a cluster (a `verify.sh
+--skip-cluster` mode exits cleanly with GitHub-only assertions) so
+learners can practise the review/merge half of the loop before
+setting up the reconciler half.
+:::
+
+## Next
+
+Return to [Part 3](../index.qmd) or explore the
+[Labs](../../labs/index.qmd) page.

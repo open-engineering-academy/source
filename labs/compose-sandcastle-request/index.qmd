@@ -1,0 +1,87 @@
+---
+title: "Compose a Sandcastle request"
+description: "Turn a learner-authored Crossplane XR into an EngineeringTask and have a Sandcastle construct the requested artifact on a durable branch."
+---
+
+## Overview
+
+**Compose a Sandcastle request** is the first *runnable* lab that
+demonstrates the **compose → construct** boundary of the academy story:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+The lab takes a learner-authored Crossplane `XHelloWorldPico` request,
+runs a small local composition that turns the XR into an
+**EngineeringTask** (a declarative record of the construction work the
+cluster wants done), and has a Sandcastle pick up that task, construct
+the requested artifact on a dedicated branch, and dispose of the
+sandbox. The construction stage is **parametric on the request** — the
+greeting comes from the XR, not from a hard-coded string.
+
+This lab is **reusable across courses**: it lives at the repository
+root under `labs/compose-sandcastle-request/` and is referenced from
+the [Sandcastle course](../../courses/sandcastle/index.html).
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+Two durable artifacts:
+
+1. `work/compose-sandcastle-request/task/engineering-task.yaml` — the
+   EngineeringTask the composition emitted from the XR. It is the
+   `produces` entry `compose-sandcastle-request-engineering-task` in
+   [`metadata.yaml`](metadata.yaml).
+2. A durable branch named
+   `sandcastle/hello-world-pico-<name>` on a local target repository
+   (where `<name>` is `metadata.name` from the XR), containing exactly
+   one committed file (`rules/hello.yaml`) whose greeting `value`
+   matches `spec.value` from the XR. This is the `produces` entry
+   `compose-sandcastle-request-branch`.
+
+The XR-side and the branch-side never meet inside the Sandcastle: the
+composition emits the EngineeringTask, and only the EngineeringTask
+crosses into the sandbox. That separation is what
+[`verify.sh`](downloads/verify.sh)'s fifth assertion checks.
+
+## Downloads and screenshots
+
+Runnable files live under `downloads/`:
+
+- [`xr-request.yaml`](downloads/xr-request.yaml) — the learner-authored
+  Crossplane XR requesting a `hello-world-pico` artifact with a
+  specific greeting `value`.
+- [`compose.sh`](downloads/compose.sh) — the simulated Crossplane
+  Composition that turns the XR into an EngineeringTask. Writes no
+  code and touches no repository.
+- [`expected-task.yaml`](downloads/expected-task.yaml) — reference
+  EngineeringTask shape the generated task is compared against.
+- [`sandcastle-run.sh`](downloads/sandcastle-run.sh) — Sandcastle driver
+  that reads the EngineeringTask, provisions the isolated workspace,
+  runs the task-driven agent under a PATH allowlist, hands the branch
+  back, and disposes of the workspace.
+- [`sandcastle-agent.sh`](downloads/sandcastle-agent.sh) — the
+  task-driven inner iteration loop (inspect task → generate → validate
+  → commit) run inside the sandbox. Reads the greeting from the
+  mounted EngineeringTask; never sees the XR.
+- [`verify.sh`](downloads/verify.sh) — automatable check that runs the
+  full compose → construct path and asserts the five boundary
+  invariants.
+
+Screenshot targets for the walkthrough live under
+[`screenshots/`](screenshots/); no image files ship yet.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the same schema as
+[`labs/hello-pico/metadata.yaml`](../hello-pico/metadata.yaml).
+
+## Referenced from
+
+- [Sandcastle course · Part 2 · Composing a Sandcastle request · Lab](../../courses/sandcastle/part-2/01-composing-a-sandcastle-request/lab.html)
+- [Sandcastle course · Labs](../../courses/sandcastle/labs/index.html)

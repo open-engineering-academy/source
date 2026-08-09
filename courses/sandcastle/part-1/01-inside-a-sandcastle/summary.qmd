@@ -1,0 +1,55 @@
+---
+title: "Summary · Inside a Sandcastle"
+---
+
+## Key takeaways
+
+- A **Sandcastle** is an isolated, disposable engineering workspace
+  that runs an engineering agent under constrained tools and
+  permissions, uses a branch on a target repository as its input
+  and output surface, and preserves the resulting engineering work
+  as durable Git artifacts.
+- Sandcastle sits between Crossplane and Pico in the academy story:
+  **Crossplane composes**, **Sandcastle constructs**, **Picos
+  behave**.
+- The Sandcastle construction layer is defined by five concerns:
+  **isolated workspaces**, **repo/branch flow**, **tools and
+  permissions**, **agent iteration**, and **artifact boundaries**.
+  All Sandcastle-shaped tooling should address these five concerns
+  regardless of the specific sandbox provider it uses.
+- The Sandcastle is *safe to be disposable* because the workspace,
+  tools, and agent scratch state are all disposable, while the only
+  thing that crosses the artifact boundary is the committed Git
+  branch.
+- The Sandcastle owns the **inner iteration loop** (inspect →
+  generate → validate → commit) but does **not** own the
+  surrounding delivery loop (branch → PR → merge → GitOps →
+  Crossplane reconciliation).
+- This wave of the course delivers **substantive instruction**, a
+  paper [Exercise](exercise.qmd) blueprint, and a runnable
+  Sandcastle [Lab](lab.qmd) that links to the reusable
+  [Hello World Pico Sandcastle lab](../../../../labs/hello-world-pico-sandcastle/)
+  under `labs/`.
+
+## What comes next
+
+- **Part 2 — Composing Sandcastles with Crossplane** develops how a
+  Crossplane Composition *requests* engineering work from a
+  Sandcastle. Its first lesson,
+  [01 Composing a Sandcastle request](../../part-2/01-composing-a-sandcastle-request/index.qmd),
+  is runnable end-to-end via the reusable
+  [Compose a Sandcastle request lab](../../../../labs/compose-sandcastle-request/).
+- **Part 3 — Delivering artifacts from a Sandcastle** will develop
+  the outer delivery loop and the guardrails that live outside the
+  Sandcastle's boundary. See [Part 3](../../part-3/index.qmd).
+- The reusable Hello Pico artifact you would ultimately have a
+  Sandcastle build is already documented at
+  [`labs/hello-pico/`](../../../../labs/hello-pico/), and the
+  downstream Kubernetes composition of the same artifact is at
+  [`labs/hello-pico-on-kubernetes/`](../../../../labs/hello-pico-on-kubernetes/).
+  Together they define the endpoints a future runnable Sandcastle
+  lab will connect.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

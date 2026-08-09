@@ -1,0 +1,69 @@
+---
+title: "Sandcastle → Kubernetes hand-off"
+description: "Take the branch a Sandcastle produced and hand its greeting off as a Crossplane XR for the Hello Pico on Kubernetes composition."
+---
+
+## Overview
+
+**Sandcastle → Kubernetes hand-off** is the first runnable lab that
+spans the boundary between the **construction** layer and the
+**composition** layer of the academy story:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+You will take the durable Git branch produced by the
+[Hello World Pico Sandcastle lab](../hello-world-pico-sandcastle/)
+— `sandcastle/hello-world-pico`, containing `rules/hello.yaml` — and
+promote its greeting `value` into a Crossplane **Composite Resource**
+that the [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/)
+already knows how to compose onto a real cluster.
+
+This lab is deliberately narrow: it covers only the hand-off itself.
+The Sandcastle side is verified by the Sandcastle lab; the cluster side
+is verified by the Kubernetes lab. This lab proves the boundary between
+them is coherent and automatable.
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single generated file, `work/handoff-sandcastle-to-kubernetes/build/xr.yaml`,
+whose shape is byte-equivalent to the reference
+[`05-xr.yaml`](../hello-pico-on-kubernetes/downloads/05-xr.yaml) shipped
+with the Kubernetes lab. This is the `produces` entry
+`hello-world-pico-on-kubernetes-xr` in
+[`metadata.yaml`](metadata.yaml).
+
+The generated XR can be applied unchanged after completing steps 1–4 of
+the [Hello Pico on Kubernetes walkthrough](../hello-pico-on-kubernetes/walkthrough.qmd)
+(Crossplane, provider, XRD, Composition), which is where cluster-side
+verification lives.
+
+## Downloads and screenshots
+
+Runnable files live under `downloads/`:
+
+- [`handoff.sh`](downloads/handoff.sh) — reads the greeting value from
+  the Sandcastle-produced branch and writes the Crossplane XR.
+- [`expected-xr.yaml`](downloads/expected-xr.yaml) — reference XR shape
+  the generated file must match.
+- [`verify.sh`](downloads/verify.sh) — automatable check that runs the
+  Sandcastle lab (if needed), runs the hand-off, and asserts the
+  generated XR matches the Kubernetes lab's `05-xr.yaml` shape.
+
+Screenshots referenced from the walkthrough live under `screenshots/`.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the same schema as
+[`labs/hello-pico/metadata.yaml`](../hello-pico/metadata.yaml).
+
+## Referenced from
+
+- [Sandcastle course · Part 3 · Handing off to Kubernetes · Lab](../../courses/sandcastle/part-3/01-handing-off-to-kubernetes/lab.html)
+- [Sandcastle course · Labs](../../courses/sandcastle/labs/index.html)

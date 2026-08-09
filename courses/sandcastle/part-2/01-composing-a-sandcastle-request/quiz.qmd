@@ -1,0 +1,73 @@
+---
+title: "Quiz · Composing a Sandcastle request"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you
+can self-grade after answering.
+
+## 1. In the academy story, who _requests_ engineering work and who _does_ it?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**Crossplane** requests engineering work — by causing a declarative
+**EngineeringTask** to exist that describes what construction the
+cluster wants done. **Sandcastle** does the work — by picking up the
+EngineeringTask, running an isolated agent, and returning a durable
+Git branch. Crossplane never writes Pico code, and Sandcastle never
+sees the original XR.
+:::
+
+## 2. What are the two files that cross the compose → construct boundary?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+1. `xr-request.yaml` — the compose-side input (the learner-authored
+   Crossplane XR).
+2. `engineering-task.yaml` — the compose-side output *and* the
+   construct-side input (the declarative record of the work).
+
+The durable branch the Sandcastle produces is the construct-side
+*output*, but it does not cross back into the compose side of this
+lesson — it becomes the input to
+[Part 3 · Lesson 1](../../part-3/01-handing-off-to-kubernetes/index.qmd)
+instead.
+:::
+
+## 3. Why must the Sandcastle read the EngineeringTask instead of the original XR?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+So the Sandcastle stays **independent of the XR shape**. If a later
+Composition starts translating a different XR kind into the same
+task shape, the Sandcastle keeps working without modification.
+Coupling the Sandcastle to the XR would collapse the compose →
+construct boundary and force the construction layer to reason about
+composition concerns.
+:::
+
+## 4. What does _parametric on the request_ mean in this lesson?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The construction stage's output depends on the request's inputs, not
+on hard-coded strings in the agent. Concretely: change `spec.value`
+in the XR, and the greeting in the durable branch's
+`rules/hello.yaml` changes to match — without editing any script.
+The runnable
+[`verify.sh`](../../../../labs/compose-sandcastle-request/downloads/verify.sh)
+asserts this end-to-end.
+:::
+
+## 5. Why is it safe to dispose of the sandbox after the Sandcastle finishes, even though the EngineeringTask file lived inside it?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because the same artifact-boundary guarantee from
+[Part 1 · Lesson 1](../../part-1/01-inside-a-sandcastle/index.qmd)
+still holds: only committed Git content crosses out of the sandbox.
+The EngineeringTask file was construction-side scratch state — its
+provenance information is redundant with `spec.requestedBy` on the
+compose-side task, which lives durably on the compose side.
+Reviewers who want to trace the branch back to its XR use that
+compose-side record, not the disposed copy inside the sandbox.
+:::
+
+## Next
+
+Return to [Part 2](../index.qmd) or continue to
+[Part 3](../../part-3/index.qmd).

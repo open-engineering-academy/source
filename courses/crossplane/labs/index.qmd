@@ -20,6 +20,16 @@ under the repository-root [`labs/`](../../../labs/index.html) directory.
   the cluster. Descriptor:
   [`labs/hello-pico-on-kubernetes/metadata.yaml`](../../../labs/hello-pico-on-kubernetes/metadata.yaml).
 
+## Related reusable labs
+
+- [Sandcastle → Kubernetes hand-off](../../../labs/handoff-sandcastle-to-kubernetes/)
+  — produces the `XHelloWorldPico` XR consumed by the Hello Pico on
+  Kubernetes lab above, from the durable branch that the
+  [Hello World Pico Sandcastle lab](../../../labs/hello-world-pico-sandcastle/)
+  produced. Owned by the
+  [Sandcastle course](../../sandcastle/index.html); the two courses
+  meet at this file-level contract.
+
 ## Authoring course-scoped labs
 
 Course-scoped labs live in this directory and follow the shared lab

@@ -1,0 +1,140 @@
+---
+title: "Exercise · Map the outer delivery loop on paper"
+---
+
+A short, pen-and-paper task. Complete it before moving on to the
+runnable [Lab](lab.qmd) walkthrough.
+
+## Task
+
+Map the four outer-loop stages onto the running `hello-world-pico`
+example, then reason about two boundary questions the loop must
+answer.
+
+You do **not** need a cluster or any GitOps tooling for this
+exercise. The goal is to lock in the outer delivery loop as a
+one-page picture before you look at any real repository or
+reconciler.
+
+## Step 1 · Fill in the stage table
+
+Copy this table into your notes and fill in the blanks using what
+you already know from the [lesson](index.qmd) and from the
+[previous hand-off lesson](../01-handing-off-to-kubernetes/index.qmd):
+
+| # | Stage                          | Input                                 | Output                                | Guardrail(s)                          |
+|---|--------------------------------|---------------------------------------|---------------------------------------|---------------------------------------|
+| 1 | Review / PR                    | branch `___________________`          | approved / rejected PR                | ______________ + ______________       |
+| 2 | Merge                          | approved PR                           | merged state on `_______`             | branch protection                     |
+| 3 | GitOps delivery                | merged XR file                        | XR applied to `_______`               | ______________                        |
+| 4 | Crossplane reconciliation      | admitted `_______` XR                 | composed Kubernetes `_______`         | Crossplane's own reconcile loop       |
+
+Answer in your notes: *at which stage does a cluster first appear in
+the picture?* (Answer: stage 3 — GitOps delivery. Before that, the
+outer loop is repo- and PR-shaped only.)
+
+## Step 2 · Diagram the boundary
+
+Sketch the boundary between the Sandcastle and the outer loop, and
+mark which artifacts cross it:
+
+```
+   ┌─────────────────────┐
+   │   Sandcastle        │    (disposed)
+   │                     │
+   │   inner loop        │
+   └──────────┬──────────┘
+              │
+              │ (durable Git branch)
+              ▼
+   ─── boundary ──────────────────────────────────────
+              │
+              ▼
+   [Review / PR] → [Merge] → [GitOps] → [Crossplane]
+```
+
+Answer in your notes: *how many things cross the boundary from the
+Sandcastle into the outer loop?* (Answer: exactly one — the durable
+Git branch. Everything else the outer loop needs is either derived
+from the branch or supplied by the environment.)
+
+## Step 3 · Spot the outer-loop violations
+
+For each of the following hypothetical outer-loop implementations,
+mark ✅ if it is well-behaved or ❌ if it violates one of the four
+outer-loop rules from [the lesson](index.qmd) (no reach-back into
+the Sandcastle, branch is the only interface, guardrails outside the
+Sandcastle boundary, cluster reconciliation is Crossplane's job). For
+each ❌, name which rule.
+
+### Case 1
+
+CI on the PR re-invokes the Sandcastle to "regenerate the XR from
+scratch" and then diffs it against the XR committed on the branch.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **no reach-back into the Sandcastle** — the Sandcastle
+is disposed by design; the PR-side check must be able to run
+without it.
+:::
+
+### Case 2
+
+Before merge, an OPA policy rejects any `XHelloWorldPico` XR whose
+`spec.value` contains profanity.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+✅ Well-behaved — policy runs on the merged XR (or on the PR),
+outside the Sandcastle boundary. That is exactly where the
+outer-loop policy guardrail belongs.
+:::
+
+### Case 3
+
+The GitOps reconciler skips Crossplane entirely and directly creates
+the Kubernetes `Job` by templating it from `rules/hello.yaml`.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **cluster reconciliation is Crossplane's job** — the
+outer loop hands the XR to Crossplane; short-circuiting the
+composition step re-couples delivery to a specific runtime shape
+and duplicates the Kubernetes lab's responsibility.
+:::
+
+### Case 4
+
+The merge policy on the environment repository requires two human
+reviewers plus a passing `verify.sh` before the PR can be merged.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+✅ Well-behaved — the review and automated verification guardrails
+attach to the PR, outside the Sandcastle. This is the intended
+shape of the outer loop's first stage.
+:::
+
+### Case 5
+
+The hand-off script is modified to `kubectl apply` the XR directly
+whenever CI passes, so the branch never actually needs to be merged.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **the branch is the only interface** — bypassing merge
+means the cluster's desired state is no longer the merged branch,
+which invalidates every downstream reasoning the outer loop
+depends on. It also re-introduces cluster access to the hand-off,
+undoing the previous lesson's cluster-independence rule.
+:::
+
+## Success criteria (paper)
+
+- [ ] You can fill in the stage table from Step 1 without looking
+      back at this page.
+- [ ] You can draw the boundary diagram from Step 2 and name the
+      single artifact that crosses it.
+- [ ] You can name the four outer-loop rules from [the lesson](index.qmd)
+      and give one hypothetical violation of each.
+
+## Next
+
+Walk through the runnable [Lab](lab.qmd) to drive the outer loop
+against live GitHub (and, optionally, a Crossplane cluster).

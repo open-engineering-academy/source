@@ -1,0 +1,118 @@
+---
+title: "Exercise · Sandcastle blueprint for HelloWorldPico"
+---
+
+A short, pen-and-paper task. Complete it before moving on to the
+[Lab](lab.qmd) walkthrough.
+
+## Task
+
+Write a small **Sandcastle blueprint**: a one-page description of how
+a Sandcastle would safely construct the same
+[`hello-world-pico`](../../../../labs/hello-pico/) artifact you
+produced in the Pico course.
+
+You do **not** need a sandbox provider, a cluster, or a running agent
+for this exercise. The goal is to lock in the five construction-layer
+concerns from [the lesson](index.qmd) before touching any tooling.
+
+Save your blueprint as `work/sandcastle-blueprint/blueprint.yaml`
+under a scratch working directory, using this exact shape:
+
+```yaml
+kind: SandcastleBlueprint
+target:
+  repo: <e.g. github.com/your-org/hello-world-pico>
+  branch: <e.g. sandcastle/hello-world-pico>
+artifact:
+  kind: hello-world-pico
+  produces_files:
+    - rules/hello.yaml
+workspace:
+  sandbox_provider: <docker | podman | vercel | custom>
+  isolation_notes: <one sentence>
+tools:
+  - name: <e.g. pico-composer>
+    purpose: <one sentence>
+permissions:
+  - <e.g. git.write:branch:sandcastle/hello-world-pico>
+agent_loop:
+  - inspect_conventions
+  - generate_files
+  - validate
+  - commit
+artifact_boundary:
+  survives: [branch]
+  disposed: [workspace, tools, scratch_state]
+```
+
+Fill in each `<...>` with a concrete, plausible value. Any concrete
+value that respects the five concerns is acceptable; there is no
+single correct answer.
+
+## Success criteria
+
+- [ ] Your blueprint's `target.branch` names a **dedicated branch**
+      (not the default branch of the target repository).
+- [ ] Your blueprint's `tools` list only includes tools the
+      construction actually needs (no cluster credentials, no
+      registry push, no unrelated CLIs).
+- [ ] Your blueprint's `permissions` list is scoped to the target
+      branch — no repository-wide write, no cross-repository reach.
+- [ ] Your blueprint's `agent_loop` includes at least one
+      **validate** step before **commit**.
+- [ ] Your blueprint's `artifact_boundary.survives` list contains
+      **only** `branch` — nothing else from the workspace crosses
+      the boundary.
+
+## Automatable check
+
+The blueprint is a static YAML document, so its check is
+deliberately lightweight — it only confirms the blueprint is
+well-formed YAML with the required fields.
+
+```bash
+# Option 1 — with yq
+yq eval '
+  .kind == "SandcastleBlueprint"
+  and .target.branch != null
+  and (.tools | length) > 0
+  and (.artifact_boundary.survives | contains(["branch"]))
+' work/sandcastle-blueprint/blueprint.yaml
+```
+
+```bash
+# Option 2 — no extra tools, using Python 3
+python3 - <<'PY'
+import sys, yaml
+d = yaml.safe_load(open("work/sandcastle-blueprint/blueprint.yaml"))
+ok = (
+    d.get("kind") == "SandcastleBlueprint"
+    and d.get("target", {}).get("branch")
+    and d.get("tools")
+    and "branch" in d.get("artifact_boundary", {}).get("survives", [])
+)
+print("OK" if ok else "FAIL")
+sys.exit(0 if ok else 1)
+PY
+```
+
+Either command exits `0` and prints `OK` (or `true`) when the
+blueprint is well-formed. This is an optional accompaniment — the
+main goal remains internalizing the five construction-layer concerns.
+
+## Reflect
+
+- Which of the five concerns is the **weakest** in your blueprint,
+  and what concrete change would strengthen it?
+- If you deliberately over-scoped the `permissions` list, what is the
+  worst thing the agent could do that you would then not be able to
+  contain?
+- If the Sandcastle workspace is torn down mid-loop — for example
+  after `generate_files` but before `commit` — what has been lost,
+  and what has been preserved? Match your answer against the
+  `artifact_boundary` section of your blueprint.
+
+## Next
+
+Continue with the [Lab](lab.qmd).

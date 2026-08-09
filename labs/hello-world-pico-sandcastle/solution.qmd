@@ -1,0 +1,109 @@
+---
+title: "Solution"
+description: "Reference solution for the Hello World Pico Sandcastle lab."
+---
+
+## Reference solution
+
+A working solution consists of:
+
+1. The lab's shipped [`blueprint.yaml`](downloads/blueprint.yaml)
+   used as input.
+2. One durable branch (`sandcastle/hello-world-pico`) on the local
+   target repo at `work/hello-world-pico-sandcastle/target-repo`,
+   containing exactly one committed file (`rules/hello.yaml`).
+3. A `results/pico-output.txt` capturing `Hello, Pico!` printed by
+   the recomposed Pico artifact.
+4. A disposed sandbox (`work/hello-world-pico-sandcastle/sandbox/`
+   no longer exists).
+
+### `rules/hello.yaml` (on `sandcastle/hello-world-pico`)
+
+```yaml
+id: rule.hello
+kind: greeting
+value: "Hello, Pico!"
+```
+
+### Commands
+
+Run from the root of your local clone of the academy repository,
+with the [one-time setup](objectives.qmd#one-time-setup) applied so
+`pico` resolves to this repository's `bin/pico`:
+
+```bash
+bash labs/hello-world-pico-sandcastle/downloads/sandcastle-run.sh \
+     labs/hello-world-pico-sandcastle/downloads/blueprint.yaml \
+     work/hello-world-pico-sandcastle
+
+bash labs/hello-world-pico-sandcastle/downloads/verify.sh
+```
+
+### Expected `verify.sh` output (final line)
+
+```
+verify: OK — branch=sandcastle/hello-world-pico commit=<sha> greeting=Hello\,\ Pico\! sandbox=disposed
+```
+
+`<sha>` is the commit hash of the single agent commit on the
+`sandcastle/hello-world-pico` branch.
+
+## Why this satisfies the objectives
+
+- **Isolated workspace**: the agent ran under
+  `work/hello-world-pico-sandcastle/sandbox/` with a scoped `HOME`
+  and PATH; that directory is deleted at the end of the run.
+- **Repo/branch flow**: the target repo lives at
+  `work/hello-world-pico-sandcastle/target-repo` as the durable
+  side; the branch `sandcastle/hello-world-pico` is the entire
+  input/output surface between the sandbox and the target.
+- **Tools and permissions**: inside the sandbox, `PATH` was
+  restricted to a `bin-allowlist/` containing only `git`,
+  `python3`, `bash`, `sh`, `env`, `pico`, and the standard file
+  utilities the agent needs. Any other binary the agent tried to
+  invoke would have failed with *command not found*.
+- **Agent iteration**: `sandcastle-agent.sh` implements the inner
+  loop as **inspect → generate → validate → commit**, retrying
+  validation up to three times before failing loudly.
+- **Artifact boundary**: only `rules/hello.yaml` was `git add`ed
+  and committed; the sandbox's `build/` directory, its
+  `bin-allowlist/`, and everything else were disposed with the
+  workspace. The branch survives on the target repo.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Running `bash labs/hello-world-pico-sandcastle/downloads/verify.sh`
+   and checking the final `verify: OK` line and exit status `0`.
+2. Diffing the branch's `rules/hello.yaml` against the block above:
+   `git -C work/hello-world-pico-sandcastle/target-repo show sandcastle/hello-world-pico:rules/hello.yaml`.
+3. Confirming `test ! -d work/hello-world-pico-sandcastle/sandbox`.
+4. Confirming `grep -Fqx 'Hello, Pico!' work/hello-world-pico-sandcastle/results/pico-output.txt`.
+
+## Variations
+
+- **Different greeting**: change `value:` inside
+  `sandcastle-agent.sh` before rerunning. Update the `EXPECTED`
+  environment variable when invoking `verify.sh`
+  (`EXPECTED='Hello, World!' bash ..._sandcastle/downloads/verify.sh`).
+- **Different branch name**: change `target.branch` in
+  `blueprint.yaml` and set `BRANCH=<new-name>` when invoking
+  `verify.sh`.
+- **Alternate blueprint**: point the driver at your own blueprint
+  from the [Sandcastle Part 1 Exercise](../../courses/sandcastle/part-1/01-inside-a-sandcastle/exercise.html)
+  and confirm the driver still succeeds — the shape is the same.
+
+## Not covered by this lab (intentional)
+
+- A container-backed **sandbox provider** (Docker or Podman) — this
+  lab uses the `local-scratch-dir` provider (a scoped local scratch
+  directory plus a PATH allowlist) instead, so it runs without
+  additional runtimes. Container-backed provider integration is
+  tracked as a Sandcastle curriculum follow-up; only the
+  `sandbox_provider` field in
+  [`downloads/blueprint.yaml`](downloads/blueprint.yaml) needs to
+  change when it lands.
+- Multi-file Pico artifacts, multi-branch flows, or PR-based
+  hand-off between sandbox and target — these are natural
+  extensions but are out of scope for the first runnable lab.

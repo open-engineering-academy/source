@@ -1,0 +1,146 @@
+---
+title: "Exercise · Trace the compose → construct hand-off on paper"
+---
+
+A short, pen-and-paper task. Complete it before moving on to the
+runnable [Lab](lab.qmd).
+
+## Task
+
+Trace, on paper, the two-file hand-off from a Crossplane XR to a
+Sandcastle-produced branch, then use the trace to spot two _boundary
+violations_ this lesson intentionally rules out.
+
+You do **not** need a cluster or the runnable lab for this exercise.
+The goal is to lock in the compose → construct boundary as a
+one-page picture before touching any tooling.
+
+## Step 1 · List the boundary inputs and outputs
+
+Copy this table into your notes and fill in the blanks:
+
+| Position          | File on disk                              | Field                     |
+|-------------------|-------------------------------------------|---------------------------|
+| Crossplane input  | `xr-request.yaml`                         | `spec.___`                |
+| Composition output | `engineering-task.yaml`                  | `spec.inputs.___`         |
+| Sandcastle input  | `engineering-task.yaml`                   | `spec.inputs.___`         |
+| Sandcastle output | `rules/hello.yaml` on branch `___________` | `___`                    |
+
+Answer in your notes: *how many fields carry the greeting all the way
+from the XR to the branch?* (Answer: one — the greeting `value`,
+under three different names on the three files.)
+
+## Step 2 · Diagram the hand-off
+
+Sketch a three-arrow diagram:
+
+```
+   [xr-request.yaml]                             (compose side)
+   apiVersion: oe.academy/v1alpha1
+   kind: XHelloWorldPico
+   spec.value: "Hallo, Pico!"
+       │
+       │ (1) Composition: read XR, emit EngineeringTask
+       ▼
+   [engineering-task.yaml]                       (boundary artifact)
+   kind: EngineeringTask
+   spec.inputs.greeting: "Hallo, Pico!"
+   spec.target.branch:   sandcastle/hello-world-pico-greetings-de
+       │
+       │ (2) Sandcastle: read task, run agent inner loop
+       ▼
+   [rules/hello.yaml on target branch]           (construct side)
+   value: "Hallo, Pico!"
+       │
+       │ (3) Sandcastle: push branch back to durable target repo,
+       │     dispose of sandbox
+       ▼
+   [durable branch on target-repo, sandbox gone]
+```
+
+Answer in your notes: *what would you need to change on either side of
+the diagram if the greeting were different?* (Answer: only
+`spec.value` in the XR; the two downstream files inherit it.)
+
+## Step 3 · Spot the boundary violations
+
+For each of the following hypothetical implementations, mark ✅ if it
+is well-behaved or ❌ if it violates one of the four rules from
+[the lesson](index.qmd). For each ❌, name which rule.
+
+### Case 1
+
+The Composition script (`compose.sh`) not only emits an
+EngineeringTask, it also opens the target repository and writes
+`rules/hello.yaml` directly — "to save the Sandcastle a step".
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **compose emits declaration only** — Crossplane's job is
+to *request* engineering work; writing Pico code is the Sandcastle's
+job. Doing it in `compose.sh` collapses the compose → construct
+boundary.
+:::
+
+### Case 2
+
+The driver passes both the EngineeringTask and the original XR into
+the sandbox, and the agent reads `spec.value` directly from the XR.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **construct sees only the task** — the Sandcastle should
+be independent of the XR shape. If the composition later starts
+translating a different XR kind into the same task shape, the agent
+would have to be rewritten.
+:::
+
+### Case 3
+
+The agent script hard-codes `value: "Hello, Pico!"` and ignores the
+greeting in the EngineeringTask, "since that is what the tests
+expect".
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **parametric on the request** — the request would be a
+lie. Two different XRs would silently produce the same branch, and a
+reviewer looking at `spec.requestedBy` would be misled.
+:::
+
+### Case 4
+
+The Composition writes only the EngineeringTask, the driver passes
+only the task into the sandbox, the agent reads
+`spec.inputs.greeting` from the task and writes the requested value
+into `rules/hello.yaml`, and the sandbox is disposed after the push.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+✅ Well-behaved — this is exactly what
+[`compose.sh`](../../../../labs/compose-sandcastle-request/downloads/compose.sh),
+[`sandcastle-run.sh`](../../../../labs/compose-sandcastle-request/downloads/sandcastle-run.sh),
+and
+[`sandcastle-agent.sh`](../../../../labs/compose-sandcastle-request/downloads/sandcastle-agent.sh)
+implement together.
+:::
+
+### Case 5
+
+The EngineeringTask omits `spec.requestedBy` "because the branch will
+be reviewed anyway".
+
+::: {.callout-tip collapse="true" title="Show answer"}
+❌ Violates **provenance retained but disposable** — the branch on
+its own does not tell you which XR requested it. Provenance is cheap
+to include and expensive to reconstruct.
+:::
+
+## Success criteria (paper)
+
+- [ ] You can name the two files that cross the compose → construct
+      boundary and which field they each carry the greeting under.
+- [ ] You can draw the three-arrow diagram from Step 2 without
+      looking back at this page.
+- [ ] You can name the four hand-off rules from [the lesson](index.qmd)
+      and give one hypothetical violation of each.
+
+## Next
+
+Run the hand-off end-to-end in the [Lab](lab.qmd).

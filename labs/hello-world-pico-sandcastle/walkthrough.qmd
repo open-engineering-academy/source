@@ -1,0 +1,182 @@
+---
+title: "Walkthrough"
+description: "Step-by-step guide to running the Hello World Pico Sandcastle."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt
+them to match your setup.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [one-time setup](objectives.qmd#one-time-setup) so that
+`command -v pico` points at this repository's `bin/pico` and **not**
+at `/usr/bin/pico` (the Alpine/nano text editor).
+:::
+
+::: {.callout-note title="Isolation scope for this lab"}
+This lab uses the `local-scratch-dir` sandbox provider from
+[`downloads/blueprint.yaml`](downloads/blueprint.yaml): a scoped
+local scratch directory plus a **PATH allowlist**, not a container.
+That is deliberate — the five construction-layer concerns
+(isolated workspace, repo/branch flow, tools/permissions, agent
+iteration, artifact boundary) exercise identically, and the lab
+runs without Docker, Podman, minikube, or network access.
+
+A **container-backed** Sandcastle provider (Docker or Podman) is
+tracked as a Sandcastle curriculum follow-up. When it lands, only
+the `sandbox_provider` field in the blueprint changes; the
+walkthrough steps and `verify.sh` assertions below stay the same.
+:::
+
+## Step 1 — Inspect the blueprint
+
+From the root of your local clone, open
+[`labs/hello-world-pico-sandcastle/downloads/blueprint.yaml`](downloads/blueprint.yaml)
+and confirm it matches the shape from the
+[Sandcastle Part 1 Exercise](../../courses/sandcastle/part-1/01-inside-a-sandcastle/exercise.html):
+
+```bash
+cat labs/hello-world-pico-sandcastle/downloads/blueprint.yaml
+```
+
+The blueprint names the target branch
+(`sandcastle/hello-world-pico`), the produced file
+(`rules/hello.yaml`), the sandbox provider
+(`local-scratch-dir`), the allowed tools (`pico`, `git`, `python3`),
+the scoped permissions, and the artifact-boundary rules.
+
+## Step 2 — Run the Sandcastle
+
+Run the driver against the blueprint. It will provision the
+isolated workspace, seed a local target repo, run the agent under a
+PATH allowlist, hand the branch back to the target repo, and
+dispose of the workspace.
+
+```bash
+bash labs/hello-world-pico-sandcastle/downloads/sandcastle-run.sh \
+     labs/hello-world-pico-sandcastle/downloads/blueprint.yaml \
+     work/hello-world-pico-sandcastle
+```
+
+Expected tail of the driver output:
+
+```
+[agent] validate: OK (parser accepted the rule)
+[agent] compose: artifact prints Hello, Pico!
+[agent] commit: adding rules/hello.yaml on branch sandcastle/hello-world-pico
+sandcastle-run: done. sandbox destroyed; durable artifacts under work/hello-world-pico-sandcastle/results/
+```
+
+The `[agent]` lines come from `sandcastle-agent.sh` running *inside*
+the sandbox; the `sandcastle-run:` lines come from the driver
+running *outside* the sandbox.
+
+## Step 3 — Confirm the durable branch
+
+After the driver returns, the sandbox is gone. Only the target repo
+and its captured evidence remain:
+
+```bash
+ls work/hello-world-pico-sandcastle/
+# → results  target-repo  bin-allowlist
+test ! -d work/hello-world-pico-sandcastle/sandbox && echo "sandbox: disposed"
+```
+
+Inspect the durable branch on the target repo:
+
+```bash
+git -C work/hello-world-pico-sandcastle/target-repo \
+    log --oneline sandcastle/hello-world-pico
+git -C work/hello-world-pico-sandcastle/target-repo \
+    show sandcastle/hello-world-pico:rules/hello.yaml
+```
+
+The last command prints the exact `rules/hello.yaml` the agent
+committed inside the (now-destroyed) sandbox.
+
+## Step 4 — Recompose the Pico from the durable branch
+
+The driver already recomposes the Pico from a fresh clone of the
+target branch. Confirm the greeting it captured:
+
+```bash
+cat work/hello-world-pico-sandcastle/results/pico-output.txt
+# → Hello, Pico!
+```
+
+You can also repeat the recomposition by hand to prove the branch is
+truly durable independent of the driver run:
+
+```bash
+rm -rf /tmp/pico-verify && \
+  git clone --branch sandcastle/hello-world-pico \
+    work/hello-world-pico-sandcastle/target-repo /tmp/pico-verify && \
+  ( cd /tmp/pico-verify && \
+    pico parse rules/hello.yaml --out build/parsed.json && \
+    pico compose build/parsed.json --out build/hello-world-pico && \
+    ./build/hello-world-pico )
+```
+
+Expected output:
+
+```
+Hello, Pico!
+```
+
+## Step 5 — Run the automatable verification
+
+Re-run the full path under the packaged verifier:
+
+```bash
+bash labs/hello-world-pico-sandcastle/downloads/verify.sh
+```
+
+`verify.sh` runs `sandcastle-run.sh` and asserts three things:
+
+1. `sandcastle/hello-world-pico` exists on the target repo with
+   `rules/hello.yaml` at the expected path.
+2. Recomposing from a fresh clone of that branch produces a Pico
+   that prints `Hello, Pico!`.
+3. The sandbox workspace is gone.
+
+On success it exits `0` and prints a line beginning with
+`verify: OK — branch=...`.
+
+## Screenshot targets
+
+Three terminal moments in this walkthrough make good screenshots for
+future revisions of the lab. They are catalogued in
+[`screenshots/README.md`](screenshots/README.md) with intended
+filenames, capture regions, and alt text:
+
+- **Step 2** → `screenshots/01-driver-tail.png` — the driver's final
+  `[agent]` lines and its `sandcastle-run: done.` teardown line.
+- **Step 3** → `screenshots/02-durable-branch.png` — the single commit
+  on `sandcastle/hello-world-pico` and the contents of
+  `rules/hello.yaml`.
+- **Step 5** → `screenshots/03-verify-ok.png` — the final
+  `verify: OK — branch=…` line from `verify.sh`.
+
+No image files ship with this lab yet; the lab renders and runs
+without them.
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `pico` opens a text editor instead of running, your shell is
+  still resolving `pico` to `/usr/bin/pico`. Re-run the `PATH`
+  export from
+  [one-time setup](objectives.qmd#one-time-setup) and confirm with
+  `command -v pico`.
+- If the driver fails at `sandcastle-run: required host tool not on
+  PATH: <name>`, install that tool (or make it discoverable on
+  `PATH`) and re-run.
+- If `verify.sh` fails at assertion 3 with *"sandbox workspace
+  should have been disposed"*, the driver was interrupted mid-run.
+  Delete `work/hello-world-pico-sandcastle` and re-run.
+:::
+
+## Next
+
+Compare your result against the [reference solution](solution.qmd).

@@ -1,0 +1,57 @@
+---
+title: "Quiz · Handing off to Kubernetes"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you
+can self-grade after answering.
+
+## 1. Which academy boundary does this lesson's hand-off sit on?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **construct → compose** boundary. The Sandcastle **constructs** a
+durable Git branch; the hand-off promotes that branch into a
+Crossplane composition request; Crossplane then **composes** the
+Kubernetes artifact the Pico **behaves** as.
+:::
+
+## 2. Which single field crosses the boundary from `rules/hello.yaml` to the XR?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The greeting `value`. The Sandcastle branch's `rules/hello.yaml` has a
+`value:` field; the Crossplane `XHelloWorldPico` XR has a `spec.value`
+field. The hand-off is exactly the promotion of the first into the
+second.
+:::
+
+## 3. Why must the hand-off be read-only against the Sandcastle sandbox?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because the Sandcastle disposes of its sandbox by design. The only
+thing that survives is the branch on the target repository. A hand-off
+that reaches back into the sandbox is neither reproducible nor safe —
+and would silently break as soon as the Sandcastle is torn down.
+:::
+
+## 4. What does *byte-equivalent to the downstream contract* buy the learner?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+It means the generated XR is a **drop-in replacement** for the
+Kubernetes lab's own `05-xr.yaml`. The cluster-side lab does not need
+to change to accept the Sandcastle-produced XR; the two paths meet at
+a file-level contract instead of a code-level one.
+:::
+
+## 5. Why does the hand-off lab not require a Kubernetes cluster to pass its own `verify.sh`?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because cluster-side reconciliation is the
+[Hello Pico on Kubernetes lab](../../../../labs/hello-pico-on-kubernetes/)'s
+responsibility. Scoping the hand-off lab to the boundary itself keeps
+its verification small and realistic, and lets each lab own the
+verification that belongs to it.
+:::
+
+## Next
+
+Return to [Part 3](../index.qmd) or explore the
+[Labs](../../labs/index.qmd) page.

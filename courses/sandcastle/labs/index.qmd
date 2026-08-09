@@ -1,0 +1,72 @@
+---
+title: "Labs"
+---
+
+Labs referenced by the Sandcastle course. Course-scoped labs live
+under `courses/sandcastle/labs/`; reusable labs shared with other
+courses live under the repository-root [`labs/`](../../../labs/index.html)
+directory.
+
+## Referenced labs
+
+- **[Hello World Pico Sandcastle](../../../labs/hello-world-pico-sandcastle/)**
+  — the first runnable Sandcastle lab. Runs a real Sandcastle
+  end-to-end (isolated workspace, PATH allowlist, agent inner loop,
+  artifact hand-off, sandbox teardown) to construct the
+  `hello-world-pico` artifact on a dedicated
+  `sandcastle/hello-world-pico` branch. Ships an automatable
+  [`verify.sh`](../../../labs/hello-world-pico-sandcastle/downloads/verify.sh)
+  and is exercised from Part 1's
+  [Lab page](../part-1/01-inside-a-sandcastle/lab.qmd).
+- **[Compose a Sandcastle request](../../../labs/compose-sandcastle-request/)**
+  — the first runnable compose → construct lab. Takes a
+  learner-authored Crossplane `XHelloWorldPico` XR, has a simulated
+  Composition emit an `EngineeringTask`, and has a Sandcastle pick
+  up the task and construct the requested `rules/hello.yaml` on a
+  dedicated `sandcastle/hello-world-pico-<name>` branch. Ships an
+  automatable
+  [`verify.sh`](../../../labs/compose-sandcastle-request/downloads/verify.sh)
+  and is exercised from Part 2's
+  [Lab page](../part-2/01-composing-a-sandcastle-request/lab.qmd).
+- **[Sandcastle → Kubernetes hand-off](../../../labs/handoff-sandcastle-to-kubernetes/)**
+  — the first runnable Sandcastle-to-Crossplane hand-off lab. Takes
+  the durable branch the Sandcastle lab produced and promotes its
+  greeting `value` into a Crossplane `XHelloWorldPico` Composite
+  Resource that drops into the
+  [Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
+  without modification. Ships an automatable
+  [`verify.sh`](../../../labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh)
+  and is exercised from Part 3's
+  [Lab page](../part-3/01-handing-off-to-kubernetes/lab.qmd).
+- **[Outer delivery loop](../../../labs/outer-delivery-loop/)** —
+  the first runnable outer-loop lab. Takes the XR the hand-off lab
+  produced, drives it through a real GitHub pull request and merge
+  on a learner-controlled env repo, and reconciles the merged XR
+  onto the Crossplane cluster from
+  [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/)
+  via Flux (with a `kubectl` fallback). Ships an automatable
+  [`verify.sh`](../../../labs/outer-delivery-loop/downloads/verify.sh)
+  that runs stages 1–2 against live GitHub without requiring a
+  cluster, and is exercised from Part 3's
+  [Lab page](../part-3/02-outer-delivery-loop/lab.qmd).
+
+## Related reusable labs
+
+These reusable labs give useful context — they define the
+**artifact** the Sandcastle lab produces and the **cluster** the
+hand-off lab targets:
+
+- [Hello Pico](../../../labs/hello-pico/) — produces the
+  `hello-world-pico` greeting artifact by hand from the
+  [Pico course](../../pico/index.html). This is the same artifact
+  the Sandcastle lab above constructs under an agent.
+- [Hello Pico on Kubernetes](../../../labs/hello-pico-on-kubernetes/)
+  — composes `hello-world-pico` onto a local minikube cluster with
+  Crossplane. The hand-off lab above produces exactly the XR this
+  lab consumes, so the two labs meet at a file-level contract.
+
+## Authoring course-scoped labs
+
+Course-scoped labs live in this directory and follow the shared lab
+template. Reuse a repository-root lab when the same lab is useful for
+more than one course.

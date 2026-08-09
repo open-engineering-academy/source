@@ -11,6 +11,20 @@ hands-on projects.
 The Academy is not just documentation. It offers complete learning journeys
 that take learners from foundational concepts to real, working systems.
 
+## Compose → construct → behave
+
+Open Engineering treats composition, construction, and behaviour as three
+distinct phases, and the academy has one course per phase:
+
+| Phase | Question | Technology | Course |
+| --- | --- | --- | --- |
+| **Compose** | What should exist? | Crossplane | [Crossplane](courses/crossplane/) |
+| **Construct** | How can an agent safely build it? | Sandcastle | [Sandcastle](courses/sandcastle/) |
+| **Behave** | What does the resulting entity do? | Pico | [Pico](courses/pico/) |
+
+Kept short: **Crossplane composes, Sandcastle constructs, Picos behave.**
+Git artifacts form the durable boundary between construction and runtime.
+
 ## Where the Academy fits
 
 Open Engineering separates responsibilities across a set of focused

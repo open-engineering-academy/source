@@ -1,0 +1,74 @@
+---
+title: "Hello World Pico Sandcastle"
+description: "Run a real Sandcastle end-to-end to construct the hello-world-pico artifact on a dedicated branch."
+---
+
+## Overview
+
+**Hello World Pico Sandcastle** is the first *runnable* Sandcastle lab
+of the Open Engineering Academy. You will execute a small Sandcastle
+driver that provisions an isolated workspace, runs an engineering
+agent under a constrained tool allowlist, has the agent author and
+validate `rules/hello.yaml` using the reference `pico` CLI, commits
+the file on a dedicated branch, hands the branch back to a durable
+target repository, and disposes of the workspace.
+
+This lab is **reusable across courses**: it lives at the repository
+root under `labs/hello-world-pico-sandcastle/` and is referenced from
+the [Sandcastle course](../../courses/sandcastle/index.html).
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A durable **branch** named `sandcastle/hello-world-pico` on a local
+target repository, containing exactly one committed file
+(`rules/hello.yaml`). Recomposing from that branch with the reference
+`pico` CLI produces the `hello-world-pico` executable and prints
+`Hello, Pico!`.
+
+The final artifact matches the `produces` entry
+`hello-world-pico-sandcastle-branch` in
+[`metadata.yaml`](metadata.yaml). The durable evidence is captured
+outside the sandbox under `work/hello-world-pico-sandcastle/results/`
+(branch info, a fresh clone of the target branch, and the greeting
+printed by the recomposed Pico).
+
+## Downloads and screenshots
+
+Runnable files live under `downloads/`:
+
+- [`blueprint.yaml`](downloads/blueprint.yaml) — a filled-in
+  Sandcastle blueprint following the shape from the Sandcastle
+  course's Part 1 [Exercise](../../courses/sandcastle/part-1/01-inside-a-sandcastle/exercise.html).
+- [`sandcastle-run.sh`](downloads/sandcastle-run.sh) — driver that
+  provisions the isolated workspace, seeds a target repo, runs the
+  agent under a PATH allowlist, hands the branch back, and disposes
+  of the workspace.
+- [`sandcastle-agent.sh`](downloads/sandcastle-agent.sh) — the
+  engineering-agent inner iteration loop (inspect → generate →
+  validate → commit) run inside the sandbox.
+- [`verify.sh`](downloads/verify.sh) — automatable check that runs
+  the full path and asserts the branch, artifact, and boundary.
+
+Screenshot targets for the walkthrough live under
+[`screenshots/`](screenshots/). No image files ship yet;
+[`screenshots/README.md`](screenshots/README.md) catalogues the
+three intended terminal moments (driver tail, durable branch,
+`verify: OK`), their filenames, capture regions, and alt text, so
+the lab is screenshot-ready as soon as contributor captures land.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the same schema as
+[`labs/hello-pico/metadata.yaml`](../hello-pico/metadata.yaml).
+
+## Referenced from
+
+- [Sandcastle course · Part 1 · Inside a Sandcastle · Lab](../../courses/sandcastle/part-1/01-inside-a-sandcastle/lab.html)
+- [Sandcastle course · Labs](../../courses/sandcastle/labs/index.html)

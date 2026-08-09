@@ -1,0 +1,41 @@
+---
+title: "Part 2 — Composing Sandcastles with Crossplane"
+---
+
+Part 2 will develop how the Crossplane composition layer *requests*
+engineering work from the Sandcastle construction layer. The intended
+learning arc is:
+
+- A learner authors a Crossplane Composite Resource asking for a
+  new Open Engineering artifact (for example, a new Pico kind).
+- The Composition turns that request into an **EngineeringTask**
+  (or equivalent) — a declarative record of the construction work
+  the cluster wants done.
+- A Sandcastle picks up the EngineeringTask, spins up an isolated
+  workspace with the right tools and permissions, runs an
+  engineering agent through the [Part 1 agent inner loop](../part-1/01-inside-a-sandcastle/index.qmd),
+  and returns durable Git artifacts.
+- Crossplane then reconciles those artifacts back onto the cluster,
+  closing the compose → construct → behave loop.
+
+## Lessons
+
+- [01 Composing a Sandcastle request](01-composing-a-sandcastle-request/index.qmd)
+  — the first Part 2 lesson. Covers the compose → construct
+  boundary: how a Crossplane XR becomes an **EngineeringTask**, how
+  a Sandcastle consumes the task (never the XR), and how the
+  construction stage stays parametric on the request. Runnable
+  end-to-end via the reusable
+  [Compose a Sandcastle request lab](../../../labs/compose-sandcastle-request/).
+
+::: {.callout-note title="Status — Part 2 lesson 01 runnable; further lessons scaffolded"}
+[Lesson 01](01-composing-a-sandcastle-request/index.qmd) is
+**runnable** end-to-end via the reusable
+[Compose a Sandcastle request lab](../../../labs/compose-sandcastle-request/),
+whose
+[`verify.sh`](../../../labs/compose-sandcastle-request/downloads/verify.sh)
+asserts the four hand-off rules programmatically. Further Part 2
+lessons (for example, a cluster-backed variant using a real
+Crossplane Composition emitting a real `EngineeringTask` CR) remain
+intentionally scaffolded for this wave.
+:::

@@ -1,0 +1,117 @@
+---
+title: "Sandcastle"
+subtitle: "Building safely inside bounded engineering environments."
+---
+
+Welcome to **Sandcastle**, the construction-layer course of the Open
+Engineering Academy. This course teaches how a **Sandcastle** — an
+isolated, disposable engineering workspace — is used to safely produce
+Open Engineering artifacts such as the `hello-world-pico` you built in
+the [Pico course](../pico/index.html).
+
+The academy story this course fits into is:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+The [Pico course](../pico/index.html) teaches the runtime layer (what an
+artifact *does*). The [Crossplane course](../crossplane/index.html)
+teaches the composition layer (what should *exist* on a control plane).
+This Sandcastle course teaches the construction layer between them:
+how new artifacts are built safely, by whom, from what, and with what
+guarantees.
+
+## What you will learn
+
+By the end of the course you will be able to:
+
+- Explain what a Sandcastle is and how it differs from a Pico runtime and
+  from a Crossplane composition.
+- Describe the five construction-layer concerns a Sandcastle addresses:
+  **isolated workspaces**, **repo/branch flow**, **tools and
+  permissions**, **agent iteration**, and **artifact boundaries**.
+- Sketch, on paper, how a Crossplane-driven request for a
+  `HelloWorldPico` would be constructed inside a Sandcastle and delivered
+  back as a durable Git artifact.
+
+See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
+machine-readable summary (id, level, duration, prerequisites, teaches,
+produces).
+
+## Prerequisites
+
+- Completion of the [Pico course](../pico/index.html), or equivalent
+  familiarity with Rules, the Parser, and the Composer — you need to
+  know what a durable Pico artifact looks like before you can reason
+  about how a Sandcastle builds one.
+- Familiarity with [Crossplane](../crossplane/index.html) at the level
+  of Part 1 is helpful but not required — this course only refers to
+  Crossplane conceptually, as the layer that *requests* engineering
+  work from a Sandcastle.
+- Working shell (`bash` or `zsh`), a text editor, and basic Git
+  (`clone`, `branch`, `commit`, `push`).
+
+## How this course is structured
+
+The course follows the shared academy course structure — parts,
+lessons, and per-lesson `index / exercise / lab / summary / quiz`
+pages:
+
+```
+courses/sandcastle/
+  _quarto.yml          # this course website
+  index.qmd            # you are here
+  metadata.yaml        # machine-readable course descriptor
+  glossary.qmd         # course glossary
+  part-1/              # section
+    index.qmd
+    01-inside-a-sandcastle/   # lesson
+      index.qmd
+      exercise.qmd
+      lab.qmd
+      summary.qmd
+      quiz.qmd
+  part-2/
+  part-3/
+  labs/                # course-scoped labs
+```
+
+## Start here
+
+- [Part 1 — Inside a Sandcastle](part-1/index.qmd)
+- [Part 2 — Composing Sandcastles with Crossplane](part-2/index.qmd)
+- [Part 3 — Delivering artifacts from a Sandcastle](part-3/index.qmd)
+- [Labs](labs/index.qmd)
+- [Glossary](glossary.qmd)
+
+::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 runnable end-to-end"}
+Part 1 is **runnable** end-to-end via the Part 1
+[Lab](part-1/01-inside-a-sandcastle/lab.qmd), which links to the
+reusable
+[Hello World Pico Sandcastle lab](../../labs/hello-world-pico-sandcastle/).
+Part 2's first lesson,
+[01 Composing a Sandcastle request](part-2/01-composing-a-sandcastle-request/index.qmd),
+is **runnable** end-to-end via the reusable
+[Compose a Sandcastle request lab](../../labs/compose-sandcastle-request/),
+which takes a learner-authored Crossplane XR through an
+`EngineeringTask` and has a Sandcastle construct the requested
+artifact on a durable branch. Part 3's first lesson,
+[01 Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd),
+is **runnable** end-to-end via the reusable
+[Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/),
+which takes the branch produced by the Sandcastle lab and hands its
+greeting off as a Crossplane Composite Resource compatible with the
+[Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/).
+Part 3's second lesson,
+[02 The outer delivery loop](part-3/02-outer-delivery-loop/index.qmd),
+is now also **runnable** end-to-end via the reusable
+[Outer delivery loop lab](../../labs/outer-delivery-loop/), which
+carries the hand-off XR through branch → PR review → merge → GitOps
+delivery → downstream reconciliation against live GitHub. Its later
+delivery and reconciliation stages have honest hosted prerequisites:
+a learner-owned GitHub environment repo (`OE_ENV_REPO`), an
+authenticated `gh` CLI, and a Flux/Crossplane-capable cluster (the
+one from the Hello Pico on Kubernetes lab is sufficient); the
+review/merge stages can be practised on their own without a cluster.
+Further Part 2 lessons remain intentionally scaffolded for this wave
+and are clearly labelled where learner-visible.
+:::
