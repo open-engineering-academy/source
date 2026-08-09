@@ -28,6 +28,15 @@ The intended learning arc is:
   [Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
   already knows how to compose. Ships with a runnable
   [Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
+- [02 The outer delivery loop](02-outer-delivery-loop/index.qmd)
+  — picks up where the hand-off ends. Teaches the four outer-loop
+  stages — **review / PR**, **merge**, **GitOps delivery**, and
+  **downstream Crossplane reconciliation** — and the three
+  guardrails (**automated verification**, **review**, **policy**)
+  that surround them, all outside the Sandcastle boundary. This
+  lesson is **instruction-first**: it reuses the existing runnable
+  labs at both ends of the picture and does not ship a new
+  outer-loop lab.
 
 Additional Part 3 lesson content will follow the same lesson layout
 as [Part 1](../part-1/index.qmd) and the
@@ -37,7 +46,11 @@ as [Part 1](../part-1/index.qmd) and the
 Lesson 01 (Handing off to Kubernetes) is **runnable** end-to-end via
 its accompanying
 [Sandcastle → Kubernetes hand-off lab](../../../labs/handoff-sandcastle-to-kubernetes/).
-Additional Part 3 lessons on the outer delivery loop (PR / GitOps /
-policy) remain intentionally scaffolded for a later curriculum wave
-and are not yet exposed as learner content.
+Lesson 02 (The outer delivery loop) is **instruction-first and
+scaffolded**: it reuses the hand-off lab and the
+[Hello Pico on Kubernetes lab](../../../labs/hello-pico-on-kubernetes/)
+as its runnable endpoints, and stays honest that a single reusable
+outer-loop lab is not yet packaged. Further Part 3 lessons on
+multi-artifact hand-offs and a packaged outer-loop lab remain
+intentionally scaffolded for a later curriculum wave.
 :::

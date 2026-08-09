@@ -1,0 +1,68 @@
+---
+title: "Quiz · The outer delivery loop"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you
+can self-grade after answering.
+
+## 1. What are the four stages of the outer delivery loop, in order?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+1. **Review / PR** — the branch becomes a pull request that
+   automated verification and human review both operate on.
+2. **Merge** — the merged branch becomes the environment's source
+   of truth.
+3. **GitOps delivery** — a reconciler applies the merged XR to the
+   target cluster.
+4. **Downstream Crossplane reconciliation** — Crossplane composes
+   the XR into concrete Kubernetes resources.
+:::
+
+## 2. What is the single artifact that crosses the boundary from the Sandcastle into the outer loop?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **durable Git branch** produced by the Sandcastle (and read by
+the previous lesson's hand-off). Everything the outer loop does is
+derived from that branch or supplied by the environment
+repository. If any outer-loop stage needs to reach back into the
+Sandcastle, the hand-off did not capture enough on the branch.
+:::
+
+## 3. Why do the outer loop's guardrails belong outside the Sandcastle boundary?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because the Sandcastle is bounded and disposable *by design*.
+Putting automated verification, review, or policy inside the
+Sandcastle would couple construction to delivery and delivery
+policy to construction — losing the separation that makes the
+Sandcastle safe to dispose of and the outer loop safe to change
+independently.
+:::
+
+## 4. Which stage of the outer loop is the first one that actually touches a cluster?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**Stage 3 — GitOps delivery.** Stages 1 (review / PR) and 2
+(merge) are entirely repo-shaped. The cluster only appears when
+the reconciler applies the merged XR, and Crossplane's own
+reconciliation loop (stage 4) then composes it into concrete
+Kubernetes resources.
+:::
+
+## 5. The academy ships runnable labs for stages 0 (hand-off) and 4 (Crossplane reconciliation). Why does this lesson not add a runnable lab for stages 1–3?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because a truthful runnable outer-loop lab needs a real
+environment repository, a real reconciler, and a real cluster
+admission policy — none of which the academy currently packages as
+a single reusable lab. This lesson stays honest about that: stages
+1–3 are **inspectable** in the environment repo today but are not
+pretended to be end-to-end runnable. Packaging the outer loop as a
+single reusable lab is called out explicitly as a future Part 3
+addition.
+:::
+
+## Next
+
+Return to [Part 3](../index.qmd) or explore the
+[Labs](../../labs/index.qmd) page.

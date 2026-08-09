@@ -19,6 +19,11 @@ project:
     - part-3/01-handing-off-to-kubernetes/lab.qmd
     - part-3/01-handing-off-to-kubernetes/summary.qmd
     - part-3/01-handing-off-to-kubernetes/quiz.qmd
+    - part-3/02-outer-delivery-loop/index.qmd
+    - part-3/02-outer-delivery-loop/exercise.qmd
+    - part-3/02-outer-delivery-loop/lab.qmd
+    - part-3/02-outer-delivery-loop/summary.qmd
+    - part-3/02-outer-delivery-loop/quiz.qmd
     - labs/index.qmd
 
 website:
@@ -77,6 +82,17 @@ website:
               - href: part-3/01-handing-off-to-kubernetes/summary.qmd
                 text: Summary
               - href: part-3/01-handing-off-to-kubernetes/quiz.qmd
+                text: Quiz
+          - section: "02 The outer delivery loop"
+            href: part-3/02-outer-delivery-loop/index.qmd
+            contents:
+              - href: part-3/02-outer-delivery-loop/exercise.qmd
+                text: Exercise
+              - href: part-3/02-outer-delivery-loop/lab.qmd
+                text: Lab
+              - href: part-3/02-outer-delivery-loop/summary.qmd
+                text: Summary
+              - href: part-3/02-outer-delivery-loop/quiz.qmd
                 text: Quiz
       - href: labs/index.qmd
         text: Labs
