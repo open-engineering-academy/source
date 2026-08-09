@@ -103,3 +103,82 @@ produces: [hello-world-pico]
 3. Wire the new pages into the surrounding `_quarto.yml` navbar or sidebar.
 4. Render locally with `quarto render` (root site) or
    `quarto render courses/<slug>` (course site) to verify.
+
+
+## Constructive realization (Phase 1)
+
+Course material in this academy uses a small **constructive-realization**
+vocabulary derived from `memo3.md`. Phase 1 is a documentation and
+metadata contract only: it names the concepts course authors should reach
+for and adds a few optional `metadata.yaml` fields. No tooling reads or
+enforces them yet.
+
+### Vocabulary
+
+- **Definition** — what an artifact is supposed to be. In course content,
+  a course, lesson, or exercise typically states a Definition (purpose,
+  intent, and expected outcome).
+- **Element** — the concrete realized thing (a produced artifact, a
+  running Job, a rendered page).
+- **Realization** — the constructive path from Definition to Element.
+  In course content, a lab or walkthrough typically records a
+  Realization.
+- **Constraint** — a condition that a valid Element must satisfy.
+- **Validation** — an executable or observable check that tests an
+  Element against its Constraints.
+
+### Minimal supporting relationships
+
+Phase 1 uses only these relations. Most of them piggy-back on fields that
+already exist in `metadata.yaml`; only the two marked *(new)* are added
+by this phase.
+
+| Relation                        | Where it lives in `metadata.yaml`             |
+| ------------------------------- | --------------------------------------------- |
+| `Definition defines Element`    | course/lesson `produces`                      |
+| `Element realizes Definition`   | lab/lesson `realizes` *(new, optional)*       |
+| `Realization produces Element`  | lab `produces`                                |
+| `Definition has Constraint`     | course/lesson `constraints` *(new, optional)* |
+| `Validation checks Element`     | lab `validated_by` *(new, optional)*          |
+| `Realization uses Dependency`   | existing `prerequisites`                      |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, lab, or exercise. They are optional and descriptive in
+Phase 1; missing fields do not fail any render or validation.
+
+| Field                 | Type            | Applies to     | Notes                                                                                        |
+| --------------------- | --------------- | -------------- | -------------------------------------------------------------------------------------------- |
+| `constructive_role`   | enum            | any            | `definition` \| `realization` \| `element` \| `constraint` \| `validation`                   |
+| `realizes`            | list of `id`s   | lab, lesson    | Definition(s) that this artifact realizes                                                    |
+| `constraints`         | list of strings | course, lesson | Human-readable conditions a valid Element must satisfy                                       |
+| `validated_by`        | list of strings | lab, lesson    | Names or paths of executable/observable validation checks (e.g. `downloads/verify.sh`)       |
+| `realization_pattern` | string          | lab            | Short label for the construction pattern (e.g. `instantiate-from-template`, `compose-from-sub-elements`) |
+
+### Course-authoring guidance
+
+- Prefer natural-language constraints and named validations over formal
+  schemas in Phase 1.
+- When a lab already ships a `verify.sh` (or equivalent), list it in
+  `validated_by` so the Realization → Validation link is discoverable.
+- When a lesson or course `produces` a named artifact, treat that
+  artifact name as the Element identity. A downstream lab realizes the
+  same Definition when it lists it under `realizes`.
+- Existing metadata (`prerequisites`, `references_labs`, `referenced_by`,
+  `produces`) is preserved unchanged; the Phase 1 fields sit alongside
+  them.
+
+### Out of scope for Phase 1
+
+Phase 1 intentionally does **not** implement:
+
+- OWL, SHACL, or any other formal ontology or schema enforcement.
+- Automated conformance checking of `metadata.yaml` against the model.
+- Repo-wide retrofit of existing courses, lessons, labs, or exercises
+  to the new fields.
+- New `.qmd` page files, sidebars, or navigation surfaces for the model.
+- Feedback loops that refine `Definition`s from operational evidence.
+- Cross-course automated graph or ontology extraction.
+
+These are candidates for later phases.
