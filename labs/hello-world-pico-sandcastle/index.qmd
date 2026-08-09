@@ -55,8 +55,12 @@ Runnable files live under [`downloads/`](downloads/):
 - [`verify.sh`](downloads/verify.sh) — automatable check that runs
   the full path and asserts the branch, artifact, and boundary.
 
-Screenshots referenced from the walkthrough live under
-`screenshots/`.
+Screenshot targets for the walkthrough live under
+[`screenshots/`](screenshots/). No image files ship yet;
+[`screenshots/README.md`](screenshots/README.md) catalogues the
+three intended terminal moments (driver tail, durable branch,
+`verify: OK`), their filenames, capture regions, and alt text, so
+the lab is screenshot-ready as soon as contributor captures land.
 
 ## Metadata
 

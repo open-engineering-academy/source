@@ -15,13 +15,18 @@ at `/usr/bin/pico` (the Alpine/nano text editor).
 :::
 
 ::: {.callout-note title="Isolation scope for this lab"}
-This lab simulates the Sandcastle **isolation boundary** with a
-scoped local scratch directory and a **PATH allowlist** — not a
-container. That is deliberate: the concepts (isolated workspace,
-repo/branch flow, tools/permissions, agent iteration, artifact
-boundary) exercise identically, and the lab runs without Docker,
-Podman, minikube, or network access. A container-backed Sandcastle
-provider is a later curriculum wave.
+This lab uses the `local-scratch-dir` sandbox provider from
+[`downloads/blueprint.yaml`](downloads/blueprint.yaml): a scoped
+local scratch directory plus a **PATH allowlist**, not a container.
+That is deliberate — the five construction-layer concerns
+(isolated workspace, repo/branch flow, tools/permissions, agent
+iteration, artifact boundary) exercise identically, and the lab
+runs without Docker, Podman, minikube, or network access.
+
+A **container-backed** Sandcastle provider (Docker or Podman) is
+tracked as a Sandcastle curriculum follow-up. When it lands, only
+the `sandbox_provider` field in the blueprint changes; the
+walkthrough steps and `verify.sh` assertions below stay the same.
 :::
 
 ## Step 1 — Inspect the blueprint
@@ -137,6 +142,24 @@ bash labs/hello-world-pico-sandcastle/downloads/verify.sh
 
 On success it exits `0` and prints a line beginning with
 `verify: OK — branch=...`.
+
+## Screenshot targets
+
+Three terminal moments in this walkthrough make good screenshots for
+future revisions of the lab. They are catalogued in
+[`screenshots/README.md`](screenshots/README.md) with intended
+filenames, capture regions, and alt text:
+
+- **Step 2** → `screenshots/01-driver-tail.png` — the driver's final
+  `[agent]` lines and its `sandcastle-run: done.` teardown line.
+- **Step 3** → `screenshots/02-durable-branch.png` — the single commit
+  on `sandcastle/hello-world-pico` and the contents of
+  `rules/hello.yaml`.
+- **Step 5** → `screenshots/03-verify-ok.png` — the final
+  `verify: OK — branch=…` line from `verify.sh`.
+
+No image files ship with this lab yet; the lab renders and runs
+without them.
 
 ## Troubleshooting
 

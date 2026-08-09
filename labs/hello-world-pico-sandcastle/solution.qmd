@@ -96,10 +96,14 @@ You can verify the solution matches this reference by:
 
 ## Not covered by this lab (intentional)
 
-- A container/Docker/Podman **sandbox provider** — this lab uses a
-  scoped local scratch directory instead so it runs without
-  additional runtimes. Provider integration is planned for a later
-  Sandcastle curriculum wave.
+- A container-backed **sandbox provider** (Docker or Podman) — this
+  lab uses the `local-scratch-dir` provider (a scoped local scratch
+  directory plus a PATH allowlist) instead, so it runs without
+  additional runtimes. Container-backed provider integration is
+  tracked as a Sandcastle curriculum follow-up; only the
+  `sandbox_provider` field in
+  [`downloads/blueprint.yaml`](downloads/blueprint.yaml) needs to
+  change when it lands.
 - Multi-file Pico artifacts, multi-branch flows, or PR-based
   hand-off between sandbox and target — these are natural
   extensions but are out of scope for the first runnable lab.
