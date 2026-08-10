@@ -149,8 +149,9 @@ it is not a feedback signal aimed at the Definition. The metadata is
 fixed first, the report regenerated, and only then does an observation
 from the resulting approved report belong under `feedback[]`.
 
-On the Hello Pico path the Phase 2 `feedback[]` entries already exist
-in two places worth naming here:
+On the Hello Pico path the Phase 2 `feedback[]` shape sits in two
+places worth naming here — the Definition claimant already carries
+entries, while the Realization claimant does not yet:
 
 - [`courses/crossplane/metadata.yaml`](../../courses/crossplane/metadata.yaml)
   carries `feedback[]` on the Definition, currently sourced from lesson
@@ -174,12 +175,14 @@ in two places worth naming here:
   ```
 
 - [`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml)
-  carries `feedback[]` on the Realization, currently sourced from
-  version-pin observations and screenshot targets already documented in
-  the lab. A Phase 6 addition here would similarly cite
+  does not carry `feedback[]` on the Realization today. When a
+  Realization-side observation genuinely comes from the validation
+  report — for example, a version-pin note or screenshot target worth
+  folding back from the lab into the aggregate view — a Phase 6
+  addition here would introduce a `feedback[]` list on the Realization
+  and similarly cite
   `templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml`
-  under `from_report` when the observation genuinely came from the
-  validation report rather than from the lab retrospective.
+  under `from_report`.
 
 Neither addition is required to keep the current chain runnable. Phase
 2 `feedback[]` entries recorded from lesson summaries or lab
