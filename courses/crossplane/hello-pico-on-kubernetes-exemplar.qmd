@@ -1,0 +1,194 @@
+---
+title: "Hello Pico on Kubernetes as a constructive exemplar"
+subtitle: "The same Hello Pico Definition realized as a Kubernetes Element."
+---
+
+This page is the Crossplane course's **cross-course constructive
+exemplar**. It takes the same Hello Pico Definition introduced in
+[Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+in the Pico course and follows it *across* courses: from a laptop
+executable produced by the Pico pipeline into a **system-level Element**
+running on a Kubernetes cluster, composed by Crossplane.
+
+The vocabulary — Definition, Realization, Element, Dependency,
+Composition, Constraint, Validation, Feedback — is defined in the Pico
+course's [constructive-realization reference](../pico/constructive-realization.html).
+This page reuses that vocabulary and points each term at concrete
+learner-visible material in this course and the reusable
+[Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/index.html).
+
+## The Definition stays the same
+
+The Hello Pico Definition — *"a minimal Pico that, given a single
+greeting Rule, produces a runnable artifact that emits the greeting
+`Hello, Pico!`"* — is the **same** Definition the Pico course
+introduces. What changes across courses is not the Definition; it is
+the *Realization*.
+
+Where the Definition lives in this course:
+
+- The [course descriptor](metadata.yaml) names the produced artifact as
+  `hello-world-pico-on-kubernetes`, whose behaviour reuses the Pico
+  Definition's expected output.
+- The [Part 1 lesson](part-1/01-composing-hello-pico-on-kubernetes/index.qmd)
+  restates the Definition in the Crossplane vocabulary
+  (Rules ↔ XR, Parser ↔ XRD, Composer ↔ Composition,
+  Pico ↔ Managed Resources).
+
+## The system-level Realization
+
+Where the Pico course realized the Definition via
+**Rules → Parser → Composer → Pico** on a laptop, this course realizes
+the same Definition via a Crossplane control plane:
+
+```
+XR (05-xr.yaml)  ──▶  XRD (03-xrd.yaml)  ──▶  Composition (04-composition.yaml)  ──▶  Job on minikube
+   (Definition)         (validate shape)         (produce Managed Resources)          (Element)
+```
+
+The Realization is documented step by step in the
+[Hello Pico on Kubernetes walkthrough](../../labs/hello-pico-on-kubernetes/walkthrough.html)
+and summarised, with the exact commands and manifests, in the
+[Solution](../../labs/hello-pico-on-kubernetes/solution.html). Its
+realization pattern is **composition from sub-elements**: the same
+pattern named in the [constructive-realization reference](../pico/constructive-realization.html#mapping-onto-compose-construct-behave).
+
+## The Kubernetes Element
+
+The Element is the reconciled `Job` in the `default` namespace of the
+local minikube cluster, together with the pinned Managed Resources that
+back it. Its identity — `hello-world-pico-on-kubernetes` — matches the
+`produces` entry in the [course metadata](metadata.yaml) and the
+[lab metadata](../../labs/hello-pico-on-kubernetes/metadata.yaml). The
+lab's `verify.sh` captures the Element's observable output
+(`Hello, Pico!`) as `greeting.txt` under the produced artifact directory.
+
+The Element **is a Pico** (its observable behaviour matches the Pico
+Definition) **and** a Kubernetes workload (its runtime form is a
+`Job`). Both roles hold at the same time — this dual identity is what
+makes it the cross-course exemplar.
+
+## Dependencies
+
+The Kubernetes Realization is not self-contained. It uses three named
+Dependencies, each pointed at by the
+[lab objectives page](../../labs/hello-pico-on-kubernetes/objectives.html):
+
+- **Runtime environment** — a local minikube cluster
+  (profile `crossplane-lab`, Kubernetes `v1.31.0`).
+- **Control-plane package** — Crossplane `v2.3.4`, installed by
+  [Step 3 of the walkthrough](../../labs/hello-pico-on-kubernetes/walkthrough.html).
+- **Provider and function** — `provider-kubernetes v0.18.0` and
+  `function-patch-and-transform v0.9.0`, both pinned in
+  [`downloads/01-provider.yaml`](../../labs/hello-pico-on-kubernetes/downloads/01-provider.yaml).
+
+## Composition
+
+Composition is the primitive that turns the validated XR into concrete
+Managed Resources — the Crossplane analogue of the Pico Composer.
+
+In this exemplar the Composition is the pipeline-mode Composition in
+[`downloads/04-composition.yaml`](../../labs/hello-pico-on-kubernetes/downloads/04-composition.yaml).
+Given one `XHelloWorldPico` XR
+([`downloads/05-xr.yaml`](../../labs/hello-pico-on-kubernetes/downloads/05-xr.yaml)),
+the Composition produces one cluster-scoped `Object` Managed Resource
+that in turn creates the `Job` in the `default` namespace. This is the
+**composition-from-sub-elements** realization pattern named in the
+Pico course's
+[constructive-realization reference](../pico/constructive-realization.html),
+realized against a Kubernetes control plane.
+
+## Constraints on a valid Element
+
+A valid Hello Pico on Kubernetes Element must satisfy all of the
+following, each of which is present in the lab material:
+
+- **Shape constraint** — the XR conforms to the `XHelloWorldPico` XRD
+  registered in
+  [`downloads/03-xrd.yaml`](../../labs/hello-pico-on-kubernetes/downloads/03-xrd.yaml).
+- **Runtime form** — the Element takes the form of a Kubernetes `Job`
+  (not a `Pod`, `Deployment`, or arbitrary shell command).
+- **Successful reconciliation** — the XR reaches `Ready=True` and the
+  composed `Job` reaches `Complete=True`.
+- **Observable behaviour** — the `Job`'s container logs contain exactly
+  `Hello, Pico!` on standard output.
+- **Traceable identity** — the produced artifact directory is named
+  `hello-world-pico-on-kubernetes`, matching the `produces` entry in
+  the [course](metadata.yaml) and [lab](../../labs/hello-pico-on-kubernetes/metadata.yaml)
+  metadata.
+
+These are the Constraints in the constructive-realization sense:
+conditions any valid Element must satisfy. They are natural-language
+and directly checkable by the lab's automation.
+
+## Validations that check the Element
+
+Each Constraint above is checked by something the lab already runs.
+
+| Constraint                    | Validation (what the lab runs)                                                                                                   |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Shape                         | [Walkthrough Step 6](../../labs/hello-pico-on-kubernetes/walkthrough.html) — `kubectl apply -f 05-xr.yaml` is accepted by the XRD. |
+| Runtime form                  | [Walkthrough Step 7](../../labs/hello-pico-on-kubernetes/walkthrough.html) — `kubectl get job` shows the composed `Job`.           |
+| Successful reconciliation     | [Walkthrough Step 7](../../labs/hello-pico-on-kubernetes/walkthrough.html) — `kubectl wait --for=condition=Ready` on the XR.       |
+| Observable behaviour          | [`downloads/verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh) — asserts `Hello, Pico!` in the `Job`'s logs.     |
+| Traceable identity            | [Solution — Reference solution](../../labs/hello-pico-on-kubernetes/solution.html) — names the produced artifact directory.        |
+
+The `verify.sh` exit status is the single automatable check that the
+[Runnable Academy Contract](../../labs/hello-pico-on-kubernetes/objectives.html)
+requires for this lab, and it is the same shape the Pico course uses
+for its `verify.sh` on a laptop.
+
+## Feedback back into the Definition
+
+The Kubernetes Realization exposes information the laptop Realization
+cannot. Two concrete Feedback surfaces already exist in this lab and
+flow back into how the Definition is authored:
+
+- **Version pins** in
+  [`objectives.qmd`](../../labs/hello-pico-on-kubernetes/objectives.html)
+  (Crossplane, Provider, Function, Kubernetes) record the exact
+  versions under which the Element was observed to conform. Newer
+  versions that break the Realization become Feedback candidates for
+  tightening the Definition's supported-runtime clause.
+- **Screenshot targets** under `labs/hello-pico-on-kubernetes/screenshots/`
+  record the concrete cluster states worth capturing when a
+  Realization succeeds. When learners hit a state the screenshots do
+  not describe, that gap is Feedback for either the walkthrough or the
+  Definition.
+
+Feedback does not change the Definition on this page — it names *where*
+learning from realized Elements flows back into the academy material.
+
+## Where compose / construct / behave fit
+
+This exemplar sits at the intersection of the academy's three layers:
+
+- **Compose** — this course. Crossplane composes the Hello Pico Element
+  from a control-plane XR.
+- **Construct** — the durable artifact that feeds this composition
+  comes from the
+  [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/index.html)
+  when learners choose the cross-course path.
+- **Behave** — the observable behaviour of the resulting `Job`
+  (`Hello, Pico!` on standard output) is the same Pico behaviour the
+  [Pico course](../pico/index.html) teaches.
+
+The same Definition threads through all three layers; each layer
+records a different Realization.
+
+## What this page does *not* add
+
+- No new Crossplane primitive, XRD field, Composition function, or lab
+  step. Everything the exemplar names already exists in the referenced
+  Crossplane lesson, Hello Pico on Kubernetes lab, or Sandcastle
+  hand-off lab.
+- No formal schema, ontology, or conformance checker on top of the
+  Crossplane primitives.
+- No retrofit of the Pico exemplar; that page remains the laptop-level
+  reference.
+
+See the [Glossary](glossary.qmd) for Crossplane-side vocabulary, the
+[constructive-realization reference](../pico/constructive-realization.html)
+for the underlying model, and
+[Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+for the laptop-level Realization this page builds on.
