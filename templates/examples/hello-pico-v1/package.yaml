@@ -1,0 +1,108 @@
+checkable_profile: hello-pico-v1
+package:
+  id: oe.example.hello-pico-v1
+  title: Hello Pico as a checkable constructive realization
+  purpose: >
+    A single narrow, machine-readable opt-in example that expresses the full
+    Definition -> Realization -> Element -> Constraint -> Validation -> Feedback
+    chain for the taught Hello Pico path, without retrofitting any existing
+    course, lesson, lab, or exercise metadata.
+  taught_surfaces:
+    definition: courses/crossplane/metadata.yaml
+    upstream_definition: courses/pico/metadata.yaml
+    upstream_realization: labs/hello-pico/metadata.yaml
+    realization: labs/hello-pico-on-kubernetes/metadata.yaml
+    validation_script: labs/hello-pico-on-kubernetes/downloads/verify.sh
+  scope:
+    in_scope:
+      - Encoding one bounded Hello Pico example as three linked records.
+      - Reusing Phase 1-3 fields unchanged and adding the three Phase 4 fields.
+    out_of_scope:
+      - Modifying any existing course/lesson/lab/exercise metadata.yaml.
+      - Introducing a graph database, triple store, or new runtime system.
+      - Additional checkable profiles beyond hello-pico-v1.
+
+  definition:
+    id: oe.example.hello-pico-v1.definition
+    title: Hello Pico Kubernetes-Job Definition
+    checkable_profile: hello-pico-v1
+    constructive_role: definition
+    based_on:
+      - oe.course.pico
+      - oe.course.crossplane
+    produces:
+      - hello-world-pico-on-kubernetes
+    realization_pattern: crossplane-xr-of-existing-element
+    constraints:
+      - "The realized Element takes the form of a Kubernetes Job."
+      - "The Kubernetes Job terminates in a successful completion state."
+      - "The Job's logs contain the exact string 'Hello, Pico!'."
+    feedback:
+      - observation: >
+          Wrapping an already-realized hello-world-pico Element in a Kubernetes
+          Job via a Crossplane XR keeps compose/construct/behave boundaries
+          visible: Crossplane composes, the upstream Pico lab constructs, and
+          Kubernetes governs behavior.
+        about: hello-world-pico-on-kubernetes
+        refines: oe.example.hello-pico-v1.definition
+
+  realization:
+    id: oe.example.hello-pico-v1.realization
+    title: Hello Pico on Kubernetes Realization (example opt-in)
+    checkable_profile: hello-pico-v1
+    constructive_role: realization
+    realizes:
+      - oe.example.hello-pico-v1.definition
+    depends_on:
+      - oe.lab.hello-pico
+      - oe.lab.hello-world-pico-sandcastle
+      - oe.lab.handoff-sandcastle-to-kubernetes
+      - oe.lab.hello-pico-on-kubernetes
+    produces:
+      - hello-world-pico-on-kubernetes
+    realization_pattern: crossplane-xr-of-existing-element
+    composition_pattern: crossplane-xr-of-existing-element
+    conformance_status: conformant
+    lifecycle_state: operational
+    validated_by:
+      - "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 7 - kubectl wait xhelloworldpico/hello Ready"
+      - "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 8 - downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+      - "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 9 - captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+    validation_results:
+      - check: "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 7 - kubectl wait xhelloworldpico/hello Ready"
+        result: passed
+        validates_constraint: "The realized Element takes the form of a Kubernetes Job."
+      - check: "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 8 - downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+        result: passed
+        validates_constraint: "The Job's logs contain the exact string 'Hello, Pico!'."
+      - check: "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 9 - captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+        result: passed
+        validates_constraint: "The Kubernetes Job terminates in a successful completion state."
+    evidence:
+      - check: "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 7 - kubectl wait xhelloworldpico/hello Ready"
+        path: labs/hello-pico-on-kubernetes/walkthrough.qmd
+        description: "Rendered walkthrough Step 7 shows kubectl wait returning Ready for xhelloworldpico/hello."
+      - check: "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 8 - downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+        path: labs/hello-pico-on-kubernetes/downloads/verify.sh
+        description: "Shipped verify.sh asserts the composed Job's logs contain 'Hello, Pico!'."
+      - check: "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 9 - captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+        path: labs/hello-pico-on-kubernetes/walkthrough.qmd
+        description: "Rendered walkthrough Step 9 captures the greeting.txt content produced by the composed Job."
+
+  element:
+    id: oe.example.hello-pico-v1.element
+    title: Hello Pico Kubernetes Job Element (example opt-in)
+    checkable_profile: hello-pico-v1
+    constructive_role: element
+    realizes:
+      - oe.example.hello-pico-v1.definition
+    produced_by: oe.example.hello-pico-v1.realization
+    lifecycle_state: operational
+    runtime_form: kubernetes-job
+    observed_output: "Hello, Pico!"
+    validated_by:
+      - "labs/hello-pico-on-kubernetes/downloads/verify.sh - Job logs contain 'Hello, Pico!'"
+    validation_results:
+      - check: "labs/hello-pico-on-kubernetes/downloads/verify.sh - Job logs contain 'Hello, Pico!'"
+        result: passed
+        validates_constraint: "The Job's logs contain the exact string 'Hello, Pico!'."
