@@ -9,6 +9,7 @@ project:
     - hello-pico-realization-chain.qmd
     - hello-pico-checkable-profile.qmd
     - hello-pico-profile-validation.qmd
+    - hello-pico-validation-history.qmd
     - part-1/index.qmd
     - part-1/01-inside-a-sandcastle/index.qmd
     - part-1/01-inside-a-sandcastle/exercise.qmd
@@ -57,6 +58,8 @@ website:
         text: Profile
       - href: hello-pico-profile-validation.qmd
         text: Validate
+      - href: hello-pico-validation-history.qmd
+        text: History
       - href: glossary.qmd
         text: Glossary
     right:
@@ -128,6 +131,8 @@ website:
         text: Profile
       - href: hello-pico-profile-validation.qmd
         text: Validate
+      - href: hello-pico-validation-history.qmd
+        text: History
       - href: glossary.qmd
         text: Glossary
   page-footer:

@@ -93,6 +93,11 @@ courses/sandcastle/
   — the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
   claim on that same path, and the shape of a passing, failing, or
   inconclusive validation report.
+- [Hello Pico validation history and feedback](hello-pico-validation-history.qmd)
+  — the Phase 6 aggregate view: the report index over current
+  `hello-pico-v1` claimants, the historical-snapshot convention, and
+  the narrow feedback loop that lets approved reports refine the
+  governing Definition.
 - [Glossary](glossary.qmd)
 
 ::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 runnable end-to-end"}

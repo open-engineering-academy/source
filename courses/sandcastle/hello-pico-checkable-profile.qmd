@@ -194,6 +194,10 @@ opt-in way.
   — the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
   claim against the shape rules on this page, and the shape of the
   resulting validation report.
+- [Hello Pico validation history and feedback](hello-pico-validation-history.qmd)
+  — the Phase 6 aggregate view over the reports emitted for these
+  shape rules, with the historical-snapshot convention and the
+  approved-report feedback loop back into the governing Definition.
 - [Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
   — the Phase 1 laptop Realization in isolation.
 - [Hello Pico on Kubernetes as a constructive exemplar](../crossplane/hello-pico-on-kubernetes-exemplar.html)

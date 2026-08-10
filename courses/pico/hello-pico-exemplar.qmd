@@ -149,3 +149,8 @@ For the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
 claim against those shape rules, and the shape of the resulting
 validation report, see
 [Hello Pico profile validation](../sandcastle/hello-pico-profile-validation.html).
+For the Phase 6 aggregate view over those reports — the report
+index across current `hello-pico-v1` claimants, the historical-snapshot
+convention, and the narrow feedback loop back into the governing
+Definition — see
+[Hello Pico validation history and feedback](../sandcastle/hello-pico-validation-history.html).

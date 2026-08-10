@@ -293,6 +293,11 @@ towards the same Element identity.
   — the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
   claim on this same chain, and the shape of a passing, failing, or
   inconclusive validation report.
+- [Hello Pico validation history and feedback](hello-pico-validation-history.qmd)
+  — the Phase 6 aggregate view over the reports emitted along this
+  chain: the report index, the historical-snapshot convention, and
+  the approved-report feedback loop back into the governing
+  Definition.
 - [Part 3 · Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd)
   and [Part 1 · Inside a Sandcastle](part-1/01-inside-a-sandcastle/index.qmd)
   — the two Sandcastle lessons the chain passes through.

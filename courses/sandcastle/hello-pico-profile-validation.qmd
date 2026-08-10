@@ -364,6 +364,11 @@ machine-readable in a narrow, opt-in way.
 
 - [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
   — the Phase 4 shape rules the workflow evaluates against.
+- [Hello Pico validation history and feedback](hello-pico-validation-history.qmd)
+  — the Phase 6 aggregate view that catalogs the per-claimant reports
+  this workflow emits, names the historical-snapshot convention, and
+  wires approved reports into the `feedback[]` loop on the governing
+  Definition.
 - [The Hello Pico realization chain](hello-pico-realization-chain.qmd)
   — the staged Pico → Sandcastle → Crossplane → Kubernetes chain the
   claimants sit inside.
