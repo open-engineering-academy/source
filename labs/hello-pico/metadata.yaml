@@ -22,3 +22,4 @@ validated_by:
   - "walkthrough.qmd Step 4 — pico compose build/parsed.json"
   - "walkthrough.qmd Step 5 — ./build/hello-world-pico prints 'Hello, Pico!'"
   - "solution.qmd Verification — diff and re-run against reference"
+lifecycle_state: operational

@@ -39,3 +39,14 @@ validation_results:
     result: passed
   - check: "walkthrough.qmd Step 9 — captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
     result: passed
+lifecycle_state: operational
+evidence:
+  - check: "walkthrough.qmd Step 7 — kubectl wait xhelloworldpico/hello Ready"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 7 shows kubectl wait returning Ready for xhelloworldpico/hello."
+  - check: "walkthrough.qmd Step 8 — downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh asserts the composed Job's logs contain 'Hello, Pico!'."
+  - check: "walkthrough.qmd Step 9 — captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 9 captures the greeting.txt content produced by the composed Job."
