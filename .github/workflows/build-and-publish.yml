@@ -39,6 +39,9 @@ jobs:
       - name: Render crossplane course website
         run: quarto render courses/crossplane
 
+      - name: Render kubernetes course website
+        run: quarto render courses/kubernetes
+
       - name: Verify root render output
         run: |
           test -f docs/index.html || {
@@ -60,12 +63,21 @@ jobs:
             exit 1
           }
 
+      - name: Verify kubernetes render output
+        run: |
+          test -f courses/kubernetes/_site/index.html || {
+            echo "::error::Missing courses/kubernetes/_site/index.html — kubernetes render did not produce expected output"
+            exit 1
+          }
+
       - name: Assemble combined site
         run: |
           mkdir -p docs/courses/pico
           cp -R courses/pico/_site/. docs/courses/pico/
           mkdir -p docs/courses/crossplane
           cp -R courses/crossplane/_site/. docs/courses/crossplane/
+          mkdir -p docs/courses/kubernetes
+          cp -R courses/kubernetes/_site/. docs/courses/kubernetes/
 
       # The `pages` branch is the artifact consumed by a git-pages server
       # (https://codeberg.org/git-pages/git-pages). A git-pages server pulls
