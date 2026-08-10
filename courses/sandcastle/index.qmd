@@ -81,6 +81,23 @@ courses/sandcastle/
 - [Part 2 — Composing Sandcastles with Crossplane](part-2/index.qmd)
 - [Part 3 — Delivering artifacts from a Sandcastle](part-3/index.qmd)
 - [Labs](labs/index.qmd)
+- [The Hello Pico realization chain](hello-pico-realization-chain.qmd)
+  — the staged Pico → Sandcastle → Crossplane → Kubernetes chain,
+  end to end, with lifecycle, partial-realization, validation
+  evidence, and feedback pointed at concrete learner material.
+- [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
+  — the same path read through the Phase 4 `hello-pico-v1` checkable
+  profile, mapping each shape rule to concrete `metadata.yaml`,
+  walkthrough, and `verify.sh` artifacts.
+- [Hello Pico profile validation](hello-pico-profile-validation.qmd)
+  — the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
+  claim on that same path, and the shape of a passing, failing, or
+  inconclusive validation report.
+- [Hello Pico validation history and feedback](hello-pico-validation-history.qmd)
+  — the Phase 6 aggregate view: the report index over current
+  `hello-pico-v1` claimants, the historical-snapshot convention, and
+  the narrow feedback loop that lets approved reports refine the
+  governing Definition.
 - [Glossary](glossary.qmd)
 
 ::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 runnable end-to-end"}

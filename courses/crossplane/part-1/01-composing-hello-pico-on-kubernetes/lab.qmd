@@ -20,9 +20,12 @@ pages:
 
 The lab targets **local minikube** as its reference Kubernetes
 environment — small enough to run on a laptop, but a full Kubernetes
-control plane, which is what Crossplane extends. Version pins for
-`minikube`, the Kubernetes control plane, Crossplane, and the
-provider-kubernetes package are declared on the lab's
+control plane, which is what Crossplane extends. Canonical local
+minikube install, PATH checks, and first cluster bring-up live in the
+[Kubernetes course setup foundation](../../../../courses/kubernetes/index.html);
+the lab-specific version pins for `minikube`, the Kubernetes control
+plane, Crossplane, and the provider-kubernetes package are declared on
+the lab's
 [Objectives](../../../../labs/hello-pico-on-kubernetes/objectives.html)
 page.
 

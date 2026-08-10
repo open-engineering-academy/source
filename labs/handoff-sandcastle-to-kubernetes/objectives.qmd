@@ -32,8 +32,10 @@ description: "What the Sandcastle → Kubernetes hand-off lab teaches and what y
   [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)
   at the level of its walkthrough steps 1–4 (install Crossplane,
   install the Kubernetes provider, register the XRD and Composition).
-  A cluster is **not** required for this lab; it is required if you
-  choose to apply the generated XR in the cluster afterwards.
+  A cluster is **not** required for this lab; if you choose to apply
+  the generated XR in a cluster afterwards, the canonical local
+  minikube setup home is the
+  [Kubernetes course setup foundation](../../courses/kubernetes/index.html).
 :::
 
 ## Environment

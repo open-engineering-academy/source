@@ -21,3 +21,7 @@ references_labs:
   - oe.lab.hello-pico
 references_exercises:
   - oe.exercise.pico-first-rule
+constructive_role: definition
+constraints:
+  - "A valid hello-world-pico Element is produced by the Rules → Parser → Composer → Pico pipeline."
+  - "The produced hello-world-pico Element prints 'Hello, Pico!' on standard output."

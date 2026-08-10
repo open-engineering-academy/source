@@ -1,0 +1,27 @@
+profile: hello-pico-v1
+subject: oe.course.crossplane
+subject_role: definition
+checked_at: '2026-08-10'
+overall: conformant
+findings:
+- rule: definition.has-id
+  status: satisfied
+  details: id present
+  path: courses/crossplane/metadata.yaml
+- rule: definition.has-title
+  status: satisfied
+  details: title present
+  path: courses/crossplane/metadata.yaml
+- rule: definition.has-produces
+  status: satisfied
+  details: produces present
+  path: courses/crossplane/metadata.yaml
+- rule: definition.has-constraints
+  status: satisfied
+  details: 2 constraint(s) declared
+  path: courses/crossplane/metadata.yaml
+- rule: definition.reachable-realization-pattern
+  status: satisfied
+  details: reachable via a realization with realization_pattern='crossplane-xr-of-existing-element'.
+  path: courses/crossplane/metadata.yaml
+evidence_reviewed: []

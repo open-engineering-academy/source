@@ -54,6 +54,9 @@ Fields follow the same schema as
 ## Referenced from
 
 - [Crossplane course · Part 1 · Composing Hello Pico on Kubernetes · Lab](../../courses/crossplane/part-1/01-composing-hello-pico-on-kubernetes/lab.html)
+- [Crossplane course · Hello Pico on Kubernetes as a constructive exemplar](../../courses/crossplane/hello-pico-on-kubernetes-exemplar.html)
+  — points Definition, Realization, Element, Dependency, Composition,
+  Constraint, Validation, and Feedback at the material in this lab.
 - [Sandcastle → Kubernetes hand-off lab](../handoff-sandcastle-to-kubernetes/index.qmd)
   — feeds this lab an `XHelloWorldPico` XR built from a
   Sandcastle-produced branch.

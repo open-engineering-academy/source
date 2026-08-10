@@ -1,0 +1,148 @@
+---
+title: "Kubernetes for Open Engineering"
+subtitle: "The canonical academy home for local minikube setup."
+description: "Install minikube and companion tools, check they resolve on PATH, and bring up your first local cluster. A small setup foundation — not a full Kubernetes course."
+---
+
+::: {.callout-important title="Scope — setup foundation only"}
+This page is a **setup foundation**, not a full Kubernetes course.
+It exists so that other academy surfaces — notably the
+[Crossplane course](../crossplane/index.html) and the runnable
+[Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/index.html)
+— can link **here** as the single canonical home for local
+minikube installation, PATH checks, and a first cluster bring-up.
+There is deliberately no Part 1 / Part 2 / Part 3 structure, no
+lessons, no exercises, and no runnable Kubernetes lab in this
+course yet.
+:::
+
+## Where this fits in the academy
+
+The academy's three-layer story is:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+Kubernetes is the concrete **runtime environment** those layers
+compose onto. This page owns the smallest honest thing every
+Kubernetes-touching learner surface needs: a working local
+Kubernetes cluster, provided by **minikube**, with `docker`,
+`kubectl`, and `helm` on `PATH`.
+
+Anything beyond that — Pods, Deployments, Services, Ingress,
+Namespaces, RBAC theory, cluster operators — is deliberately
+**out of scope** for this foundation page and lives in either the
+labs that use them or in a later Kubernetes curriculum wave.
+
+## Supported environment
+
+- **OS**: macOS (Apple Silicon or Intel), Linux, or WSL.
+- **Shell**: `bash` 3.2+ or `zsh` 5.0+.
+- **Required tools** (all must resolve on `PATH` after install):
+  - `docker` v20.10+ — minikube's driver and container runtime.
+  - `minikube` v1.34+ (v1.38.1 is the reference pin used by the
+    Hello Pico on Kubernetes lab).
+  - `kubectl` v1.31+ (minikube ships one; `brew install kubectl`
+    or the upstream instructions work too).
+  - `helm` v3.14+ (v3.16+ recommended — used by labs that install
+    Crossplane or other Helm-packaged operators).
+  - `bash` and standard POSIX utilities (`grep`, `cat`, `mkdir`, `cp`).
+- **Estimated time**: **5–10 minutes** for install + first cluster
+  bring-up on a machine with Docker already installed.
+
+## Install
+
+On macOS with Homebrew:
+
+```bash
+brew install --cask docker
+brew install minikube kubectl helm
+```
+
+On Linux, follow the upstream install guides:
+
+- Docker Engine — <https://docs.docker.com/engine/install/>
+- minikube — <https://minikube.sigs.k8s.io/docs/start/>
+- kubectl — <https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/>
+- helm — <https://helm.sh/docs/intro/install/>
+
+## PATH checks
+
+Confirm each tool resolves on `PATH` before touching a cluster:
+
+```bash
+command -v docker   && docker version --format 'client: {{.Client.Version}}'
+command -v minikube && minikube version --short
+command -v kubectl  && kubectl version --client --output=yaml | head -3
+command -v helm     && helm version --short
+```
+
+Each command should print a path (from `command -v`) followed by
+a version line. Any `command not found` result means that tool is
+missing from `PATH` and the install step above needs to be
+completed for it before continuing.
+
+## First cluster bring-up
+
+Start a small local cluster with the Docker driver. Using a
+**dedicated profile** keeps this cluster isolated from any other
+minikube profiles you may already have:
+
+```bash
+minikube start --profile oe-foundation \
+  --driver=docker --cpus=2 --memory=4g
+```
+
+Confirm the cluster is `Ready` and that `kubectl` is pointed at it:
+
+```bash
+kubectl config current-context
+kubectl get nodes
+```
+
+Expected output (versions and age will vary):
+
+```
+oe-foundation
+NAME             STATUS   ROLES           AGE   VERSION
+oe-foundation    Ready    control-plane   1m    v1.xx.y
+```
+
+Labs may pin a specific `--kubernetes-version` or larger
+`--cpus`/`--memory` values (for example, the Hello Pico on
+Kubernetes lab uses its own `crossplane-lab` profile pinned to
+Kubernetes v1.31.0 with more resources). Those larger, lab-owned
+choices live inside each lab and do not change this foundation.
+
+## Cleanup
+
+When you are finished, delete the foundation profile so it does
+not hold Docker resources open:
+
+```bash
+minikube delete --profile oe-foundation
+```
+
+Deleting the `oe-foundation` profile does **not** touch any
+other minikube profile (for example `crossplane-lab`).
+
+## Where to go next
+
+This setup foundation is intentionally small. Once your tools
+resolve on `PATH` and your first cluster comes up `Ready`,
+continue in the surface that actually uses Kubernetes for a
+learner-visible outcome:
+
+- [Crossplane course](../crossplane/index.html) — the composition
+  layer of the academy. Uses a local minikube cluster to compose
+  Hello Pico into a Kubernetes `Job`.
+- [Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/index.html)
+  — the runnable end-to-end lab that installs Crossplane on
+  minikube and verifies the composed `Job` prints `Hello, Pico!`.
+- [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/index.html)
+  — takes a Sandcastle-produced branch and hands its greeting
+  off as a Crossplane Composite Resource compatible with the
+  Hello Pico on Kubernetes lab.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).

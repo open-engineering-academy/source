@@ -39,6 +39,15 @@ Fields follow the schema documented in the source repository under
 `templates/README.qmd` (in-repo scaffold, not published as a learner
 page).
 
+## Constructive realization
+
+This lab is the **Realization** of the Hello Pico Definition stated in
+the Pico course. For the concrete Definition → Realization → Element
+mapping, with the Constraints this lab's Element must satisfy and the
+Validations that check them, see
+[Hello Pico as a constructive exemplar](../../courses/pico/hello-pico-exemplar.html).
+
 ## Referenced from
 
 - [Pico course · Part 1 · Introduction · Lab](../../courses/pico/part-1/01-introduction/lab.html)
+- [Hello Pico as a constructive exemplar](../../courses/pico/hello-pico-exemplar.html)

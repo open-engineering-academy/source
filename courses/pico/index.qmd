@@ -71,6 +71,12 @@ courses/pico/
 - [Part 2 — Building](part-2/index.qmd)
 - [Part 3 — Extending](part-3/index.qmd)
 - [Labs](labs/index.qmd) and the shared [Hello Pico lab](../../labs/hello-pico/).
+- [Constructive realization](constructive-realization.qmd) — how
+  Definition, Element, Realization, Constraint, and Validation map onto
+  the Rules → Parser → Composer → Pico pipeline.
+- [Hello Pico as a constructive exemplar](hello-pico-exemplar.qmd) — the
+  first worked example, pointing each of those terms at concrete Hello
+  Pico material.
 - [Glossary](glossary.qmd)
 
 ## Reference course notice

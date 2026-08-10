@@ -1,0 +1,303 @@
+---
+title: "Hello Pico validation history and feedback"
+subtitle: "How the opt-in `hello-pico-v1` reports on the taught Pico → Sandcastle → Crossplane → Kubernetes path aggregate over time and feed back into the governing Definition."
+---
+
+This page is the academy's **aggregate validation-history and feedback
+reference** for Hello Pico. Where
+[Hello Pico profile validation](hello-pico-profile-validation.qmd)
+explains the single-claimant Phase 5 workflow and the shape of one
+validation report, this page reads the *same* reports as a **catalog
+over time**: it names the Phase 6 report-index shape, the
+historical-snapshot convention that retains prior reports next to the
+current ones, and the narrow feedback loop that an approved claimant
+uses to refine the governing Definition.
+
+The aggregate contract itself is defined in the Phase 6 section of
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page). The single-report workflow it aggregates is defined in Phase 5;
+the shape rules those reports are written against are defined in
+Phase 4; the underlying vocabulary is defined in the Pico course's
+[constructive-realization reference](../pico/constructive-realization.html).
+
+The aggregate loop is deliberately narrow. It is **opt-in** and
+**non-blocking**: it only catalogs reports for artifacts that
+already declared `checkable_profile: hello-pico-v1`, no render or
+publish step is gated on any verdict, and no historical snapshot,
+report index, or `feedback[]` entry is generated automatically. The
+loop reads files that already sit next to the per-claimant reports and
+`metadata.yaml`, and nothing else.
+
+## What "aggregate" means here
+
+An aggregate run answers exactly one additional question on top of the
+Phase 5 workflow: *"which `hello-pico-v1` claimants currently have a
+report on disk, what did the most recent report say, and — for the
+approved ones — is there an observation worth folding back into the
+governing Definition?"* It is a **catalog** over per-claimant reports,
+not a re-run of the profile check, not a diff engine, and not a
+dashboard.
+
+Aggregate reporting is distinct from three things it can be confused
+with on the Hello Pico path:
+
+- **Phase 5 profile validation** — that workflow produces one report
+  per claimant against the Phase 4 shape rules. Aggregate reporting
+  never re-evaluates a shape rule; it lists reports and their
+  `overall` verdict as they already stand on disk.
+- **Runtime validation via `verify.sh`** — the shipped
+  [Hello Pico on Kubernetes `verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh)
+  still asserts observable Job behaviour. Aggregate reporting never
+  runs `verify.sh` and never recaptures runtime evidence.
+- **Automated Definition refinement** — Phase 6 makes the feedback loop
+  visible via `feedback[].from_report`, but the Definition is still
+  refined by its author as an ordinary `metadata.yaml` edit. A
+  `feedback[]` entry is a suggestion; it never mutates a Definition
+  field on its own.
+
+## The report index on the Hello Pico path
+
+The Phase 6 report index is a small YAML or JSON file next to the
+per-claimant reports. On the Hello Pico path the reports already sit
+under
+[`templates/examples/hello-pico-v1/reports/`](../../templates/examples/hello-pico-v1/reports/),
+so the index for `hello-pico-v1` lives next to them (for example,
+`templates/examples/hello-pico-v1/reports/index.yaml`).
+
+The two claimants opted in today are the Definition on
+[`courses/crossplane/metadata.yaml`](../../courses/crossplane/metadata.yaml)
+and the Realization on
+[`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml).
+Their current per-claimant reports are
+[`reports/oe-course-crossplane.yaml`](../../templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml)
+and
+[`reports/oe-lab-hello-pico-on-kubernetes.yaml`](../../templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml).
+Both currently carry `overall: conformant`.
+
+An index that catalogs those two reports has the following shape (the
+report index is an authoring artifact under `templates/`, not a
+`metadata.yaml` field):
+
+```yaml
+profile: hello-pico-v1
+generated_at: 2026-08-10
+entries:
+  - subject: oe.course.crossplane
+    subject_role: definition
+    report: templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml
+    overall: conformant
+    checked_at: 2026-08-10
+    history: []
+  - subject: oe.lab.hello-pico-on-kubernetes
+    subject_role: realization
+    report: templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml
+    overall: conformant
+    checked_at: 2026-08-10
+    history: []
+```
+
+The index does not restate any `findings[]`; the per-claimant reports
+remain the authoritative record for that. `history: []` reflects the
+current on-disk state — no prior snapshots have been retained yet on
+this path.
+
+## Historical snapshots on the Hello Pico path
+
+Phase 6 retains prior reports in one of two acceptable layouts. Either
+form is acceptable for `hello-pico-v1`; authors on this path SHOULD
+pick one and use it consistently under
+`templates/examples/hello-pico-v1/reports/`:
+
+- **`history/` subdirectory** — e.g. moving an outgoing Crossplane
+  report to
+  `templates/examples/hello-pico-v1/reports/history/oe-course-crossplane.2026-08-01.yaml`
+  before regenerating the current file at
+  `templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml`.
+- **ISO-date suffix on the filename** — e.g. renaming an outgoing
+  Realization report to
+  `templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.2026-08-01.yaml`
+  before regenerating
+  `templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml`.
+
+Snapshots are read-only observations of a prior run. On the Hello Pico
+path this means:
+
+- The Phase 5 `validation_report` pointer on the claimant's
+  `metadata.yaml` (currently unset on both opted-in claimants; the
+  reports are referenced by path from this page and from
+  [`templates/examples/hello-pico-v1/README.md`](../../templates/examples/hello-pico-v1/README.md))
+  always names the *current* report, never a snapshot.
+- A snapshot is never edited to reflect newer metadata; fix
+  `courses/crossplane/metadata.yaml` or
+  `labs/hello-pico-on-kubernetes/metadata.yaml`, then regenerate the
+  current report and copy the outgoing report into `history/` (or
+  rename it with an ISO-date suffix) first.
+- Retention is manual and unbounded. Phase 6 does not prescribe a
+  rotation, pruning, or diffing policy for the Hello Pico path.
+
+## Feedback loop for approved claimants
+
+Both current `hello-pico-v1` claimants are approved today —
+`overall: conformant` on both per-claimant reports — so both are
+eligible under Phase 6 to feed Phase 2's `feedback[]` loop with an
+optional `from_report` pointer.
+
+Approved status is what makes the loop meaningful. A `non-conformant`
+or `inconclusive` report is a correction signal aimed at
+`metadata.yaml` per the [Phase 5 authoring guidance](hello-pico-profile-validation.qmd#reading-a-failing-or-inconclusive-report);
+it is not a feedback signal aimed at the Definition. The metadata is
+fixed first, the report regenerated, and only then does an observation
+from the resulting approved report belong under `feedback[]`.
+
+On the Hello Pico path the Phase 2 `feedback[]` shape sits in two
+places worth naming here — the Definition claimant already carries
+entries, while the Realization claimant does not yet:
+
+- [`courses/crossplane/metadata.yaml`](../../courses/crossplane/metadata.yaml)
+  carries `feedback[]` on the Definition, currently sourced from lesson
+  and walkthrough observations. A Phase 6 addition here would take an
+  observation from
+  `templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml`
+  (for example, a Constraint that turned out to be trivially satisfied)
+  and add a matching entry whose `about` names the Element, whose
+  `refines` names `oe.course.crossplane`, and whose new optional
+  `from_report` names the report file:
+
+  ```yaml
+  feedback:
+    - observation: >-
+        The `Hello, Pico!` output Constraint is validated at three
+        distinct evidence points; the Definition MAY note that only
+        one is strictly required for profile conformance.
+      about: hello-world-pico-on-kubernetes
+      refines: oe.course.crossplane
+      from_report: templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml
+  ```
+
+- [`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml)
+  does not carry `feedback[]` on the Realization today. When a
+  Realization-side observation genuinely comes from the validation
+  report — for example, a version-pin note or screenshot target worth
+  folding back from the lab into the aggregate view — a Phase 6
+  addition here would introduce a `feedback[]` list on the Realization
+  and similarly cite
+  `templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml`
+  under `from_report`.
+
+Neither addition is required to keep the current chain runnable. Phase
+2 `feedback[]` entries recorded from lesson summaries or lab
+retrospectives continue to use the Phase 2 shape *without* a
+`from_report` pointer.
+
+## Reading the current catalog on the Hello Pico path
+
+Together, the two per-claimant reports, the (author-generated) report
+index above, and the empty `history/` state describe the Hello Pico
+aggregate today:
+
+- **Coverage** — the profile catalogs a Definition and a Realization.
+  The Element role for the reference `hello-pico-v1` package is
+  represented by
+  [`templates/examples/hello-pico-v1/package.yaml`](../../templates/examples/hello-pico-v1/package.yaml)
+  as the illustrative fallback that carries all three records in one
+  place, but no separate Element-role report is on disk yet.
+- **Verdict distribution** — both current reports are
+  `overall: conformant`. Neither claimant is currently in a state where
+  a Phase 5 correction is owed before Phase 6 feedback can be recorded.
+- **History depth** — zero snapshots retained on either claimant. The
+  first time either report changes and the outgoing file is worth
+  keeping, that decision is a deliberate authoring step under the
+  [snapshot convention above](#historical-snapshots-on-the-hello-pico-path).
+- **Feedback wiring** — the two `metadata.yaml` files above are the
+  only places today where a `feedback[].from_report` pointer would sit
+  honestly. No other course, lesson, or lab is expected to grow one in
+  Phase 6.
+
+## Coherence with Phase 1–5 metadata already on disk
+
+The Phase 6 additions reuse only shapes that already exist:
+
+- `realizes`, `produces`, `constraints`, `realization_pattern`,
+  `validated_by` — Phase 1, unchanged.
+- `depends_on`, `composes`, `composition_pattern`,
+  `conformance_status`, `validation_results`, `feedback` — Phase 2,
+  unchanged (with `feedback[]` continuing to carry `observation`,
+  `about`, and `refines`).
+- `lifecycle_state`, `evidence`, `evidence[].check`,
+  `evidence[].path` — Phase 3, unchanged.
+- `checkable_profile`, `produced_by`,
+  `validation_results[].validates_constraint` — Phase 4, unchanged.
+- `validation_report` and the per-claimant report shape — Phase 5,
+  unchanged.
+
+The only new `metadata.yaml` addition in Phase 6 is the optional
+`feedback[].from_report` pointer described above. The report-index
+file and the historical-snapshot files are profile-tooling artefacts
+under `templates/examples/hello-pico-v1/reports/`, not
+`metadata.yaml` fields.
+
+## Where compose / construct / behave fit
+
+Aggregate reporting sits on top of the same three-layer story that the
+[Phase 5 profile-validation reference](hello-pico-profile-validation.qmd)
+maps out, and adds the same three notes at the *catalog* layer:
+
+- **Compose** — the Realization report catalogs the Crossplane XR that
+  composes a Kubernetes Job from an already-realized `hello-world-pico`;
+  any `feedback[].from_report` drawn from it points at the
+  composition-time observations worth folding back into the Definition.
+- **Construct** — the same report's `depends_on` and
+  `realization_pattern` findings anchor the durable Sandcastle branch
+  as the constructed input to the hand-off; Feedback about the
+  construction stage naturally cites the Realization report.
+- **Behave** — the observable `Hello, Pico!` behaviour remains the
+  underlying Constraint on the Definition; the Definition report is
+  the catalog entry a behaviour-level Feedback observation cites.
+
+The Definition threads through all three layers unchanged; the report
+index and the feedback loop just make the aggregate view of the
+metadata records auditable in a narrow, opt-in way.
+
+## What this page does *not* add
+
+- No new metadata field beyond the single optional Phase 6
+  `feedback[].from_report` pointer already declared in
+  `templates/README.qmd`.
+- No new checkable profile — Phase 6 aggregates `hello-pico-v1`; it
+  does not extend it or add other profiles.
+- No broad retrofit of existing course, lesson, lab, or exercise
+  `metadata.yaml` records; today's adoption remains limited to the
+  Crossplane course `metadata.yaml`, the Hello Pico on Kubernetes lab
+  `metadata.yaml`, and the illustrative example package under
+  `templates/examples/hello-pico-v1/`.
+- No CI or render-time gating on report indexes, historical snapshots,
+  or `feedback[]` entries; the aggregate loop is informational only.
+- No automated report generation, snapshot rotation, diffing, dashboard,
+  service, or notification pipeline.
+- No automated propagation of `feedback[]` entries into edits on the
+  governing `Definition`; Definitions are still refined by their
+  authors as ordinary metadata edits.
+- No formal schema, OWL, SHACL, JSON Schema, cross-course graph, or
+  triple-store layer over the report index or the feedback loop.
+
+## See also
+
+- [Hello Pico profile validation](hello-pico-profile-validation.qmd)
+  — the Phase 5 single-claimant workflow whose per-claimant reports
+  this page aggregates.
+- [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
+  — the Phase 4 shape rules the underlying reports are written against.
+- [The Hello Pico realization chain](hello-pico-realization-chain.qmd)
+  — the staged Pico → Sandcastle → Crossplane → Kubernetes chain the
+  claimants sit inside.
+- [Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+  — the Phase 1 laptop Realization referenced by `depends_on` on the
+  Realization claimant.
+- [Hello Pico on Kubernetes as a constructive exemplar](../crossplane/hello-pico-on-kubernetes-exemplar.html)
+  — the Phase 2 cross-course Realization whose `metadata.yaml` is the
+  fullest profile-shaped record on disk.
+- [Constructive-realization reference](../pico/constructive-realization.html)
+  — the underlying vocabulary and where the compose / construct /
+  behave layers map onto it.
+- [Glossary](glossary.qmd) — one-line definitions of the Sandcastle
+  vocabulary used above.

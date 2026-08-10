@@ -1,0 +1,384 @@
+---
+title: "Hello Pico profile validation"
+subtitle: "How a `hello-pico-v1` claim on the taught Pico → Sandcastle → Crossplane → Kubernetes path is checked, and how to read the resulting validation report."
+---
+
+This page is the academy's **profile-validation reference** for Hello
+Pico. Where
+[Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
+explains the *shape* the Phase 4 `hello-pico-v1` profile expects,
+this page walks through the *workflow* that verifies a
+`checkable_profile: hello-pico-v1` claim against that shape and
+describes the validation report the workflow emits.
+
+The workflow itself is defined in the Phase 5 section of
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page). The vocabulary — Definition, Realization, Element, Constraint,
+Validation, Evidence — is defined in the Pico course's
+[constructive-realization reference](../pico/constructive-realization.html)
+and extended by the Phase 4 checkable profile.
+
+The workflow is deliberately narrow. It is **opt-in** and
+**non-blocking**: only artifacts that declare
+`checkable_profile: hello-pico-v1` are checked, no render or publish
+step is gated on the result, and no Validation is executed against a
+live runtime. The check reads `metadata.yaml` files and the artifacts
+they explicitly reference, and nothing else.
+
+## What "profile validation" means here
+
+A profile-validation run answers exactly one question: *"does the
+metadata record for this artifact — and the small set of records it
+reaches through Phase 1–4 pointers — satisfy the shape rules of the
+`hello-pico-v1` profile?"* It is a **shape** check over
+`metadata.yaml`, not a schema validator, not a runtime check, and
+not a re-run of the shipped `verify.sh` scripts.
+
+Profile validation is distinct from three things it can be confused
+with on the Hello Pico path:
+
+- **Phase 2 `conformance_status`** — that field records whether a
+  runtime Element behaves like its Definition. Profile validation
+  records whether the metadata is *complete enough to reason about
+  that chain in the first place*.
+- **Runtime validation via `verify.sh`** — the shipped
+  [Hello Pico on Kubernetes `verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh)
+  actually inspects a Kubernetes Job's logs. Profile validation only
+  checks that the metadata *names* such a Validation and carries a
+  `result` entry for it; it never runs `verify.sh` itself.
+- **Phase 3 `evidence`** — those entries point at learner-visible
+  artifacts. Profile validation lists them under
+  `evidence_reviewed` on the report so the reader can trace which
+  observations the finding relied on, but it never captures new
+  evidence.
+
+## The workflow on the Hello Pico path
+
+The Phase 5 workflow has five steps. This section names each step
+against the concrete Hello Pico artifacts already on disk. The
+worked example throughout is the narrow, opt-in
+[`hello-pico-v1` example package](../../templates/examples/hello-pico-v1/)
+that ships under `templates/` — the illustrative opt-in surface that
+carries all three roles (Definition, Realization, Element) in one
+place. The real repository claimants today are the Definition on
+[`courses/crossplane/metadata.yaml`](../../courses/crossplane/metadata.yaml)
+and the Realization on
+[`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml).
+
+### 1. Discover claimants
+
+The workflow finds every artifact whose `metadata.yaml` (or an
+equivalent bounded record such as the example
+[`package.yaml`](../../templates/examples/hello-pico-v1/package.yaml))
+declares `checkable_profile: hello-pico-v1`. Artifacts that do not
+opt in are ignored.
+
+On the taught Hello Pico path today, the two opted-in claimants are
+the Definition on `courses/crossplane/metadata.yaml` and the
+Realization on `labs/hello-pico-on-kubernetes/metadata.yaml`. The
+example package additionally carries all three records (Definition,
+Realization, and Element) in one place as the illustrative fallback
+where a single-file record can show the full profile shape. Every
+other existing course, lesson, and lab `metadata.yaml` is
+intentionally unclaimed; the checkable profile is opt-in and Phase 4
+does not retrofit.
+
+### 2. Resolve the chain
+
+From each claimant, the workflow follows the Phase 1–4 pointers to the
+records referenced by that claimant. On the Hello Pico path these are:
+
+- `realizes` — the Definition a Realization or Element points to (in
+  the example package, `oe.example.hello-pico-v1.definition`).
+- `produced_by` — the Realization an Element is produced by (in the
+  example package, `oe.example.hello-pico-v1.realization`).
+- `depends_on` — the reusable labs a Realization requires. In the
+  example package these resolve to
+  [`labs/hello-pico/`](../../labs/hello-pico/),
+  [`labs/hello-world-pico-sandcastle/`](../../labs/hello-world-pico-sandcastle/),
+  [`labs/handoff-sandcastle-to-kubernetes/`](../../labs/handoff-sandcastle-to-kubernetes/),
+  and
+  [`labs/hello-pico-on-kubernetes/`](../../labs/hello-pico-on-kubernetes/).
+- `validated_by`, `validation_results[].check`, `evidence[].check`
+  — the walkthrough steps and `verify.sh` assertions the profile
+  points at. In the example package these all resolve to entries in
+  [`labs/hello-pico-on-kubernetes/walkthrough.qmd`](../../labs/hello-pico-on-kubernetes/walkthrough.qmd)
+  and
+  [`labs/hello-pico-on-kubernetes/downloads/verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh).
+
+Only records explicitly reached from the claimant are inspected. The
+workflow does not walk into arbitrary sibling metadata.
+
+### 3. Apply the Phase 4 shape rules
+
+For each role the claimant plays (its `constructive_role`), the
+workflow checks the corresponding shape rules from the Phase 4
+profile — no new rules are introduced in Phase 5. On the Hello Pico
+path these are the same rules already spelled out in the
+[checkable-profile reference](hello-pico-checkable-profile.qmd):
+
+- **Definition shape** — `constructive_role: definition`, non-empty
+  `id`/`title`/`produces`, at least one `constraints` entry, and a
+  reachable `realization_pattern`.
+- **Realization shape** — `constructive_role: realization`,
+  single-item `realizes` to a Definition, at least one `depends_on`
+  entry, `produces`, `realization_pattern` (plus `composition_pattern`
+  when the Element wraps sub-Elements), `lifecycle_state`, and
+  `conformance_status`.
+- **Element shape** — `constructive_role: element`, single-item
+  `realizes` to a Definition, `produced_by` pointing at exactly one
+  Realization, `lifecycle_state`, and at least one `validated_by`
+  entry with a matching `validation_results` entry.
+- **Constraint shape** — every referenced Constraint is a stable
+  quoted rule, reachable from at least one Validation via
+  `validation_results[].validates_constraint` or a short prose note.
+- **Validation shape** — every `validated_by` name appears in
+  `validation_results` with `result ∈ {passed, failed, not-run}`,
+  and — where Phase 3 evidence is used — `evidence[].check` matches
+  a `validated_by` name.
+
+### 4. Emit a validation report
+
+The workflow produces one report per claimant, following the
+[report shape](#validation-report-shape) below. The report is
+informational: it never mutates any file, and its verdict is not a
+gate on rendering or publishing.
+
+### 5. Stay non-blocking
+
+Even when the verdict is `non-conformant`, existing academy
+guarantees continue unchanged: the Sandcastle and Pico renders still
+succeed, the shipped `verify.sh` scripts still pass in a real cluster,
+and the taught walkthroughs still run end to end. The validation
+report is a signal to the *author* of the claim, not a gate on the
+*learner*.
+
+## Validation report shape
+
+A validation report is a small structured record with the fields
+below. Phase 5 accepts either a fenced YAML block on a rendered page
+or a stand-alone file next to the claimant's `metadata.yaml`.
+
+| Field               | Meaning on the Hello Pico path                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `profile`           | Always `hello-pico-v1` today.                                                                              |
+| `subject`           | The claimant's `id` — e.g. `oe.example.hello-pico-v1.realization`.                                         |
+| `subject_role`      | The claimant's `constructive_role` — `definition`, `realization`, or `element`.                            |
+| `checked_at`        | ISO 8601 date or datetime when the workflow was run.                                                       |
+| `overall`           | `conformant` \| `non-conformant` \| `inconclusive` — computed from `findings` (see below).                 |
+| `findings`          | One entry per shape rule the check evaluated. Each has `rule`, `status`, `details`, and optional `path`.   |
+| `evidence_reviewed` | Names of `validated_by` items whose Phase 3 `evidence` entries the check consulted. MAY be empty.          |
+
+Each `findings` entry names:
+
+- `rule` — a short label naming the Phase 4 shape rule (for example,
+  `realization.names-exactly-one-definition`,
+  `element.has-produced-by`, `validation.has-result`).
+- `status` — one of `satisfied`, `violated`, `not-applicable`.
+- `details` — a short human-readable note explaining the outcome.
+- `path` — optional; points at the specific `metadata.yaml` field or
+  artifact `id` the finding refers to.
+
+The `overall` verdict follows deterministically from `findings`:
+
+- `conformant` — every applicable finding is `satisfied`.
+- `non-conformant` — at least one finding is `violated`.
+- `inconclusive` — no finding is `violated`, but at least one
+  required chain link could not be resolved (for example, a
+  `realizes` target whose `metadata.yaml` is missing).
+
+## Reading a passing report on the Hello Pico path
+
+Below is the shape of a passing report for the example package's
+Realization claimant. The `subject`, `path` fields, and
+`evidence_reviewed` entries name concrete on-disk artifacts.
+
+```yaml
+profile: hello-pico-v1
+subject: oe.example.hello-pico-v1.realization
+subject_role: realization
+checked_at: 2026-08-10
+overall: conformant
+findings:
+  - rule: realization.names-exactly-one-definition
+    status: satisfied
+    details: "realizes: [oe.example.hello-pico-v1.definition] (single-item)."
+    path: templates/examples/hello-pico-v1/package.yaml
+  - rule: realization.has-depends-on
+    status: satisfied
+    details: "Four Hello Pico labs listed under depends_on."
+    path: templates/examples/hello-pico-v1/package.yaml
+  - rule: realization.has-lifecycle-and-conformance
+    status: satisfied
+    details: "lifecycle_state: operational; conformance_status: conformant."
+    path: templates/examples/hello-pico-v1/package.yaml
+  - rule: validation.has-result
+    status: satisfied
+    details: "Every validated_by entry appears in validation_results with result=passed."
+    path: templates/examples/hello-pico-v1/package.yaml
+  - rule: validation.validates-constraint
+    status: satisfied
+    details: "Each validates_constraint text appears verbatim in definition.constraints."
+    path: templates/examples/hello-pico-v1/package.yaml
+evidence_reviewed:
+  - "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 7 - kubectl wait xhelloworldpico/hello Ready"
+  - "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 8 - downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+  - "labs/hello-pico-on-kubernetes/walkthrough.qmd Step 9 - captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+```
+
+Two things make this report *auditable* even though the workflow
+does not itself execute anything:
+
+1. Every `path` in `findings` points at an on-disk `metadata.yaml`
+   (or the example `package.yaml`) that a reader can open and
+   cross-check by hand.
+2. Every entry in `evidence_reviewed` matches an existing
+   `validated_by` entry on the Realization *and* an `evidence[].check`
+   entry that names a learner-visible artifact — a walkthrough step
+   or the shipped `downloads/verify.sh`.
+
+## Reading a failing or inconclusive report
+
+The same workflow, applied to a claim that does not yet carry the
+required shape, produces a report that names the specific rule and
+the field it refers to. Two illustrative examples, both drawn from
+records that are honestly *not* profile-conformant today:
+
+### Non-conformant: a Realization missing `depends_on`
+
+If, hypothetically, the
+[Hello Pico lab](../../labs/hello-pico/metadata.yaml) opted into
+`hello-pico-v1` unchanged, its Realization record would fail the
+`realization.has-depends-on` rule:
+
+```yaml
+profile: hello-pico-v1
+subject: oe.lab.hello-pico
+subject_role: realization
+checked_at: 2026-08-10
+overall: non-conformant
+findings:
+  - rule: realization.names-exactly-one-definition
+    status: satisfied
+    details: "realizes: [oe.course.pico] (single-item)."
+    path: labs/hello-pico/metadata.yaml
+  - rule: realization.has-depends-on
+    status: violated
+    details: "depends_on is not declared; profile requires at least one entry."
+    path: labs/hello-pico/metadata.yaml
+  - rule: realization.has-lifecycle-and-conformance
+    status: violated
+    details: "conformance_status is not declared."
+    path: labs/hello-pico/metadata.yaml
+evidence_reviewed: []
+```
+
+The corrective action lives in the `metadata.yaml` file the finding
+points at, not in the report itself. This is exactly why the checkable
+profile is opt-in: the lab currently teaches a runnable single-course
+Realization honestly *without* claiming profile conformance.
+
+### Inconclusive: an unreachable chain link
+
+If a claim's `realizes` pointer targets an `id` whose `metadata.yaml`
+cannot be found (for example, a broken cross-course rename), the
+workflow prefers `inconclusive` over `non-conformant`:
+
+```yaml
+profile: hello-pico-v1
+subject: oe.example.hello-pico-v1.element
+subject_role: element
+checked_at: 2026-08-10
+overall: inconclusive
+findings:
+  - rule: element.realizes-resolves
+    status: not-applicable
+    details: "Referenced Definition id not resolvable from the package; shape rule cannot be evaluated."
+    path: templates/examples/hello-pico-v1/package.yaml
+evidence_reviewed: []
+```
+
+`inconclusive` is the honest verdict when the workflow lacks the
+information to say either way. It mirrors the Phase 2 preference for
+`partial` conformance over silent gaps.
+
+## Coherence with Phase 1–4 metadata already on disk
+
+The Phase 5 workflow reuses only pointers that already exist:
+
+- `realizes`, `produces`, `constraints`, `realization_pattern`,
+  `validated_by` — Phase 1, unchanged.
+- `depends_on`, `composes`, `composition_pattern`,
+  `conformance_status`, `validation_results`, `feedback` — Phase 2,
+  unchanged.
+- `lifecycle_state`, `evidence`, `evidence[].check`,
+  `evidence[].path` — Phase 3, unchanged.
+- `checkable_profile`, `produced_by`,
+  `validation_results[].validates_constraint` — Phase 4, unchanged.
+
+The only new field in Phase 5 is the optional `validation_report`
+pointer on a claimant, which names the location of its current
+report. No existing artifact needs to change to keep the current
+chain runnable, and no Phase 1–4 guidance is superseded.
+
+## Where compose / construct / behave fit
+
+Profile validation sits on top of the same three-layer story that the
+[Phase 4 checkable-profile reference](hello-pico-checkable-profile.qmd)
+maps out, and adds the same three notes at the report layer:
+
+- **Compose** — the Realization shape's `composition_pattern` and the
+  `element.has-produced-by` finding both name the Crossplane XR that
+  composes a Kubernetes Job from an already-realized `hello-world-pico`.
+- **Construct** — the Realization shape's `depends_on` and
+  `realization_pattern` findings both name the durable Sandcastle
+  branch as the constructed input to the hand-off.
+- **Behave** — the Validation shape's `validates_constraint` and
+  `evidence[].check` findings both name the observable
+  `Hello, Pico!` behaviour on the laptop and inside the cluster.
+
+The Definition threads through all three layers unchanged; profile
+validation just says whether the metadata record makes those threads
+machine-readable in a narrow, opt-in way.
+
+## What this page does *not* add
+
+- No new metadata field beyond the single optional Phase 5
+  `validation_report` pointer already declared in `templates/README.qmd`.
+- No new checkable profile — Phase 5 executes `hello-pico-v1`; it
+  does not extend it or add other profiles.
+- No broad retrofit of existing course, lesson, lab, or exercise
+  `metadata.yaml` records; today's adoption is limited to the
+  Crossplane course `metadata.yaml` and the Hello Pico on Kubernetes
+  lab `metadata.yaml`, with the example package under `templates/`
+  as the illustrative fallback that carries all three roles in one
+  place.
+- No CI or render-time gating on validation reports; the workflow is
+  informational only.
+- No execution of shipped Validations (`verify.sh`, `kubectl`, and so
+  on); the workflow reads metadata and files it references.
+- No formal schema, OWL, SHACL, JSON Schema, cross-course graph, or
+  triple-store layer.
+
+## See also
+
+- [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
+  — the Phase 4 shape rules the workflow evaluates against.
+- [Hello Pico validation history and feedback](hello-pico-validation-history.qmd)
+  — the Phase 6 aggregate view that catalogs the per-claimant reports
+  this workflow emits, names the historical-snapshot convention, and
+  wires approved reports into the `feedback[]` loop on the governing
+  Definition.
+- [The Hello Pico realization chain](hello-pico-realization-chain.qmd)
+  — the staged Pico → Sandcastle → Crossplane → Kubernetes chain the
+  claimants sit inside.
+- [Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+  — the Phase 1 laptop Realization referenced by `depends_on`.
+- [Hello Pico on Kubernetes as a constructive exemplar](../crossplane/hello-pico-on-kubernetes-exemplar.html)
+  — the Phase 2 cross-course Realization whose `metadata.yaml` is the
+  fullest profile-shaped record on disk.
+- [Constructive-realization reference](../pico/constructive-realization.html)
+  — the underlying vocabulary and where the compose / construct /
+  behave layers map onto it.
+- [Glossary](glossary.qmd) — one-line definitions of the Sandcastle
+  vocabulary used above.

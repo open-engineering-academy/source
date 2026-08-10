@@ -17,3 +17,4 @@ referenced_by:
   - oe.course.sandcastle
   - oe.lesson.sandcastle.01-inside-a-sandcastle
   - oe.lab.handoff-sandcastle-to-kubernetes
+lifecycle_state: operational

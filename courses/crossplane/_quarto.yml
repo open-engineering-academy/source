@@ -6,6 +6,7 @@ project:
   render:
     - index.qmd
     - glossary.qmd
+    - hello-pico-on-kubernetes-exemplar.qmd
     - part-1/index.qmd
     - part-1/01-composing-hello-pico-on-kubernetes/index.qmd
     - part-1/01-composing-hello-pico-on-kubernetes/exercise.qmd
@@ -33,6 +34,8 @@ website:
         text: Part 3
       - href: labs/index.qmd
         text: Labs
+      - href: hello-pico-on-kubernetes-exemplar.qmd
+        text: Exemplar
       - href: glossary.qmd
         text: Glossary
     right:
@@ -63,6 +66,8 @@ website:
         href: part-3/index.qmd
       - href: labs/index.qmd
         text: Labs
+      - href: hello-pico-on-kubernetes-exemplar.qmd
+        text: Exemplar
       - href: glossary.qmd
         text: Glossary
   page-footer:

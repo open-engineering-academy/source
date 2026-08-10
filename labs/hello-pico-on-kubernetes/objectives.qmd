@@ -32,16 +32,20 @@ description: "What Hello Pico on Kubernetes teaches and what you need before sta
 
 ## Environment
 
-- **Supported OS**: macOS (Apple Silicon or Intel), Linux, or WSL.
-- **Required shell**: `bash` 3.2+ or `zsh` 5.0+.
-- **Required tools** (all invoked directly by the walkthrough):
-  - `docker` v20.10+ (minikube's driver, and container runtime).
-  - `minikube` v1.34+ (v1.38.1 is the reference pin used to author this lab).
-  - `kubectl` v1.31+ (or newer; minikube ships one; `brew install kubectl` works too).
-  - `helm` v3.14+ (v3.16+ recommended; used to install Crossplane).
-  - `bash` and standard POSIX utilities (`grep`, `cat`, `mkdir`, `cp`).
-- **PATH expectation**: `docker`, `minikube`, `kubectl`, and `helm`
-  must all resolve on `PATH` after install.
+The canonical local Kubernetes setup — supported OS, install commands
+for `docker`, `minikube`, `kubectl`, and `helm`, PATH checks, and a
+first cluster bring-up — lives in the
+[Kubernetes course setup foundation](../../courses/kubernetes/index.html).
+Complete that page first so all four tools resolve on your `PATH`.
+
+Lab-specific additions on top of that canonical setup:
+
+- **Reference minikube pin**: `v1.38.1` was used to author this lab
+  (any `v1.34+` should work).
+- **`helm` floor**: `v3.14+` (`v3.16+` recommended) — used to install
+  Crossplane in Step 3 of the walkthrough.
+- **Bash utilities**: `grep`, `cat`, `mkdir`, `cp` — invoked by the
+  walkthrough and by `verify.sh`.
 - **Estimated time**: **60–90 minutes** (of which the cluster start
   and Crossplane install account for roughly 5–10 minutes).
 - **Cleanup step** (also repeated at the end of the walkthrough):
@@ -50,32 +54,6 @@ description: "What Hello Pico on Kubernetes teaches and what you need before sta
   minikube delete --profile crossplane-lab
   rm -rf build/hello-world-pico-on-kubernetes work/hello-pico-on-kubernetes
   ```
-
-## Install commands
-
-If any tool above is missing, install it using its upstream instructions
-before starting the walkthrough. On macOS with Homebrew:
-
-```bash
-brew install --cask docker
-brew install minikube kubectl helm
-```
-
-On Linux, follow the upstream install guides:
-
-- Docker Engine — <https://docs.docker.com/engine/install/>
-- minikube — <https://minikube.sigs.k8s.io/docs/start/>
-- kubectl — <https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/>
-- helm — <https://helm.sh/docs/intro/install/>
-
-Confirm each tool resolves before you begin:
-
-```bash
-command -v docker && docker version --format 'client: {{.Client.Version}}'
-command -v minikube && minikube version --short
-command -v kubectl && kubectl version --client --output=yaml | head -3
-command -v helm    && helm version --short
-```
 
 ## Pinned versions (reference)
 

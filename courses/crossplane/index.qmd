@@ -43,7 +43,9 @@ produces).
   familiarity with Rules, the Parser, and the Composer.
 - Working shell (`bash` or `zsh`), a text editor, and Docker.
 - A local Kubernetes environment. Local **minikube** is the reference
-  environment used by the accompanying lab.
+  environment used by the accompanying lab; see the
+  [Kubernetes course setup foundation](../kubernetes/index.html) for the
+  canonical install, PATH checks, and first cluster bring-up.
 
 ## How this course is structured
 
@@ -71,6 +73,10 @@ courses/crossplane/
 - [Part 3 — Extending the composition](part-3/index.qmd)
 - [Labs](labs/index.qmd) — including the reusable
   [Hello Pico lab](../../labs/hello-pico/) that this course builds on.
+- [Hello Pico on Kubernetes as a constructive exemplar](hello-pico-on-kubernetes-exemplar.qmd)
+  — the same Hello Pico Definition realized as a Kubernetes Element,
+  pointing Definition, Realization, Element, Dependency, Composition,
+  Constraint, Validation, and Feedback at concrete lab material.
 - [Glossary](glossary.qmd)
 
 ::: {.callout-note title="Course status"}
