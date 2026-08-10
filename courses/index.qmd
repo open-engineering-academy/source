@@ -40,8 +40,12 @@ The three core courses map one-to-one onto the academy's three-layer story —
 
 ## Additional courses
 
-- **Kubernetes for Open Engineering** — scaffold at `courses/kubernetes/`
-  (not yet a full course website).
+- **[Kubernetes for Open Engineering](kubernetes/)** — the canonical
+  academy home for local **minikube** setup: install, PATH checks, and
+  a first cluster bring-up. Deliberately scoped as a **setup
+  foundation** rather than a full Kubernetes course — other surfaces
+  (notably the Crossplane course and the Hello Pico on Kubernetes
+  lab) link here as the single source of truth for minikube setup.
 
 More course sites will be added as the corresponding learning paths on the
 [Curriculum](../curriculum/index.qmd) page are developed.
