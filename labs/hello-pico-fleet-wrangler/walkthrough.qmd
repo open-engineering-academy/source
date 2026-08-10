@@ -1,0 +1,153 @@
+---
+title: "Walkthrough"
+description: "Author a Wrangler fleet over two existing InteractionTopologies, apply it as a ConfigMap, and confirm the on-cluster spec matches the authored fragment."
+---
+
+::: {.callout-tip title="Try it yourself"}
+This walkthrough assumes both member labs have been deployed on your
+local `manifold-lab` minikube cluster and that `kubectl` is on your
+`PATH`. See [Objectives](objectives.qmd) for the one-time environment
+setup.
+:::
+
+::: {.callout-important title="Scope reminder"}
+Wrangler here is a **topology and fleet authoring layer**, not a
+runtime. Applying the fleet ConfigMap does not start Picos, does not
+create Channels, and does not reconcile desired state — the two
+underlying labs' own manifests remain the runtime path. This lab
+teaches how declarative multi-Pico topology and lifecycle intent are
+*described* above the runtime.
+:::
+
+## Step 1 — Review the authored Wrangler fleet fragment
+
+Open [`downloads/fleet.yaml`](downloads/fleet.yaml) and read the
+`spec` block top to bottom. Confirm each of the following:
+
+- `runtimeEnvironment` is `manifold-on-kubernetes` — the same
+  RuntimeEnvironment the two member labs deploy onto.
+- `spec.topologies` names the two existing Wrangler-authored
+  InteractionTopologies (`hello-world-pico-on-manifold` and
+  `hello-two-picos`) by their `metadata.name`, and points at their
+  authored source fragments in the two member labs' `downloads/`
+  directories.
+- `spec.picos` lists three named Pico Elements
+  (`hello-world-pico`, `hello-producer-pico`, `hello-consumer-pico`),
+  each attributed back to the topology that owns its runtime
+  declaration.
+- `spec.bindings` names three participation records across two
+  Channels (`hello` and `greeting`); every `channel` value appears in
+  the corresponding topology's own `spec.channels[].name` list.
+- `spec.lifecycle.desiredState` is `deployed`, and
+  `spec.lifecycle.activation` records per-topology activation intent.
+
+## Step 2 — Apply the fleet ConfigMap onto the RuntimeEnvironment
+
+The Wrangler fleet is applied to the cluster as a ConfigMap so the
+declared truth is reachable inside the same `manifold` namespace the
+two member labs use:
+
+```bash
+kubectl apply -f labs/hello-pico-fleet-wrangler/downloads/fleet-configmap.yaml
+```
+
+Expected `kubectl` output:
+
+```
+configmap/hello-pico-fleet created
+```
+
+Applying the ConfigMap does not restart or replace the two member
+labs' runtime manifests — it only records the fleet description on
+the cluster.
+
+## Step 3 — Read the fleet back from the cluster
+
+Read the fleet spec back and confirm it matches the authored
+fragment:
+
+```bash
+kubectl -n manifold get configmap hello-pico-fleet -o yaml
+```
+
+The embedded `data.fleet.yaml` block must contain the same
+`apiVersion`, `kind`, `metadata.name`, `spec.topologies`,
+`spec.picos`, `spec.bindings`, and `spec.lifecycle` values you
+reviewed in Step 1. Nothing else on the cluster changes.
+
+## Step 4 — Run the shipped shape verification
+
+From the lab's `downloads/` directory:
+
+```bash
+cd labs/hello-pico-fleet-wrangler/downloads
+bash verify.sh
+```
+
+`verify.sh` runs offline (it does not touch Kubernetes) and confirms:
+
+1. `fleet.yaml` and `fleet-configmap.yaml` parse as YAML.
+2. The fleet targets `runtimeEnvironment: manifold-on-kubernetes`.
+3. Every member topology references an existing
+   `wrangler.oe.academy/v1alpha1` `InteractionTopology` fragment
+   under one of the two member labs.
+4. Every declared binding references a Channel that the referenced
+   InteractionTopology already declares — no invented Channels.
+5. A fleet-level `lifecycle.desiredState: deployed` is present.
+6. The ConfigMap carrier embeds the same fleet spec as `fleet.yaml`
+   (spec-compared; falls back to a lighter textual check without
+   `PyYAML`).
+
+Expected last line:
+
+```
+verify: OK — Wrangler fleet is layered honestly over the approved runtime
+```
+
+## Step 5 — Capture the produced artifact
+
+Capture the authored fragment, the applied ConfigMap manifest, and
+the on-cluster read-back into a `hello-pico-fleet/` directory:
+
+```bash
+mkdir -p build/hello-pico-fleet
+cp labs/hello-pico-fleet-wrangler/downloads/fleet.yaml \
+   labs/hello-pico-fleet-wrangler/downloads/fleet-configmap.yaml \
+   build/hello-pico-fleet/
+kubectl -n manifold get configmap hello-pico-fleet -o yaml \
+  > build/hello-pico-fleet/fleet-configmap.applied.yaml
+```
+
+## Step 6 — Cleanup
+
+Remove the fleet ConfigMap from the cluster and the local capture
+directory:
+
+```bash
+kubectl -n manifold delete configmap hello-pico-fleet --ignore-not-found
+rm -rf build/hello-pico-fleet
+```
+
+The two member labs' own runtime manifests are unaffected by this
+cleanup — they follow their own cleanup steps.
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `kubectl apply` fails because the `manifold` namespace does not
+  exist, deploy at least one member lab first — both labs create the
+  `manifold` namespace as part of their own Step 1.
+- If `verify.sh` fails at the "ConfigMap embedded fleet spec does
+  not match authored fleet.yaml" step, you have edited only one of
+  the two files. Keep `fleet.yaml` and the `data.fleet.yaml` block
+  inside `fleet-configmap.yaml` in sync — they are two views of the
+  same authored spec.
+- If a binding names a Channel the referenced InteractionTopology
+  does not declare, `verify.sh` fails. Fleet bindings only surface
+  Channels that already exist on the underlying topologies; they do
+  not invent new ones.
+:::
+
+## Next
+
+Compare your work against the [reference solution](solution.qmd).

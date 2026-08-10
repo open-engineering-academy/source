@@ -1,0 +1,66 @@
+# Wrangler-authored Fleet fragment for this lab.
+#
+# In Phase 7 vocabulary this is a fleet-level declarative description
+# layered ABOVE the runtime: it composes two already-approved
+# InteractionTopologies (hello-world-pico-on-manifold and hello-two-picos),
+# names the Pico Elements each topology contributes, records the channel
+# bindings across the fleet, and expresses one fleet-level lifecycle
+# intent. The runtime substrate (Kubernetes) and the RuntimeEnvironment
+# (Manifold) are unchanged; Wrangler is the topology/fleet authoring
+# layer, not a parallel runtime.
+#
+# It is authored as an ordinary YAML fragment adjacent to the lab, not a
+# new platform format. It is applied to the cluster as a ConfigMap
+# (fleet-configmap.yaml) so the RuntimeEnvironment can carry the same
+# declarative truth as the walkthrough.
+apiVersion: wrangler.oe.academy/v1alpha1
+kind: Fleet
+metadata:
+  name: hello-pico-fleet
+spec:
+  runtimeEnvironment: manifold-on-kubernetes
+  # Fleet members: existing Wrangler-authored InteractionTopologies.
+  # Wrangler references them by name and source path; it does not
+  # duplicate their bodies or replace their runtime execution paths.
+  topologies:
+    - name: hello-world-pico-on-manifold
+      source: labs/hello-pico-on-manifold/downloads/topology.yaml
+    - name: hello-two-picos
+      source: labs/hello-two-picos/downloads/topology.yaml
+  # Named Pico Elements the fleet exposes, each attributed to the
+  # InteractionTopology that owns its runtime declaration.
+  picos:
+    - name: hello-world-pico
+      topology: hello-world-pico-on-manifold
+      role: hosted
+    - name: hello-producer-pico
+      topology: hello-two-picos
+      role: producer
+    - name: hello-consumer-pico
+      topology: hello-two-picos
+      role: consumer
+  # Bindings: which Picos participate on which Channels, and how.
+  # Each binding names a Channel that the referenced topology already
+  # declares; Wrangler does not invent new Channels here.
+  bindings:
+    - pico: hello-world-pico
+      topology: hello-world-pico-on-manifold
+      channel: hello
+      mode: subscribes
+    - pico: hello-producer-pico
+      topology: hello-two-picos
+      channel: greeting
+      mode: publishes
+    - pico: hello-consumer-pico
+      topology: hello-two-picos
+      channel: greeting
+      mode: subscribes
+  # Fleet-level lifecycle intent — the smallest orchestration signal
+  # this lab teaches. It is a declarative desired state, not a runtime
+  # controller. Actual per-topology execution stays owned by the two
+  # underlying labs' own manifests.
+  lifecycle:
+    desiredState: deployed
+    activation:
+      hello-world-pico-on-manifold: on-demand
+      hello-two-picos: on-demand

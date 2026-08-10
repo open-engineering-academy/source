@@ -1,0 +1,102 @@
+---
+title: "Hello Pico Fleet (Wrangler)"
+description: "Declare a small Wrangler-authored fleet over two existing Manifold InteractionTopologies, name every Pico and binding, and express one fleet-level lifecycle intent."
+---
+
+## Overview
+
+**Hello Pico Fleet (Wrangler)** is the first *topology and fleet*
+path of the Open Engineering Academy. It layers a single
+Wrangler-authored `Fleet` fragment over the two already-approved
+Manifold InteractionTopologies:
+
+- [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)
+  (`hello-world-pico-on-manifold`) and
+- [Hello Two Picos lab](../hello-two-picos/index.qmd)
+  (`hello-two-picos`).
+
+Wrangler here is the **declarative topology/fleet authoring layer**
+that sits above the runtime — it does not host Picos, it does not own
+the ontology, and it does not replace Kubernetes, Manifold, the
+Python CLI, or the Home Assistant control surface. It composes
+existing Wrangler-authored InteractionTopologies into one small fleet,
+attributes every named Pico back to its owning topology, records the
+channel bindings across the fleet, and expresses one fleet-level
+lifecycle intent.
+
+::: {.callout-important title="Scope"}
+This lab covers **one** Wrangler-authored fleet composed of **two**
+existing InteractionTopologies, **three** named Pico Elements,
+**three** channel bindings across two Channels, and **one**
+fleet-level lifecycle intent. Broader fleet orchestration, live
+reconciliation controllers, policy engines, multi-cluster fleets,
+non-Kubernetes runtimes, and any fleet path that bypasses the two
+underlying labs' runtime manifests are explicitly out of scope. The
+Kubernetes substrate is kept fixed at local minikube throughout.
+:::
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-pico-fleet` containing:
+
+- the authored Wrangler [`fleet.yaml`](downloads/fleet.yaml) fragment,
+- the on-cluster [`fleet-configmap.yaml`](downloads/fleet-configmap.yaml)
+  carrier as applied to the Manifold RuntimeEnvironment, and
+- the captured `kubectl get cm hello-pico-fleet -n manifold -o yaml`
+  output confirming the fleet spec reached the cluster verbatim.
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`: the Wrangler `fleet.yaml`
+fragment, the ConfigMap carrier, and `verify.sh` — the offline shape
+verifier the walkthrough runs in its final step. Screenshots
+referenced from the walkthrough live under `screenshots/`. Both
+directories are kept even when empty so authors have a consistent
+place to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the schema documented in the source repository under
+`templates/README.qmd`, including the Phase 7 fields
+`runtime_substrate`, `runs_on`, `interaction_topology`, and
+`control_surfaces`.
+
+## Constructive realization
+
+This lab is the **Realization** of a small Wrangler fleet Definition
+consistent with the Phase 7 vocabulary in
+[`templates/README.qmd`](../../templates/README.qmd). The role
+mapping is:
+
+- **Definition** (Phase 7 contract): Wrangler authors declarative
+  `InteractionTopology` and fleet-level orchestration over a
+  RuntimeEnvironment. A fleet composes existing InteractionTopologies,
+  names the Pico Elements and Channel bindings it exposes, and
+  records fleet-level lifecycle intent. It never becomes the runtime.
+- **Realization** (this lab): a `Fleet` fragment on
+  `wrangler.oe.academy/v1alpha1` that references the two approved
+  Manifold InteractionTopologies, names three Picos and their
+  bindings across two Channels, and declares one fleet-level
+  lifecycle intent. A ConfigMap carries the fleet spec verbatim
+  onto the same Kubernetes cluster the underlying labs use.
+- **Element**: `hello-pico-fleet` — the captured fleet fragment,
+  the applied ConfigMap, and the cluster read-back that confirms the
+  fleet spec is present on the RuntimeEnvironment.
+
+## Referenced from
+
+- [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+  the first member InteractionTopology of the fleet.
+- [Hello Two Picos lab](../hello-two-picos/index.qmd) — the second
+  member InteractionTopology of the fleet.
+- [Manifold course](../../courses/manifold/index.html) — the
+  runtime-focused course whose scope explicitly excludes fleet
+  orchestration; this lab is the follow-up path that adds one,
+  narrowly.

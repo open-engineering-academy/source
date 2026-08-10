@@ -35,6 +35,17 @@ encounter a consistent experience across the academy.
   Referenced from the [manifold course](../courses/manifold/).
   Machine-readable descriptor:
   [`labs/hello-two-picos/metadata.yaml`](hello-two-picos/metadata.yaml).
+- **[Hello Pico Fleet (Wrangler)](hello-pico-fleet-wrangler/)** — the
+  first *topology and fleet* path: author one Wrangler-style `Fleet`
+  fragment on `wrangler.oe.academy/v1alpha1` that composes the two
+  approved Manifold InteractionTopologies
+  ([Hello Pico on Manifold](hello-pico-on-manifold/) and
+  [Hello Two Picos](hello-two-picos/)), names three Picos and their
+  bindings across two Channels, expresses one fleet-level lifecycle
+  intent, and applies the fleet spec to the same `manifold`
+  namespace as a ConfigMap without starting any new Pods or
+  Channels. Machine-readable descriptor:
+  [`labs/hello-pico-fleet-wrangler/metadata.yaml`](hello-pico-fleet-wrangler/metadata.yaml).
 - **[Hello Pico on Home Assistant](hello-pico-home-assistant/)** — the
   first graphical ControlSurface lab: layer a small Home Assistant
   integration (one `command_line` sensor and one `input_button` +

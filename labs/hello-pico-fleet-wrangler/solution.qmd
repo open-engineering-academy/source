@@ -1,0 +1,79 @@
+---
+title: "Solution"
+description: "Reference solution for the Hello Pico Fleet (Wrangler) lab."
+---
+
+## What the reference solution ships
+
+The reference solution ships as the three files under
+[`downloads/`](downloads/):
+
+- [`fleet.yaml`](downloads/fleet.yaml) — the authored Wrangler
+  `Fleet` fragment on `wrangler.oe.academy/v1alpha1`. It targets
+  `runtimeEnvironment: manifold-on-kubernetes`, lists two member
+  InteractionTopologies, names three Pico Elements attributed to
+  those topologies, records three channel bindings across two
+  Channels, and declares one fleet-level lifecycle intent.
+- [`fleet-configmap.yaml`](downloads/fleet-configmap.yaml) — the
+  on-cluster carrier for the same fleet spec, applied to the shared
+  `manifold` namespace. The `data.fleet.yaml` key holds the spec
+  verbatim so a `kubectl get cm hello-pico-fleet -o yaml` renders the
+  same YAML the learner authored.
+- [`verify.sh`](downloads/verify.sh) — the offline shape verifier
+  the walkthrough runs in its final step. It does not touch
+  Kubernetes.
+
+## Reference outcome
+
+After following the walkthrough end to end, the produced
+`hello-pico-fleet/` artifact directory contains:
+
+- `fleet.yaml` — copied verbatim from the lab's `downloads/`.
+- `fleet-configmap.yaml` — the applied ConfigMap manifest.
+- `fleet-configmap.applied.yaml` — the on-cluster read-back captured
+  with `kubectl -n manifold get configmap hello-pico-fleet -o yaml`.
+  Its `data.fleet.yaml` block equals the authored `fleet.yaml`
+  spec verbatim.
+
+## Runtime effect
+
+Applying the Wrangler fleet ConfigMap does **not** change runtime
+behaviour on the cluster: no new Pods are created, no Channels are
+opened, and no events are sent or consumed. The two underlying labs
+retain full ownership of their runtime execution paths. The fleet
+records how the two InteractionTopologies compose into one small
+fleet, which Picos and bindings the fleet exposes, and what
+lifecycle intent the operator has declared for the fleet.
+
+## Why this is the smallest honest fleet
+
+- **Multiple Picos declared as a topology**: three named Pico
+  Elements are exposed by the fleet, each attributed to the
+  InteractionTopology that owns its runtime declaration.
+- **Bindings**: three participation records across two Channels
+  (`hello` and `greeting`) — every binding references a Channel the
+  underlying InteractionTopology already declares.
+- **Lifecycle intent**: one fleet-level
+  `lifecycle.desiredState: deployed` plus per-topology activation
+  intent, distinct from per-topology runtime execution.
+- **Wrangler positioned as the fleet layer**: the fleet composes
+  existing Wrangler-authored InteractionTopologies and applies its
+  spec via a ConfigMap; it does not replace Kubernetes, Manifold,
+  the Python CLI, or the Home Assistant control surface.
+
+## Extending the fleet later
+
+This lab intentionally stops at the smallest honest fleet. The
+following are natural — and explicitly deferred — extensions for
+later curriculum waves:
+
+- Live reconciliation of `lifecycle.desiredState` by a controller,
+  and observation of drift back into Phase 6 aggregate feedback.
+- Per-fleet Policy statements (Phase 7 `Policy`) constraining which
+  ControlSurfaces may assert OperatorIntent onto which bindings.
+- Multi-cluster fleets or non-Kubernetes RuntimeSubstrates.
+- A Wrangler course dedicated to fleet-level orchestration, with its
+  own metadata and glossary.
+
+None of these are needed for the DoD of this lab: they are named
+here only so learners can see where the fleet path leads.
