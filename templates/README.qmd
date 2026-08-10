@@ -624,3 +624,159 @@ Phase 4 intentionally does **not** implement:
   Validations.
 
 These remain candidates for later phases.
+
+
+## Constructive realization (Phase 5)
+
+Phase 5 extends the Phase 1–4 contract with the smallest additional
+vocabulary needed to make the `hello-pico-v1` checkable profile
+**executable as an opt-in workflow**: it names the check that verifies
+a profile claim, and the report shape that carries the verdict back to
+the author or learner. It stays a documentation and metadata contract
+only: the workflow is described, not implemented, and no render or
+publish step is gated on it.
+
+### Additional vocabulary
+
+- **Profile check** — an opt-in workflow that verifies an artifact's
+  `checkable_profile` claim against the shape rules defined by that
+  profile in Phase 4. A profile check reads only `metadata.yaml` files
+  reachable from the claimant; it does not execute Validations, run
+  labs, or mutate any file.
+- **Validation report** — the structured, human-readable output of a
+  profile check. One report describes one claimant against one
+  profile.
+
+### The `hello-pico-v1` profile-check workflow
+
+The profile check for `hello-pico-v1` is defined by these steps.
+Anything not listed here is out of scope for the check.
+
+1. **Discover claimants.** Find every artifact whose `metadata.yaml`
+   declares `checkable_profile: hello-pico-v1`. Artifacts that do not
+   opt in are ignored.
+2. **Resolve the chain.** From each claimant, follow the Phase 1–4
+   pointers (`realizes`, `produced_by`, `depends_on`, `validated_by`,
+   `validation_results[].check`, `evidence[].check`) to the
+   `metadata.yaml` records they reference. Only artifacts explicitly
+   reached from the claimant are inspected.
+3. **Apply the Phase 4 shape rules.** For each role the claimant
+   plays (its `constructive_role`), check the fields required by the
+   Definition / Realization / Element / Constraint / Validation
+   shapes of the `hello-pico-v1` profile. No new shape rules are
+   introduced here.
+4. **Emit a validation report.** Produce exactly one report per
+   claimant, using the shape below.
+5. **Stay non-blocking.** The workflow is opt-in and its report is
+   informational only. Renders, publishes, and existing runnable-lab
+   verification (`verify.sh`, etc.) continue regardless of the
+   report's verdict.
+
+The check is always applied to a single claimant at a time. Running
+the check across multiple claimants MAY be done by invoking it once
+per claimant and collecting the resulting reports.
+
+### Validation report shape
+
+A validation report is a small structured record — a fenced YAML or
+JSON block in a rendered page, or a stand-alone file next to the
+claimant's `metadata.yaml`. Phase 5 does not pick a single file
+format; either representation is acceptable as long as the fields
+below are present.
+
+| Field               | Type             | Notes                                                                                                            |
+| ------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `profile`           | string           | The profile checked. Currently always `hello-pico-v1`.                                                           |
+| `subject`           | `id`             | The claimant's `id`.                                                                                             |
+| `subject_role`      | enum             | The claimant's `constructive_role` under the profile.                                                            |
+| `checked_at`        | string           | ISO 8601 date or datetime when the check was run.                                                                |
+| `overall`           | enum             | `conformant` \| `non-conformant` \| `inconclusive`.                                                              |
+| `findings`          | list of mappings | One entry per shape rule the check evaluated. See below.                                                         |
+| `evidence_reviewed` | list of strings  | Names of `validated_by` items whose Phase 3 `evidence` entries the check consulted. MAY be empty.                |
+
+Each `findings` entry carries:
+
+- `rule` — a short label naming the Phase 4 shape rule (for example,
+  `realization.names-exactly-one-definition`,
+  `element.has-produced-by`, `validation.has-result`).
+- `status` — one of `satisfied`, `violated`, `not-applicable`.
+- `details` — a short human-readable note explaining the outcome.
+- `path` — optional, points at the specific `metadata.yaml` field or
+  artifact `id` the finding refers to.
+
+The `overall` verdict follows from `findings`:
+
+- `conformant` — every applicable finding is `satisfied`.
+- `non-conformant` — at least one finding is `violated`.
+- `inconclusive` — no finding is `violated`, but at least one required
+  chain link could not be resolved (for example, a `realizes` target
+  whose `metadata.yaml` is missing). Reports SHOULD prefer
+  `inconclusive` over `non-conformant` when the shape rule itself
+  cannot be evaluated.
+
+### Additional relationships
+
+Phase 5 adds only these relations on top of Phases 1–4. As before,
+the ones marked *(new)* are added by this phase; the others reuse
+existing fields with a slightly tighter meaning under the workflow.
+
+| Relation                                | Where it lives in `metadata.yaml` or adjacent files              |
+| --------------------------------------- | ---------------------------------------------------------------- |
+| `Profile check produces Validation report` | claimant `validation_report` *(new, optional)*                |
+| `Validation report references Evidence` | report `evidence_reviewed[]` entries matching `validated_by`     |
+| `Finding refers to Shape rule`          | report `findings[].rule`                                         |
+
+### New optional metadata fields
+
+The following field MAY be added to any `metadata.yaml` file that
+also declares `checkable_profile: hello-pico-v1`. It is optional and
+descriptive in Phase 5; missing fields do not fail any render or
+validation. Phase 1–4 fields remain unchanged and continue to sit
+alongside it.
+
+| Field                 | Type            | Applies to          | Notes                                                                                                                                                             |
+| --------------------- | --------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validation_report`   | string          | course, lesson, lab | Repo-relative path or URL of the most recent validation report for this artifact's `checkable_profile` claim. Only meaningful when `checkable_profile` is set.    |
+
+### Course-authoring guidance
+
+- Treat the profile check as **opt-in**: run it (or embed a report)
+  only when an artifact actually declares `checkable_profile`.
+  Missing reports on non-claimant artifacts are expected.
+- When an artifact both claims a profile and ships a report, keep
+  `validation_report` pointing at the current report so readers can
+  see the verdict without re-running the check.
+- Prefer `inconclusive` over `non-conformant` when a shape rule
+  cannot be evaluated because a linked `metadata.yaml` is missing or
+  unreachable. This mirrors the Phase 2 preference for honest
+  `partial` conformance over silent gaps.
+- Do not use a validation report to *change* metadata. Reports are
+  observations of the metadata as it stands; corrections belong in
+  the `metadata.yaml` file the finding points at.
+- Existing metadata (Phase 1–4 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 5 field sits alongside them.
+
+### Out of scope for Phase 5
+
+Phase 5 intentionally does **not** implement:
+
+- Repo-wide CI gating on profile checks, or any render/publish gate
+  driven by a validation report's verdict.
+- A required retrofit of existing courses, lessons, labs, or
+  exercises to declare `checkable_profile` or ship a
+  `validation_report`.
+- Additional checkable profiles beyond `hello-pico-v1`, or workflow
+  variants for other profiles.
+- Formal schema enforcement (OWL, SHACL, JSON Schema, ...) of either
+  the `hello-pico-v1` profile or the validation-report shape.
+- Automated execution of the Validations themselves (running
+  `verify.sh`, driving Kubernetes, capturing new runtime evidence).
+  The workflow only reads `metadata.yaml` and files it references.
+- Cross-course automated graph, ontology, or SHACL-style report
+  generation, and any triple-store, graph, or database persistence
+  of reports.
+- Multi-claimant aggregate reports, dashboards, or historical
+  report tracking.
+
+These remain candidates for later phases.
