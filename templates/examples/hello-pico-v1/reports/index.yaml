@@ -1,0 +1,15 @@
+profile: hello-pico-v1
+generated_at: '2026-08-10'
+entries:
+- subject: oe.course.crossplane
+  subject_role: definition
+  report: templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml
+  overall: conformant
+  checked_at: '2026-08-10'
+  history: []
+- subject: oe.lab.hello-pico-on-kubernetes
+  subject_role: realization
+  report: templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml
+  overall: conformant
+  checked_at: '2026-08-10'
+  history: []

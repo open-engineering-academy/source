@@ -124,3 +124,32 @@ The validator is deliberately narrow: it reads only `metadata.yaml`,
 never runs `verify.sh` or `kubectl`, never mutates any file, and its
 verdict is informational only. It is **not** wired into CI, `pre-commit`,
 or Quarto rendering.
+
+## Phase 6: report index and history
+
+Phase 6 adds two small on-disk artifacts alongside the per-claimant
+reports produced by `validate_profile.py`, matching the Phase 6 section
+of `templates/README.qmd`:
+
+- `reports/index.yaml` — the aggregate catalog of the per-claimant
+  reports currently on disk for `hello-pico-v1`. It carries `profile`,
+  `generated_at`, and one `entries[]` mapping per claimant with
+  `subject`, `subject_role`, `report`, `overall`, `checked_at`, and
+  `history`. Today it lists the two opted-in claimants — the Definition
+  on `courses/crossplane/metadata.yaml` and the Realization on
+  `labs/hello-pico-on-kubernetes/metadata.yaml` — both with
+  `overall: conformant` and an empty `history`.
+- `reports/history/` — the exemplar location for retained prior
+  reports on this profile. The directory is currently empty because no
+  snapshots have been retained yet; keeping it in place fixes the
+  `history/` layout (rather than the ISO-date-suffix alternative) as the
+  convention this example package uses.
+
+The index is authored by hand and kept in sync with the per-claimant
+reports; Phase 6 does not add tooling to generate or diff it. To retain
+an outgoing report, copy it into `reports/history/` with an ISO-date
+suffix (for example, `reports/history/oe-course-crossplane.2026-08-01.yaml`)
+before regenerating the current file with
+`python3 templates/examples/hello-pico-v1/validate_profile.py --write`,
+then add the snapshot to that entry's `history:` list in
+`reports/index.yaml`.
