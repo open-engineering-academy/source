@@ -6,7 +6,8 @@ subtitle: "How Definition, Element, Realization, Constraint, and Validation fit 
 This page is the course-facing reference for the academy's small
 **constructive-realization** vocabulary. It is written for learners and
 course authors working in the Pico course; the underlying contract lives
-in [`templates/README.qmd`](../../templates/README.qmd) (Phase 1).
+in `templates/README.qmd` (in-repo scaffold, not published as a learner
+page; Phase 1).
 
 Phase 1 is documentation and metadata only. Nothing here changes how a
 Pico is built; it names the concepts you are already using so lessons,
@@ -80,8 +81,8 @@ work:
 - **`metadata.yaml`** — the machine-readable side of the same story.
   The Phase 1 fields (`constructive_role`, `realizes`, `constraints`,
   `validated_by`, `realization_pattern`) are optional and additive;
-  see [`templates/README.qmd`](../../templates/README.qmd) for the
-  full contract.
+  see `templates/README.qmd` (in-repo scaffold, not published as a
+  learner page) for the full contract.
 - **`quiz.qmd` and lab verifications** — natural places for
   Validations that check an Element against its Constraints.
 
