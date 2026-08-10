@@ -85,6 +85,10 @@ courses/sandcastle/
   — the staged Pico → Sandcastle → Crossplane → Kubernetes chain,
   end to end, with lifecycle, partial-realization, validation
   evidence, and feedback pointed at concrete learner material.
+- [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
+  — the same path read through the Phase 4 `hello-pico-v1` checkable
+  profile, mapping each shape rule to concrete `metadata.yaml`,
+  walkthrough, and `verify.sh` artifacts.
 - [Glossary](glossary.qmd)
 
 ::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 runnable end-to-end"}

@@ -1,0 +1,202 @@
+---
+title: "Hello Pico as a checkable realization"
+subtitle: "How the taught Pico → Sandcastle → Crossplane → Kubernetes path maps onto the Phase 4 `hello-pico-v1` checkable profile."
+---
+
+This page is the academy's **checkable realization reference** for Hello
+Pico. Where
+[the realization chain](hello-pico-realization-chain.qmd) tells the
+staged operational story end to end, this page reads the *same* artifacts
+through the lens of the Phase 4 checkable profile: for each of the five
+core concepts —
+`Definition`, `Realization`, `Element`, `Constraint`, `Validation` —
+it names the shape rule the profile requires and points at the concrete
+`metadata.yaml`, walkthrough, or `verify.sh` that already carries (or
+still needs) the fields.
+
+The profile itself is defined in the Phase 4 section of
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page). The underlying vocabulary is defined in the Pico course's
+[constructive-realization reference](../pico/constructive-realization.html).
+
+The profile is deliberately narrow. It applies only to the Hello Pico
+example surface, and it is **opt-in**: an artifact only claims profile
+conformance by declaring `checkable_profile: hello-pico-v1` in its
+`metadata.yaml`. This page does not retrofit any existing artifact; a
+sibling Phase 4 task ships one narrow machine-readable example package
+that opts in.
+
+## What "checkable" means here
+
+The `hello-pico-v1` profile makes one narrow promise: a reader (or, in
+some later phase, a small script) can decide from `metadata.yaml` alone
+whether an artifact's `Definition` → `Realization` → `Element` →
+`Validation` chain is internally coherent. It is a **shape** contract
+over the metadata records the Hello Pico path already publishes — not a
+schema validator, not a runtime check, and not a repo-wide ontology.
+
+Profile conformance is stricter than the Phase 2 `conformance_status`
+field: the latter is about whether a runtime Element behaves like its
+Definition, while profile conformance is about whether the metadata
+record is complete enough to *reason* about that chain in the first
+place.
+
+## The five profile roles, on the Hello Pico path
+
+### Definition shape
+
+Two Definitions carry the taught path today:
+
+- **Pico Definition** —
+  [`courses/pico/metadata.yaml`](../pico/metadata.yaml) already declares
+  `constructive_role: definition`, an `id`, a `title`,
+  `produces: [hello-world-pico]`, and two inline `constraints` (pipeline
+  shape and observable behaviour). The profile also requires that at
+  least one `realization_pattern` be reachable from the Definition; the
+  Pico lab
+  ([`labs/hello-pico/metadata.yaml`](../../labs/hello-pico/metadata.yaml))
+  supplies `realization_pattern: rules-parser-composer-pipeline` and
+  points back via `realizes: [oe.course.pico]`.
+- **Kubernetes Definition** —
+  [`courses/crossplane/metadata.yaml`](../crossplane/metadata.yaml)
+  declares `constructive_role: definition`, `id`, `title`,
+  `produces: [hello-world-pico-on-kubernetes]`, and two inline
+  `constraints` (Kubernetes Job form and successful `Hello, Pico!`
+  output). Its `realization_pattern` is reachable through
+  [`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml),
+  which declares `realization_pattern: crossplane-xr-of-existing-element`
+  and lists `realizes: [oe.course.crossplane]`.
+
+Both Definitions satisfy the profile's Definition shape today without
+any new fields.
+
+### Realization shape
+
+The path exposes four Realization records; profile alignment differs by
+record and is worth being honest about.
+
+| Realization | \`realizes\` | \`depends_on\` | \`realization_pattern\` | \`conformance_status\` | \`lifecycle_state\` | Profile-shape status |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Hello Pico lab](../../labs/hello-pico/) | `oe.course.pico` (single item) | *(not declared)* | `rules-parser-composer-pipeline` | *(not declared)* | `operational` | Reachable-but-partial: needs `depends_on` and `conformance_status` to opt in. |
+| [Hello World Pico Sandcastle lab](../../labs/hello-world-pico-sandcastle/) | *(not declared)* | *(not declared)* | *(not declared)* | *(not declared)* | `operational` | Not yet profile-shaped: the Sandcastle Realization is described in prose but has not adopted the Phase 1–3 fields. |
+| [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/) | *(not declared)* | *(not declared)* | `sandcastle-branch-to-crossplane-xr` | *(not declared)* | `operational` | Reachable-but-partial: `realizes`, `depends_on`, and `conformance_status` are the remaining fields. |
+| [Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/) | `oe.course.crossplane` (single item) | `oe.lab.hello-pico` | `crossplane-xr-of-existing-element` (+ `composition_pattern`) | `conformant` | `operational` | Already carries every field the profile's Realization shape requires. |
+
+None of these records is required to opt in during Phase 4. The table's
+purpose is to make honest which records already satisfy the shape rule
+so the sibling machine-readable example package can pick the smallest
+faithful opt-in set.
+
+### Element shape
+
+Under the profile, an Element is a `metadata.yaml` record with
+`constructive_role: element` that names exactly one Definition via
+`realizes` and exactly one Realization via the new optional
+`produced_by`, plus a `lifecycle_state` and at least one `validated_by`
+entry with a matching `validation_results` entry.
+
+The Hello Pico path publishes the *observed* Element — the composed
+Kubernetes `Job` — through the Kubernetes lab's walkthrough and
+`verify.sh` rather than as its own `metadata.yaml` record. That is
+faithful to the current course material and to Phase 3: `lifecycle_state`
+and `evidence` sit on the Realization that produced it. The Element
+record is therefore **not adopted** in this reference. Introducing it is
+part of the narrow machine-readable example package task; that task
+supplies the single opt-in Element record without touching the existing
+labs.
+
+### Constraint shape
+
+Constraints stay in their Phase 1 inline form under `constraints` on the
+two Definitions:
+
+- Pico Definition (`courses/pico/metadata.yaml`) — pipeline shape and
+  the observable `Hello, Pico!` greeting.
+- Kubernetes Definition (`courses/crossplane/metadata.yaml`) — Kubernetes
+  Job form and the composed `Job`'s logs.
+
+The profile does not promote Constraints to their own records; it only
+requires each referenced Constraint to be reachable from at least one
+Validation. On the Hello Pico path today, that reachability is expressed
+as prose adjacent to the `validated_by` entries. The new optional
+`validation_results[].validates_constraint` field lets a machine-readable
+opt-in tighten the link without changing the Constraint form.
+
+### Validation shape
+
+The Kubernetes lab's `metadata.yaml` is the fullest existing example.
+Its `validated_by` entries name walkthrough steps and `verify.sh`
+assertions; its `validation_results` entries carry `result: passed` for
+each; and its Phase 3 `evidence[].check` entries match the same names,
+keeping the Element → Validation → Evidence chain intact end-to-end.
+
+The upstream Realization records name their own Validations similarly:
+the Pico lab lists walkthrough steps 3, 4, 5 and the solution
+verification; the hand-off lab lists three `downloads/verify.sh`
+assertions with matching `evidence`. What the profile adds on top is
+narrowly `validation_results[].validates_constraint`, so a reader can
+tie each passing Validation back to a specific Constraint on the
+Definition rather than reconstructing the link from prose.
+
+## Coherence with Phase 1–3 metadata already on disk
+
+The Phase 4 additions preserve every Phase 1–3 field unchanged:
+
+- `constructive_role`, `realizes`, `produces`, `constraints`,
+  `realization_pattern`, `validated_by` — Phase 1, preserved.
+- `depends_on`, `composes`, `composition_pattern`, `conformance_status`,
+  `validation_results`, `feedback` — Phase 2, preserved.
+- `lifecycle_state`, `evidence`, `evidence[].check`,
+  `evidence[].path` — Phase 3, preserved.
+
+The only additions are the three optional fields declared by the
+Phase 4 profile: `checkable_profile`, `produced_by`, and
+`validation_results[].validates_constraint`. No existing artifact needs
+to change to keep the current chain runnable, and none of the existing
+lifecycle or evidence guidance is superseded.
+
+## Where compose / construct / behave fit
+
+The checkable profile sits on top of the same three-layer story:
+
+- **Compose** — Crossplane composes an Element from an XR. The profile's
+  Realization shape captures this via `composition_pattern` on the
+  Kubernetes Realization.
+- **Construct** — the Sandcastle Realization builds the durable input the
+  hand-off promotes. The profile's Realization shape captures this via
+  `realization_pattern` and, once opted in, `depends_on`.
+- **Behave** — the observable behaviour on the laptop and inside the
+  cluster is the same Pico behaviour. The profile's Constraint and
+  Validation shapes capture this as an inline Constraint linked from a
+  passing Validation.
+
+The Definition threads through all three layers unchanged; the profile
+just names the fields that make the link machine-readable in a narrow,
+opt-in way.
+
+## What this page does *not* add
+
+- No new metadata field, checkable profile, or vocabulary term beyond
+  those declared in the Phase 4 section of `templates/README.qmd`.
+- No retrofit of any existing course, lesson, lab, or exercise
+  `metadata.yaml` — the sibling task ships one narrow machine-readable
+  Hello Pico example package that opts in.
+- No formal schema, OWL, SHACL, JSON Schema, or automated conformance
+  check on top of the existing primitives.
+- No repo-wide graph or ontology work.
+
+## See also
+
+- [The Hello Pico realization chain](hello-pico-realization-chain.qmd)
+  — the same Pico → Sandcastle → Crossplane → Kubernetes path read as a
+  staged operational realization.
+- [Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+  — the Phase 1 laptop Realization in isolation.
+- [Hello Pico on Kubernetes as a constructive exemplar](../crossplane/hello-pico-on-kubernetes-exemplar.html)
+  — the Phase 2 cross-course Realization, without the Sandcastle
+  construction stage.
+- [Constructive-realization reference](../pico/constructive-realization.html)
+  — the underlying vocabulary and where the compose / construct /
+  behave layers map onto it.
+- [Glossary](glossary.qmd) — one-line definitions of the Sandcastle
+  vocabulary used above.

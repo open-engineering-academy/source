@@ -195,4 +195,7 @@ for the laptop-level Realization this page builds on. For the full
 staged chain that adds Sandcastle construction between the laptop and
 the cluster, see
 [The Hello Pico realization chain](../sandcastle/hello-pico-realization-chain.html)
-in the Sandcastle course.
+in the Sandcastle course. For the same path read through the Phase 4
+`hello-pico-v1` checkable profile — shape rules mapped to concrete
+`metadata.yaml` and evidence — see
+[Hello Pico as a checkable realization](../sandcastle/hello-pico-checkable-profile.html).

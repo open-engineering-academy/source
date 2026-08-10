@@ -286,6 +286,9 @@ towards the same Element identity.
 - [Constructive-realization reference](../pico/constructive-realization.html)
   — the underlying vocabulary and where the compose / construct /
   behave layers map onto it.
+- [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
+  — the same path read through the Phase 4 `hello-pico-v1` checkable
+  profile, mapping each shape rule to concrete metadata and evidence.
 - [Part 3 · Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd)
   and [Part 1 · Inside a Sandcastle](part-1/01-inside-a-sandcastle/index.qmd)
   — the two Sandcastle lessons the chain passes through.
