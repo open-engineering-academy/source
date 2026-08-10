@@ -1,0 +1,132 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Two Picos."
+---
+
+## Reference solution
+
+A working solution consists of the seven files shipped under
+`downloads/`, applied against a local minikube cluster:
+
+1. [`01-namespace.yaml`](downloads/01-namespace.yaml) — the `manifold`
+   Namespace that is the Manifold RuntimeEnvironment for this lab.
+2. [`02-consumer-pico.yaml`](downloads/02-consumer-pico.yaml) — the
+   single-shot consumer Pico Pod (`hello-consumer-pico`) that
+   subscribes to the `greeting` Channel and prints one Observation
+   in reaction to one event.
+3. [`03-greeting-channel-service.yaml`](downloads/03-greeting-channel-service.yaml)
+   — the Kubernetes `Service` that realizes the `greeting` Channel
+   from the InteractionTopology (selects the consumer Pod).
+4. [`04-topology-configmap.yaml`](downloads/04-topology-configmap.yaml)
+   — the on-cluster `ConfigMap` that publishes the same Wrangler
+   topology fragment inside the RuntimeEnvironment, including the
+   explicit producer→consumer `wiring` entry.
+5. [`05-producer-pico.yaml`](downloads/05-producer-pico.yaml) — the
+   single-shot producer Pico Pod (`hello-producer-pico`) that
+   publishes exactly one `hello.greeting` event onto the `greeting`
+   Channel and exits.
+6. [`topology.yaml`](downloads/topology.yaml) — the authored
+   Wrangler-style InteractionTopology fragment; declarative truth for
+   what runs, including the producer→consumer wiring.
+7. [`verify.sh`](downloads/verify.sh) — the automatable verification
+   script the walkthrough runs in Step 7.
+
+### Commands (recap)
+
+Run from `work/hello-two-picos/` after copying the manifests in place
+(see the walkthrough for the full setup):
+
+```bash
+kubectl apply -f 01-namespace.yaml
+kubectl apply -f 02-consumer-pico.yaml
+kubectl -n manifold wait --for=condition=Ready --timeout=60s pod/hello-consumer-pico
+kubectl apply -f 03-greeting-channel-service.yaml
+kubectl apply -f 04-topology-configmap.yaml
+bash verify.sh
+```
+
+### Expected output
+
+The producer Pico prints one "sent" line, and the consumer Pico
+prints exactly one Observation line into its container logs:
+
+```
+pico[hello-producer-pico] sent: hello.greeting to hello-consumer-pico via channel 'greeting'
+pico[hello-consumer-pico] observation: greeting from hello-producer-pico: Hello, Pico!
+```
+
+`verify.sh` applies the producer, waits for both Pods to Succeed, and
+asserts the Observation and "sent" lines match:
+
+```
+verify: OK — producer emitted one hello.greeting event and consumer produced one Observation 'pico[hello-consumer-pico] observation: greeting from hello-producer-pico: Hello, Pico!'
+```
+
+## Why this satisfies the objectives
+
+- **Manifold as RuntimeEnvironment**: The `manifold` Namespace is
+  labelled `oe.academy/runtime-environment=manifold`,
+  `oe.academy/runtime-substrate=kubernetes`, and
+  `oe.academy/interaction-topology=hello-two-picos`; both Picos, the
+  Channel Service, and the topology ConfigMap live under it, so
+  lifecycle and cleanup are one-for-one with the Namespace.
+- **Two named Picos**: `02-consumer-pico.yaml` and
+  `05-producer-pico.yaml` each host a distinct Pico Element
+  (`hello-consumer-pico` and `hello-producer-pico`) as its own Pod
+  under the same RuntimeEnvironment.
+- **Wrangler-declared wiring relationship**: `topology.yaml` declares
+  one Channel (`greeting`), one subscription
+  (`hello-consumer-pico` on `greeting`), one publication
+  (`hello-producer-pico` on `greeting`), and one explicit `wiring`
+  entry that names the producer→consumer relationship. The same
+  fragment is published on-cluster as a `ConfigMap` in
+  `04-topology-configmap.yaml`.
+- **One emit, one react**: The producer Pico publishes exactly one
+  `hello.greeting` event onto the `greeting` Channel and exits; the
+  consumer Pico consumes that one event and produces exactly one
+  Observation in reaction. `verify.sh` enforces both halves.
+- **Runtime substrate stays Kubernetes**: All commands are `kubectl`
+  and `minikube`; no non-Kubernetes runtime is introduced. This
+  matches the Phase 7 constructive-realization contract and the
+  approved architectural constraint that Kubernetes remains the
+  RuntimeSubstrate for the Hello Pico roadmap.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Diffing your copy of each `downloads/*.yaml`, `topology.yaml`, and
+   `verify.sh` against the versions in the source repository. They
+   should be byte-identical.
+2. Confirming `bash verify.sh` exits `0` with the `verify: OK` line.
+3. Confirming `build/hello-two-picos/observation.txt` contains exactly
+   the line
+   `pico[hello-consumer-pico] observation: greeting from hello-producer-pico: Hello, Pico!`.
+
+## Variations
+
+- **Change the greeting**: Edit the `value` field of the JSON payload
+  in `05-producer-pico.yaml` and rerun the lab from Step 5 (delete and
+  reapply `02-consumer-pico.yaml` and `05-producer-pico.yaml` first —
+  both Pods are single-shot). The consumer Pico will echo whatever
+  value the producer emitted, attributed to `hello-producer-pico`.
+- **Rename the Channel**: Edit `channels[0].name` and the `wiring`
+  entries in `topology.yaml`, the Service `metadata.name` in
+  `03-greeting-channel-service.yaml`, and the `CHANNEL_HOST` in
+  `05-producer-pico.yaml`'s `nc` command to keep the three in sync.
+  This is a good exercise in seeing how Wrangler's declarative
+  producer→consumer wiring lines up with Manifold's realized
+  Channel on Kubernetes.
+- **Rename a Pico**: Rename `hello-producer-pico` or
+  `hello-consumer-pico` consistently across `topology.yaml`,
+  `02-consumer-pico.yaml`, `05-producer-pico.yaml`, and any labels
+  and Observation-line expectations. This shows that the
+  producer→consumer wiring is Pico-named, not Pod-named.
+
+::: {.callout-note title="Out of scope for this reference"}
+Multi-Pico topologies beyond two Picos and one Channel, Home
+Assistant as a Control Surface, a Python CLI as the main teaching
+surface, fleet orchestration, and non-Kubernetes runtimes are
+explicitly out of scope for this first multi-Pico runtime lab and
+its reference solution.
+:::

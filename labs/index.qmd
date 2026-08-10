@@ -26,6 +26,15 @@ encounter a consistent experience across the academy.
   [manifold course](../courses/manifold/). Machine-readable
   descriptor:
   [`labs/hello-pico-on-manifold/metadata.yaml`](hello-pico-on-manifold/metadata.yaml).
+- **[Hello Two Picos](hello-two-picos/)** — the first multi-Pico
+  runtime lab: host two named Pico Elements (a producer and a
+  consumer) inside one Manifold `RuntimeEnvironment` on local
+  minikube, declare one Wrangler-style Channel and an explicit
+  producer→consumer wiring, watch the producer Pico emit one event
+  and the consumer Pico consume it and react with one Observation.
+  Referenced from the [manifold course](../courses/manifold/).
+  Machine-readable descriptor:
+  [`labs/hello-two-picos/metadata.yaml`](hello-two-picos/metadata.yaml).
 - **[Hello World Pico Sandcastle](hello-world-pico-sandcastle/)** — the
   first runnable Sandcastle lab: run a Sandcastle end-to-end to
   construct the same `hello-world-pico` artifact on a dedicated

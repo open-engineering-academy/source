@@ -19,6 +19,7 @@ produces:
   - hello-world-pico-on-manifold
 references_labs:
   - oe.lab.hello-pico-on-manifold
+  - oe.lab.hello-two-picos
 references_exercises: []
 constructive_role: definition
 runtime_substrate: kubernetes

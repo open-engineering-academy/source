@@ -1,0 +1,102 @@
+---
+title: "Hello Two Picos"
+description: "Host two Picos on Manifold, wire one Wrangler Channel, watch one Pico emit an event that the other Pico consumes and reacts to."
+---
+
+## Overview
+
+**Hello Two Picos** is the first *multi-Pico* runtime lab of the Open
+Engineering Academy. You will deploy a small **Manifold**
+RuntimeEnvironment onto a local **minikube** cluster, host **two named
+Pico Elements** inside it (a **producer** and a **consumer**), declare
+**one Wrangler-style Channel** that wires them together, and observe
+the consumer react to one event emitted by the producer.
+
+This lab is deliberately architecture-first: **two Picos, one Channel,
+one wiring relationship, one emitted event, one observed reaction.** It
+is the smallest honest "system" milestone beyond the single-Pico
+[Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+where that lab shows a hosted Pico responding to an external event, this
+lab shows two hosted Picos interacting through a Wrangler-declared
+Channel.
+
+The lab is **reusable across courses**: it lives at the repository root
+under `labs/hello-two-picos/` and is referenced from the
+[Manifold course](../../courses/manifold/index.html).
+
+::: {.callout-important title="Scope"}
+This lab covers **two** Picos hosted on **one** Manifold
+RuntimeEnvironment, wired through **one** Wrangler Channel, with
+**one** producer→consumer wiring relationship, one emitted event, and
+one observed reaction. Broader multi-Pico topologies, fleet
+orchestration, Home Assistant, a Python CLI as the main teaching
+surface, and non-Kubernetes runtimes are explicitly out of scope. The
+Kubernetes substrate is kept fixed at local minikube throughout.
+:::
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-two-picos` — matching the
+`produces` entry in the lab
+[`metadata.yaml`](metadata.yaml). The directory contains:
+
+- the exact Kubernetes manifests applied to the cluster
+  (`Namespace`, consumer Pico `Pod`, greeting `Service`, topology
+  `ConfigMap`, producer Pico `Pod`),
+- the Wrangler-style [topology](downloads/topology.yaml) fragment that
+  names the single Channel, the two Picos, and the producer→consumer
+  wiring, and
+- the captured runtime **Observation** — `observation.txt`, the single
+  log line printed by the consumer Pico in reaction to the event
+  emitted by the producer Pico.
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`: the Kubernetes manifests, the
+Wrangler `topology.yaml` fragment, and `verify.sh` — the automatable
+verification script the walkthrough runs in the final step. Screenshots
+referenced from the walkthrough live under `screenshots/`. Both
+directories are kept even when empty so authors have a consistent place
+to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the schema documented in the source repository under
+`templates/README.qmd`, including the Phase 7 fields
+`runtime_substrate`, `runs_on`, `interaction_topology`, and
+`control_surfaces`.
+
+## Constructive realization
+
+This lab is the **Realization** of a small two-Pico interaction
+Definition consistent with the Phase 7 vocabulary taught by the
+[Manifold course](../../courses/manifold/index.html). The role
+mapping is:
+
+- **Definition** (course-adjacent): two Pico Elements run on a
+  Manifold RuntimeEnvironment; one Pico publishes an event onto a
+  Wrangler-declared Channel that the other Pico is subscribed to; the
+  subscribed Pico produces one Observation in response.
+- **Realization** (this lab): a Kubernetes-hosted Manifold `Namespace`
+  hosts two `Pod`s (`hello-producer-pico` and `hello-consumer-pico`);
+  a `Service` provides the `greeting` Channel; a `ConfigMap` carries
+  the Wrangler topology (including the explicit producer→consumer
+  `wiring` relationship); a `verify.sh` command asserts the
+  single-event / single-reaction contract holds.
+- **Element**: `hello-two-picos` — the captured manifests, topology,
+  and observation.
+
+## Referenced from
+
+- [Manifold course · Home](../../courses/manifold/index.html) — the
+  runtime-focused course of the academy.
+- [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+  the single-Pico prerequisite that first hosts one Pico inside a
+  Manifold RuntimeEnvironment.

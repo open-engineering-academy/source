@@ -1,0 +1,227 @@
+---
+title: "Walkthrough"
+description: "Host two Picos on Manifold, wire one Wrangler Channel, watch one Pico emit and the other Pico react."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them
+to match your setup. The walkthrough assumes you have completed the
+[one-time environment setup](objectives.qmd#environment) and that
+`docker`, `minikube`, and `kubectl` all resolve on your `PATH`.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)
+so the single-Pico runtime story (Manifold as RuntimeEnvironment on a
+Kubernetes RuntimeSubstrate, one Wrangler-declared Channel, one
+event, one Observation) is already familiar. This lab extends that
+story by hosting **two** named Picos in the same RuntimeEnvironment
+and declaring an explicit **producer→consumer wiring** between them.
+:::
+
+## Step 1 — Create a working directory and copy the manifests
+
+From the root of your local clone of the academy repository:
+
+```bash
+mkdir -p work/hello-two-picos && cd work/hello-two-picos
+cp -r ../../labs/hello-two-picos/downloads/. .
+ls -1
+```
+
+Expected output (order-independent):
+
+```
+01-namespace.yaml
+02-consumer-pico.yaml
+03-greeting-channel-service.yaml
+04-topology-configmap.yaml
+05-producer-pico.yaml
+topology.yaml
+verify.sh
+```
+
+`topology.yaml` is the Wrangler-declared InteractionTopology fragment
+authored for this lab. The five numbered YAMLs are what is applied to
+the cluster; `verify.sh` is the automatable check the walkthrough runs
+in Step 8.
+
+## Step 2 — Start a local minikube cluster
+
+Start a dedicated minikube profile so this lab does not interfere with
+other clusters you may run (for example the `manifold-lab` profile
+from the [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)):
+
+```bash
+minikube start --profile two-picos-lab \
+  --driver=docker --cpus=2 --memory=4g \
+  --kubernetes-version=v1.31.0
+```
+
+Confirm the cluster is Ready:
+
+```bash
+kubectl config current-context
+kubectl get nodes
+```
+
+Expected output:
+
+```
+two-picos-lab
+NAME             STATUS   ROLES           AGE   VERSION
+two-picos-lab    Ready    control-plane   1m    v1.31.0
+```
+
+## Step 3 — Read the Wrangler-declared topology
+
+Before applying anything, read `topology.yaml`. This is the
+authoritative declaration of the runtime story for this lab: one
+Channel `greeting` carrying one `EventType` `hello.greeting`, two
+Picos (`hello-producer-pico` publishes onto that Channel and
+`hello-consumer-pico` subscribes to it), and one explicit `wiring`
+entry that names the producer→consumer relationship.
+
+```bash
+cat topology.yaml
+```
+
+The rest of this walkthrough realizes this topology on Kubernetes. The
+Kubernetes objects you apply below are the concrete realization of
+what `topology.yaml` declares in Wrangler vocabulary; the topology
+itself is not applied to the cluster directly — Step 6 makes it
+reachable inside the cluster as a `ConfigMap`.
+
+## Step 4 — Create the Manifold RuntimeEnvironment Namespace
+
+```bash
+kubectl apply -f 01-namespace.yaml
+kubectl get ns manifold --show-labels
+```
+
+The `manifold` Namespace is the Manifold RuntimeEnvironment for this
+lab. Labels record its role and the interaction topology it hosts:
+`oe.academy/runtime-environment=manifold`,
+`oe.academy/runtime-substrate=kubernetes`, and
+`oe.academy/interaction-topology=hello-two-picos`.
+
+## Step 5 — Deploy the consumer Pico
+
+Apply the consumer Pico Pod first, and wait for it to become Ready.
+It plays the subscriber role in the Wrangler topology and listens on
+port 8080 for one event on the `greeting` Channel:
+
+```bash
+kubectl apply -f 02-consumer-pico.yaml
+kubectl -n manifold wait --for=condition=Ready --timeout=60s \
+  pod/hello-consumer-pico
+```
+
+The initial log line advertises its subscription role:
+
+```bash
+kubectl -n manifold logs pod/hello-consumer-pico
+```
+
+Expected output:
+
+```
+pico-engine: hosted by manifold on kubernetes; hello-consumer-pico subscribed to channel 'greeting' for eventType 'hello.greeting'
+```
+
+The consumer Pod is single-shot: it will consume exactly one event on
+channel `greeting` (Step 7 / 8) and then Succeed.
+
+## Step 6 — Wire the Channel and publish the topology
+
+Apply the Channel Service that realizes `channels[0].name: greeting`
+from the topology (selecting the consumer Pod), and the ConfigMap that
+publishes the topology fragment inside the cluster:
+
+```bash
+kubectl apply -f 03-greeting-channel-service.yaml
+kubectl apply -f 04-topology-configmap.yaml
+kubectl -n manifold get svc greeting
+kubectl -n manifold get cm hello-two-picos-topology
+```
+
+## Step 7 — Run the producer and verify one Observation
+
+Run the shipped verification script. It applies the producer Pico Pod
+(`05-producer-pico.yaml`), waits for it to Succeed after it emits one
+`hello.greeting` event onto the `greeting` Channel, then waits for the
+consumer Pico Pod to Succeed after it consumes that event and prints
+one Observation line:
+
+```bash
+bash verify.sh
+```
+
+Expected output ends with:
+
+```
+pico[hello-consumer-pico] observation: greeting from hello-producer-pico: Hello, Pico!
+pico[hello-producer-pico] sent: hello.greeting to hello-consumer-pico via channel 'greeting'
+verify: OK — producer emitted one hello.greeting event and consumer produced one Observation 'pico[hello-consumer-pico] observation: greeting from hello-producer-pico: Hello, Pico!'
+```
+
+## Step 8 — Capture the produced artifact
+
+Capture the manifests you applied, the topology fragment, and the
+observed log line into a single `hello-two-picos/` directory — this is
+the lab's `produces:` artifact:
+
+```bash
+mkdir -p build/hello-two-picos/manifests
+cp 0*.yaml build/hello-two-picos/manifests/
+cp topology.yaml build/hello-two-picos/
+kubectl -n manifold logs pod/hello-consumer-pico \
+  | grep '^pico\[hello-consumer-pico\] observation:' \
+  > build/hello-two-picos/observation.txt
+grep -Fqx 'pico[hello-consumer-pico] observation: greeting from hello-producer-pico: Hello, Pico!' \
+  build/hello-two-picos/observation.txt \
+  && echo "artifact OK"
+ls -1 build/hello-two-picos \
+      build/hello-two-picos/manifests
+```
+
+`observation.txt` is the runtime Observation the consumer Pico
+produced in reaction to the producer Pico's emitted event; it is the
+Phase 7 counterpart of the `observation.txt` captured in the
+[Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd),
+now attributed to a specific upstream Pico via the
+Wrangler-declared wiring.
+
+## Step 9 — Cleanup
+
+```bash
+kubectl delete -f 05-producer-pico.yaml --ignore-not-found
+kubectl delete -f 04-topology-configmap.yaml --ignore-not-found
+kubectl delete -f 03-greeting-channel-service.yaml --ignore-not-found
+kubectl delete -f 02-consumer-pico.yaml --ignore-not-found
+kubectl delete -f 01-namespace.yaml --ignore-not-found
+minikube delete --profile two-picos-lab
+cd ../.. && rm -rf work/hello-two-picos
+```
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `kubectl wait ... pod/hello-consumer-pico` times out on Ready,
+  run `kubectl -n manifold describe pod/hello-consumer-pico` and check
+  the `busybox:1.36` image pull. Network access to Docker Hub is
+  required the first time.
+- If the consumer Pod is Ready but `verify.sh` reports the producer
+  did not Succeed, confirm the greeting `Service` exists and the
+  producer Pod can resolve `greeting.manifold.svc.cluster.local`.
+  You can inspect DNS from inside the cluster with
+  `kubectl -n manifold run dns-check --image=busybox:1.36 --rm -it --restart=Never -- nslookup greeting.manifold.svc.cluster.local`.
+- Both Pods are deliberately single-shot. If you want to re-run the
+  interaction, delete and reapply `02-consumer-pico.yaml` and
+  `05-producer-pico.yaml`. Multi-event topologies are out of scope
+  for this lab.
+:::
+
+## Next
+
+Compare your work against the [reference solution](solution.qmd).

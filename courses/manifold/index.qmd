@@ -109,6 +109,13 @@ line printed by the hosted Pico. This matches the `produces` entry in
 
 - [Hello Pico on Manifold lab](../../labs/hello-pico-on-manifold/index.qmd)
   — the single runnable path for this course.
+- [Hello Two Picos lab](../../labs/hello-two-picos/index.qmd) — the
+  first multi-Pico runtime lab that builds directly on Hello Pico on
+  Manifold. It reuses the same Manifold RuntimeEnvironment on
+  Kubernetes and adds a second named Pico plus one
+  Wrangler-declared producer→consumer wiring. Run it after Hello
+  Pico on Manifold when you are ready for the smallest honest
+  two-Pico interaction.
 - [Glossary](glossary.qmd) — course-scoped vocabulary aligned with the
   Phase 7 constructive-realization contract.
 
