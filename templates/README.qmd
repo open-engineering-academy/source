@@ -428,3 +428,199 @@ Phase 3 intentionally does **not** implement:
 - Cross-course automated graph or ontology extraction.
 
 These remain candidates for later phases.
+
+
+## Constructive realization (Phase 4)
+
+Phase 4 extends the Phase 1–3 contract with the smallest additional
+vocabulary needed to make the Hello Pico model **checkable in a narrow
+way**: it names the shape rules an artifact must satisfy for a reader
+(or, in some later phase, a script) to confirm that the
+`Definition` → `Realization` → `Element` → `Validation` chain is
+internally coherent from `metadata.yaml` alone. It stays a
+documentation and metadata contract only: no tooling reads or enforces
+the profile yet.
+
+### Additional vocabulary
+
+- **Checkable profile** — a named, opt-in shape contract that says
+  "this artifact carries every field required to make its
+  Definition → Realization → Element → Validation chain
+  self-checkable from `metadata.yaml` alone." Phase 4 defines exactly
+  one profile: `hello-pico-v1`. It is deliberately scoped to the Hello
+  Pico example surface, not the whole academy.
+- **Profile conformance** — whether an artifact's `metadata.yaml`
+  satisfies the shape rules of the profile it claims. Profile
+  conformance is stricter than Phase 2's `conformance_status`: the
+  latter is about the runtime Element vs its Definition, while profile
+  conformance is about the metadata record being complete enough to
+  reason over.
+- **Profile role** — which of the five core concepts a
+  profile-conforming artifact stands in for. Phase 1 already
+  introduced `constructive_role` with the values `definition` /
+  `realization` / `element` / `constraint` / `validation`; Phase 4
+  reuses those values as the artifact's role under the profile.
+
+### The `hello-pico-v1` checkable profile
+
+The `hello-pico-v1` profile enumerates the minimum fields each of the
+five core concepts must carry in `metadata.yaml` for the Hello Pico
+model to be self-checkable. It applies only to artifacts that opt in
+by declaring `checkable_profile: hello-pico-v1`.
+
+#### Definition shape
+
+An artifact playing the role of a Definition under the profile MUST:
+
+- declare `constructive_role: definition`
+- carry a non-empty `id`, `title`, and `produces` (naming the Element
+  it defines)
+- declare at least one entry under `constraints` (Phase 1)
+- name at least one allowed `realization_pattern`, either directly on
+  the Definition or reachable via a Realization that lists this
+  Definition under `realizes`
+
+#### Realization shape
+
+An artifact playing the role of a Realization under the profile MUST:
+
+- declare `constructive_role: realization`
+- name exactly one Definition under `realizes` (Phase 1)
+- name at least one Dependency under `depends_on` (Phase 2)
+- carry a non-empty `produces` (naming the Element it materializes)
+- declare `realization_pattern` (Phase 1); when the produced Element
+  visibly wraps sub-Elements, also declare `composition_pattern`
+  (Phase 2)
+- declare a `lifecycle_state` (Phase 3) and a matching
+  `conformance_status` (Phase 2)
+
+#### Element shape
+
+An artifact record playing the role of an Element under the profile
+MUST:
+
+- declare `constructive_role: element`
+- point at exactly one Definition it conforms to, reusing the Phase 1
+  `realizes` field with a single-item list (Element → Definition)
+- name exactly one Realization that produced it via `produced_by`
+  *(new, optional in general, required under the profile)*
+- carry a `lifecycle_state` (Phase 3)
+- declare at least one `validated_by` entry (Phase 1) with a matching
+  `validation_results` entry (Phase 2)
+
+#### Constraint shape
+
+Every Constraint referenced from a profile-conforming Definition MUST:
+
+- be a stable, quoted, human-readable rule (already the Phase 1 form
+  under `constraints`)
+- be reachable from at least one Validation. The Validation →
+  Constraint link is expressed by matching a
+  `validation_results[].check` entry to a `validated_by` name and then
+  either quoting the Constraint text in
+  `validation_results[].validates_constraint` *(new, optional)* or in
+  a short prose note adjacent to that `validated_by` entry.
+
+Phase 4 does not require Constraints to become their own
+`metadata.yaml` records; the existing inline list form is preserved.
+
+#### Validation shape
+
+Every Validation named in `validated_by` under the profile MUST:
+
+- appear in `validation_results` with a `result` value from
+  `{passed, failed, not-run}` (Phase 2)
+- either name at least one Constraint via
+  `validation_results[].validates_constraint` *(new, optional)*, or be
+  described in prose adjacent to the `validated_by` entry so the
+  Validation → Constraint link is at least traceable by a reader
+- when Phase 3 `evidence` is used, keep `evidence[].check` matching a
+  `validated_by` name so the Element → Validation → Evidence chain
+  stays intact
+
+### Additional relationships
+
+Phase 4 adds only these relations on top of Phases 1–3. As before,
+the ones marked *(new)* are added by this phase; the others reuse
+existing fields with a slightly tighter meaning under the profile.
+
+| Relation                             | Where it lives in `metadata.yaml`                                 |
+| ------------------------------------ | ----------------------------------------------------------------- |
+| `Artifact claims Checkable profile`  | any `checkable_profile` *(new, optional)*                         |
+| `Element produced by Realization`    | any `produced_by` *(new, optional)*                               |
+| `Validation validates Constraint`    | lab `validation_results[].validates_constraint` *(new, optional)* |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to
+a course, lesson, or lab. They are optional and descriptive in Phase
+4; missing fields do not fail any render or validation. Phase 1–3
+fields remain unchanged and continue to sit alongside these.
+
+| Field                                        | Type   | Applies to          | Notes                                                                                                                                                             |
+| -------------------------------------------- | ------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `checkable_profile`                          | string | course, lesson, lab | Currently the only defined value is `hello-pico-v1`. Missing means the artifact does not claim any checkable profile.                                             |
+| `produced_by`                                | `id`   | lesson, lab         | Realization `id` (or lab `id` playing the Realization role) that produced this Element. Only meaningful when the artifact plays the Element role under a profile. |
+| `validation_results[].validates_constraint`  | string | lab                 | The Constraint (by rule text or short label) that this validation result asserts. Extends the Phase 2 `validation_results` entry shape.                           |
+
+### Hello Pico exemplar mapping
+
+The Hello Pico model already implemented in this academy provides the
+reference instance of the `hello-pico-v1` profile. The mapping below
+is informative; opting an artifact into `checkable_profile:
+hello-pico-v1` is not required in this phase.
+
+- **Definition** — the `hello-pico` course/lesson artifacts that name
+  purpose, intent, and expected output.
+- **Realizations** — `labs/hello-world-pico-sandcastle/`,
+  `labs/handoff-sandcastle-to-kubernetes/`, and
+  `labs/hello-pico-on-kubernetes/` each play a Realization role, with
+  Sandcastle, Crossplane, and MiniKube as `depends_on` targets.
+- **Element** — the concrete Kubernetes Job whose observed output
+  equals `Hello, Pico!`, described by the Hello Pico on Kubernetes
+  lab.
+- **Constraints** — output equals `Hello, Pico!`; the Element takes
+  the form of a Kubernetes Job; the Job terminates successfully.
+- **Validations** — the `verify.sh` scripts already shipped with the
+  Hello Pico labs, together with any lab-level Automatable checks.
+
+### Course-authoring guidance
+
+- Only opt into `checkable_profile: hello-pico-v1` when the artifact
+  really carries the fields the profile requires. A missing profile
+  claim is more informative than a falsely-claimed one.
+- Keep `checkable_profile`, `lifecycle_state`, and
+  `conformance_status` consistent. A profile-conforming Realization
+  that is not yet `operational` should still be honest about its
+  `lifecycle_state`.
+- Use `produced_by` only when the artifact actually records an
+  Element (a Job description, a rendered walkthrough that captured
+  runtime evidence). Do not fabricate a Realization pointer for a
+  purely planned artifact.
+- Use `validation_results[].validates_constraint` when the Constraint
+  it asserts is one of the entries already listed under `constraints`
+  on the governing Definition, so the Validation → Constraint link is
+  unambiguous.
+- Existing metadata (Phase 1–3 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 4 fields sit alongside them.
+
+### Out of scope for Phase 4
+
+Phase 4 intentionally does **not** implement:
+
+- OWL, SHACL, JSON Schema, or any other formal schema enforcement of
+  the `hello-pico-v1` profile.
+- Automated checking of `metadata.yaml` against the profile in CI or
+  at render time.
+- A repo-wide retrofit of existing courses, lessons, labs, or
+  exercises to opt into any checkable profile.
+- Additional checkable profiles beyond `hello-pico-v1`.
+- Promoting Constraints, Validations, or Feedback into their own
+  first-class `metadata.yaml` records.
+- Cross-course automated graph, ontology, or SHACL-style report
+  generation, and any triple-store or graph-database layer.
+- Automated capture of runtime evidence for profile-declared
+  Validations.
+
+These remain candidates for later phases.
