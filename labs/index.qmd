@@ -35,6 +35,16 @@ encounter a consistent experience across the academy.
   Referenced from the [manifold course](../courses/manifold/).
   Machine-readable descriptor:
   [`labs/hello-two-picos/metadata.yaml`](hello-two-picos/metadata.yaml).
+- **[Hello Pico on Home Assistant](hello-pico-home-assistant/)** — the
+  first graphical ControlSurface lab: layer a small Home Assistant
+  integration (one `command_line` sensor and one `input_button` +
+  `shell_command`) over the approved
+  [Hello Pico on Manifold lab](hello-pico-on-manifold/) runtime,
+  routing every read and write through the approved
+  [`bin/pico`](../bin/pico) Python CLI so Home Assistant does not
+  bypass Kubernetes, Manifold, Wrangler, or the CLI. Machine-readable
+  descriptor:
+  [`labs/hello-pico-home-assistant/metadata.yaml`](hello-pico-home-assistant/metadata.yaml).
 - **[Hello World Pico Sandcastle](hello-world-pico-sandcastle/)** — the
   first runnable Sandcastle lab: run a Sandcastle end-to-end to
   construct the same `hello-world-pico` artifact on a dedicated

@@ -26,6 +26,10 @@ project:
     - labs/hello-two-picos/objectives.qmd
     - labs/hello-two-picos/walkthrough.qmd
     - labs/hello-two-picos/solution.qmd
+    - labs/hello-pico-home-assistant/index.qmd
+    - labs/hello-pico-home-assistant/objectives.qmd
+    - labs/hello-pico-home-assistant/walkthrough.qmd
+    - labs/hello-pico-home-assistant/solution.qmd
     - labs/hello-world-pico-sandcastle/index.qmd
     - labs/hello-world-pico-sandcastle/objectives.qmd
     - labs/hello-world-pico-sandcastle/walkthrough.qmd

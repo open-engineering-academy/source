@@ -1,0 +1,88 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico on Home Assistant teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Explain, using Phase 7 vocabulary, why Home Assistant is a
+  **ControlSurface** and not a runtime, ontology owner, or a bypass
+  around Kubernetes, Manifold, Wrangler, or the Python CLI.
+- Merge a small Home Assistant configuration snippet that adds
+  exactly one observation surface (a `command_line` sensor) and one
+  safe control action (a `shell_command` fired by an `input_button`).
+- Route every Home Assistant read and write through the approved
+  `pico runtime` Python CLI ControlSurface so the graphical UI
+  cannot drift from the declared runtime truth.
+- Observe the same one-event / one-response contract the underlying
+  [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)
+  proves, but this time triggered from a UI button in Home Assistant.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)
+  so a working `manifold` Namespace, `pico-engine` Pod, `hello`
+  Channel Service, and topology ConfigMap all exist on your local
+  minikube cluster. This lab observes and controls that runtime; it
+  does not deploy it.
+- Familiarity with the
+  [`pico runtime` subcommands](../../bin/pico) — this lab wires
+  Home Assistant directly to `pico runtime inspect` and
+  `pico runtime emit`.
+- A working Home Assistant installation (Container, Supervised, or
+  Core all work; HA OS also works if you can install `pico` inside
+  its container image). No specific HA version is pinned — Home
+  Assistant's `command_line`, `shell_command`, `input_button`, and
+  `automation` primitives are all stable and long-supported.
+:::
+
+## Environment
+
+The Kubernetes side is unchanged from the underlying Manifold lab:
+
+- Local minikube profile `manifold-lab` (from the
+  [Kubernetes setup foundation](../../courses/kubernetes/index.html)).
+- The `pico-engine` Pod is single-shot; if you already ran the
+  Manifold lab to completion, delete and reapply
+  `02-pico-engine.yaml` before this lab so the Pod is Ready again
+  and can accept exactly one event.
+
+Home Assistant-side additions:
+
+- The `pico` executable from `bin/pico` in this repository must be on
+  the `PATH` the Home Assistant container sees.
+- A `kubeconfig` pointing at the same `manifold-lab` minikube profile
+  must be reachable from inside the HA container (typically by
+  mounting `~/.kube/config`).
+- The helper script `hello-pico-ha-phase.sh` is expected at
+  `/config/hello-pico/hello-pico-ha-phase.sh` inside the HA
+  container. Any equivalent path works — just adjust the sensor
+  `command:` in `configuration.yaml` to match.
+
+See [`downloads/README.md`](downloads/README.md) for the operator
+checklist that satisfies these three requirements.
+
+## One-time setup (optional)
+
+If you prefer to keep the HA integration completely isolated from
+your host, run Home Assistant as a Docker container and mount both
+the `pico` executable and your kubeconfig into it read-only. The
+walkthrough is written to work regardless of which HA installation
+shape you use, because the shape of the on-cluster runtime state
+does not depend on how HA is packaged.
+
+## Related material
+
+- [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)
+  — the underlying runtime path this lab observes and controls.
+- [`bin/pico`](../../bin/pico) — the Python CLI ControlSurface;
+  read its `runtime` subcommand help before wiring Home Assistant.
+- [Manifold course · glossary](../../courses/manifold/glossary.html)
+  — Phase 7 vocabulary this lab uses (ControlSurface,
+  OperatorIntent, Observation, Channel).
+- [Phase 7 contract](../../templates/README.qmd) — the constructive
+  realization phase that fixes Home Assistant's role.

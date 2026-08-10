@@ -1,0 +1,103 @@
+---
+title: "Hello Pico on Home Assistant"
+description: "Layer a Home Assistant graphical ControlSurface over the approved Manifold runtime through the same Python CLI."
+---
+
+## Overview
+
+**Hello Pico on Home Assistant** is the first *graphical*
+ControlSurface path of the Open Engineering Academy. It layers a small
+Home Assistant integration over the same
+[Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)
+runtime and the same
+[`pico runtime` Python CLI](../../bin/pico) you already use as a
+scriptable ControlSurface. Home Assistant here is a
+**control/visualization surface** — it does not host the runtime, does
+not own the ontology, and does not bypass Kubernetes, Manifold,
+Wrangler, or the Python CLI.
+
+The lab exposes exactly two surfaces:
+
+- **One honest observation surface** — a Home Assistant `command_line`
+  sensor whose state is the current Pico engine Pod phase, read by
+  delegating to `pico runtime inspect` against the same Manifold
+  RuntimeEnvironment the underlying lab deploys.
+- **One safe control action** — a Home Assistant `input_button` in the
+  default dashboard that fires a `shell_command` invoking
+  `pico runtime emit` to send exactly one `Hello, Pico!` event onto
+  the same Wrangler-declared `hello` Channel.
+
+::: {.callout-important title="Scope"}
+This lab covers **one sensor** and **one button** wired to the
+approved Python CLI ControlSurface, layered over the approved single
+Manifold RuntimeEnvironment on local minikube. Home dashboards,
+multi-Pico visualization, fleet orchestration, non-Kubernetes runtime
+paths, and any HA integration that reads or writes Kubernetes state
+directly (bypassing the CLI) are explicitly out of scope.
+:::
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-world-pico-home-assistant`
+containing:
+
+- the merged Home Assistant `configuration.yaml` snippet you added,
+- the shipped helper script `hello-pico-ha-phase.sh` as installed
+  inside the Home Assistant container,
+- a copy of `event.json` (byte-identical to the underlying Manifold
+  lab's payload — the single event on the wire is the same one),
+- a captured screenshot or terminal transcript of the Home Assistant
+  sensor state and the observed Pico response after the button press.
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`: the Home Assistant
+configuration snippet, the sensor helper script, the same `event.json`
+the underlying Manifold lab uses, a `README.md` operator note, and
+`verify.sh` — the automatable shape check the walkthrough runs.
+Screenshots referenced from the walkthrough live under `screenshots/`.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the schema documented in the source repository under
+`templates/README.qmd`, including the Phase 7 fields
+`runtime_substrate`, `runs_on`, `interaction_topology`, and
+`control_surfaces` (which here lists **both** `home-assistant` and
+`python-cli` because HA is layered over the CLI).
+
+## Constructive realization
+
+This lab is a **Realization** of the graphical-ControlSurface role
+that Phase 7 of the constructive-realization contract assigns to Home
+Assistant. The role mapping is:
+
+- **Definition** (Phase 7 contract in
+  [`templates/README.qmd`](../../templates/README.qmd)):
+  Home Assistant is a `ControlSurface` for graphical OperatorIntent,
+  layered over the same declared runtime truth the Python CLI
+  operates on. It never replaces Sandcastle, Crossplane, Kubernetes,
+  Manifold, Wrangler, or the CLI.
+- **Realization** (this lab): a merged Home Assistant configuration
+  snippet that adds one `command_line` sensor, one `shell_command`,
+  one `input_button`, and one `automation` — with every read and
+  write delegating to `pico runtime`.
+- **Element**: `hello-world-pico-home-assistant` — the captured HA
+  snippet, helper script, event payload, and the observed sensor and
+  Pico response.
+
+## Referenced from
+
+- [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+  the underlying runtime path this lab observes and controls.
+- [`bin/pico`](../../bin/pico) — the Python CLI ControlSurface whose
+  `runtime` subcommand is the sole read/write channel this lab uses.
+- [Manifold course](../../courses/manifold/index.html) — the runtime
+  course whose scope explicitly excludes graphical ControlSurfaces;
+  this lab is the follow-up path that adds one, narrowly.
