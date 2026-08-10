@@ -199,3 +199,7 @@ in the Sandcastle course. For the same path read through the Phase 4
 `hello-pico-v1` checkable profile — shape rules mapped to concrete
 `metadata.yaml` and evidence — see
 [Hello Pico as a checkable realization](../sandcastle/hello-pico-checkable-profile.html).
+For the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
+claim against those shape rules, and the shape of the resulting
+validation report, see
+[Hello Pico profile validation](../sandcastle/hello-pico-profile-validation.html).

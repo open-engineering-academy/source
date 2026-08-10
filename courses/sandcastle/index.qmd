@@ -89,6 +89,10 @@ courses/sandcastle/
   — the same path read through the Phase 4 `hello-pico-v1` checkable
   profile, mapping each shape rule to concrete `metadata.yaml`,
   walkthrough, and `verify.sh` artifacts.
+- [Hello Pico profile validation](hello-pico-profile-validation.qmd)
+  — the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
+  claim on that same path, and the shape of a passing, failing, or
+  inconclusive validation report.
 - [Glossary](glossary.qmd)
 
 ::: {.callout-note title="Course status — Parts 1, 2 (lesson 01), and 3 runnable end-to-end"}

@@ -289,6 +289,10 @@ towards the same Element identity.
 - [Hello Pico as a checkable realization](hello-pico-checkable-profile.qmd)
   — the same path read through the Phase 4 `hello-pico-v1` checkable
   profile, mapping each shape rule to concrete metadata and evidence.
+- [Hello Pico profile validation](hello-pico-profile-validation.qmd)
+  — the opt-in Phase 5 workflow that verifies a `hello-pico-v1`
+  claim on this same chain, and the shape of a passing, failing, or
+  inconclusive validation report.
 - [Part 3 · Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd)
   and [Part 1 · Inside a Sandcastle](part-1/01-inside-a-sandcastle/index.qmd)
   — the two Sandcastle lessons the chain passes through.
