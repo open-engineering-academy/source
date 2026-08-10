@@ -43,7 +43,9 @@ produces).
   familiarity with Rules, the Parser, and the Composer.
 - Working shell (`bash` or `zsh`), a text editor, and Docker.
 - A local Kubernetes environment. Local **minikube** is the reference
-  environment used by the accompanying lab.
+  environment used by the accompanying lab; see the
+  [Kubernetes course setup foundation](../kubernetes/index.html) for the
+  canonical install, PATH checks, and first cluster bring-up.
 
 ## How this course is structured
 
