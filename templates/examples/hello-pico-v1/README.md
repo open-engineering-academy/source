@@ -146,10 +146,38 @@ of `templates/README.qmd`:
   convention this example package uses.
 
 The index is authored by hand and kept in sync with the per-claimant
-reports; Phase 6 does not add tooling to generate or diff it. To retain
-an outgoing report, copy it into `reports/history/` with an ISO-date
-suffix (for example, `reports/history/oe-course-crossplane.2026-08-01.yaml`)
-before regenerating the current file with
+reports. To retain an outgoing report, copy it into `reports/history/`
+with an ISO-date suffix (for example,
+`reports/history/oe-course-crossplane.2026-08-01.yaml`) before
+regenerating the current file with
 `python3 templates/examples/hello-pico-v1/validate_profile.py --write`,
 then add the snapshot to that entry's `history:` list in
 `reports/index.yaml`.
+
+Two additional opt-in output modes on the same validator emit the
+Phase 6 aggregate and feedback views without mutating any repository
+metadata. Both stay narrow, informational, and off the CI path:
+
+```bash
+# Aggregate report-index across the opted-in claimants.
+python3 templates/examples/hello-pico-v1/validate_profile.py --aggregate
+
+# Overwrite reports/index.yaml with the aggregate result.
+python3 templates/examples/hello-pico-v1/validate_profile.py --aggregate --write
+
+# Bounded feedback summary for approved (overall: conformant) claimants.
+python3 templates/examples/hello-pico-v1/validate_profile.py --feedback-summary
+```
+
+The aggregate mode emits the same Phase 6 report-index shape shown
+above (`profile`, `generated_at`, `entries[]`), populating each
+entry's `history:` from files under `reports/history/` named
+`<slug>.<date>.yaml`. The feedback-summary mode lists, for each
+approved claimant, the current report path, the governing Definition
+(`realizes[0]` on a Realization; the claimant itself on a Definition),
+the existing `feedback[]` entries (including whether each already
+carries `from_report`), and any `not-applicable` findings as
+`candidate_observations`. Its output carries an explicit note that no
+metadata was modified; recording refinements remains a manual
+`feedback[]` edit on the governing Definition's `metadata.yaml`, per
+the Phase 6 guidance in `templates/README.qmd`.

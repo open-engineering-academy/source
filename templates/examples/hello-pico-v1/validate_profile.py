@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Local Hello Pico profile validator (Phase 5, opt-in, non-blocking).
+"""Local Hello Pico profile validator (Phase 5+6, opt-in, non-blocking).
 
 Discovers every ``metadata.yaml`` file under ``courses/`` and ``labs/``
 that declares ``checkable_profile: hello-pico-v1``, applies the Phase 4
@@ -9,12 +9,23 @@ Phase 5 validation report per claimant matching the shape defined in
 ``subject_role``, ``checked_at``, ``overall``, ``findings[]``,
 ``evidence_reviewed[]``).
 
-Reports print to stdout by default. With ``--write``, each report is
-also written to ``templates/examples/hello-pico-v1/reports/<slug>.yaml``.
+Output modes (mutually exclusive; default is per-claimant reports):
+
+* default: one Phase 5 validation report per claimant on stdout.
+* ``--aggregate``: one Phase 6 report-index across the opted-in
+  claimants (``profile``, ``generated_at``, ``entries[]``).
+* ``--feedback-summary``: a bounded summary of approved claimants and
+  where their reports could refine the governing Definition, without
+  mutating any repository metadata.
+
+Any mode combined with ``--write`` also writes to
+``templates/examples/hello-pico-v1/reports/`` (per-claimant files for
+the default mode, ``index.yaml`` for ``--aggregate``,
+``feedback-summary.yaml`` for ``--feedback-summary``).
 
 This script is deliberately narrow: it reads only ``metadata.yaml``
 files it discovers, never executes shipped Validations (``verify.sh``,
-``kubectl``, ...), and never mutates any file.
+``kubectl``, ...), and never mutates any repository metadata file.
 """
 import argparse
 import datetime
@@ -243,10 +254,127 @@ def _slug(subject):
     return re.sub(r"[^a-z0-9]+", "-", (subject or "unknown").lower()).strip("-")
 
 
+REPORTS_REL = "templates/examples/hello-pico-v1/reports"
+
+
+def _history_for(subject, reports_dir):
+    slug = _slug(subject)
+    history_dir = os.path.join(reports_dir, "history")
+    if not os.path.isdir(history_dir):
+        return []
+    prefix = slug + "."
+    snapshots = [name for name in os.listdir(history_dir)
+                 if name.startswith(prefix) and name.endswith(".yaml")]
+    snapshots.sort(reverse=True)
+    return [f"{REPORTS_REL}/history/{name}" for name in snapshots]
+
+
+def build_aggregate(reports, reports_dir):
+    entries = []
+    for report in reports:
+        subject = report["subject"]
+        entries.append({
+            "subject": subject,
+            "subject_role": report["subject_role"],
+            "report": f"{REPORTS_REL}/{_slug(subject)}.yaml",
+            "overall": report["overall"],
+            "checked_at": report["checked_at"],
+            "history": _history_for(subject, reports_dir),
+        })
+    return {
+        "profile": PROFILE,
+        "generated_at": datetime.date.today().isoformat(),
+        "entries": entries,
+    }
+
+
+def _governing_definition(doc, index):
+    if doc.get("constructive_role") == "definition":
+        return doc.get("id")
+    realizes = doc.get("realizes") or []
+    if isinstance(realizes, list) and len(realizes) == 1:
+        return realizes[0]
+    return None
+
+
+def _metadata_path_for(subject_id, doc, rel, index):
+    if doc.get("id") == subject_id:
+        return rel
+    hit = index.get(subject_id)
+    if hit:
+        return hit[0]
+    return None
+
+
+def _existing_feedback(doc):
+    out = []
+    for entry in (doc.get("feedback") or []):
+        if not isinstance(entry, dict):
+            continue
+        out.append({
+            "about": entry.get("about"),
+            "refines": entry.get("refines"),
+            "from_report": entry.get("from_report"),
+        })
+    return out
+
+
+def build_feedback_summary(claimants_with_reports, index):
+    approved = []
+    skipped = []
+    for rel, doc, report in claimants_with_reports:
+        if report["overall"] != "conformant":
+            skipped.append({
+                "subject": report["subject"],
+                "overall": report["overall"],
+                "reason": "not an approved claimant; correct metadata before recording feedback.",
+            })
+            continue
+        subject = report["subject"]
+        gov_id = _governing_definition(doc, index)
+        gov_path = _metadata_path_for(gov_id, doc, rel, index) if gov_id else None
+        candidates = [
+            {
+                "rule": f["rule"],
+                "details": f["details"],
+                "path": f.get("path"),
+            }
+            for f in report["findings"] if f["status"] == "not-applicable"
+        ]
+        approved.append({
+            "subject": subject,
+            "subject_role": report["subject_role"],
+            "report": f"{REPORTS_REL}/{_slug(subject)}.yaml",
+            "claimant_metadata": rel,
+            "governing_definition": gov_id,
+            "governing_metadata": gov_path,
+            "existing_feedback": _existing_feedback(doc),
+            "candidate_observations": candidates,
+        })
+    return {
+        "profile": PROFILE,
+        "generated_at": datetime.date.today().isoformat(),
+        "note": (
+            "Informational summary. No metadata was modified by this run. "
+            "Refinements are recorded manually as Phase 2 feedback[] entries "
+            "on the governing Definition's metadata.yaml, and MAY carry an "
+            "optional feedback[].from_report pointer."
+        ),
+        "approved_claimants": approved,
+        "skipped_claimants": skipped,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--write", action="store_true",
-                        help="Also write each report under templates/examples/hello-pico-v1/reports/.")
+                        help="Also write output under templates/examples/hello-pico-v1/reports/.")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--aggregate", action="store_true",
+                      help="Emit one Phase 6 report-index across the opted-in claimants.")
+    mode.add_argument("--feedback-summary", dest="feedback_summary",
+                      action="store_true",
+                      help="Emit a bounded feedback summary for approved claimants.")
     args = parser.parse_args()
 
     claimants = discover_claimants()
@@ -254,12 +382,29 @@ def main():
         print(f"No claimants found for checkable_profile: {PROFILE}.", file=sys.stderr)
         return 2
     index = load_index()
-    exit_code = 0
+    reports = [(rel, doc, build_report(rel, doc, index)) for rel, doc in claimants]
     reports_dir = os.path.join(HERE, "reports")
     if args.write:
         os.makedirs(reports_dir, exist_ok=True)
-    for i, (rel, doc) in enumerate(claimants):
-        report = build_report(rel, doc, index)
+
+    if args.aggregate:
+        aggregate = build_aggregate([r for _, _, r in reports], reports_dir)
+        print(yaml.safe_dump(aggregate, sort_keys=False, allow_unicode=True), end="")
+        if args.write:
+            with open(os.path.join(reports_dir, "index.yaml"), "w") as f:
+                yaml.safe_dump(aggregate, f, sort_keys=False, allow_unicode=True)
+        return 1 if any(r["overall"] == "non-conformant" for _, _, r in reports) else 0
+
+    if args.feedback_summary:
+        summary = build_feedback_summary(reports, index)
+        print(yaml.safe_dump(summary, sort_keys=False, allow_unicode=True), end="")
+        if args.write:
+            with open(os.path.join(reports_dir, "feedback-summary.yaml"), "w") as f:
+                yaml.safe_dump(summary, f, sort_keys=False, allow_unicode=True)
+        return 0
+
+    exit_code = 0
+    for i, (_, _, report) in enumerate(reports):
         if i:
             print("---")
         print(yaml.safe_dump(report, sort_keys=False, allow_unicode=True), end="")
