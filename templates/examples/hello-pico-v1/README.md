@@ -85,3 +85,42 @@ Read the accompanying learner references before extending the package:
 - `courses/sandcastle/hello-pico-checkable-profile.qmd` — how the profile
   maps onto the taught path.
 - `templates/README.qmd` — the Phase 1–4 authoring contract.
+
+## Phase 5: profile validator and report path
+
+Phase 5 adds a second, sibling script that runs the opt-in profile
+check described in the Phase 5 section of `templates/README.qmd`
+against **real repository metadata** — not against this example
+package. It exists here so all `hello-pico-v1` tooling lives in one
+narrow, author-run place under render-excluded `templates/`.
+
+```bash
+# Print one YAML validation report per opted-in claimant to stdout.
+python3 templates/examples/hello-pico-v1/validate_profile.py
+
+# Also write each report to templates/examples/hello-pico-v1/reports/<slug>.yaml.
+python3 templates/examples/hello-pico-v1/validate_profile.py --write
+```
+
+The validator:
+
+1. Discovers every `metadata.yaml` under `courses/` and `labs/` that
+   declares `checkable_profile: hello-pico-v1`.
+2. Applies the Phase 4 shape rules for the claimant's
+   `constructive_role` (Definition / Realization / Element).
+3. Emits one report per claimant using the Phase 5 report shape
+   (`profile`, `subject`, `subject_role`, `checked_at`, `overall`,
+   `findings[]`, `evidence_reviewed[]`).
+
+Today the only opted-in claimants are the Definition on
+`courses/crossplane/metadata.yaml` and the Realization on
+`labs/hello-pico-on-kubernetes/metadata.yaml` (see the
+[hello-pico-v1 adoption task](../../../courses/sandcastle/hello-pico-profile-validation.qmd)),
+so a passing run produces exactly two `overall: conformant` reports.
+The pre-recorded passing artifacts live under
+`templates/examples/hello-pico-v1/reports/` for reference.
+
+The validator is deliberately narrow: it reads only `metadata.yaml`,
+never runs `verify.sh` or `kubectl`, never mutates any file, and its
+verdict is informational only. It is **not** wired into CI, `pre-commit`,
+or Quarto rendering.
