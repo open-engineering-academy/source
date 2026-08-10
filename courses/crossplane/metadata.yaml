@@ -23,6 +23,7 @@ references_labs:
   - oe.lab.hello-pico-on-kubernetes
 references_exercises: []
 constructive_role: definition
+checkable_profile: hello-pico-v1
 constraints:
   - "A valid hello-world-pico-on-kubernetes Element is realized as a Kubernetes Job that composes the hello-world-pico executable Element."
   - "The composed Job completes successfully and its logs contain 'Hello, Pico!'."

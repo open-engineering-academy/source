@@ -19,6 +19,7 @@ referenced_by:
   - oe.lab.handoff-sandcastle-to-kubernetes
   - oe.lesson.sandcastle.03-handing-off-to-kubernetes
 constructive_role: realization
+checkable_profile: hello-pico-v1
 realizes:
   - oe.course.crossplane
 realization_pattern: crossplane-xr-of-existing-element
@@ -35,10 +36,13 @@ conformance_status: conformant
 validation_results:
   - check: "walkthrough.qmd Step 7 — kubectl wait xhelloworldpico/hello Ready"
     result: passed
+    validates_constraint: "A valid hello-world-pico-on-kubernetes Element is realized as a Kubernetes Job that composes the hello-world-pico executable Element."
   - check: "walkthrough.qmd Step 8 — downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
     result: passed
+    validates_constraint: "The composed Job completes successfully and its logs contain 'Hello, Pico!'."
   - check: "walkthrough.qmd Step 9 — captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
     result: passed
+    validates_constraint: "The composed Job completes successfully and its logs contain 'Hello, Pico!'."
 lifecycle_state: operational
 evidence:
   - check: "walkthrough.qmd Step 7 — kubectl wait xhelloworldpico/hello Ready"
