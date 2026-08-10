@@ -966,3 +966,189 @@ Phase 6 intentionally does **not** implement:
   snapshots, or feedback entries.
 
 These remain candidates for later phases.
+
+
+## Constructive realization (Phase 7)
+
+Phase 7 extends the Phase 1–6 contract with the smallest additional
+vocabulary needed to describe **running Pico systems** rather than only
+single realized Elements. It names the runtime, messaging, topology,
+control-surface, and runtime-feedback concepts that course authors need
+in order to talk about a multi-Pico system honestly, and it fixes the
+role of Manifold, Wrangler, a Python CLI, and Home Assistant relative to
+the existing Sandcastle → Crossplane → Kubernetes constructive chain. It
+stays a documentation and metadata contract only: no new runtime
+implementation, orchestration platform, control-surface product, or
+schema enforcement is introduced, and the Phase 1–6 fields and workflows
+are unchanged.
+
+### Substrate and role separation
+
+Phase 7 keeps runtime, orchestration, and control clearly separated so
+they do not collapse into one layer:
+
+- **RuntimeSubstrate** — the underlying execution layer that hosts every
+  runtime Element in this academy. For the Hello Pico roadmap the
+  RuntimeSubstrate is always **Kubernetes**; the Phase 2 Sandcastle →
+  Crossplane → Kubernetes composition path continues to describe how
+  Elements arrive on that substrate.
+- **RuntimeEnvironment** — a concrete environment hosted on the
+  RuntimeSubstrate in which Pico Elements execute and interact
+  (for example, a Kubernetes-hosted Manifold deployment). A
+  RuntimeEnvironment does not replace the RuntimeSubstrate; it runs on
+  it.
+- **InteractionTopology** — a declarative description of which Elements
+  interact through which Channels within a RuntimeEnvironment.
+  Orchestration tooling (for example, Wrangler) authors and applies
+  InteractionTopologies over the runtime; it does not itself become the
+  runtime.
+- **ControlSurface** — an operator- or learner-facing interface that
+  expresses OperatorIntent against the declared runtime state.
+  ControlSurfaces (for example, a Python CLI or a Home Assistant
+  integration) sit above the runtime and never bypass Crossplane, the
+  RuntimeSubstrate, or the declared InteractionTopology.
+
+Course material MUST NOT frame Manifold as replacing Kubernetes, Wrangler
+as replacing Crossplane, or a ControlSurface (CLI, Home Assistant, ...)
+as replacing either the constructive chain or the runtime.
+
+### Additional vocabulary
+
+- **RuntimeSubstrate** — see above. In Phase 7 the only defined value is
+  `kubernetes`; a course MAY name a concrete flavor in prose (for
+  example, `minikube`, `k3s`) but the substrate role remains
+  `kubernetes`.
+- **RuntimeEnvironment** — see above. Named runtime hosts such as a
+  Kubernetes-deployed Manifold instance are RuntimeEnvironments and
+  are themselves Elements produced by a Realization on the substrate.
+- **InteractionTopology** — a named, declarative description of a set of
+  Pico Elements and the Channels that connect them. Authored as
+  ordinary course material (a lesson section, a lab manifest, or a
+  small YAML file adjacent to a lab) rather than a new platform
+  format.
+- **Channel** (a.k.a. **EventStream**) — a named runtime pathway that
+  carries typed values between Elements inside an InteractionTopology.
+  A Channel is not the payload; it is the wire.
+- **EventType** — the typed contract for values that flow through a
+  Channel. In Phase 7 an EventType is described in prose or a small
+  inline schema fragment (name, purpose, expected shape); no formal
+  schema enforcement is introduced.
+- **ControlSurface** — see above. Concrete Phase 7 ControlSurfaces named
+  by the roadmap are the Python CLI and the Home Assistant integration.
+- **OperatorIntent** — a declaration of desired runtime state (for
+  example, "run two Picos wired through channel `hello`") expressed
+  through a ControlSurface. OperatorIntent is a request against the
+  declared runtime, not a bypass of the Realization path.
+- **Policy** — a declarative rule that constrains an InteractionTopology,
+  a Channel, a ControlSurface, or the acceptance of an OperatorIntent
+  (for example, "the CLI MAY start Picos but MUST NOT edit Definitions").
+  A Policy is a Phase 1 Constraint applied to a Phase 7 concept; it is
+  not a new enforcement layer.
+- **Observation** — a runtime-captured fact about an Element's behavior
+  inside a RuntimeEnvironment (for example, "the two-Pico topology
+  produced the expected exchange on channel `hello`"). Observation is
+  the Phase 7 name for the runtime side of the Phase 2 `feedback[]`
+  loop; it feeds Feedback that MAY refine a Definition per Phases 2
+  and 6.
+
+### Tool-role assignments for the Hello Pico roadmap
+
+Phase 7 fixes the following role assignments so course material stays
+coherent across the roadmap:
+
+| Tool                | Phase 7 role                                                                 |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Kubernetes          | `RuntimeSubstrate` (unchanged from Phase 2)                                  |
+| Sandcastle          | Realization step: constructs the executable form of a Pico (unchanged)       |
+| Crossplane          | Realization step: composes runtime resources onto the RuntimeSubstrate       |
+| Manifold            | `RuntimeEnvironment` hosted on Kubernetes; hosts Pico Elements and Channels  |
+| Wrangler            | `InteractionTopology` authoring and orchestration over the runtime           |
+| Python CLI          | `ControlSurface` for scriptable, testable OperatorIntent                     |
+| Home Assistant      | `ControlSurface` for graphical OperatorIntent                                |
+
+Manifold, Wrangler, the Python CLI, and Home Assistant are additive
+under this contract: none of them replaces or bypasses Sandcastle,
+Crossplane, or Kubernetes.
+
+### Additional relationships
+
+Phase 7 adds only these relations on top of Phases 1–6. As before, the
+ones marked *(new)* are added by this phase; the others reuse existing
+fields with a slightly tighter meaning under the runtime frame.
+
+| Relation                                              | Where it lives in `metadata.yaml` or adjacent files                     |
+| ----------------------------------------------------- | ----------------------------------------------------------------------- |
+| `Element runs on RuntimeEnvironment`                  | lab/lesson `runs_on` *(new, optional)*                                  |
+| `RuntimeEnvironment hosted on RuntimeSubstrate`       | lab/lesson `runtime_substrate` *(new, optional)*                        |
+| `InteractionTopology composes Elements via Channels`  | lab `interaction_topology` *(new, optional)*                            |
+| `Channel carries EventType`                           | prose inside the referenced `interaction_topology` description          |
+| `ControlSurface asserts OperatorIntent`               | lab/lesson `control_surfaces[]` *(new, optional)*                       |
+| `Policy constrains ControlSurface or Topology`        | course/lesson `constraints` (Phase 1), scoped in prose to the concept   |
+| `Observation refines Definition`                      | course/lesson/lab `feedback[]` (Phase 2), with `observation` from runtime |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, or lab. They are optional and descriptive in Phase 7;
+missing fields do not fail any render or validation. Phase 1–6 fields
+remain unchanged and continue to sit alongside these.
+
+| Field                   | Type            | Applies to     | Notes                                                                                                                        |
+| ----------------------- | --------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `runtime_substrate`     | enum            | lab, lesson    | Currently the only defined value is `kubernetes`. Missing means the artifact does not declare a substrate role.              |
+| `runs_on`               | string          | lab, lesson    | Short label of the RuntimeEnvironment the produced Element runs on (e.g. `manifold-on-kubernetes`).                          |
+| `interaction_topology`  | string          | lab            | Repo-relative path or short label naming the topology description authored for this lab (prose or small YAML fragment).      |
+| `control_surfaces`      | list of strings | lab, lesson    | Named ControlSurfaces this artifact expects (e.g. `python-cli`, `home-assistant`). Each name is a stable, low-cardinality label. |
+| `feedback[].observation_source` | string  | course, lesson, lab | *(new, optional)* When a Phase 2 `feedback[]` entry originates from a runtime Observation, this field carries a short label naming the RuntimeEnvironment or ControlSurface it came from. |
+
+### Course-authoring guidance
+
+- Introduce Manifold as a Kubernetes-hosted RuntimeEnvironment for Pico
+  Elements, never as a replacement for the Kubernetes RuntimeSubstrate
+  or for the Sandcastle → Crossplane realization path.
+- Teach Wrangler as declarative InteractionTopology and fleet
+  orchestration authored *over* the runtime. Wrangler outputs are
+  additional declarative inputs to the same Realization chain, not a
+  parallel runtime.
+- Teach the Python CLI before the Home Assistant path: keep the first
+  ControlSurface scriptable and testable, and reuse it as the
+  reference OperatorIntent surface for the graphical path.
+- Frame Home Assistant as a graphical ControlSurface that reads and
+  asserts OperatorIntent against the same declared runtime truth the
+  Python CLI operates on; do not model it as an alternative runtime.
+- When a course or lab records a Phase 2 `feedback[]` entry that came
+  from a runtime Observation rather than an authoring session, name the
+  source in the new `observation_source` field so the Observation →
+  Feedback → Definition link is discoverable.
+- Existing metadata (Phase 1–6 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 7 fields sit alongside them.
+
+### Out of scope for Phase 7
+
+Phase 7 intentionally does **not** implement:
+
+- A new runtime, orchestration, CLI, or graphical-UI product; Phase 7
+  is a course-material contract that names roles for tools discussed in
+  the roadmap.
+- Any replacement of the Crossplane → Kubernetes execution story with a
+  non-Kubernetes runtime path.
+- Formal schema enforcement (OWL, SHACL, JSON Schema, ...) of the new
+  vocabulary, EventTypes, InteractionTopology descriptions, or Policy
+  statements.
+- A required retrofit of existing courses, lessons, labs, or exercises
+  to declare `runtime_substrate`, `runs_on`, `interaction_topology`, or
+  `control_surfaces`.
+- Additional checkable profiles beyond `hello-pico-v1`, and any
+  extension of the Phase 4 profile-shape rules to cover the Phase 7
+  fields.
+- Automated capture of runtime Observations into `feedback[]` entries;
+  Observations are still recorded as ordinary metadata edits by the
+  artifact's author.
+- Any dashboard, service, portal, or database persistence of
+  RuntimeEnvironments, InteractionTopologies, Channels, EventTypes,
+  ControlSurfaces, OperatorIntents, Policies, or Observations.
+- Cross-course automated graph or ontology extraction over the new
+  vocabulary.
+
+These remain candidates for later phases.
