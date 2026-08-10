@@ -18,3 +18,24 @@ referenced_by:
   - oe.lesson.crossplane.01-composing-hello-pico-on-kubernetes
   - oe.lab.handoff-sandcastle-to-kubernetes
   - oe.lesson.sandcastle.03-handing-off-to-kubernetes
+constructive_role: realization
+realizes:
+  - oe.course.crossplane
+realization_pattern: crossplane-xr-of-existing-element
+validated_by:
+  - "walkthrough.qmd Step 7 — kubectl wait xhelloworldpico/hello Ready"
+  - "walkthrough.qmd Step 8 — downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+  - "walkthrough.qmd Step 9 — captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+depends_on:
+  - oe.lab.hello-pico
+composes:
+  - hello-world-pico
+composition_pattern: crossplane-xr-of-existing-element
+conformance_status: conformant
+validation_results:
+  - check: "walkthrough.qmd Step 7 — kubectl wait xhelloworldpico/hello Ready"
+    result: passed
+  - check: "walkthrough.qmd Step 8 — downloads/verify.sh confirms Job logs contain 'Hello, Pico!'"
+    result: passed
+  - check: "walkthrough.qmd Step 9 — captured build/hello-world-pico-on-kubernetes/greeting.txt matches expected"
+    result: passed
