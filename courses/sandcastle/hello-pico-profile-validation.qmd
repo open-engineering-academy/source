@@ -58,8 +58,12 @@ The Phase 5 workflow has five steps. This section names each step
 against the concrete Hello Pico artifacts already on disk. The
 worked example throughout is the narrow, opt-in
 [`hello-pico-v1` example package](../../templates/examples/hello-pico-v1/)
-that ships under `templates/` — the only place in the repository
-that currently declares `checkable_profile: hello-pico-v1`.
+that ships under `templates/` — the illustrative opt-in surface that
+carries all three roles (Definition, Realization, Element) in one
+place. The real repository claimants today are the Definition on
+[`courses/crossplane/metadata.yaml`](../../courses/crossplane/metadata.yaml)
+and the Realization on
+[`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml).
 
 ### 1. Discover claimants
 
@@ -69,11 +73,15 @@ equivalent bounded record such as the example
 declares `checkable_profile: hello-pico-v1`. Artifacts that do not
 opt in are ignored.
 
-On the taught Hello Pico path today, three records in the example
-package claim the profile — the Definition, the Realization, and the
-Element it describes. Every existing course, lesson, and lab
-`metadata.yaml` is intentionally left un-claimed; the checkable
-profile is opt-in and Phase 4 does not retrofit.
+On the taught Hello Pico path today, the two opted-in claimants are
+the Definition on `courses/crossplane/metadata.yaml` and the
+Realization on `labs/hello-pico-on-kubernetes/metadata.yaml`. The
+example package additionally carries all three records (Definition,
+Realization, and Element) in one place as the illustrative fallback
+where a single-file record can show the full profile shape. Every
+other existing course, lesson, and lab `metadata.yaml` is
+intentionally unclaimed; the checkable profile is opt-in and Phase 4
+does not retrofit.
 
 ### 2. Resolve the chain
 
@@ -339,9 +347,12 @@ machine-readable in a narrow, opt-in way.
   `validation_report` pointer already declared in `templates/README.qmd`.
 - No new checkable profile — Phase 5 executes `hello-pico-v1`; it
   does not extend it or add other profiles.
-- No retrofit of any existing course, lesson, lab, or exercise
-  `metadata.yaml`; the example package under `templates/` remains the
-  sole opt-in surface.
+- No broad retrofit of existing course, lesson, lab, or exercise
+  `metadata.yaml` records; today's adoption is limited to the
+  Crossplane course `metadata.yaml` and the Hello Pico on Kubernetes
+  lab `metadata.yaml`, with the example package under `templates/`
+  as the illustrative fallback that carries all three roles in one
+  place.
 - No CI or render-time gating on validation reports; the workflow is
   informational only.
 - No execution of shipped Validations (`verify.sh`, `kubectl`, and so
