@@ -290,3 +290,141 @@ Phase 2 intentionally does **not** implement:
   scripts they name.
 
 These remain candidates for later phases.
+
+
+## Constructive realization (Phase 3)
+
+Phase 3 extends the Phase 1 and Phase 2 contract with the smallest
+additional vocabulary needed to talk about **how far along** a
+Realization is and **what evidence** a learner can look at to see that a
+Validation actually ran. It stays a documentation and metadata contract
+only: no tooling reads or enforces the new fields yet.
+
+### Additional vocabulary
+
+- **Lifecycle state** — where an Element or Realization sits on the
+  staged path from idea to retired. Phase 3 uses five canonical states:
+  `conceptual`, `planned`, `partial`, `operational`, and `deprecated`.
+  Finer per-artifact stages (for example, a Hello-Pico Realization's
+  internal `Defined → Packaged → Provisioned → Deployed → Executed →
+  Validated` progression) MAY be described in prose inside the artifact
+  itself, but the metadata field only carries one of the five canonical
+  values.
+- **Evidence** — a learner-visible artifact that shows a Validation
+  actually ran and what it observed. Typical Evidence includes a
+  captured `verify.sh` output line, a screenshot, an excerpt in a
+  lesson summary, or a rendered Quarto page section. Evidence is
+  prose/path-only in Phase 3; automated evidence capture from CI or
+  runtime remains out of scope.
+
+### Lifecycle states
+
+| State         | Meaning in course material                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| `conceptual`  | The Definition exists; no Realization has been attempted yet.                              |
+| `planned`     | A Realization path is described (for example in a scaffold lesson), but not yet exercised. |
+| `partial`     | A Realization exists and satisfies some Constraints, but not all Validations pass or run.  |
+| `operational` | A Realization exists and every declared Validation passes against a concrete Element.      |
+| `deprecated`  | A previously operational Realization is retained for context but should no longer be used. |
+
+`lifecycle_state` and Phase 2's `conformance_status` are related but
+distinct: `lifecycle_state` describes how mature the Realization is,
+while `conformance_status` describes how well the current Element
+matches its Definition. An `operational` Realization SHOULD be
+`conformant`; a `partial` Realization is typically `partial` or
+`divergent`; a `planned` or `conceptual` Realization has no meaningful
+`conformance_status` yet.
+
+### Partial-realization guidance
+
+When a lab or lesson is honestly partway to a full Realization, Phase 3
+asks authors to make the gap visible using the fields we already have
+plus the new lifecycle field:
+
+- Set `lifecycle_state: partial` (or `planned` / `conceptual` when even
+  less exists).
+- Keep `conformance_status: partial` from Phase 2 so the summary matches.
+- List the Constraints that are not yet Validated as
+  `validation_results` entries with `result: not-run`, rather than
+  omitting them.
+- Keep the learner-facing page's scaffold callout in sync — a Phase 3
+  `lifecycle_state: partial` in metadata SHOULD correspond to a
+  scaffold-style callout on the rendered page, matching the existing
+  runnable-vs-scaffold labelling convention in this academy.
+
+### Runtime-validation evidence
+
+Phase 3 lets a lab point at learner-visible Evidence for each
+Validation it declares:
+
+- Each `evidence` entry SHOULD reference a `validated_by` item by name,
+  so the Element → Validation → Evidence chain is traceable.
+- Evidence targets are paths or URLs, not embedded blobs. Preferred
+  targets are files already published with the lab (for example
+  `downloads/verify.sh`, a captured output line inside the lab summary,
+  or a screenshot under `screenshots/`).
+- Evidence is optional. A lab MAY still declare Validations without
+  Evidence entries; Evidence just makes the successful realization more
+  concrete for learners who cannot re-run the lab.
+
+### Additional relationships
+
+Phase 3 adds only these relations on top of Phase 1 and Phase 2. As
+before, the ones marked *(new)* are added by this phase; the others
+piggy-back on existing fields.
+
+| Relation                                | Where it lives in `metadata.yaml`                          |
+| --------------------------------------- | ---------------------------------------------------------- |
+| `Element has Lifecycle state`           | course/lesson/lab `lifecycle_state` *(new, optional)*      |
+| `Realization has Lifecycle state`       | lab `lifecycle_state` *(new, optional)*                    |
+| `Validation has Evidence`               | lab `evidence[].check` *(new, optional)*                   |
+| `Evidence points at learner artifact`   | lab `evidence[].path` / `evidence[].url` *(new, optional)* |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, or lab. They are optional and descriptive in Phase 3;
+missing fields do not fail any render or validation. Phase 1 and Phase
+2 fields remain unchanged and continue to sit alongside these.
+
+| Field             | Type             | Applies to          | Notes                                                                                                                                                                                             |
+| ----------------- | ---------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lifecycle_state` | enum             | course, lesson, lab | `conceptual` \| `planned` \| `partial` \| `operational` \| `deprecated`                                                                                                                           |
+| `evidence`        | list of mappings | lab                 | Each entry SHOULD carry `check` (matching a `validated_by` string) and one of `path` (repo-relative) or `url` (external); MAY carry `captured_at` (ISO date) and `description` (short prose note) |
+
+### Course-authoring guidance
+
+- Pick the smallest honest `lifecycle_state`. If any Constraint is not
+  yet Validated, prefer `partial` over `operational`.
+- Keep `lifecycle_state`, `conformance_status`, and the page's
+  scaffold/runnable callout consistent. Learners rely on the rendered
+  callout; metadata should not silently disagree with it.
+- Point `evidence` at artifacts learners can already see (a shipped
+  `downloads/verify.sh`, a captured output line in a lesson summary, a
+  screenshot). Do not invent new hidden files just to satisfy the
+  field.
+- Do not use `deprecated` for material that is simply scaffolded;
+  scaffolded material is `planned` or `conceptual`. `deprecated` is for
+  a Realization that used to work and is intentionally retained for
+  historical context.
+- Existing metadata (`prerequisites`, `references_labs`, `referenced_by`,
+  `produces`, and the Phase 1 / Phase 2 fields) is preserved unchanged;
+  the Phase 3 fields sit alongside them.
+
+### Out of scope for Phase 3
+
+Phase 3 intentionally does **not** implement:
+
+- OWL, SHACL, or any other formal ontology or schema enforcement.
+- Automated conformance or lifecycle checking of `metadata.yaml`
+  against the extended model.
+- A generic repo-wide state machine that transitions artifacts between
+  lifecycle states.
+- Repo-wide retrofit of existing courses, lessons, labs, or exercises
+  to the new fields.
+- Automated evidence capture from CI, terminal output, or runtime.
+- Programmatic linkage between `evidence` entries and the Validations
+  or scripts they name.
+- Cross-course automated graph or ontology extraction.
+
+These remain candidates for later phases.
