@@ -182,3 +182,111 @@ Phase 1 intentionally does **not** implement:
 - Cross-course automated graph or ontology extraction.
 
 These are candidates for later phases.
+
+## Constructive realization (Phase 2)
+
+Phase 2 extends the Phase 1 contract with the smallest additional
+vocabulary needed to describe **cross-course** realization paths (for
+example, `hello-pico` realized on Kubernetes via Sandcastle and
+Crossplane). It stays a documentation and metadata contract only: no
+tooling reads or enforces the new fields yet.
+
+### Additional vocabulary
+
+- **Dependency** — a named thing a Realization requires in order to
+  produce a valid Element. In course material, Dependencies typically
+  correspond to reusable labs, runtime environments, or other Elements
+  that must already exist. Distinct from learning **prerequisites**,
+  which describe what a learner must know first.
+- **Composition** — the way an Element is assembled from sub-Elements
+  through defined interfaces. In course material, a Composition names
+  the parts and the assembly pattern (for example, "a `hello-pico`
+  Element composed into a Kubernetes Job via a Crossplane XR").
+- **Feedback** — an observation from a realized Element that could
+  refine the governing Definition. In course material, Feedback is
+  usually recorded in prose (a lesson summary, a lab retrospective) and
+  named for reference; automated feedback capture is out of scope.
+
+### Conformance and validation results
+
+Phase 2 clarifies what it means for a realized Element to **conform** to
+its Definition:
+
+- An Element is **conformant** when its Validations satisfy every
+  Constraint declared by its governing Definition. Partial or evolving
+  Realizations may satisfy only some Constraints; this is expected
+  during authoring and should be recorded honestly rather than glossed
+  over.
+- Each Validation SHOULD have a recorded **result** with one of the
+  values `passed`, `failed`, or `not-run`. Results are prose-only in
+  Phase 2; no schema enforces them.
+- A Realization MAY declare a `conformance_status` summary. Suggested
+  values: `conformant` (all Constraints validated `passed`), `partial`
+  (some Validations `not-run` or `failed` in a documented, learner-safe
+  way), and `divergent` (Element intentionally departs from the
+  Definition, with a recorded rationale).
+
+### Additional relationships
+
+Phase 2 adds only these relations on top of Phase 1. As before, most
+piggy-back on fields that already exist; the ones marked *(new)* are
+added by this phase.
+
+| Relation                            | Where it lives in `metadata.yaml`                        |
+| ----------------------------------- | -------------------------------------------------------- |
+| `Realization depends on Element`    | lab/lesson `depends_on` *(new, optional)*                |
+| `Element composes sub-Elements`     | lab/lesson `composes` *(new, optional)*                  |
+| `Realization has Composition`       | lab `composition_pattern` *(new, optional)*              |
+| `Feedback about Element`            | course/lesson/lab `feedback[].about` *(new, optional)*   |
+| `Feedback refines Definition`       | course/lesson/lab `feedback[].refines` *(new, optional)* |
+| `Validation has result`             | lab `validation_results` *(new, optional)*               |
+| `Realization has conformance`       | lab `conformance_status` *(new, optional)*               |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, or lab. They are optional and descriptive in Phase 2;
+missing fields do not fail any render or validation. Phase 1 fields
+remain unchanged and continue to sit alongside these.
+
+| Field                 | Type              | Applies to          | Notes                                                                                                                                                                                  |
+| --------------------- | ----------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `depends_on`          | list of `id`s     | lab, lesson         | Elements or reusable labs that must already be realized for this Realization to succeed; distinct from learning `prerequisites`                                                       |
+| `composes`            | list of strings   | lab, lesson         | Named sub-Elements assembled into the produced Element                                                                                                                                |
+| `composition_pattern` | string            | lab                 | Short label for the assembly pattern (e.g. `wrap-in-kubernetes-job`, `crossplane-xr-of-existing-element`)                                                                              |
+| `conformance_status`  | enum              | lab                 | `conformant` \| `partial` \| `divergent`                                                                                                                                              |
+| `validation_results`  | list of mappings  | lab                 | Optional per-entry results for items already listed under `validated_by`; each mapping has `check` (matching a `validated_by` string) and `result` (`passed` \| `failed` \| `not-run`) |
+| `feedback`            | list of mappings  | course, lesson, lab | Each entry MAY carry `observation` (prose), `about` (Element name), and `refines` (Definition `id`)                                                                                   |
+
+### Course-authoring guidance
+
+- Prefer natural-language Feedback captured in a lesson summary or lab
+  retrospective over any new automated capture.
+- Use `depends_on` only for realization-level dependencies (things that
+  must already be realized); keep learning prerequisites in
+  `prerequisites` as before.
+- Use `composes` when an Element visibly wraps or aggregates other
+  Elements (for example, a Kubernetes Job composing a `hello-pico`
+  executable).
+- Record `conformance_status: partial` honestly when a lab's
+  `validated_by` intentionally omits or skips a Constraint check;
+  learners benefit from explicit gaps.
+- Existing metadata (`prerequisites`, `references_labs`, `referenced_by`,
+  `produces`, and the Phase 1 fields) is preserved unchanged; the Phase 2
+  fields sit alongside them.
+
+### Out of scope for Phase 2
+
+Phase 2 intentionally does **not** implement:
+
+- OWL, SHACL, or any other formal ontology or schema enforcement.
+- Automated conformance checking of `metadata.yaml` against the
+  extended model.
+- Repo-wide retrofit of existing courses, lessons, labs, or exercises
+  to the new fields.
+- Automated feedback capture from runtime or CI evidence.
+- Cross-course automated graph or ontology extraction.
+- Programmatic linkage between `validated_by` items and the `verify.sh`
+  scripts they name.
+
+These remain candidates for later phases.
