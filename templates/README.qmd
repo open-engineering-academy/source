@@ -780,3 +780,189 @@ Phase 5 intentionally does **not** implement:
   report tracking.
 
 These remain candidates for later phases.
+
+
+## Constructive realization (Phase 6)
+
+Phase 6 extends the Phase 1–5 contract with the smallest additional
+vocabulary needed to **aggregate opt-in profile checks over time**: a
+report-index shape that catalogs the per-claimant reports produced by a
+profile check, a minimal historical-snapshot convention for retaining
+prior reports, and a clearer feedback-to-definition loop for claimants
+whose most recent report is `conformant`. It stays a documentation and
+metadata contract only: no dashboards, services, CI gates, or
+repository-wide analytics are introduced, and the Phase 5 profile-check
+workflow itself is unchanged.
+
+### Additional vocabulary
+
+- **Report index** — an aggregate, human-readable catalog of the
+  validation reports currently on disk for one profile. One index
+  describes one profile and lists one entry per known claimant report.
+  It exists so a reader can scan the current verdicts without walking
+  the filesystem; it does not run the profile check and does not
+  replace the per-claimant reports.
+- **Historical snapshot** — a prior validation report retained
+  alongside the current one for the same claimant. Snapshots are
+  read-only observations of what the profile check said at an earlier
+  point in time; they never override the current report referenced by
+  `validation_report`.
+- **Approved claimant** — a claimant whose most recent validation
+  report has `overall: conformant`. Only approved claimants are
+  expected to feed the Phase 2 `feedback[]` loop under this phase;
+  non-conformant or inconclusive reports are corrected first, per the
+  Phase 5 authoring guidance.
+
+### The `hello-pico-v1` report-index shape
+
+The report index for `hello-pico-v1` is a small YAML or JSON file that
+lists the validation reports currently on disk for that profile. It is
+authored (or regenerated) by the same author who runs the Phase 5
+profile check; Phase 6 does not require any new tooling to produce it.
+
+| Field          | Type             | Notes                                                                                                       |
+| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| `profile`      | string           | The profile the index describes. Currently always `hello-pico-v1`.                                          |
+| `generated_at` | string           | ISO 8601 date or datetime when the index was last refreshed.                                                |
+| `entries`      | list of mappings | One entry per known per-claimant validation report. See below.                                              |
+
+Each `entries` item carries:
+
+- `subject` — the claimant's `id` (matches the report's `subject`).
+- `subject_role` — the claimant's `constructive_role` under the profile.
+- `report` — repo-relative path or URL of the current per-claimant
+  report file.
+- `overall` — the current report's `overall` verdict
+  (`conformant` | `non-conformant` | `inconclusive`).
+- `checked_at` — the current report's `checked_at` value.
+- `history` — optional list of repo-relative paths or URLs of
+  historical snapshots for the same claimant, most recent first.
+
+The index MUST NOT restate `findings[]` from the underlying reports;
+those remain the authoritative record. The index is a directory, not a
+summary.
+
+### Historical-snapshot convention
+
+Phase 6 defines a minimal convention for keeping earlier reports
+alongside the current one, without introducing any versioning tooling:
+
+- The current per-claimant report keeps its stable path (the one
+  referenced by `validation_report`). Overwriting it with a new run is
+  the default.
+- To retain a prior report, copy it next to the current one either
+  under a `history/` subdirectory (for example,
+  `templates/examples/hello-pico-v1/reports/history/oe-course-crossplane.2026-08-01.yaml`)
+  or with an ISO-date suffix on the filename (for example,
+  `oe-course-crossplane.2026-08-01.yaml`). Both forms are acceptable;
+  authors SHOULD pick one and use it consistently within a profile.
+- Snapshots are read-only observations. Do not edit a snapshot to
+  reflect a later state of the metadata; edit the `metadata.yaml` and
+  regenerate the current report instead (see Phase 5's guidance on
+  reports as observations, not corrections).
+- Snapshot retention is deliberately unbounded and manual. Phase 6
+  does not define a rotation, pruning, or diffing policy; that remains
+  a candidate for later phases.
+
+### Feedback-to-definition loop for approved claimants
+
+Phase 2 already introduced `feedback[]` entries whose `refines` points
+at a governing `Definition`. Phase 6 clarifies how that loop is fed by
+an opt-in profile check without changing the Phase 2 field shape:
+
+- The loop applies to **approved claimants** only. A report with
+  `overall: non-conformant` or `inconclusive` is a correction signal
+  aimed at `metadata.yaml`, not a feedback signal aimed at the
+  Definition; fix the metadata (per Phase 5) before recording
+  `feedback[]` entries from it.
+- When an approved claimant's report surfaces an observation worth
+  refining the Definition (for example, a Constraint that turned out
+  to be trivially satisfied, or a `realization_pattern` label that is
+  no longer accurate), the author MAY add a Phase 2 `feedback[]` entry
+  to the relevant `metadata.yaml`. That entry SHOULD carry the
+  existing Phase 2 `observation`, `about`, and `refines` fields and
+  MAY additionally carry `from_report`, a repo-relative path or URL of
+  the validation report the observation was drawn from.
+- Refinement of the Definition itself (editing `constraints`,
+  `realization_pattern`, `purpose`, or similar) is always a normal
+  metadata edit by the Definition's author, reviewed on its own
+  merits. Phase 6 does not automate the refinement, and a `feedback[]`
+  entry alone does not change any field on the Definition.
+
+### Additional relationships
+
+Phase 6 adds only these relations on top of Phases 1–5. As before,
+the ones marked *(new)* are added by this phase; the others reuse
+existing fields with a slightly tighter meaning under the aggregate
+loop.
+
+| Relation                                     | Where it lives in `metadata.yaml` or adjacent files                     |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `Report index catalogs Validation report`    | index `entries[].report` referencing a per-claimant report path         |
+| `Historical snapshot preserves prior report` | snapshot file adjacent to the current report *(new, optional)*          |
+| `Feedback drawn from Validation report`      | claimant `feedback[].from_report` *(new, optional)*                     |
+| `Approved claimant refines Definition`       | claimant `feedback[].refines` (Phase 2), gated by an approved report    |
+
+### New optional metadata fields
+
+The following field MAY be added to any `metadata.yaml` file that also
+declares `checkable_profile: hello-pico-v1` and carries `feedback[]`.
+It is optional and descriptive in Phase 6; missing fields do not fail
+any render or validation. Phase 1–5 fields and the Phase 2 `feedback[]`
+entry shape remain unchanged and continue to sit alongside it.
+
+| Field                    | Type   | Applies to          | Notes                                                                                                                                                              |
+| ------------------------ | ------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `feedback[].from_report` | string | course, lesson, lab | Repo-relative path or URL of the validation report from which this feedback observation was drawn. Only meaningful when the claimant also declares a profile.      |
+
+The report-index file and any historical-snapshot files live next to
+the per-claimant reports (for `hello-pico-v1`, under
+`templates/examples/hello-pico-v1/reports/`). They are profile-tooling
+artefacts, not `metadata.yaml` fields, and so are not surfaced as new
+fields on courses, lessons, or labs.
+
+### Course-authoring guidance
+
+- Treat the report index as a **catalog**, not a summary: keep the
+  authoritative verdict and findings in the per-claimant reports and
+  refresh `generated_at` when the index is regenerated.
+- Regenerate the current per-claimant report by overwriting; move the
+  prior file into `history/` (or rename it with an ISO-date suffix)
+  only when the earlier state is worth keeping. Retention is a
+  deliberate authoring choice, not a default.
+- Record `feedback[].from_report` only on approved claimants and only
+  when the observation genuinely came from a validation report. Notes
+  captured from a lesson summary or a lab retrospective continue to
+  use the Phase 2 `feedback[]` shape without a `from_report` pointer.
+- Do not edit a historical snapshot to reflect newer metadata. Fix
+  `metadata.yaml`, regenerate the current report, and (if the change
+  merits it) copy the outgoing report into `history/` first.
+- Existing metadata (Phase 1–5 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 6 additions sit alongside them.
+
+### Out of scope for Phase 6
+
+Phase 6 intentionally does **not** implement:
+
+- Repo-wide CI gating on the report index, the historical snapshots,
+  or the feedback loop, and any render/publish gate driven by
+  aggregate verdicts.
+- A required retrofit of existing courses, lessons, labs, or
+  exercises to opt into `checkable_profile`, to ship a report index,
+  or to record `feedback[].from_report`.
+- Additional checkable profiles beyond `hello-pico-v1`, and any
+  cross-profile aggregation.
+- Dashboards, services, portals, or notification pipelines fed by the
+  report index or the historical snapshots.
+- Automated diffing, pruning, rotation, or retention policies for
+  historical snapshots.
+- Automated propagation of `feedback[]` entries into edits on the
+  governing `Definition`; Definitions are still refined by their
+  authors as ordinary metadata edits.
+- Formal schema enforcement (OWL, SHACL, JSON Schema, ...) of the
+  report-index shape or the `feedback[].from_report` field.
+- Any triple-store, graph, or database persistence of reports,
+  snapshots, or feedback entries.
+
+These remain candidates for later phases.
