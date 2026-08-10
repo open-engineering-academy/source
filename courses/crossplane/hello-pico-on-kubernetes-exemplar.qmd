@@ -191,4 +191,8 @@ See the [Glossary](glossary.qmd) for Crossplane-side vocabulary, the
 [constructive-realization reference](../pico/constructive-realization.html)
 for the underlying model, and
 [Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
-for the laptop-level Realization this page builds on.
+for the laptop-level Realization this page builds on. For the full
+staged chain that adds Sandcastle construction between the laptop and
+the cluster, see
+[The Hello Pico realization chain](../sandcastle/hello-pico-realization-chain.html)
+in the Sandcastle course.

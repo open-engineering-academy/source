@@ -1,0 +1,293 @@
+---
+title: "The Hello Pico realization chain"
+subtitle: "One Pico Definition, staged through Sandcastle construction and Crossplane hand-off, ending as a validated Kubernetes Job Element."
+---
+
+This page is the academy's **staged realization-chain reference** for
+Hello Pico. It takes the same Hello Pico Definition introduced in the
+Pico course, follows it *across* three courses — through Sandcastle
+construction, through the Crossplane hand-off, into a Kubernetes
+composition — and points each stage at the concrete learner-visible
+material that already exists.
+
+Where the earlier exemplars stop at a single Realization —
+[Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+covers the laptop Realization; the Crossplane
+[Hello Pico on Kubernetes exemplar](../crossplane/hello-pico-on-kubernetes-exemplar.html)
+covers the cross-course Realization — this page treats the whole
+Pico → Sandcastle → Crossplane → Kubernetes path as **one staged
+chain** and names lifecycle, partial realization, validation evidence,
+and feedback along it.
+
+The underlying vocabulary — Definition, Realization, Element,
+Dependency, Composition, Constraint, Validation, Feedback, plus the
+Phase 3 additions Lifecycle state and Evidence — is defined in the
+Pico course's
+[constructive-realization reference](../pico/constructive-realization.html)
+and extended by the Phase 3 section of
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page).
+
+## The Definition stays the same
+
+Every stage in the chain realizes the **same** Hello Pico Definition:
+*"a minimal Pico that, given a single greeting Rule, produces a
+runnable artifact that emits the greeting `Hello, Pico!`."* The
+Definition is stated in the Pico course
+([Part 1 · Introduction](../pico/part-1/01-introduction/index.html))
+and its identity is the artifact name `hello-world-pico` under the
+`produces` field of the
+[pico course metadata](../pico/metadata.yaml).
+
+What changes across stages is not *what* is being realized, but *how
+far along* the Realization is and *which Element* is being observed.
+
+## The staged chain
+
+```
+Rule            Sandcastle branch        Hand-off XR              Composed Job
+(Definition)    (Constructed input)      (Composition request)    (Element)
+    │                    │                       │                        │
+    ▼                    ▼                       ▼                        ▼
+ rules/          sandcastle/            work/.../build/xr.yaml    default/hello-…
+ hello.yaml      hello-world-pico       (byte-equivalent to        Job (Complete,
+                 branch, rules/         labs/hello-pico-on-         logs=Hello,
+                 hello.yaml             kubernetes/downloads/       Pico!)
+                                        05-xr.yaml)
+    │                    │                       │                        │
+   Pico              Sandcastle             hand-off lab              Crossplane
+   course            course · Part 1        (Sandcastle · Part 3)     course · Part 1
+```
+
+Each arrow is a Realization step that a learner can run today.
+
+## Stage 1 — Definition (Pico course)
+
+- **What the learner does.** Authors `rules/hello.yaml` on a laptop
+  and runs the [Hello Pico lab](../../labs/hello-pico/) end-to-end.
+- **Realization pattern.** `rules-parser-composer-pipeline` — see
+  [`labs/hello-pico/metadata.yaml`](../../labs/hello-pico/metadata.yaml).
+- **Element observed at this stage.** The executable
+  `build/hello-world-pico` on the learner's laptop.
+- **Constraint anchored here.** Observable behaviour — running the
+  executable prints exactly `Hello, Pico!`.
+- **Where the chain touches this stage.** The Rule authored here is
+  the *same* Rule shape the Sandcastle lab commits to a durable
+  branch in Stage 2 and the same greeting `value` the hand-off in
+  Stage 3 promotes into a Crossplane XR.
+
+## Stage 2 — Construction (Sandcastle course · Part 1)
+
+- **What the learner does.** Runs the reusable
+  [Hello World Pico Sandcastle lab](../../labs/hello-world-pico-sandcastle/)
+  taught by [Part 1 · Inside a Sandcastle](part-1/01-inside-a-sandcastle/index.qmd).
+- **Realization pattern.** An isolated agent iterates inside a
+  disposable workspace and pushes exactly one durable Git artifact:
+  the branch `sandcastle/hello-world-pico` on the target repository,
+  carrying `rules/hello.yaml`.
+- **Element observed at this stage.** The Sandcastle-produced branch
+  named in
+  [`labs/hello-world-pico-sandcastle/metadata.yaml`](../../labs/hello-world-pico-sandcastle/metadata.yaml)
+  under `produces: [hello-world-pico-sandcastle-branch]`.
+- **Constraint anchored here.** The Sandcastle boundary — nothing the
+  hand-off does in Stage 3 may reach back into the disposed sandbox.
+- **Where the chain touches this stage.** The branch is the input
+  that Stage 3's hand-off reads read-only.
+
+## Stage 3 — Hand-off (Sandcastle course · Part 3 · Lesson 01)
+
+- **What the learner does.** Runs the reusable
+  [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/)
+  taught by
+  [Part 3 · Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd).
+- **Realization pattern.** A single deterministic script
+  ([`downloads/handoff.sh`](../../labs/handoff-sandcastle-to-kubernetes/downloads/handoff.sh))
+  reads the greeting `value` from the Sandcastle branch and emits an
+  `XHelloWorldPico` XR that is byte-equivalent to the Kubernetes
+  lab's reference XR.
+- **Element observed at this stage.** The generated file
+  `work/handoff-sandcastle-to-kubernetes/build/xr.yaml`, matching
+  `produces: [hello-world-pico-on-kubernetes-xr]` in the
+  [hand-off lab metadata](../../labs/handoff-sandcastle-to-kubernetes/metadata.yaml).
+- **Constraint anchored here.** Byte-equivalence to
+  [`05-xr.yaml`](../../labs/hello-pico-on-kubernetes/downloads/05-xr.yaml) —
+  the downstream contract that Stage 4 depends on.
+- **Where the chain touches this stage.** The generated XR is the
+  request that Stage 4's Crossplane composition consumes without
+  modification.
+
+## Stage 4 — Composition (Crossplane course · Part 1)
+
+- **What the learner does.** Runs the reusable
+  [Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/)
+  taught by
+  [Crossplane · Part 1 · Composing Hello Pico on Kubernetes](../crossplane/part-1/01-composing-hello-pico-on-kubernetes/index.html).
+- **Realization pattern.**
+  `crossplane-xr-of-existing-element` — see
+  [`labs/hello-pico-on-kubernetes/metadata.yaml`](../../labs/hello-pico-on-kubernetes/metadata.yaml).
+  The
+  [Composition](../../labs/hello-pico-on-kubernetes/downloads/04-composition.yaml)
+  reconciles one `XHelloWorldPico` XR into one cluster-scoped
+  `Object` Managed Resource that in turn creates a Kubernetes `Job`.
+- **Element observed at this stage.** The reconciled `Job` in the
+  `default` namespace of the local minikube cluster, plus its pinned
+  Managed Resources.
+- **Constraints anchored here.** Shape (XRD-validated), runtime form
+  (`Job`), successful reconciliation (XR `Ready=True`, `Job`
+  `Complete=True`).
+- **Where the chain touches this stage.** The XR accepted here is the
+  exact file Stage 3 emitted.
+
+## Stage 5 — Kubernetes Job Element (validation and evidence)
+
+- **What the learner does.** Executes
+  [`downloads/verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh)
+  from the Kubernetes lab. `verify.sh` waits for the composed `Job`,
+  reads its logs, and asserts that they contain exactly
+  `Hello, Pico!`.
+- **Element observed at this stage.** The fully validated Kubernetes
+  `Job` — the terminal Element of the whole chain. Its identity
+  (`hello-world-pico-on-kubernetes`) matches the `produces` entry in
+  the [Crossplane course metadata](../crossplane/metadata.yaml).
+- **Constraint anchored here.** Observable behaviour — the composed
+  `Job` prints exactly the Definition's greeting to standard output.
+  This is the *same* observable constraint that Stage 1 enforced on
+  the laptop, now enforced against a Kubernetes runtime.
+- **Evidence available to learners.** The lab's `verify.sh` output
+  line, the captured
+  `build/hello-world-pico-on-kubernetes/greeting.txt` file, and the
+  `validation_results` block in the
+  [Kubernetes lab metadata](../../labs/hello-pico-on-kubernetes/metadata.yaml)
+  showing all three checks `passed`.
+
+## Lifecycle across the chain
+
+Each stage sits at its own point on the Phase 3 lifecycle. Today the
+whole chain is `operational` end-to-end for the current runnable
+scope; the table below records where each stage lives so learners can
+see the chain honestly.
+
+| Stage                   | Realization                                                                                 | Lifecycle state today | Conformance today |
+| ----------------------- | ------------------------------------------------------------------------------------------- | --------------------- | ----------------- |
+| 1 · Definition          | [Hello Pico lab](../../labs/hello-pico/)                                                    | `operational`         | `conformant`      |
+| 2 · Construction        | [Hello World Pico Sandcastle lab](../../labs/hello-world-pico-sandcastle/)                  | `operational`         | `conformant`      |
+| 3 · Hand-off            | [Sandcastle → Kubernetes hand-off lab](../../labs/handoff-sandcastle-to-kubernetes/)        | `operational`         | `conformant`      |
+| 4 · Composition         | [Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/)                        | `operational`         | `conformant`      |
+| 5 · Validation/Element  | [`downloads/verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh)            | `operational`         | `conformant`      |
+
+An `operational` stage means every Constraint declared at that stage
+has a Validation that passes against a concrete Element on a
+learner's machine. Deprecated Realizations are intentionally not
+introduced anywhere on the chain.
+
+## Partial realization along the chain
+
+A learner does not have to complete the whole chain in one sitting.
+Each stage is designed to be honest about *how far* it goes:
+
+- **Stopping at Stage 1** yields a valid Hello Pico Element on the
+  laptop and no cluster-side Element. The Realization is complete
+  against the Pico Definition; it is `partial` against the Kubernetes
+  Definition.
+- **Stopping at Stage 2** yields a durable Sandcastle branch but no
+  runtime Element yet. `conformance_status` for cluster-side
+  Constraints is `not-run`, honestly.
+- **Stopping at Stage 3** yields a byte-equivalent XR but no reconciled
+  `Job`. The hand-off's `verify.sh` still passes; the Kubernetes lab's
+  Validations remain `not-run`.
+- **Stopping at Stage 4** without Stage 5 yields a running `Job` but
+  no captured observable-behaviour evidence. This is *not* the
+  suggested resting point — the whole chain treats
+  observable behaviour as the final Constraint, and Stage 5 is what
+  makes the Element `conformant` end-to-end.
+
+`lifecycle_state: partial` is the right label for any stage a learner
+has authored a path to but not yet exercised. The Phase 3 guidance in
+`templates/README.qmd` covers how to record this without confusing
+`lifecycle_state` with `conformance_status`.
+
+## Validation evidence per stage
+
+Each Constraint on the chain is checked by something the learner
+already runs. This is the Phase 3 Validation → Evidence chain, made
+explicit.
+
+| Stage                   | Constraint (natural language)                                                     | Validation (what the learner runs)                                                                                                                                                       | Evidence a learner can see                                                                                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 · Definition          | Executable prints `Hello, Pico!` on standard output.                              | [Hello Pico walkthrough Step 5](../../labs/hello-pico/walkthrough.html) — `./build/hello-world-pico`.                                                                                     | Terminal output of the executable.                                                                                                                                            |
+| 2 · Construction        | The Sandcastle boundary holds; only the branch escapes.                           | [Hello World Pico Sandcastle lab `verify.sh`](../../labs/hello-world-pico-sandcastle/downloads/verify.sh).                                                                              | `verify.sh` `verify: OK` line; `sandcastle/hello-world-pico` branch present on the target repo.                                                                              |
+| 3 · Hand-off            | Generated XR is byte-equivalent to the reference XR.                              | [Hand-off lab `verify.sh`](../../labs/handoff-sandcastle-to-kubernetes/downloads/verify.sh).                                                                                             | `verify.sh` diff output; `work/handoff-sandcastle-to-kubernetes/build/xr.yaml` on the learner's disk.                                                                        |
+| 4 · Composition         | XR reaches `Ready=True`; composed `Job` reaches `Complete=True`.                  | [Kubernetes lab walkthrough Step 7](../../labs/hello-pico-on-kubernetes/walkthrough.html) — `kubectl wait --for=condition=Ready xhelloworldpico/hello`.                                    | `kubectl get xhelloworldpico`, `kubectl get job` output; screenshot targets under `labs/hello-pico-on-kubernetes/screenshots/`.                                              |
+| 5 · Validation/Element  | Composed `Job`'s logs contain exactly `Hello, Pico!`.                             | [Kubernetes lab `verify.sh`](../../labs/hello-pico-on-kubernetes/downloads/verify.sh).                                                                                                   | Captured `build/hello-world-pico-on-kubernetes/greeting.txt`; `validation_results` block in the [Kubernetes lab metadata](../../labs/hello-pico-on-kubernetes/metadata.yaml). |
+
+Every row corresponds to something already on disk in this repository;
+none of it is invented for this reference page.
+
+## Feedback back into the Definition
+
+The staged chain exposes information no single stage can. Two concrete
+Feedback surfaces already exist and flow back into how the Definition
+is authored:
+
+- **Version pins** in
+  [`labs/hello-pico-on-kubernetes/objectives.qmd`](../../labs/hello-pico-on-kubernetes/objectives.html)
+  (Crossplane, Provider, Function, Kubernetes) record the exact
+  versions under which the Kubernetes Element was observed to
+  conform. Newer versions that break the chain become Feedback
+  candidates for tightening the Definition's supported-runtime
+  clause.
+- **Screenshot targets** under
+  `labs/hello-pico-on-kubernetes/screenshots/` and
+  `labs/hello-world-pico-sandcastle/screenshots/` name the cluster and
+  Sandcastle states worth capturing when a stage succeeds. When
+  learners hit a state the screenshots do not describe, that gap is
+  Feedback for either the walkthrough or the Definition.
+
+Feedback does not change the Definition on this page — it names
+*where* learning from realized Elements flows back into the academy
+material.
+
+## Where compose / construct / behave fit
+
+The chain sits at the exact intersection of the academy's three-layer
+story:
+
+- **Compose** — Stages 3–4. Crossplane composes the Hello Pico Element
+  from the hand-off XR.
+- **Construct** — Stage 2. The Sandcastle constructs the durable
+  input the hand-off promotes.
+- **Behave** — Stages 1 and 5. The observable behaviour on the
+  laptop (Stage 1) and inside the cluster (Stage 5) is the *same*
+  Pico behaviour.
+
+The Definition threads through all three layers unchanged; the chain
+records how each layer contributes a different Realization step
+towards the same Element identity.
+
+## What this page does *not* add
+
+- No new Pico pipeline stage, Sandcastle capability, Crossplane
+  primitive, Kubernetes resource, or lab step. Every artifact this
+  page names already exists in the referenced course lessons or labs.
+- No formal schema, OWL, SHACL, or conformance checker on top of the
+  existing primitives.
+- No retrofit of the existing Pico or Crossplane exemplars; they
+  remain the single-stage references they were and are pointed at
+  from the See also section below.
+- No new automated feedback capture from runtime or CI.
+
+## See also
+
+- [Hello Pico as a constructive exemplar](../pico/hello-pico-exemplar.html)
+  — Stage 1 in isolation, as a single-course exemplar.
+- [Hello Pico on Kubernetes as a constructive exemplar](../crossplane/hello-pico-on-kubernetes-exemplar.html)
+  — the Kubernetes Element as a cross-course exemplar, without the
+  Sandcastle construction stage.
+- [Constructive-realization reference](../pico/constructive-realization.html)
+  — the underlying vocabulary and where the compose / construct /
+  behave layers map onto it.
+- [Part 3 · Handing off to Kubernetes](part-3/01-handing-off-to-kubernetes/index.qmd)
+  and [Part 1 · Inside a Sandcastle](part-1/01-inside-a-sandcastle/index.qmd)
+  — the two Sandcastle lessons the chain passes through.
+- [Glossary](glossary.qmd) — one-line definitions of the Sandcastle
+  vocabulary used above.

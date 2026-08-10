@@ -139,3 +139,6 @@ Realization changes.
 See the [constructive-realization reference](constructive-realization.qmd)
 for the full Phase 1 scope, and `templates/README.qmd` (in-repo scaffold,
 not published as a learner page) for the underlying metadata contract.
+For the full staged Pico → Sandcastle → Crossplane → Kubernetes chain,
+see [The Hello Pico realization chain](../sandcastle/hello-pico-realization-chain.html)
+in the Sandcastle course.
