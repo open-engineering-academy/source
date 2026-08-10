@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - glossary.qmd
+
+website:
+  title: "Manifold"
+  description: "Running Hello Pico on Manifold — the first runtime-focused course of the Open Engineering Academy."
+  site-url: "https://academy.open-engineering.io/courses/manifold/"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  page-footer:
+    left: "Manifold — Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto

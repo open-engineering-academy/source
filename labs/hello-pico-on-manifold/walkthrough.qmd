@@ -1,0 +1,221 @@
+---
+title: "Walkthrough"
+description: "Host one Pico on Manifold, wire one Wrangler Channel, send one event, capture one Observation."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them
+to match your setup. The walkthrough assumes you have completed the
+[one-time environment setup](objectives.qmd#environment) and that
+`docker`, `minikube`, and `kubectl` all resolve on your `PATH`.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [Hello Pico lab](../hello-pico/index.qmd) so the greeting
+value used here (`Hello, Pico!`) is meaningful. This lab reuses the
+same greeting, but delivered by a Pico that is **hosted** by a
+Manifold RuntimeEnvironment on Kubernetes instead of invoked directly
+from a shell on your laptop.
+:::
+
+## Step 1 — Create a working directory and copy the manifests
+
+From the root of your local clone of the academy repository:
+
+```bash
+mkdir -p work/hello-pico-on-manifold && cd work/hello-pico-on-manifold
+cp -r ../../labs/hello-pico-on-manifold/downloads/. .
+ls -1
+```
+
+Expected output (order-independent):
+
+```
+01-namespace.yaml
+02-pico-engine.yaml
+03-channel-service.yaml
+04-topology-configmap.yaml
+event.json
+topology.yaml
+verify.sh
+```
+
+`topology.yaml` is the Wrangler-declared InteractionTopology fragment
+authored for this lab. The four numbered YAMLs are what is applied to
+the cluster; `event.json` is the single event payload; `verify.sh` is
+the automatable check the walkthrough runs in Step 7.
+
+## Step 2 — Start a local minikube cluster
+
+Start a dedicated minikube profile so this lab does not interfere with
+other clusters you may run (for example the `crossplane-lab` profile
+from the [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)):
+
+```bash
+minikube start --profile manifold-lab \
+  --driver=docker --cpus=2 --memory=4g \
+  --kubernetes-version=v1.31.0
+```
+
+Confirm the cluster is Ready:
+
+```bash
+kubectl config current-context
+kubectl get nodes
+```
+
+Expected output:
+
+```
+manifold-lab
+NAME           STATUS   ROLES           AGE   VERSION
+manifold-lab   Ready    control-plane   1m    v1.31.0
+```
+
+## Step 3 — Read the Wrangler-declared topology
+
+Before applying anything, read `topology.yaml`. This is the
+authoritative declaration of the runtime story for this lab: one
+Channel `hello` carrying one `EventType` `hello.request`, one Pico
+`hello-world-pico` subscribed to that Channel, producing one
+Observation.
+
+```bash
+cat topology.yaml
+```
+
+The rest of this walkthrough realizes this topology on Kubernetes. The
+Kubernetes objects you apply below are the concrete realization of
+what `topology.yaml` declares in Wrangler vocabulary; the topology
+itself is not applied to the cluster directly — Step 6 makes it
+reachable inside the cluster as a `ConfigMap`.
+
+## Step 4 — Create the Manifold RuntimeEnvironment Namespace
+
+```bash
+kubectl apply -f 01-namespace.yaml
+kubectl get ns manifold --show-labels
+```
+
+The `manifold` Namespace is the Manifold RuntimeEnvironment for this
+lab. Labels record its role: `oe.academy/runtime-environment=manifold`
+and `oe.academy/runtime-substrate=kubernetes`.
+
+## Step 5 — Deploy the hosted Pico engine
+
+Apply the Pico engine Pod that plays the role of the in-process host
+for `hello-world-pico`, and wait for it to become Ready:
+
+```bash
+kubectl apply -f 02-pico-engine.yaml
+kubectl -n manifold wait --for=condition=Ready --timeout=60s pod/pico-engine
+```
+
+The initial log line advertises the RuntimeEnvironment role:
+
+```bash
+kubectl -n manifold logs pod/pico-engine
+```
+
+Expected output:
+
+```
+pico-engine: hosted by manifold on kubernetes; waiting for one event on channel 'hello'
+```
+
+The Pod is single-shot: it will accept exactly one event on channel
+`hello` (Step 7) and then Succeed.
+
+## Step 6 — Wire the Channel and publish the topology
+
+Apply the Channel Service that realizes `channels[0].name: hello` from
+the topology, and the ConfigMap that publishes the topology fragment
+inside the cluster:
+
+```bash
+kubectl apply -f 03-channel-service.yaml
+kubectl apply -f 04-topology-configmap.yaml
+kubectl -n manifold get svc hello
+kubectl -n manifold get cm hello-world-pico-on-manifold-topology
+```
+
+## Step 7 — Send one event and verify one Observation
+
+Run the shipped verification script. It plays the Control Surface role
+(a small Python-CLI-style shell command) by starting an in-cluster
+`busybox` client that opens one TCP connection to the Channel Service
+and writes `event.json`. The Pico engine consumes that one event,
+prints one Observation line, and exits.
+
+```bash
+bash verify.sh
+```
+
+Expected output ends with:
+
+```
+pico[hello-world-pico] observation: Hello, Pico!
+verify: OK — one Observation 'pico[hello-world-pico] observation: Hello, Pico!' produced by hosted Pico
+```
+
+## Step 8 — Capture the produced artifact
+
+Capture the manifests you applied, the topology fragment, the event
+payload, and the observed log line into a single
+`hello-world-pico-on-manifold/` directory — this is the lab's
+`produces:` artifact:
+
+```bash
+mkdir -p build/hello-world-pico-on-manifold/manifests
+cp 0*.yaml build/hello-world-pico-on-manifold/manifests/
+cp topology.yaml build/hello-world-pico-on-manifold/
+cp event.json build/hello-world-pico-on-manifold/
+kubectl -n manifold logs pod/pico-engine \
+  | grep '^pico\[hello-world-pico\] observation:' \
+  > build/hello-world-pico-on-manifold/observation.txt
+grep -Fqx 'pico[hello-world-pico] observation: Hello, Pico!' \
+  build/hello-world-pico-on-manifold/observation.txt \
+  && echo "artifact OK"
+ls -1 build/hello-world-pico-on-manifold \
+      build/hello-world-pico-on-manifold/manifests
+```
+
+`observation.txt` is the runtime Observation the hosted Pico produced;
+it is the Phase 7 counterpart of the `greeting.txt` captured in the
+[Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd).
+
+## Step 9 — Cleanup
+
+```bash
+kubectl delete -f 04-topology-configmap.yaml --ignore-not-found
+kubectl delete -f 03-channel-service.yaml --ignore-not-found
+kubectl delete -f 02-pico-engine.yaml --ignore-not-found
+kubectl delete -f 01-namespace.yaml --ignore-not-found
+minikube delete --profile manifold-lab
+cd ../.. && rm -rf work/hello-pico-on-manifold
+```
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `kubectl wait ... pod/pico-engine` times out on Ready, run
+  `kubectl -n manifold describe pod/pico-engine` and check the
+  `busybox:1.36` image pull. Network access to Docker Hub is required
+  the first time.
+- If the Pod is Ready but `verify.sh` reports the expected line was
+  not found, re-run `kubectl -n manifold logs pod/pico-engine`
+  manually: some minikube drivers buffer the very first log line. The
+  Pod's `Succeeded` phase is the authoritative signal that the single
+  event was consumed.
+- The Pico engine Pod is deliberately single-shot. If you want to
+  send another event, delete the Pod and reapply
+  `02-pico-engine.yaml`. Multi-event topologies are out of scope for
+  this lab.
+- If the sender Pod created by `verify.sh` is left behind for any
+  reason, remove it with
+  `kubectl -n manifold delete pod event-sender --ignore-not-found`.
+:::
+
+## Next
+
+Compare your work against the [reference solution](solution.qmd).

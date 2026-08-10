@@ -18,6 +18,10 @@ project:
     - labs/hello-pico-on-kubernetes/objectives.qmd
     - labs/hello-pico-on-kubernetes/walkthrough.qmd
     - labs/hello-pico-on-kubernetes/solution.qmd
+    - labs/hello-pico-on-manifold/index.qmd
+    - labs/hello-pico-on-manifold/objectives.qmd
+    - labs/hello-pico-on-manifold/walkthrough.qmd
+    - labs/hello-pico-on-manifold/solution.qmd
     - labs/hello-world-pico-sandcastle/index.qmd
     - labs/hello-world-pico-sandcastle/objectives.qmd
     - labs/hello-world-pico-sandcastle/walkthrough.qmd
@@ -41,6 +45,7 @@ project:
     - "!courses/kubernetes/"
     - "!courses/crossplane/"
     - "!courses/sandcastle/"
+    - "!courses/manifold/"
     - "!templates/"
     - "!shared/"
 

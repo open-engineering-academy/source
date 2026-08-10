@@ -1,0 +1,81 @@
+---
+title: "Glossary"
+---
+
+Terms used across the Manifold course. Runtime vocabulary aligns with
+the [Phase 7 constructive-realization contract](../../templates/README.qmd).
+For Pico-side vocabulary (Rule, Parser, Composer, Pico), see the
+[Pico course glossary](../pico/glossary.html). For composition
+vocabulary (XRD, Composition, XR, Managed Resource), see the
+[Crossplane course glossary](../crossplane/glossary.html).
+
+## Channel
+A named runtime pathway that carries typed values between Elements
+inside an `InteractionTopology`. In this course, one Wrangler-declared
+Channel wires exactly one event into the hosted Pico. The Channel is
+the wire; it is not the payload.
+
+## Control Surface
+An operator- or learner-facing interface that expresses OperatorIntent
+against declared runtime state. In this course the Control Surface is
+a small **Python CLI-style shell command** (`kubectl exec` /
+`curl`) that sends one event onto the Channel. Graphical Control
+Surfaces (for example, Home Assistant) are out of scope.
+
+## Event
+A single value delivered onto a Channel. Under the Phase 7 contract an
+event conforms to an `EventType` — described here in prose and a small
+inline shape rather than a formal schema.
+
+## EventType
+The typed contract for values carried by a Channel. In this course the
+only `EventType` is `hello.request`, a small JSON-shaped payload
+carrying a `value` field that the hosted Pico echoes back on its log.
+
+## InteractionTopology
+A declarative description of which Elements interact through which
+Channels within a `RuntimeEnvironment`. In this course the topology is
+minimal: one Pico and one Channel, authored as a small Wrangler-style
+YAML fragment shipped with the lab.
+
+## Manifold
+The **RuntimeEnvironment** taught in this course. Manifold hosts Pico
+Elements on a Kubernetes RuntimeSubstrate and owns their lifecycle and
+notification path. Manifold does not replace Kubernetes, Crossplane,
+or Sandcastle — it sits on top of them.
+
+## Observation
+A runtime-captured fact about an Element's behaviour inside a
+RuntimeEnvironment. In this course the single Observation is the one
+log line the hosted Pico prints in response to the one event sent onto
+its Channel. Observations feed Phase 2 `feedback[]`.
+
+## OperatorIntent
+A declaration of desired runtime state expressed through a Control
+Surface. In this course the OperatorIntent is: "send one
+`hello.request` event to the hosted Pico via channel `hello`, and
+capture the response."
+
+## Pico engine
+The in-process host, inside Manifold, that actually runs a Pico
+Element. The Pico engine consumes events from a Channel and produces
+Observations. It is the runtime counterpart of the `hello-world-pico`
+artifact produced by the [Hello Pico lab](../../labs/hello-pico/index.qmd).
+
+## RuntimeEnvironment
+A concrete environment hosted on the RuntimeSubstrate in which Pico
+Elements execute and interact. In this course the RuntimeEnvironment
+is **Manifold**, deployed onto a local minikube cluster. A
+RuntimeEnvironment runs *on* the RuntimeSubstrate; it does not replace
+it.
+
+## RuntimeSubstrate
+The underlying execution layer that hosts every runtime Element in the
+academy. In this course, and across the Hello Pico roadmap, the
+RuntimeSubstrate is always **Kubernetes** (concretely, minikube).
+
+## Wrangler
+The **InteractionTopology authoring** surface. Wrangler outputs a
+declarative topology (Channels, subscriptions, children) that
+Manifold applies over the runtime. Wrangler is not the runtime; it is
+an additional declarative input to the same Realization chain.

@@ -1,0 +1,106 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico on Manifold teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Deploy a small **Manifold** RuntimeEnvironment onto a local
+  Kubernetes cluster.
+- Host a **Pico engine** Pod inside that RuntimeEnvironment as the
+  in-process host for one Pico Element.
+- Declare a single **Wrangler** Channel and subscription that wires
+  one event into the hosted Pico, using the topology YAML fragment
+  shipped with this lab.
+- Send exactly one event onto that Channel with a small Control
+  Surface command (a `kubectl exec` invoking `wget` inside the
+  cluster).
+- Capture the single log line the Pico prints in response as the
+  lab's runtime **Observation**, and store it alongside the applied
+  manifests as `hello-world-pico-on-manifold/observation.txt`.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the [Hello Pico lab](../hello-pico/index.qmd) — the
+  greeting value in this lab reuses the same `Hello, Pico!` string.
+- Familiarity with the [Manifold course](../../courses/manifold/index.html)
+  vocabulary (RuntimeSubstrate, RuntimeEnvironment, Channel, EventType,
+  Observation).
+- A local Kubernetes cluster; see the
+  [Kubernetes setup foundation](../../courses/kubernetes/index.html)
+  for the canonical minikube install, PATH checks, and first cluster
+  bring-up. `helm` is **not** required for this lab.
+:::
+
+## Environment
+
+The canonical local Kubernetes setup — supported OS, install commands
+for `docker`, `minikube`, and `kubectl`, PATH checks, and a first
+cluster bring-up — lives in the
+[Kubernetes course setup foundation](../../courses/kubernetes/index.html).
+Complete that page first so `docker`, `minikube`, and `kubectl`
+resolve on your `PATH`.
+
+Lab-specific additions on top of that canonical setup:
+
+- **Reference minikube pin**: `v1.38.1` was used to author this lab
+  (any `v1.34+` should work).
+- **Bash utilities**: `grep`, `cat`, `mkdir`, `cp` — invoked by the
+  walkthrough and by `verify.sh`.
+- **Estimated time**: **45–60 minutes** (of which the cluster start
+  accounts for roughly 2–5 minutes).
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  minikube delete --profile manifold-lab
+  rm -rf build/hello-world-pico-on-manifold work/hello-pico-on-manifold
+  ```
+
+## Pinned versions (reference)
+
+The walkthrough was authored and verified against these versions.
+Newer versions are expected to work; older Kubernetes versions may
+lack API resources used by the shipped manifests.
+
+- Kubernetes API version in minikube: **v1.31.0**
+- Container image used as the Pico engine stand-in: **`busybox:1.36`**
+  (chosen for its small footprint and the `nc` / `wget` utilities the
+  lab uses to send and receive one event over the Channel).
+
+::: {.callout-note title="Why busybox for the Pico engine"}
+The Pico engine in this lab is deliberately implemented as a small
+`busybox`-based Pod running a single-shot listener. It plays the
+**role** of a Pico engine hosted by a Manifold RuntimeEnvironment:
+it consumes one event from a Channel and produces one Observation
+back onto its own log. It is not a full Pico engine implementation;
+Phase 7 of the constructive-realization contract explicitly says no
+new runtime implementation is introduced here. Later curriculum waves
+may swap the stand-in for a real Pico engine image without changing
+the surrounding topology.
+:::
+
+## One-time setup (optional)
+
+The walkthrough uses a dedicated minikube profile named
+`manifold-lab` so it does not interfere with other clusters (for
+example the `crossplane-lab` profile from the
+[Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)).
+If you prefer to reuse an existing minikube cluster, drop
+`--profile manifold-lab` from every command. If you use a different
+Kubernetes distribution (kind, k3d, docker-desktop), all `kubectl`
+steps below still apply.
+
+## Related material
+
+- [Manifold course](../../courses/manifold/index.html) — the
+  conceptual course this lab implements.
+- [Hello Pico lab](../hello-pico/index.qmd) — produces the
+  `hello-world-pico` artifact directly from a Rule, without a runtime
+  host.
+- [Hello Pico on Kubernetes lab](../hello-pico-on-kubernetes/index.qmd)
+  — composes the greeting onto Kubernetes via Crossplane; sibling
+  path in the compose/construct/behave triangle, not a prerequisite
+  for this runtime-focused lab.

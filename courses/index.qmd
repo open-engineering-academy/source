@@ -46,6 +46,15 @@ The three core courses map one-to-one onto the academy's three-layer story —
   foundation** rather than a full Kubernetes course — other surfaces
   (notably the Crossplane course and the Hello Pico on Kubernetes
   lab) link here as the single source of truth for minikube setup.
+- **[Manifold](manifold/)** — the academy's first **runtime-focused**
+  course. Frames Manifold as a Kubernetes-hosted `RuntimeEnvironment`
+  that hosts one Pico Element via a Wrangler-declared Channel, using
+  the vocabulary from the Phase 7 constructive-realization contract.
+  Ships with the runnable
+  [Hello Pico on Manifold lab](../labs/hello-pico-on-manifold/). Scoped
+  to one Pico, one Channel, one event, and one Observation; it is
+  additive to the compose/construct/behave triangle rather than a
+  fourth phase.
 
 More course sites will be added as the corresponding learning paths on the
 [Curriculum](../curriculum/index.qmd) page are developed.

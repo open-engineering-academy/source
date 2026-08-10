@@ -18,6 +18,14 @@ encounter a consistent experience across the academy.
   [crossplane course](../courses/crossplane/). Machine-readable
   descriptor:
   [`labs/hello-pico-on-kubernetes/metadata.yaml`](hello-pico-on-kubernetes/metadata.yaml).
+- **[Hello Pico on Manifold](hello-pico-on-manifold/)** — the first
+  runtime-focused lab: host one Pico Element inside a Manifold
+  `RuntimeEnvironment` on local minikube, wire it through one
+  Wrangler-declared Channel, send exactly one event, and capture the
+  single Observation the hosted Pico produces. Referenced from the
+  [manifold course](../courses/manifold/). Machine-readable
+  descriptor:
+  [`labs/hello-pico-on-manifold/metadata.yaml`](hello-pico-on-manifold/metadata.yaml).
 - **[Hello World Pico Sandcastle](hello-world-pico-sandcastle/)** — the
   first runnable Sandcastle lab: run a Sandcastle end-to-end to
   construct the same `hello-world-pico` artifact on a dedicated

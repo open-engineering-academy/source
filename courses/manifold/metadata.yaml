@@ -1,0 +1,33 @@
+id: oe.course.manifold
+slug: manifold
+title: Running Hello Pico on Manifold
+level: intermediate
+duration: 2h
+entry: index.qmd
+glossary: glossary.qmd
+sections: []
+prerequisites:
+  - oe.course.pico
+  - oe.course.kubernetes
+  - oe.course.crossplane
+teaches:
+  - Pico engine as a runtime host
+  - Wrangler channels and subscriptions
+  - Manifold as a Kubernetes-hosted RuntimeEnvironment
+  - Single-event, single-response Pico behaviour
+produces:
+  - hello-world-pico-on-manifold
+references_labs:
+  - oe.lab.hello-pico-on-manifold
+references_exercises: []
+constructive_role: definition
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+constraints:
+  - "A valid hello-world-pico-on-manifold Element is realized as one Pico Element hosted by a Manifold RuntimeEnvironment on a Kubernetes RuntimeSubstrate."
+  - "The hosted Pico receives exactly one event on a Wrangler-declared Channel and produces exactly one observable response line."
+feedback:
+  - observation: "Framing Manifold as the RuntimeEnvironment and Wrangler as the InteractionTopology authoring surface keeps compose/construct/behave visible: Crossplane still composes onto Kubernetes, Sandcastle still constructs Pico Elements, and Manifold only owns lifecycle and notification for the running Pico."
+    about: hello-world-pico-on-manifold
+    refines: oe.course.manifold
+    observation_source: manifold-on-kubernetes
