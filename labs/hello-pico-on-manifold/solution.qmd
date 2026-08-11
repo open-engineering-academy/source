@@ -1,0 +1,116 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Pico on Manifold."
+---
+
+## Reference solution
+
+A working solution consists of the seven files shipped under
+`downloads/`, applied against a local minikube cluster:
+
+1. [`01-namespace.yaml`](downloads/01-namespace.yaml) — the `manifold`
+   Namespace that is the Manifold RuntimeEnvironment for this lab.
+2. [`02-pico-engine.yaml`](downloads/02-pico-engine.yaml) — the
+   single-shot Pico engine Pod that hosts the `hello-world-pico` Pico
+   Element.
+3. [`03-channel-service.yaml`](downloads/03-channel-service.yaml) —
+   the Kubernetes `Service` that realizes the `hello` Channel from the
+   InteractionTopology.
+4. [`04-topology-configmap.yaml`](downloads/04-topology-configmap.yaml)
+   — the on-cluster `ConfigMap` that publishes the same Wrangler
+   topology fragment inside the RuntimeEnvironment.
+5. [`topology.yaml`](downloads/topology.yaml) — the authored
+   Wrangler-style InteractionTopology fragment; declarative truth for
+   what runs.
+6. [`event.json`](downloads/event.json) — the one event payload sent
+   onto the `hello` Channel (`hello.request` EventType).
+7. [`verify.sh`](downloads/verify.sh) — the automatable verification
+   script the walkthrough runs in Step 7.
+
+### Commands (recap)
+
+Run from `work/hello-pico-on-manifold/` after copying the manifests
+in place (see the walkthrough for the full setup):
+
+```bash
+kubectl apply -f 01-namespace.yaml
+kubectl apply -f 02-pico-engine.yaml
+kubectl -n manifold wait --for=condition=Ready --timeout=60s pod/pico-engine
+kubectl apply -f 03-channel-service.yaml
+kubectl apply -f 04-topology-configmap.yaml
+bash verify.sh
+```
+
+### Expected output
+
+The hosted Pico prints exactly one Observation line into its container
+logs:
+
+```
+pico[hello-world-pico] observation: Hello, Pico!
+```
+
+`verify.sh` waits for the Pod to be Ready, sends the one event, waits
+for the Pod to Succeed, and asserts the log line matches:
+
+```
+verify: OK — one Observation 'pico[hello-world-pico] observation: Hello, Pico!' produced by hosted Pico
+```
+
+## Why this satisfies the objectives
+
+- **Manifold as RuntimeEnvironment**: The `manifold` Namespace is
+  labelled `oe.academy/runtime-environment=manifold` /
+  `oe.academy/runtime-substrate=kubernetes`; every hosted object lives
+  under it, so lifecycle and cleanup are one-for-one with the
+  Namespace.
+- **Pico engine as in-process host**: `02-pico-engine.yaml` runs one
+  Pod that plays the Pico engine role and produces exactly one
+  Observation for exactly one event.
+- **Wrangler topology**: `topology.yaml` declares the single Channel
+  and the Pico's subscription in Wrangler-style YAML; the same fragment
+  is published on-cluster as a `ConfigMap` in
+  `04-topology-configmap.yaml`.
+- **Single event, single response**: `event.json` is the one event
+  sent onto the `hello` Channel; the hosted Pico's log line is the
+  one Observation produced in response. `verify.sh` enforces both
+  halves.
+- **Runtime substrate stays Kubernetes**: All commands are `kubectl`
+  and `minikube`; no non-Kubernetes runtime is introduced. This
+  matches the Phase 7 constructive-realization contract.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Diffing your copy of each `downloads/*.yaml`, `topology.yaml`, and
+   `event.json` against the versions in the source repository. They
+   should be byte-identical.
+2. Confirming `bash verify.sh` exits `0` with the `verify: OK` line.
+3. Confirming `build/hello-world-pico-on-manifold/observation.txt`
+   contains exactly the line
+   `pico[hello-world-pico] observation: Hello, Pico!`.
+
+## Variations
+
+- **Change the greeting**: Edit `value` in `event.json` and rerun the
+  lab from Step 5 (delete and reapply `02-pico-engine.yaml` first —
+  the Pod is single-shot). The Pico engine will echo whatever `value`
+  the event carries.
+- **Rename the Channel**: Edit `channels[0].name` in `topology.yaml`,
+  the Service `metadata.name` in `03-channel-service.yaml`, and the
+  `CHANNEL_HOST` environment variable in `verify.sh` to keep the
+  three in sync. This is a good exercise in seeing how Wrangler's
+  declarative topology and Manifold's realized Channel line up.
+- **Reuse the artifact from the Hello Pico lab**: The greeting value
+  in `event.json` matches the `hello-world-pico` artifact produced by
+  the [Hello Pico lab](../hello-pico/index.qmd). Producing the same
+  greeting from the same declarative input, once on a laptop and once
+  through a Manifold-hosted Pico, is the point of the runtime frame
+  the Manifold course teaches.
+
+::: {.callout-note title="Out of scope for this reference"}
+Multi-Pico topologies, Home Assistant as a Control Surface, fleet
+orchestration, and non-Kubernetes runtimes are explicitly out of scope
+for this first runtime-focused lab and its reference solution.
+:::

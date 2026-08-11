@@ -1,0 +1,103 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico Fleet (Wrangler) teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Author a single Wrangler-style `Fleet` fragment
+  (`wrangler.oe.academy/v1alpha1`) that composes two already-approved
+  InteractionTopologies over the same Manifold RuntimeEnvironment.
+- Name every Pico Element the fleet exposes and attribute each one
+  back to the InteractionTopology that owns its runtime declaration.
+- Declare the channel bindings that participate on the fleet using
+  only Channels already declared by the referenced InteractionTopologies
+  — no invented Channels, no bypass of the underlying labs' runtime
+  descriptions.
+- Express one fleet-level lifecycle intent
+  (`lifecycle.desiredState: deployed` with per-topology activation)
+  distinct from per-topology runtime execution.
+- Apply the fleet as a ConfigMap onto the shared `manifold` namespace
+  and confirm the on-cluster carrier matches the authored fragment
+  verbatim, so the declared truth on the cluster equals what the
+  learner authored.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+  the first member InteractionTopology of the fleet.
+- Completion of the
+  [Hello Two Picos lab](../hello-two-picos/index.qmd) — the second
+  member InteractionTopology of the fleet.
+- Familiarity with the [Manifold course](../../courses/manifold/index.html)
+  Phase 7 vocabulary (`RuntimeSubstrate`, `RuntimeEnvironment`,
+  `InteractionTopology`, `Channel`, `EventType`, `ControlSurface`,
+  `OperatorIntent`, `Observation`).
+- A local Kubernetes cluster; see the
+  [Kubernetes setup foundation](../../courses/kubernetes/index.html)
+  for the canonical minikube install, PATH checks, and first cluster
+  bring-up.
+:::
+
+## Environment
+
+The canonical local Kubernetes setup — supported OS, install commands
+for `docker`, `minikube`, and `kubectl`, PATH checks, and a first
+cluster bring-up — lives in the
+[Kubernetes course setup foundation](../../courses/kubernetes/index.html).
+Complete that page first so `docker`, `minikube`, and `kubectl`
+resolve on your `PATH`.
+
+Lab-specific additions on top of that canonical setup:
+
+- **Reference minikube pin**: `v1.38.1` was used to author this lab
+  (any `v1.34+` should work).
+- **Reference minikube profile**: `manifold-lab` — the same profile
+  the two member labs use so the fleet ConfigMap lands in the same
+  cluster.
+- **Python 3** with `PyYAML` on the host — used by `verify.sh` for
+  the offline spec-compare between `fleet.yaml` and the ConfigMap
+  carrier. `verify.sh` falls back to a lighter textual check when
+  `PyYAML` is unavailable.
+- **Estimated time**: **20–30 minutes** once the two member labs are
+  already deployed.
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  kubectl -n manifold delete configmap hello-pico-fleet --ignore-not-found
+  rm -rf build/hello-pico-fleet
+  ```
+
+## Pinned versions (reference)
+
+The walkthrough was authored and verified against these versions.
+Newer versions are expected to work.
+
+- Kubernetes API version in minikube: **v1.31.0**
+- Wrangler API group used by the fleet fragment:
+  `wrangler.oe.academy/v1alpha1` — the same API group already used by
+  the two member InteractionTopologies in the underlying labs.
+
+## One-time setup (optional)
+
+If you have not already deployed the two member labs, deploy
+[Hello Pico on Manifold](../hello-pico-on-manifold/index.qmd) first,
+then [Hello Two Picos](../hello-two-picos/index.qmd). This lab does
+not redeploy their manifests; it layers a fleet description over the
+RuntimeEnvironment they share.
+
+## Related material
+
+- [Manifold course](../../courses/manifold/index.html) — the runtime
+  course whose scope explicitly excludes fleet orchestration; this
+  lab is the follow-up path that adds one, narrowly.
+- [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+  the first member topology of the fleet.
+- [Hello Two Picos lab](../hello-two-picos/index.qmd) — the second
+  member topology of the fleet.
+- [`templates/README.qmd`](../../templates/README.qmd) — the Phase 7
+  constructive-realization contract that names Wrangler's role.

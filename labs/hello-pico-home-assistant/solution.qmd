@@ -1,0 +1,128 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Pico on Home Assistant."
+---
+
+## Reference solution
+
+A working solution consists of five files shipped under `downloads/`,
+applied against a live Home Assistant instance that can invoke the
+`pico runtime` Python CLI:
+
+1. [`configuration.yaml`](downloads/configuration.yaml) — the four
+   Home Assistant top-level keys (`command_line`, `shell_command`,
+   `input_button`, `automation`) that add one observation surface and
+   one safe control action.
+2. [`hello-pico-ha-phase.sh`](downloads/hello-pico-ha-phase.sh) — the
+   `command_line` sensor helper. Delegates to
+   `pico runtime inspect` and prints only the Pico engine Pod phase.
+3. [`event.json`](downloads/event.json) — the one event payload the
+   `shell_command` sends via `pico runtime emit`. Byte-identical to
+   the underlying Manifold lab's `event.json`.
+4. [`README.md`](downloads/README.md) — operator note that lists the
+   three requirements the Home Assistant container must satisfy:
+   `pico` on `PATH`, a working `kubeconfig`, and the helper installed
+   at the expected path.
+5. [`verify.sh`](downloads/verify.sh) — the automatable shape check
+   the walkthrough runs in Step 5.
+
+### Commands (recap)
+
+From your local clone, before touching Home Assistant:
+
+```bash
+cd labs/hello-pico-home-assistant/downloads
+bash verify.sh
+```
+
+Then, after merging `configuration.yaml` into Home Assistant and
+installing the helper (walkthrough Steps 1–2), from a shell that sees
+the same declared runtime truth Home Assistant will see:
+
+```bash
+pico runtime inspect --lab hello-pico-on-manifold --namespace manifold
+pico runtime emit --lab hello-pico-on-manifold --channel hello --value 'Hello, Pico!'
+pico runtime observe \
+  --lab hello-pico-on-manifold --pico pico-engine \
+  --expect 'pico[hello-world-pico] observation: Hello, Pico!'
+```
+
+### Expected output
+
+`verify.sh` ends with:
+
+```
+verify: OK — Home Assistant integration path is layered over the approved runtime
+```
+
+The Home Assistant sensor `sensor.hello_pico_engine_phase` transitions
+from `Running` to `Succeeded` within one `scan_interval` after the
+button press. The `pico runtime observe` command prints:
+
+```
+pico runtime observe: OK — observed 'pico[hello-world-pico] observation: Hello, Pico!'
+```
+
+## Why this satisfies the objectives
+
+- **Home Assistant is a ControlSurface, not the runtime**: the
+  `command_line` sensor's `command:` points at
+  `hello-pico-ha-phase.sh`, which delegates to `pico runtime inspect`.
+  The `shell_command`'s value is `pico runtime emit …`. Home
+  Assistant never talks to Kubernetes, Manifold, or Wrangler
+  directly.
+- **One honest observation surface**: the sensor state is exactly
+  what the approved CLI reports (`Pending` / `Running` / `Succeeded`
+  / `unknown`) — no derived state, no cached shadow model, no HA-local
+  translation of Kubernetes semantics.
+- **One safe control action**: the `input_button` fires exactly one
+  event on the same Wrangler-declared Channel the underlying lab
+  proves is single-event / single-response. No multi-event flows, no
+  cluster-wide operations, no destructive kubectl commands.
+- **Layered over the approved Python CLI**: `verify.sh` asserts that
+  the shell_command argv is byte-equal to a `pico runtime emit`
+  invocation and that no shipped file references `kubectl` or `helm`
+  directly. This is the machine-checkable guarantee that HA does not
+  bypass the CLI.
+- **Runtime substrate stays Kubernetes**: nothing on the on-cluster
+  side changes. The `manifold` Namespace, `pico-engine` Pod, `hello`
+  Channel Service, and topology `ConfigMap` are all still applied by
+  the underlying [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd);
+  this lab only *observes* and *asserts against* them.
+
+## Verification
+
+You can verify the solution matches this reference by:
+
+1. Running `bash verify.sh` from `downloads/` and confirming the
+   final `verify: OK` line.
+2. Confirming that the Home Assistant sensor state and the
+   `pico runtime inspect` output agree at all times (they must — HA
+   reads through the CLI).
+3. Confirming that pressing the HA button produces the exact same
+   Observation the underlying Manifold lab's `verify.sh` produces
+   (`pico[hello-world-pico] observation: Hello, Pico!`), because the
+   argv the shell_command runs is byte-equal.
+
+## Variations
+
+- **Change the greeting**: edit the `--value` in
+  `shell_command.hello_pico_send_greeting`. The Pico engine will echo
+  whatever value the button sends. The sensor state is unaffected —
+  it reflects Pod phase, not payload.
+- **Add a second observation**: add a second `command_line` sensor
+  that delegates to `pico runtime inspect` with `--lab hello-two-picos`
+  (once you have deployed that lab). Keep the sensor read-only and
+  keep the delegation through the CLI intact.
+- **Switch to another lab**: change `--lab` in the sensor helper and
+  the shell_command to another approved lab (currently only
+  `hello-pico-on-manifold` and `hello-two-picos` are known by the CLI).
+  Do not add labs that the CLI does not already know.
+
+::: {.callout-note title="Out of scope for this reference"}
+Multi-Pico visualization, fleet dashboards, home-scoped smart-home
+integrations, HA integrations that call `kubectl` or the Kubernetes
+API directly, and non-Kubernetes runtime paths are all explicitly out
+of scope for this first graphical ControlSurface lab and its
+reference solution.
+:::

@@ -1,0 +1,100 @@
+---
+title: "Hello Pico on Manifold"
+description: "Host one Pico on a Manifold RuntimeEnvironment, wire one Wrangler Channel, send one event, observe one response."
+---
+
+## Overview
+
+**Hello Pico on Manifold** is the first runtime-focused lab of the Open
+Engineering Academy. You will deploy a small **Manifold**
+RuntimeEnvironment onto a local **minikube** cluster, host one **Pico
+engine** Pod inside it, declare one **Wrangler** Channel that wires an
+event into the Pico, send exactly one event onto that Channel with a
+Control Surface command, and capture the single log line the hosted
+Pico prints in response as the lab's Observation.
+
+This lab is intentionally minimal: **one Pico, one Channel, one event,
+one observation.** It is the runtime counterpart of the
+[Hello Pico lab](../hello-pico/index.qmd) — where Hello Pico produces
+the `hello-world-pico` artifact on your laptop, this lab shows what it
+looks like once that same greeting is delivered by a Pico that is
+*hosted* by a runtime environment instead of invoked directly from a
+shell.
+
+The lab is **reusable across courses**: it lives at the repository root
+under `labs/hello-pico-on-manifold/` and is referenced from the
+[Manifold course](../../courses/manifold/index.html).
+
+::: {.callout-important title="Scope"}
+This lab covers **one** Pico hosted on **one** Manifold
+RuntimeEnvironment, wired through **one** Wrangler Channel, receiving
+**one** event and producing **one** observable response. Multi-Pico
+topologies, Home Assistant, fleet orchestration, and non-Kubernetes
+runtimes are explicitly out of scope. The Kubernetes substrate is
+kept fixed at local minikube throughout.
+:::
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-world-pico-on-manifold` —
+matching the `produces` entry in the
+[Manifold course metadata](../../courses/manifold/metadata.yaml).
+The directory contains:
+
+- the exact Kubernetes manifests applied to the cluster
+  (`Namespace`, Manifold `Deployment`, `Service` for the Channel, and
+  a `ConfigMap` holding the Wrangler topology fragment),
+- the Wrangler-style [topology](downloads/topology.yaml) that names
+  the single Channel and the Pico's subscription on it,
+- the single event payload sent onto the Channel
+  (`event.json`), and
+- the captured runtime **Observation** — `observation.txt`, the single
+  log line printed by the hosted Pico in response to the event.
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`: the Kubernetes manifests, the
+Wrangler `topology.yaml` fragment, the `event.json` payload sent onto
+the Channel, and `verify.sh` — the automatable verification script the
+walkthrough runs in the final step. Screenshots referenced from the
+walkthrough live under `screenshots/`. Both directories are kept even
+when empty so authors have a consistent place to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the schema documented in the source repository under
+`templates/README.qmd`, including the Phase 7 fields
+`runtime_substrate`, `runs_on`, `interaction_topology`, and
+`control_surfaces`.
+
+## Constructive realization
+
+This lab is the **Realization** of the Hello Pico on Manifold
+Definition stated in the [Manifold course](../../courses/manifold/index.html).
+The role mapping is:
+
+- **Definition** (course): a Pico Element runs on a Manifold
+  RuntimeEnvironment, receives one event on a Wrangler Channel, and
+  produces one Observation.
+- **Realization** (this lab): a Kubernetes-hosted Manifold
+  `Deployment` runs a Pico engine Pod; a `Service` provides the
+  Channel; a `ConfigMap` carries the Wrangler topology; a
+  `verify.sh` command asserts the single-event / single-response
+  contract holds.
+- **Element**: `hello-world-pico-on-manifold` — the captured
+  manifests, topology, event payload, and observation.
+
+## Referenced from
+
+- [Manifold course · Home](../../courses/manifold/index.html) — the
+  single runtime-focused course of the academy.
+- [Hello Pico lab](../hello-pico/index.qmd) — the paper-plus-shell
+  counterpart that produces the `hello-world-pico` artifact directly
+  from a Rule, without a runtime host.

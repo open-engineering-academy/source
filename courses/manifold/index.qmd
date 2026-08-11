@@ -1,0 +1,128 @@
+---
+title: "Manifold"
+subtitle: "Run Hello Pico on Manifold — the runtime host for a single Pico."
+---
+
+Welcome to **Manifold**, the first runtime-focused course of the Open
+Engineering Academy. This course frames the smallest honest runtime
+story for a single Pico: one Pico Element, hosted by **Manifold** on a
+local Kubernetes cluster, wired through one **Wrangler**-declared
+Channel, receiving one event and producing one observable response.
+
+## Where this course fits
+
+Manifold is a **runtime course**, not a fourth phase alongside compose /
+construct / behave. The three-layer story still holds:
+
+> **Crossplane composes**, **Sandcastle constructs**, **Picos behave**.
+
+Manifold names the runtime host on which behaviour is observed. Under
+the [Phase 7 constructive-realization contract](../../templates/README.qmd),
+the role assignments this course teaches are:
+
+| Tool           | Runtime role                                                              |
+| -------------- | ------------------------------------------------------------------------- |
+| Kubernetes     | `RuntimeSubstrate` — the underlying execution layer                       |
+| Manifold       | `RuntimeEnvironment` — Kubernetes-hosted host for Pico Elements           |
+| Pico engine    | The in-process host inside Manifold that runs Pico Elements               |
+| Wrangler       | `InteractionTopology` authoring — declares Channels and subscriptions     |
+| Crossplane     | Realization step — composes runtime resources onto the substrate          |
+| Sandcastle     | Realization step — constructs the executable form of a Pico               |
+
+::: {.callout-important title="Scope — one Pico, one event, one response"}
+This course keeps the runtime story narrow on purpose. It covers **one
+Pico**, hosted by **one Manifold RuntimeEnvironment**, wired through
+**one Wrangler Channel**, receiving **one event** and producing **one
+observable response**. Multi-Pico topologies, fleet orchestration,
+graphical control surfaces (for example, Home Assistant), and
+non-Kubernetes runtimes are explicitly out of scope for this first
+runtime course.
+:::
+
+## What you will learn
+
+By the end of the course you will be able to:
+
+- Describe what a **RuntimeSubstrate**, a **RuntimeEnvironment**, an
+  **InteractionTopology**, a **Channel**, an **EventType**, and an
+  **Observation** are, using the Phase 7 vocabulary.
+- Explain how a Pico Element produced by the
+  [Hello Pico lab](../../labs/hello-pico/index.qmd) is *hosted* by a
+  Manifold RuntimeEnvironment without being *replaced* by it.
+- Explain how a Wrangler-declared Channel wires exactly one event into
+  the hosted Pico and how the resulting response is observed.
+- Run the accompanying
+  [Hello Pico on Manifold lab](../../labs/hello-pico-on-manifold/index.qmd)
+  end-to-end on a local minikube cluster and capture the single
+  observed response as the lab's produced artifact.
+
+See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
+machine-readable summary (id, level, duration, prerequisites,
+`runtime_substrate`, `runs_on`).
+
+## Prerequisites
+
+- Completion of the [Pico course](../pico/index.html), or equivalent
+  familiarity with Rules, the Parser, the Composer, and the
+  `hello-world-pico` artifact.
+- Completion of the
+  [Kubernetes setup foundation](../kubernetes/index.html) so `docker`,
+  `minikube`, and `kubectl` resolve on your `PATH`.
+- Familiarity with the [Crossplane course](../crossplane/index.html)
+  and the
+  [Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/index.qmd)
+  is helpful but not required; this course consumes their outputs
+  rather than replaces them.
+
+## How this course is structured
+
+This first runtime course is intentionally small: an overview page
+(this file), a shared glossary, and one runnable lab. It does not yet
+carry a Part 1 / Part 2 / Part 3 structure — the runtime story is
+scoped to a single Pico so that later curriculum waves can extend it
+without retrofitting.
+
+```
+courses/manifold/
+  _quarto.yml          # this course website
+  index.qmd            # you are here
+  metadata.yaml        # machine-readable course descriptor
+  glossary.qmd         # course glossary
+```
+
+The runnable material lives in the reusable lab:
+
+- [Hello Pico on Manifold lab](../../labs/hello-pico-on-manifold/index.qmd)
+  — deploy a Manifold RuntimeEnvironment onto a local minikube cluster,
+  host a single Pico inside it via a Wrangler-declared Channel, send
+  one event, and observe one response.
+
+## What you will produce
+
+A single artifact directory named `hello-world-pico-on-manifold` — the
+lab captures the exact manifests applied to the cluster, the Wrangler
+channel spec, the one event sent in, and the one observed response
+line printed by the hosted Pico. This matches the `produces` entry in
+[`metadata.yaml`](metadata.yaml).
+
+## Start here
+
+- [Hello Pico on Manifold lab](../../labs/hello-pico-on-manifold/index.qmd)
+  — the single runnable path for this course.
+- [Hello Two Picos lab](../../labs/hello-two-picos/index.qmd) — the
+  first multi-Pico runtime lab that builds directly on Hello Pico on
+  Manifold. It reuses the same Manifold RuntimeEnvironment on
+  Kubernetes and adds a second named Pico plus one
+  Wrangler-declared producer→consumer wiring. Run it after Hello
+  Pico on Manifold when you are ready for the smallest honest
+  two-Pico interaction.
+- [Glossary](glossary.qmd) — course-scoped vocabulary aligned with the
+  Phase 7 constructive-realization contract.
+
+::: {.callout-note title="Course status"}
+This is the first runtime-focused milestone of the academy. It
+deliberately covers one Pico, one Channel, one event, and one
+observation. Broader topologies, additional Control Surfaces, and
+non-Kubernetes runtime substrates are deferred to later curriculum
+waves.
+:::

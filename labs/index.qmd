@@ -18,6 +18,44 @@ encounter a consistent experience across the academy.
   [crossplane course](../courses/crossplane/). Machine-readable
   descriptor:
   [`labs/hello-pico-on-kubernetes/metadata.yaml`](hello-pico-on-kubernetes/metadata.yaml).
+- **[Hello Pico on Manifold](hello-pico-on-manifold/)** — the first
+  runtime-focused lab: host one Pico Element inside a Manifold
+  `RuntimeEnvironment` on local minikube, wire it through one
+  Wrangler-declared Channel, send exactly one event, and capture the
+  single Observation the hosted Pico produces. Referenced from the
+  [manifold course](../courses/manifold/). Machine-readable
+  descriptor:
+  [`labs/hello-pico-on-manifold/metadata.yaml`](hello-pico-on-manifold/metadata.yaml).
+- **[Hello Two Picos](hello-two-picos/)** — the first multi-Pico
+  runtime lab: host two named Pico Elements (a producer and a
+  consumer) inside one Manifold `RuntimeEnvironment` on local
+  minikube, declare one Wrangler-style Channel and an explicit
+  producer→consumer wiring, watch the producer Pico emit one event
+  and the consumer Pico consume it and react with one Observation.
+  Referenced from the [manifold course](../courses/manifold/).
+  Machine-readable descriptor:
+  [`labs/hello-two-picos/metadata.yaml`](hello-two-picos/metadata.yaml).
+- **[Hello Pico Fleet (Wrangler)](hello-pico-fleet-wrangler/)** — the
+  first *topology and fleet* path: author one Wrangler-style `Fleet`
+  fragment on `wrangler.oe.academy/v1alpha1` that composes the two
+  approved Manifold InteractionTopologies
+  ([Hello Pico on Manifold](hello-pico-on-manifold/) and
+  [Hello Two Picos](hello-two-picos/)), names three Picos and their
+  bindings across two Channels, expresses one fleet-level lifecycle
+  intent, and applies the fleet spec to the same `manifold`
+  namespace as a ConfigMap without starting any new Pods or
+  Channels. Machine-readable descriptor:
+  [`labs/hello-pico-fleet-wrangler/metadata.yaml`](hello-pico-fleet-wrangler/metadata.yaml).
+- **[Hello Pico on Home Assistant](hello-pico-home-assistant/)** — the
+  first graphical ControlSurface lab: layer a small Home Assistant
+  integration (one `command_line` sensor and one `input_button` +
+  `shell_command`) over the approved
+  [Hello Pico on Manifold lab](hello-pico-on-manifold/) runtime,
+  routing every read and write through the approved
+  [`bin/pico`](../bin/pico) Python CLI so Home Assistant does not
+  bypass Kubernetes, Manifold, Wrangler, or the CLI. Machine-readable
+  descriptor:
+  [`labs/hello-pico-home-assistant/metadata.yaml`](hello-pico-home-assistant/metadata.yaml).
 - **[Hello World Pico Sandcastle](hello-world-pico-sandcastle/)** — the
   first runnable Sandcastle lab: run a Sandcastle end-to-end to
   construct the same `hello-world-pico` artifact on a dedicated

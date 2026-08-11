@@ -1,0 +1,182 @@
+---
+title: "Walkthrough"
+description: "Wire a Home Assistant sensor and button over the approved Pico runtime CLI, then observe one event and one response."
+---
+
+::: {.callout-tip title="Try it yourself"}
+This walkthrough assumes the
+[Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) has
+been deployed on your local `manifold-lab` minikube cluster and that
+`pico` (from `bin/pico` at the repository root) is on your `PATH`.
+See [Objectives](objectives.qmd) for the one-time environment setup.
+:::
+
+::: {.callout-important title="Scope reminder"}
+Home Assistant here is a **ControlSurface**, not a runtime. Every read
+and every write in this walkthrough goes through `pico runtime`, which
+itself goes through `kubectl`. Do not add Home Assistant integrations
+that talk to Kubernetes directly — that would relocate declared
+runtime semantics into the UI and violate the Phase 7 contract.
+:::
+
+## Step 1 — Copy the shipped files into your Home Assistant config
+
+From the root of your local clone of the academy repository, install
+the shipped helper into your Home Assistant configuration directory
+(replace `~/homeassistant` with your actual HA config path):
+
+```bash
+mkdir -p ~/homeassistant/hello-pico
+cp labs/hello-pico-home-assistant/downloads/hello-pico-ha-phase.sh \
+   ~/homeassistant/hello-pico/hello-pico-ha-phase.sh
+chmod +x ~/homeassistant/hello-pico/hello-pico-ha-phase.sh
+```
+
+The helper is what the `command_line` sensor invokes. It delegates to
+`pico runtime inspect` and prints only the Pico engine Pod phase.
+
+## Step 2 — Merge the configuration snippet into `configuration.yaml`
+
+Open your Home Assistant `configuration.yaml` and merge the four
+top-level keys from
+[`downloads/configuration.yaml`](downloads/configuration.yaml):
+`command_line`, `shell_command`, `input_button`, and `automation`. If
+any of those top-level keys already exists in your file, append the
+entries under it rather than overwriting.
+
+Confirm that the `pico` executable and your kubeconfig are both
+reachable from inside the Home Assistant container (see
+[`downloads/README.md`](downloads/README.md)). Then reload the
+relevant integrations from the Home Assistant UI (Developer Tools →
+YAML → *Reload* the `command_line`, `input_button`, `automation`, and
+`shell_command` blocks) or restart Home Assistant.
+
+## Step 3 — Observe the declared runtime state in the UI
+
+In the Home Assistant UI, add the sensor
+`sensor.hello_pico_engine_phase` to your dashboard. Its state should
+be one of the standard Pod phase values reported by
+`pico runtime inspect`:
+
+- `Pending` — the Pico engine Pod is being scheduled.
+- `Running` — the Pico engine is Ready and waiting for the one event.
+- `Succeeded` — the Pico engine has consumed exactly one event and
+  exited.
+- `unknown` — the helper could not read declared truth (usually
+  because `pico` or the kubeconfig is not reachable from inside HA).
+
+Confirm the same value at a shell prompt against the same declared
+truth:
+
+```bash
+pico runtime inspect --lab hello-pico-on-manifold --namespace manifold
+```
+
+The sensor state and the last line of the CLI output must agree. If
+they disagree, the HA container is looking at a different kubeconfig
+or a stale cache — fix the operator setup before pressing the button.
+
+## Step 4 — Press the button; observe one event and one response
+
+Ensure the `pico-engine` Pod is `Running` (single-shot; delete and
+reapply `02-pico-engine.yaml` from the underlying lab if you already
+consumed its one event). Then, in the Home Assistant UI, press the
+**Send Hello, Pico!** button (`input_button.hello_pico_send_greeting`).
+
+The button triggers the automation, which fires
+`shell_command.hello_pico_send_greeting`, which invokes:
+
+```
+pico runtime emit --lab hello-pico-on-manifold --channel hello --value 'Hello, Pico!'
+```
+
+This is byte-equal to what the underlying lab's `verify.sh` does, so
+the on-cluster effect is exactly the same: one event on the `hello`
+Channel, one Observation printed by the hosted Pico, one Pod
+transition to `Succeeded`.
+
+Within one `scan_interval` (30 s), the HA sensor state should update
+to `Succeeded`. Confirm the same Observation at a shell prompt:
+
+```bash
+pico runtime observe \
+  --lab hello-pico-on-manifold --pico pico-engine \
+  --expect 'pico[hello-world-pico] observation: Hello, Pico!'
+```
+
+Expected final line:
+
+```
+pico runtime observe: OK — observed 'pico[hello-world-pico] observation: Hello, Pico!'
+```
+
+## Step 5 — Run the shipped shape verification
+
+From the lab's `downloads/` directory (in your local clone of the
+academy repository, not inside the HA container):
+
+```bash
+cd labs/hello-pico-home-assistant/downloads
+bash verify.sh
+```
+
+`verify.sh` checks that the shipped HA snippet delegates to the
+approved CLI, that the shell_command argv is byte-equal to the
+approved `pico runtime emit` invocation, that the UI button is bound
+to that shell_command, and that `event.json` is byte-identical to the
+underlying Manifold lab's payload. It runs offline; it does not touch
+Kubernetes or Home Assistant.
+
+## Step 6 — Capture the produced artifact
+
+Capture the merged HA snippet, the installed helper, the event
+payload, and evidence of the observed sensor + Pico response into a
+`hello-world-pico-home-assistant/` directory:
+
+```bash
+mkdir -p build/hello-world-pico-home-assistant
+cp labs/hello-pico-home-assistant/downloads/configuration.yaml \
+   labs/hello-pico-home-assistant/downloads/hello-pico-ha-phase.sh \
+   labs/hello-pico-home-assistant/downloads/event.json \
+   build/hello-world-pico-home-assistant/
+```
+
+Add a screenshot or terminal transcript showing the HA sensor state
+transitioning from `Running` to `Succeeded` after the button press,
+and the matching `pico runtime observe` line.
+
+## Step 7 — Cleanup
+
+Remove the HA snippet you merged in Step 2 (revert your
+`configuration.yaml`), delete the helper you copied in Step 1, and
+tear down the underlying Manifold lab if you no longer need it:
+
+```bash
+rm -rf ~/homeassistant/hello-pico
+# then tear down the underlying lab per its own Step 9:
+minikube delete --profile manifold-lab
+rm -rf build/hello-world-pico-home-assistant
+```
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If the sensor state is `unknown`, either `pico` is not on the HA
+  container's `PATH`, or the kubeconfig is not reachable inside the
+  container. Fix the operator setup — do not work around it by
+  reading Kubernetes directly from HA.
+- If the button appears to press but the sensor never reaches
+  `Succeeded`, the `pico-engine` Pod may have already consumed its
+  one event in a prior run. Delete and reapply
+  `02-pico-engine.yaml` from the underlying lab and press the
+  button again.
+- HA's automation trigger on `input_button` fires on state change
+  (each press bumps the button's `last_pressed`). If pressing the
+  button twice in quick succession only sends one event, that is
+  expected: the first event is consumed by the single-shot Pod;
+  the second press has no Ready listener.
+:::
+
+## Next
+
+Compare your work against the [reference solution](solution.qmd).
