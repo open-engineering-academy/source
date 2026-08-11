@@ -30,6 +30,10 @@ project:
     - labs/hello-pico-home-assistant/objectives.qmd
     - labs/hello-pico-home-assistant/walkthrough.qmd
     - labs/hello-pico-home-assistant/solution.qmd
+    - labs/hello-pico-fleet-wrangler/index.qmd
+    - labs/hello-pico-fleet-wrangler/objectives.qmd
+    - labs/hello-pico-fleet-wrangler/walkthrough.qmd
+    - labs/hello-pico-fleet-wrangler/solution.qmd
     - labs/hello-world-pico-sandcastle/index.qmd
     - labs/hello-world-pico-sandcastle/objectives.qmd
     - labs/hello-world-pico-sandcastle/walkthrough.qmd
