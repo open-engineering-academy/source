@@ -47,7 +47,7 @@ This course MUST NOT become another tutorial teaching each technology independen
 Instead, it SHALL demonstrate how previously learned Open Engineering capabilities compose into an end-to-end cyber-physical system.
 
 The conceptual journey is:
-
+```
 Human Intent
      ↓
 Home Assistant
@@ -71,41 +71,41 @@ AX-12A
 Mechanical Lamp Head
      ↓
 Physical Motion
-
+```
 The final proof that the architecture works is:
 
 The lamp nods.
 
 ⸻
 
-2. Purpose
+## 2. Purpose
 
 The course has five purposes.
 
-2.1 Demonstrate composition
+### 2.1 Demonstrate composition
 
 The learner SHALL experience existing Open Engineering concepts as parts of one working system rather than as isolated technologies.
 
-2.2 Introduce cyber-physical Open Engineering
+### 2.2 Introduce cyber-physical Open Engineering
 
 The course SHALL demonstrate that Open Engineering is capable of describing, composing, executing, observing, and controlling physical systems.
 
-2.3 Introduce digital twins through Pico
+### 2.3 Introduce digital twins through Pico
 
 The AX-12A actuator SHALL have a Pico-based digital representation.
 
 The Pico SHALL represent the logical actuator and its state rather than merely mirroring a hardware register.
 
-2.4 Establish the Open Engineering Robotics pattern
+### 2.4 Establish the Open Engineering Robotics pattern
 
 The implementation created by this course SHALL become a reusable reference architecture for future physical devices.
 
-2.5 Create the bridge toward embodied characters
+### 2.5 Create the bridge toward embodied characters
 
 The course SHALL stop at explicit human instruction of a physical gesture.
 
 Future PixStars courses can subsequently introduce:
-
+```
 Character
     ↓
 Reasoning
@@ -117,19 +117,19 @@ Gesture
 Actuator Capability
     ↓
 Physical Motion
-
+```
 Therefore this course establishes the actuator foundation without coupling actuation to character intelligence.
 
 ⸻
 
-3. Central Learning Objective
+## 3. Central Learning Objective
 
 At the end of the course, the learner SHALL be able to explain and demonstrate:
 
 How a semantic command such as nod travels from a human interface through Open Engineering abstractions, a Pico digital twin, runtime behavior and an edge adapter until it becomes physical motion.
 
 The learner SHALL also understand the reverse direction:
-
+```
 Physical Device
       ↓
 Telemetry
@@ -143,14 +143,14 @@ Open Engineering
 Home Assistant
       ↓
 Human
-
+```
 The system is therefore not merely remote control.
 
 It is a minimal closed-loop cyber-physical architecture.
 
 ⸻
 
-4. Relationship to PixStars
+## 4. Relationship to PixStars
 
 PixStars provides the reference implementation.
 
@@ -180,7 +180,7 @@ Open Engineering contributes:
 * infrastructure.
 
 The architecture SHALL therefore preserve this boundary:
-
+```
 OPEN ENGINEERING
        │
        │ provides reusable capabilities
@@ -190,15 +190,15 @@ PIXSTARS
        │ composes those capabilities
        ▼
 CHARACTER BEHAVIOR
-
+```
 The Academy course uses PixStars as a compelling example, not as a special case embedded into the Open Engineering kernel.
 
 ⸻
 
-5. Physical Reference Architecture
+## 5. Physical Reference Architecture
 
 The minimum physical system SHALL consist of:
-
+```
 ESP32
   │
   ▼
@@ -212,7 +212,7 @@ Mechanical head pivot
   │
   ▼
 Anglepoise lamp head
-
+```
 The AX-12A is responsible for the physical head-pitch degree of freedom.
 
 The first gesture SHALL be:
@@ -220,19 +220,19 @@ The first gesture SHALL be:
 nod
 
 The course MAY later support:
-
+```
 center
 look-up
 look-down
 nod
-
+```
 but nod is mandatory.
 
 ⸻
 
-6. Hardware Responsibilities
+## 6. Hardware Responsibilities
 
-6.1 ESP32
+### 6.1 ESP32
 
 The ESP32 SHALL act as an Open Engineering edge adapter.
 
@@ -255,17 +255,17 @@ The ESP32 MUST NOT contain PixStars character reasoning.
 It MUST NOT decide when PixStars should nod.
 
 It MUST NOT interpret concepts such as:
-
+```
 agreement
 disagreement
 happiness
 attention
 confusion
-
+```
 Those belong at higher semantic layers.
 
 The ESP32 SHALL understand actuator-level concepts such as:
-
+```
 set-position
 center
 execute-motion
@@ -273,17 +273,17 @@ stop
 get-position
 get-temperature
 get-status
-
+```
 ⸻
 
-7. 74HCT245 Responsibility
+## 7. 74HCT245 Responsibility
 
 The 74HCT245 belongs entirely to the physical communication implementation.
 
 It SHALL NOT appear as a semantic Open Engineering entity unless a later hardware-observability course explicitly models electronic components.
 
 For this course it is sufficient to explain:
-
+```
 Open Engineering
        ↓
 ESP32 edge adapter
@@ -293,19 +293,19 @@ electrical interface
 74HCT245
        ↓
 AX-12A
-
+```
 The learner should understand that Open Engineering abstractions eventually cross a hardware boundary where voltage levels, buses and electrical communication matter.
 
 ⸻
 
-8. AX-12A Responsibility
+## 8. AX-12A Responsibility
 
 The AX-12A SHALL remain the physical actuator.
 
 The AX-12A SHALL NOT itself be treated as the complete digital twin.
 
 Instead:
-
+```
 Pico
  │
  │ represents
@@ -315,19 +315,19 @@ Logical Head-Pitch Actuator
  │ currently implemented by
  ▼
 AX-12A
-
+```
 This distinction is essential.
 
 A future implementation MAY replace the AX-12A with another servo without changing the semantic capability exposed to higher layers.
 
 ⸻
 
-9. Pico Digital Twin
+## 9. Pico Digital Twin
 
 The course SHALL model the logical PixStars head-pitch actuator as a Pico.
 
 Conceptually:
-
+```
 kind: Pico
 metadata:
   name: pixstars-head-pitch
@@ -340,17 +340,17 @@ spec:
   implementation:
     deviceClass: dynamixel
     model: AX-12A
-
+```
 The actual syntax SHALL follow the canonical Pico conventions already taught by the Open Engineering Academy.
 
 The course MUST reference the existing Pico course rather than inventing an incompatible Pico format.
 
 ⸻
 
-10. Pico State Model
+## 10. Pico State Model
 
 At minimum the digital twin SHALL be capable of representing:
-
+```
 desiredPosition: 0
 actualPosition: 0
 moving: false
@@ -360,7 +360,7 @@ temperature: null
 lastCommand: null
 lastCommandStatus: null
 lastUpdated: null
-
+```
 Where hardware telemetry permits it, the course SHOULD populate:
 
 * actual position;
@@ -381,17 +381,17 @@ observed state
 MUST be taught explicitly.
 
 For example:
-
+```
 desiredPosition = +15°
 actualPosition  = +12°
-
+```
 is not inherently an error.
 
 It is evidence that the physical system is moving toward the desired state.
 
 ⸻
 
-11. Identity
+## 11. Identity
 
 Every important Open Engineering entity SHALL use the canonical Open Engineering identifier conventions taught elsewhere in the Academy.
 
@@ -410,7 +410,7 @@ The learner SHALL be able to trace an execution using these identities.
 
 ⸻
 
-12. Capability Model
+## 12. Capability Model
 
 The principal capability SHALL be:
 
@@ -425,26 +425,26 @@ The desired abstraction is:
 nod()
 
 not:
-
+```
 writeRegister(30, 614)
 sleep(300)
 writeRegister(30, 410)
 ...
-
+```
 The distinction demonstrates one of the central Open Engineering principles:
 
 Consumers request capabilities. Implementations determine how those capabilities are realized.
 
 ⸻
 
-13. Nod Behavior
+## 13. Nod Behavior
 
 The first implementation SHALL define nod as a deterministic motion sequence.
 
 A canonical sequence SHALL be supplied by the course implementation.
 
 For example:
-
+```
 START
   ↓
 center
@@ -456,7 +456,7 @@ move slightly upward
 return to center
   ↓
 END
-
+```
 Exact safe servo positions SHALL be configurable.
 
 They MUST NOT be hard-coded into generic Open Engineering definitions.
@@ -470,21 +470,21 @@ from:
 physical calibration
 
 For example:
-
+```
 nod:
   center: 0
   down: 15
   up: -8
   repetitions: 1
   speed: safe
-
+```
 These values are illustrative until calibrated against the physical lamp.
 
 The implementation SHALL include a calibration step before executing the full nod sequence.
 
 ⸻
 
-14. Safety
+## 14. Safety
 
 Physical actuation introduces safety requirements not present in purely virtual Academy courses.
 
@@ -504,7 +504,7 @@ The learner SHALL NOT be instructed to execute unrestricted servo movement.
 The course SHALL require calibration before gesture execution.
 
 The safe sequence is:
-
+```
 Discover
    ↓
 Connect
@@ -518,10 +518,10 @@ Test small movement
 Return to center
    ↓
 Enable gesture
-
+```
 ⸻
 
-15. Crossplane
+## 15. Crossplane
 
 Crossplane SHALL be responsible for declarative composition.
 
@@ -530,7 +530,7 @@ The learner SHALL NOT manually assemble every runtime resource.
 Instead, the learner SHALL request an Open Engineering actuator capability.
 
 Conceptually:
-
+```
 apiVersion: robotics.open-engineering.io/v1alpha1
 kind: Actuator
 metadata:
@@ -538,13 +538,13 @@ metadata:
 spec:
   capabilities:
     - nod
-
+```
 The actual API version and schema SHALL follow existing Open Engineering Definitions and Crossplane course conventions.
 
 Crossplane SHALL compose the resources necessary to realize the requested actuator.
 
 Conceptually:
-
+```
 Actuator XR
     │
     ├── Pico representation
@@ -553,10 +553,10 @@ Actuator XR
     ├── edge-adapter configuration
     ├── observability
     └── Home Assistant exposure
-
+```
 ⸻
 
-16. Relationship to the Existing Crossplane Course
+## 16. Relationship to the Existing Crossplane Course
 
 The Academy implementation MUST NOT repeat foundational Crossplane material.
 
@@ -576,7 +576,7 @@ What happens when the thing being composed eventually controls a physical actuat
 
 ⸻
 
-17. Kubernetes
+## 17. Kubernetes
 
 Kubernetes SHALL provide the local runtime substrate.
 
@@ -595,12 +595,12 @@ Where those concepts are required, the course SHALL link to the existing Kuberne
 
 ⸻
 
-18. MiniKube
+## 18. MiniKube
 
 MiniKube SHALL provide the canonical local Kubernetes environment for this course.
 
 The intended local architecture is:
-
+```
 Developer Workstation
 ┌───────────────────────────────────────────────┐
 │ MiniKube                                      │
@@ -626,14 +626,14 @@ Developer Workstation
                        │
                        ▼
                      Lamp
-
+```
 The existing MiniKube course SHALL remain the authoritative source for installing and operating MiniKube.
 
 This course SHALL provide only validation commands required to verify that its prerequisites are available.
 
 ⸻
 
-19. Manifold
+## 19. Manifold
 
 Manifold SHALL provide the Pico/runtime execution environment used by the course.
 
@@ -655,7 +655,7 @@ The course MUST make this distinction explicit.
 
 ⸻
 
-20. Runtime Behavior
+## 20. Runtime Behavior
 
 A nod request SHALL produce an event or equivalent runtime instruction.
 
@@ -666,19 +666,19 @@ pixstars.head.nod.requested
 The Pico runtime SHALL respond by executing the configured nod behavior.
 
 Conceptually:
-
+```
 ON pixstars.head.nod.requested
 IF actuator.connected
 AND actuator.ready
 AND actuator.withinSafeLimits
 THEN execute nod
 ELSE report failure
-
+```
 The exact rule representation SHALL reuse the Open Engineering Rules conventions already established by the Academy.
 
 ⸻
 
-21. Event Flow
+## 21. Event Flow
 
 The complete forward execution SHALL be observable.
 
@@ -702,7 +702,7 @@ The course SHALL provide enough logging and observability for the learner to tra
 
 ⸻
 
-22. Messaging
+## 22. Messaging
 
 The implementation SHALL use the messaging/event mechanism already standardized by Open Engineering.
 
@@ -711,7 +711,7 @@ If MQTT is the currently adopted transport, the course SHALL use MQTT.
 Transport details SHALL remain below the semantic event layer.
 
 Conceptually:
-
+```
 Semantic event
      ↓
 Open Engineering messaging
@@ -721,19 +721,19 @@ transport adapter
 MQTT
      ↓
 ESP32
-
+```
 The semantic architecture MUST NOT become coupled to MQTT topic naming.
 
 This ensures that another transport can later replace MQTT without redefining nod.
 
 ⸻
 
-23. Home Assistant
+## 23. Home Assistant
 
 Home Assistant SHALL provide the first human control interface.
 
 The minimum dashboard SHALL expose:
-
+```
 PixStars Lamp
 Connection:       Connected
 Head position:    0°
@@ -744,14 +744,14 @@ Last result:      Success
 [ NOD ]
 [ CENTER ]
 [ STOP ]
-
+```
 NOD is mandatory.
 
 CENTER and STOP SHOULD also be provided.
 
 ⸻
 
-24. Home Assistant Is Not the Controller
+## 24. Home Assistant Is Not the Controller
 
 The course MUST teach that Home Assistant is an interface, not the owner of the actuator behavior.
 
@@ -762,7 +762,7 @@ nod
 It MUST NOT implement the complete servo trajectory.
 
 Incorrect:
-
+```
 Home Assistant
     ↓
 position 15
@@ -774,9 +774,9 @@ position -8
 delay
     ↓
 position 0
-
+```
 Correct:
-
+```
 Home Assistant
       ↓
      nod
@@ -786,12 +786,12 @@ Open Engineering
 gesture behavior
       ↓
 actuator implementation
-
+```
 This allows future interfaces to request exactly the same capability.
 
 ⸻
 
-25. Future Interfaces
+## 25. Future Interfaces
 
 The architecture SHALL deliberately allow nod to originate from:
 
@@ -810,10 +810,10 @@ None of these SHALL require knowledge of Dynamixel Protocol 1.0.
 
 ⸻
 
-26. Semantic Layering
+## 26. Semantic Layering
 
 The course SHALL explicitly teach the following layering:
-
+```
 WHY
 Character meaning
 "PixStars agrees"
@@ -837,25 +837,25 @@ ESP32 + 74HCT245
         ↓
 PHYSICS
 AX-12A rotates lamp head
-
+```
 This diagram is one of the key teaching artifacts of the course.
 
 ⸻
 
-27. Character Boundary
+## 27. Character Boundary
 
 This course SHALL NOT implement autonomous PixStars character behavior.
 
 The course ends at:
-
+```
 Human
  ↓
 Nod instruction
  ↓
 Physical nod
-
+```
 A future course can build:
-
+```
 Character
  ↓
 Observation
@@ -869,12 +869,12 @@ Gesture selection
 nod
  ↓
 Physical nod
-
+```
 This boundary prevents robotics infrastructure from becoming coupled to a particular character implementation.
 
 ⸻
 
-28. Simulation First
+## 28. Simulation First
 
 The course SHALL support completion without immediately connecting physical hardware.
 
@@ -889,7 +889,7 @@ DynamixelAX12AActuator
 Both SHALL implement the same logical actuator contract.
 
 This enables:
-
+```
 Home Assistant
       ↓
      nod
@@ -897,9 +897,9 @@ Home Assistant
 Pico
       ↓
 Simulated Actuator
-
+```
 before:
-
+```
 Home Assistant
       ↓
      nod
@@ -907,7 +907,7 @@ Home Assistant
 Pico
       ↓
 Physical AX-12A
-
+```
 This is essential for:
 
 * CI;
@@ -919,11 +919,11 @@ This is essential for:
 
 ⸻
 
-29. Course Progression
+## 29. Course Progression
 
 The course SHALL be divided into the following modules.
 
-Module 0 — The Challenge
+### Module 0 — The Challenge
 
 Introduce only the desired result:
 
@@ -933,10 +933,10 @@ Show the final system before explaining it.
 
 ⸻
 
-Module 1 — Meet the Physical System
+### Module 1 — Meet the Physical System
 
 Explain:
-
+```
 ESP32
  ↓
 74HCT245
@@ -944,29 +944,29 @@ ESP32
 AX-12A
  ↓
 Lamp head
-
+```
 Introduce the physical boundary.
 
 Do not yet introduce character intelligence.
 
 ⸻
 
-Module 2 — From Device to Capability
+### Module 2 — From Device to Capability
 
 Transform the hardware-centric idea:
 
 AX-12A servo
 
 into the semantic capability:
-
+```
 HeadPitchActuator
   └── nod
-
+```
 Teach capability-oriented engineering.
 
 ⸻
 
-Module 3 — Create the Digital Twin
+### Module 3 — Create the Digital Twin
 
 Reuse the existing Pico course.
 
@@ -984,7 +984,7 @@ Teach:
 
 ⸻
 
-Module 4 — Simulate the Actuator
+### Module 4 — Simulate the Actuator
 
 Implement the simulated adapter.
 
@@ -996,7 +996,7 @@ This module SHALL be executable in CI.
 
 ⸻
 
-Module 5 — Compose the Actuator
+### Module 5 — Compose the Actuator
 
 Reuse the existing Crossplane course.
 
@@ -1006,7 +1006,7 @@ Demonstrate Crossplane composing its dependencies.
 
 ⸻
 
-Module 6 — Run It Locally
+### Module 6 — Run It Locally
 
 Reuse:
 
@@ -1019,7 +1019,7 @@ Verify all components.
 
 ⸻
 
-Module 7 — Bring the Pico Alive
+### Module 7 — Bring the Pico Alive
 
 Reuse the Manifold course.
 
@@ -1031,7 +1031,7 @@ Execute a simulated nod.
 
 ⸻
 
-Module 8 — Build the Edge Adapter
+### Module 8 — Build the Edge Adapter
 
 Introduce the ESP32 adapter.
 
@@ -1047,16 +1047,16 @@ Implement communication with the actuator.
 
 ⸻
 
-Module 9 — Connect the Physical AX-12A
+### Module 9 — Connect the Physical AX-12A
 
 Connect:
-
+```
 ESP32
  ↓
 74HCT245
  ↓
 AX-12A
-
+```
 Perform:
 
 1. connectivity test;
@@ -1070,24 +1070,24 @@ Only after these succeed may the nod gesture be enabled.
 
 ⸻
 
-Module 10 — Expose the Capability
+### Module 10 — Expose the Capability
 
 Connect Home Assistant.
 
 Expose:
-
+```
 NOD
 CENTER
 STOP
-
+```
 and actuator state.
 
 ⸻
 
-Module 11 — Trace the Nod
+### Module 11 — Trace the Nod
 
 The learner SHALL trace:
-
+```
 Home Assistant
  ↓
 Open Engineering
@@ -1107,12 +1107,12 @@ Dynamixel
 AX-12A
  ↓
 Lamp
-
+```
 and the telemetry path back.
 
 ⸻
 
-Module 12 — Make the Lamp Nod
+### Module 12 — Make the Lamp Nod
 
 This is the capstone exercise.
 
@@ -1133,12 +1133,12 @@ The physical lamp nods and the complete execution is observable.
 
 ⸻
 
-30. Course Prerequisites
+## 30. Course Prerequisites
 
 The Academy SHALL declare dependencies on existing courses rather than duplicate them.
 
 Recommended prerequisite graph:
-
+```
 Kubernetes
      ↓
 MiniKube
@@ -1158,12 +1158,12 @@ Rules             │
             │
             ▼
      MAKE THE LAMP NOD
-
+```
 Where the Academy’s actual dependency graph differs, existing canonical courses SHALL take precedence.
 
 ⸻
 
-31. Required Cross-References
+## 31. Required Cross-References
 
 The implementing AI SHALL search the Open Engineering Academy source for existing material covering:
 
@@ -1192,12 +1192,12 @@ The implementation MUST avoid creating parallel definitions of concepts that alr
 
 ⸻
 
-32. Repository Structure
+## 32. Repository Structure
 
 The implementing AI SHALL adapt this structure to the existing Academy course conventions.
 
 Conceptually:
-
+```
 courses/
 └── make-the-lamp-nod/
     ├── index.qmd
@@ -1232,12 +1232,12 @@ courses/
     ├── tests/
     ├── diagrams/
     └── assets/
-
+```
 If the Academy already defines another course layout, the existing Academy convention SHALL win.
 
 ⸻
 
-33. Quarto
+## 33. Quarto
 
 The course SHALL integrate with the Academy’s existing Quarto publishing system.
 
@@ -1256,7 +1256,7 @@ The AI MUST NOT introduce a second documentation framework.
 
 ⸻
 
-34. Executable Course Philosophy
+## 34. Executable Course Philosophy
 
 Where possible, examples SHALL be executable rather than illustrative.
 
@@ -1276,7 +1276,7 @@ without rewriting the architecture.
 
 ⸻
 
-35. Automated Testing
+## 35. Automated Testing
 
 The course implementation SHALL include automated tests for the non-physical portions.
 
@@ -1295,23 +1295,23 @@ Tests SHALL verify at minimum:
 
 ⸻
 
-36. Hardware Tests
+## 36. Hardware Tests
 
 Hardware tests SHALL be clearly marked and SHALL NOT execute automatically in CI.
 
 Suggested test classes:
-
+```
 unit
 integration
 simulation
 hardware
-
+```
 The default CI pipeline SHALL execute:
-
+```
 unit
 integration
 simulation
-
+```
 but NOT:
 
 hardware
@@ -1320,14 +1320,14 @@ Hardware tests require explicit opt-in.
 
 ⸻
 
-37. Observability
+## 37. Observability
 
 Every nod request SHALL have a correlation identifier.
 
 The learner SHALL be able to follow one request through the system.
 
 Conceptually:
-
+```
 correlation:
 01H...XYZ
 Home Assistant
@@ -1347,17 +1347,17 @@ servo.moving
 servo.position.changed
      ↓
 nod.completed
-
+```
 The course SHOULD expose this trace in a learner-friendly form.
 
 ⸻
 
-38. Evidence
+## 38. Evidence
 
 Successful execution SHALL generate evidence.
 
 At minimum:
-
+```
 request accepted
 event created
 rule executed
@@ -1365,12 +1365,12 @@ command sent
 physical/simulated movement observed
 final state reported
 gesture completed
-
+```
 This connects the course to Open Engineering’s evidence-driven design principles.
 
 ⸻
 
-39. Failure Scenarios
+## 39. Failure Scenarios
 
 The course SHALL deliberately teach several failure modes.
 
@@ -1409,7 +1409,7 @@ The capability SHALL report degraded/unavailable rather than pretending executio
 
 ⸻
 
-40. Desired-State Principle
+## 40. Desired-State Principle
 
 A central lesson SHALL be:
 
@@ -1424,18 +1424,18 @@ is not equivalent to:
 GESTURE COMPLETED
 
 The system SHALL distinguish:
-
+```
 requested
 accepted
 executing
 completed
 failed
-
+```
 This distinction becomes increasingly important as Open Engineering expands into robotics.
 
 ⸻
 
-41. Definition of Done — Course
+## 41. Definition of Done — Course
 
 The course SHALL be considered complete only when all of the following are true:
 
@@ -1463,10 +1463,10 @@ The course SHALL be considered complete only when all of the following are true:
 
 ⸻
 
-42. Definition of Done — Learner
+## 42. Definition of Done — Learner
 
 A learner completes the course when they can demonstrate:
-
+```
 Home Assistant
       ↓
      NOD
@@ -1482,14 +1482,14 @@ ESP32
 AX-12A
       ↓
 physical nod
-
+```
 and explain the responsibility of each layer.
 
 The learner SHALL also demonstrate the simulated implementation.
 
 ⸻
 
-43. Architectural Principles
+## 43. Architectural Principles
 
 The course SHALL reinforce the following principles.
 
@@ -1535,20 +1535,20 @@ The logical head actuator MUST survive replacement of the AX-12A implementation.
 
 ⸻
 
-44. Future Expansion
+## 44. Future Expansion
 
 The architecture SHALL intentionally enable later Academy courses.
 
 Multiple actuators
-
+```
 Head Pitch Pico
 Head Yaw Pico
 Base Rotation Pico
 Lamp Arm Pico
 Light Pico
-
+```
 Gesture composition
-
+```
 look-left
 look-right
 nod
@@ -1557,17 +1557,17 @@ look-up
 look-down
 wake-up
 sleep
-
+```
 Character embodiment
-
+```
 Character Pico
       ↓
 Gesture Planner
       ↓
 Actuator Picos
-
+```
 Voice
-
+```
 "Hey A.I."
     ↓
 Voice
@@ -1577,9 +1577,9 @@ Character
 Intent
     ↓
 Gesture
-
+```
 AI reasoning
-
+```
 Observation
      ↓
 LLM / reasoning
@@ -1589,7 +1589,7 @@ Character decision
 gesture intent
      ↓
 nod
-
+```
 Choreography
 
 Multiple capabilities can later be coordinated with:
@@ -1605,14 +1605,14 @@ This provides the path from a single actuator toward the complete PixStars perfo
 
 ⸻
 
-45. Strategic Significance
+## 45. Strategic Significance
 
 This course should be treated as more than a robotics tutorial.
 
 It establishes an important Open Engineering milestone.
 
 Earlier Academy material can demonstrate:
-
+```
 Definition
     ↓
 Composition
@@ -1620,9 +1620,9 @@ Composition
 Runtime
     ↓
 Software
-
+```
 This course extends the chain to:
-
+```
 Definition
     ↓
 Composition
@@ -1640,14 +1640,14 @@ Electronics
 Actuator
     ↓
 Physical World
-
+```
 Open Engineering therefore ceases to be demonstrated only as a way of describing and operating software.
 
 It becomes a method for composing cyber-physical systems.
 
 ⸻
 
-46. The Pedagogical Payoff
+## 46. The Pedagogical Payoff
 
 The course MUST preserve the simplicity of its final moment.
 
@@ -1673,11 +1673,11 @@ After working through:
 the learner reaches the final exercise.
 
 The dashboard displays:
-
+```
 PixStars Lamp
 Status: READY
 [ NOD ]
-
+```
 The learner presses:
 
 NOD
@@ -1698,7 +1698,7 @@ That moment is the explanation of why all the preceding abstractions exist.
 
 ⸻
 
-47. Instruction to the Implementing AI
+## 47. Instruction to the Implementing AI
 
 When this memo is supplied to an AI responsible for implementing the Open Engineering Academy course, the AI SHALL proceed as follows:
 
@@ -1741,10 +1741,10 @@ Where this memo defines an architectural boundary, that boundary SHALL be preser
 
 ⸻
 
-48. Final Architectural Test
+## 48. Final Architectural Test
 
 Before declaring implementation complete, the implementing AI SHALL be able to answer every arrow in this diagram:
-
+```
                     HUMAN
                       │
                       │ nod
@@ -1798,7 +1798,7 @@ Before declaring implementation complete, the implementing AI SHALL be able to a
                       │
                       ▼
                HOME ASSISTANT
-
+```
 For every arrow the course SHALL explain:
 
 * what crosses the boundary;
@@ -1811,22 +1811,22 @@ If an arrow cannot be explained, tested, or observed, implementation is not yet 
 
 ⸻
 
-49. Final Vision
+## 49. Final Vision
 
 The purpose of this course can be summarized in one sentence:
 
 Declare a meaningful capability in Open Engineering and follow it all the way until the physical world changes.
 
 The implementation begins with a modest piece of hardware:
-
+```
 ESP32
   +
 74HCT245
   +
 AX-12A
-
+```
 Open Engineering turns it into:
-
+```
 a discoverable,
 identifiable,
 declarative,
@@ -1836,7 +1836,7 @@ testable,
 safe,
 digital-twin-backed
 physical capability.
-
+```
 PixStars then gives that capability meaning.
 
 Today:
