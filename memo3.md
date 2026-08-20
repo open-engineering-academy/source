@@ -122,12 +122,19 @@ You could teach it like this:Title: "Hello, Pico!" as a Constructive Open Engine
 A nice compact line for the Academy course would be:A Pico definition is complete only when it can guide the creation, deployment, and validation of a runnable Pico Element.If you want, I can next turn this into:
 
 1. Definitions must be constructiveA definition should not stop at meaning. It should also expose how a valid Element can come into being.
+   
 2. Realization must be explicitThe relation between a definition and an Element should be modeled directly, not left implicit in documentation or human interpretation.
+   
 3. Construction must be traceableEvery realized Element should be linked to the definition, inputs, decisions, dependencies, and validations that shaped it.
+   
 4. Validation must be intrinsicA realization is not complete merely because it exists. The ecosystem should be able to test whether it conforms to its definition.
+   
 5. Composition must be nativeDefinitions and Elements should be composable, so larger structures can be assembled from smaller, already-defined parts.
+    
 6. Evolution must feed backExperience from realized Elements should refine the definitions they came from, so the ecosystem learns over time.
+    
 7. Partial realization must be supportedThe model should recognize that Elements often emerge in stages rather than appearing fully formed.
+    
 8. Semantics and operations must stay linked
    
    What something is, how it is built, and how it is checked should remain connected in one coherent structure.
