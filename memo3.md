@@ -216,7 +216,6 @@ A nice compact line for the Academy course would be:A Pico definition is complet
 - The validation result is attached to the definition-element relation.
 - Lessons learned can refine the definition.
 
-  
     1. a slide-ready 5-step teaching diagram, or
     2.
        | Ontology | ClassInstanceDescriptionDefinition |  
@@ -273,7 +272,18 @@ A nice compact line for the Academy course would be:A Pico definition is complet
   - `PicoElement:hello-pico-job-001` `conformsTo` `PicoDefinition:hello-pico`
   - `Validation:job-submitted` `checks` `PicoElement:hello-pico-job-001`
   - `Validation:job-completed` `checks` `PicoElement:hello-pico-job-001`
-  - `Validation:output-verified` `checks` `PicoElement:hello-pico-job-001`1. A `Definition` describes both meaning and realizability.2. A `Realization` records how construction happens.3. An `Element` is the concrete operational result.4. `Constraints` define what must hold true.5. `Validation` establishes whether the realized Element is conformant.
+  - `Validation:output-verified` `checks` `PicoElement:hello-pico-job-001`
+  
+    3. A `Definition` describes both meaning and realizability.
+       
+    4. A `Realization` records how construction happens.
+       
+    5. An `Element` is the concrete operational result.
+       
+    6. `Constraints` define what must hold true.
+        
+    7. `Validation` establishes whether the realized Element is conformant.
+        
   - `oee:` = Open Engineering Ecosystem vocabulary
   - `ex:` = example instances
   - A `Definition` may have one or more `Constraint`s.
@@ -282,7 +292,14 @@ A nice compact line for the Academy course would be:A Pico definition is complet
   - An `Element` conforms to a `Definition`.
   - A `Validation` checks an `Element` against one or more `Constraint`s.
   - `Dependency` captures the means needed for realization.
-  - `Feedback` links operational learning back to the `Definition`.1. a stricter OWL version with cardinalities and restrictions, or2. a one-slide teaching summary with only the essential triples and classes.---Here is a stricter OWL-style version with cardinalities and a few useful restrictions for the `Hello, Pico!` pattern. I’ve kept it formal enough for Academy use, but still readable.Title: Stricter OWL-Like Schema for Constructive Realization in the Open Engineering Ecosystem1. IntentThis schema strengthens the earlier model by adding constraints on how `Definition`, `Realization`, `Element`, `Constraint`, and `Validation` relate. The goal is to express that an Element is not arbitrary: it is produced through a realization of a definition and can be validated against explicit constraints.2. Core classes`@prefix oee: [https://example.org/oee#](https://example.org/oee#) .
+  - `Feedback` links operational learning back to the `Definition`.
+    
+    1. a stricter OWL version with cardinalities and restrictions, or
+    2. a one-slide teaching summary with only the essential triples and classes.---Here is a stricter OWL-style version with cardinalities and a few useful restrictions for the `Hello, Pico!` pattern. I’ve kept it formal enough for Academy use, but still readable.Title: Stricter OWL-Like Schema for Constructive Realization in the Open Engineering Ecosystem
+       
+    1. IntentThis schema strengthens the earlier model by adding constraints on how `Definition`, `Realization`, `Element`, `Constraint`, and `Validation` relate. The goal is to express that an Element is not arbitrary: it is produced through a realization of a definition and can be validated against explicit constraints.
+          
+    2. Core classes`@prefix oee: [https://example.org/oee#](https://example.org/oee#) .
 
 @prefix owl: [http://www.w3.org/2002/07/owl#](http://www.w3.org/2002/07/owl#) .@prefix rdf: [http://www.w3.org/1999/02/22-rdf-syntax-ns#](http://www.w3.org/1999/02/22-rdf-syntax-ns#) .@prefix rdfs: [http://www.w3.org/2000/01/rdf-schema#](http://www.w3.org/2000/01/rdf-schema#) .@prefix xsd: [http://www.w3.org/2001/XMLSchema#](http://www.w3.org/2001/XMLSchema#) .
 
