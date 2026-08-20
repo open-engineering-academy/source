@@ -1,17 +1,17 @@
-Memo 4 — Pico-to-Pico Identity in Pico Engine 1.6
+# Memo 4 — Pico-to-Pico Identity in Pico Engine 1.6
 
-Project: Open Engineering Picos
-Domain: Pico Identity / Trust / Messaging
-Status: Architecture Reference
-Date: 2026-08-12
-Source: Phil Windley, Pico-to-Pico Identity Arrives, Technometria, 12 August 2026
-Pico Engine: 1.6
+Project: Open Engineering Picos  
+Domain: Pico Identity / Trust / Messaging  
+Status: Architecture Reference  
+Date: 2026-08-12  
+Source: Phil Windley, Pico-to-Pico Identity Arrives, Technometria, 12 August 2026  
+Pico Engine: 1.6  
 
-Source article: Pico-to-Pico Identity Arrives — Technometria
+Source article: Pico-to-Pico Identity Arrives — Technometria  
 
 ⸻
 
-Purpose
+## Purpose
 
 This memo records the Pico-to-Pico identity architecture introduced with Pico Engine 1.6 and describes its significance for Open Engineering Picos.
 
@@ -29,7 +29,7 @@ This establishes the foundations for portable Picos, portable Pico meshes, decen
 
 ⸻
 
-Context
+## Context
 
 Pico Engine 1.5 introduced two of three identity planes:
 
@@ -48,7 +48,7 @@ Authentication of a human, authorization of an external application, and identit
 
 ⸻
 
-Pico Engine 1.6
+## Pico Engine 1.6
 
 The central change in Pico Engine 1.6 is simple to state:
 
@@ -68,10 +68,10 @@ Pico Engine 1.6 introduces DIDs as the answer to the second question. (technomet
 
 ⸻
 
-Two DIDs, Two Responsibilities
+## Two DIDs, Two Responsibilities
 
 Every Pico uses two kinds of Decentralized Identifiers.
-
+```
 Pico
 │
 ├── did:webvh
@@ -81,7 +81,7 @@ Pico
     ├── Relationship A
     ├── Relationship B
     └── Relationship C
-
+```
 The distinction is deliberate.
 
 A Pico should not expose one universal identifier for every relationship it participates in.
@@ -90,7 +90,7 @@ Instead, the architecture separates identity from relationship identity.
 
 ⸻
 
-did:webvh — The Pico Passport
+## did:webvh — The Pico Passport
 
 Every Pico receives a did:webvh when it is created.
 
@@ -114,14 +114,14 @@ The did:webvh is therefore primarily an introduction identity, not the identifie
 
 ⸻
 
-did:peer — The Relationship Identity
+## did:peer — The Relationship Identity
 
 Once two Picos decide to establish a relationship, they create pairwise did:peer identities.
 
 A new pair is created for each relationship.
 
 For example:
-
+```
 Pico A
   did:webvh:A
 Pico B
@@ -132,30 +132,30 @@ Introduction
 Subscription
   A → did:peer:A-B
   B → did:peer:B-A
-
+```
 These peer DIDs are private to that relationship.
 
 A useful analogy from the architecture is:
-
+```
 did:webvh = passport
 did:peer  = private address given to one relationship
-
+```
 This provides significant isolation.
 
 If a relationship is compromised, its peer DID can be rotated, removed, or recreated without changing the Pico’s other relationships.
 
 Thus:
-
+```
 Pico
  ├── Relationship A → did:peer:...
  ├── Relationship B → did:peer:...
  └── Relationship C → did:peer:...
-
+```
 Relationship B can be replaced without affecting A or C. (technometria.com)
 
 ⸻
 
-Subscriptions Become Cryptographic Relationships
+## Subscriptions Become Cryptographic Relationships
 
 Picos that are not related through the parent/child hierarchy communicate using subscriptions.
 
@@ -164,7 +164,7 @@ A subscription is a pairwise relationship represented on both sides.
 In Pico Engine 1.6, a Pico can initiate a subscription using the recipient’s did:webvh.
 
 Conceptually:
-
+```
 Pico A
    │
    │ recipient did:webvh
@@ -182,19 +182,19 @@ Establish subscription
    │
    ▼
 Encrypted relationship
-
+```
 Once the relationship exists, events and queries use that peer relationship rather than repeatedly relying on the public identity. (technometria.com)
 
 ⸻
 
-DIDComm
+## DIDComm
 
 Cross-mesh and cross-engine Pico communication now uses DIDComm.
 
 This is a particularly important architectural development.
 
 Two Picos may exist:
-
+```
 Mesh A                          Mesh B
 ┌──────────────────┐          ┌──────────────────┐
 │ Pico Engine A    │          │ Pico Engine B    │
@@ -203,26 +203,26 @@ Mesh A                          Mesh B
 │   did:peer:A ───────────────►│   did:peer:B     │
 │                  │ encrypted│                  │
 └──────────────────┘          └──────────────────┘
-
+```
 When communication occurs within the same mesh, the engine can keep the traffic local.
 
 When communication crosses meshes or engines, DIDComm provides encrypted communication using the peer relationship. (technometria.com)
 
 ⸻
 
-Identity Does Not Replace Authorization
+## Identity Does Not Replace Authorization
 
 A particularly useful design decision is that the new DID infrastructure does not replace the existing Pico channel authorization model.
 
 The responsibilities remain separate.
-
+```
 DID
  │
  └── Who is the other party?
 Channel / ECI policy
  │
  └── What may that party do?
-
+```
 A subscription’s peer DID acts as its channel identity, while existing channel policy determines what that relationship may do.
 
 This gives Open Engineering an important architectural principle:
@@ -233,7 +233,7 @@ The Pico Engine therefore gains cryptographic identity without requiring its aut
 
 ⸻
 
-Parent/Child Communication
+## Parent/Child Communication
 
 Not every Pico relationship requires a DID.
 
@@ -242,7 +242,7 @@ Legacy ECIs remain relevant.
 Parent and child Picos continue communicating over their family channels using ECIs.
 
 This gives two useful relationship classes:
-
+```
 Pico relationships
 ├── Family relationship
 │   ├── parent
@@ -256,17 +256,17 @@ Pico relationships
     Identity:
     did:webvh → introduction
     did:peer  → established relationship
-
+```
 A full DID-based introduction would be unnecessary overhead for relationships already established structurally within a Pico family. (technometria.com)
 
 ⸻
 
-Trust Between Previously Unrelated Picos
+## Trust Between Previously Unrelated Picos
 
 One of the most significant consequences of the architecture is that Picos belonging to different meshes can establish relationships without requiring a central federation.
 
 For example:
-
+```
 Alice's Mesh                       Bob's Mesh
 ┌───────────────┐                 ┌───────────────┐
 │ Pico A        │                 │ Pico B        │
@@ -281,7 +281,7 @@ Alice's Mesh                       Bob's Mesh
                        │
                        ▼
                peer DID relationship
-
+```
 Neither mesh needs:
 
 * a shared identity provider;
@@ -299,7 +299,7 @@ Pico Engine 1.6 makes that relationship cryptographic and increasingly portable.
 
 ⸻
 
-Why did:webvh + did:peer?
+## Why did:webvh + did:peer?
 
 The article explicitly considers KERI as an alternative.
 
@@ -314,7 +314,7 @@ Picos exchange events and queries.
 DIDComm already provides the encrypted messaging model needed for those interactions, and did:peer is naturally suited to private pairwise DIDComm relationships.
 
 The resulting combination is therefore:
-
+```
 did:webvh
     │
     │ discovery / introduction
@@ -328,12 +328,12 @@ DIDComm
     │ encrypted communication
     ▼
 Pico events + queries
-
+```
 KERI remains architecturally interesting and could potentially be reconsidered if stronger portability requirements make the URL dependency of did:webvh problematic. (technometria.com)
 
 ⸻
 
-Portability
+## Portability
 
 Pico Engine 1.6 should not be interpreted as completing Pico portability.
 
@@ -342,17 +342,17 @@ It provides an essential prerequisite.
 Currently, the Pico Engine’s base URL remains part of the Pico’s did:webvh.
 
 Therefore moving:
-
+```
 Pico
 Engine A
    │
    ▼
 Engine B
-
+```
 does not yet mean its identity can automatically move unchanged.
 
 Nevertheless, the difficult architectural foundation now exists:
-
+```
 Portable Pico
      │
      ├── cryptographic identity       ✓
@@ -362,12 +362,12 @@ Portable Pico
      ├── fully portable did:webvh     future
      ├── portable key management      future
      └── credential portability       future
-
+```
 This is a significant step toward meshes that are owned independently of the engines on which they happen to run. (technometria.com)
 
 ⸻
 
-Remaining Work
+## Remaining Work
 
 Phil Windley identifies several areas that remain incomplete.
 
@@ -417,7 +417,7 @@ Authorization currently remains primarily channel based.
 A future authorization system could make decisions based upon the authenticated identity behind the channel.
 
 Conceptually:
-
+```
 Current
 Channel
    │
@@ -440,17 +440,17 @@ Authenticated Pico Identity
                 │
                 ▼
           Permit / Deny
-
+```
 This could become especially significant for Open Engineering’s agentic systems. (technometria.com)
 
 ⸻
 
-Implications for Open Engineering
+## Implications for Open Engineering
 
 Pico Engine 1.6 should influence the Open Engineering Pico architecture rather than being treated merely as a Pico Engine implementation detail.
 
 In particular, Open Engineering should distinguish the following concepts.
-
+```
 Pico
 │
 ├── Identity
@@ -470,17 +470,17 @@ Pico
 │
 └── Future claims
     └── Verifiable Credentials
-
+```
 These should remain separate concepts in Open Engineering definitions, conventions, parsers, rules and implementations.
 
 ⸻
 
-Implications for Pico Definitions
+## Implications for Pico Definitions
 
 The Open Engineering definition of a Pico should now account for cryptographic identity.
 
 Conceptually, a Pico definition may eventually contain:
-
+```
 identity:
   type: did
   public:
@@ -492,14 +492,14 @@ messaging:
   protocol: didcomm
 authorization:
   mechanism: channel-policy
-
+```
 This example is illustrative rather than a proposed final schema.
 
 The important architectural point is that identity should become a first-class property of a Pico rather than an implementation-specific extension.
 
 ⸻
 
-Implications for Pico Rules
+## Implications for Pico Rules
 
 Rules and rulesets should be able to reason about:
 
@@ -516,16 +516,16 @@ This means Pico rules can increasingly express trust relationships, not merely e
 
 ⸻
 
-Implications for Pico Parsers
+## Implications for Pico Parsers
 
 Open Engineering Pico parsers should preserve the distinction between:
-
+```
 Identity
 Relationship
 Address
 Authorization
 Messaging
-
+```
 A parser should not treat a DID merely as another form of ECI.
 
 They serve different semantic purposes.
@@ -538,14 +538,14 @@ That distinction should survive translation between Open Engineering definitions
 
 ⸻
 
-Implications for Manifold
+## Implications for Manifold
 
 The next stated goal for the Pico Engine identity implementation is exercising these capabilities through Manifold.
 
 This is directly relevant to Open Engineering’s use of Manifold as a Pico runtime environment.
 
 A future Open Engineering composition could therefore look approximately like:
-
+```
 Open Engineering Pico Definition
               │
               ▼
@@ -570,19 +570,19 @@ Open Engineering Pico Definition
               ├── DIDComm
               │
               └── channel policy
-
+```
 Identity therefore becomes part of the runtime realization of a declaratively composed Pico.
 
 ⸻
 
-Implications for Open Engineering Identity
+## Implications for Open Engineering Identity
 
 This development also suggests an important distinction between an Open Engineering Identifier and a cryptographic runtime identity.
 
 They should not necessarily be collapsed into the same identifier.
 
 For example:
-
+```
 Open Engineering Identity
 OE Identifier
     │
@@ -601,25 +601,25 @@ Relationship Identity
     │ private pairwise identity
     ▼
 did:peer:...
-
+```
 These answer different questions:
 
-Identifier	Question
-Open Engineering Identifier	What Open Engineering element is this?
-did:webvh	Which cryptographic Pico is this?
-did:peer	Which private relationship is this?
-ECI	Through which Pico channel may communication occur?
+| Identifier | Question |  
+| Open Engineering Identifier | What Open Engineering element is this? |  
+| did:webvh | Which cryptographic Pico is this? |  
+| did:peer | Which private relationship is this? |  
+| ECI | Through which Pico channel may communication occur? | 
 
 This separation should be preserved.
 
 ⸻
 
-Strategic Direction
+## Strategic Direction
 
 Pico Engine 1.6 moves Picos closer to a model in which they are genuine autonomous actors rather than objects hosted by a particular server.
 
 The progression can be understood as:
-
+```
 Addressable Pico
       │
       ▼
@@ -639,12 +639,12 @@ Credential-bearing Pico
       │
       ▼
 Identity-aware autonomous actor
-
+```
 Pico Engine 1.6 reaches an important point in this progression: cryptographic identity plus private cryptographic relationships.
 
 ⸻
 
-Open Engineering Recommendation
+## Open Engineering Recommendation
 
 Open Engineering Picos should adopt the Pico Engine 1.6 identity architecture as a first-class concern in its Pico model.
 
@@ -675,21 +675,21 @@ That is a substantially stronger abstraction.
 
 ⸻
 
-Architectural Principle
+## Architectural Principle
 
 The Pico Engine 1.6 architecture can be summarized with five complementary concepts:
-
+```
 Identity says who the Pico is.
 Relationships say who it knows.
 DIDComm protects how they communicate.
 Channels define where interaction occurs.
 Policy determines what the relationship may do.
-
+```
 Together these turn Pico-to-Pico communication from simple message routing into an identity-aware trust architecture.
 
 ⸻
 
-References
+## References
 
 * Phil Windley — Pico-to-Pico Identity Arrives — primary source, published 12 August 2026.
 * Phil Windley — Identity for the Pico Engine — background on Pico Engine 1.5 and the three identity planes.
@@ -697,12 +697,12 @@ References
 
 ⸻
 
-Conclusion
+## Conclusion
 
 Pico Engine 1.6 introduces the missing identity layer required for Picos to behave as independent actors across Pico meshes and engines.
 
 The combination of:
-
+```
 did:webvh
    +
 did:peer
@@ -712,7 +712,7 @@ DIDComm
 Subscriptions
    +
 Channel Policy
-
+```
 creates a coherent architecture for cryptographic Pico relationships.
 
 For Open Engineering Picos, this should be treated as a foundational capability rather than an optional security feature.
