@@ -1,0 +1,30 @@
+---
+title: "Labs"
+---
+
+The primary hands-on artifact of this course is the **Open Engineering Mini Kernel** living in `kernel/`.
+
+## Suggested lab sequence
+
+1. **Rust-only tests** — `cargo test` inside `kernel/`
+2. **First binding** — expose and call `normalize_identifier`
+3. **Identifier class** — construct and reject invalid identifiers from Python
+4. **Manifest validation** — feed valid and invalid dicts
+5. **Rule evaluation** — write a small rule and observe match / no-match
+6. **Python contract tests** — `pytest tests/python`
+7. **Wheel packaging** — `maturin build --release` and install into a clean environment
+
+## Running the automated suites
+
+```bash
+cd kernel
+
+# Domain logic (no Python required)
+cargo test
+
+# Public Python contract (requires maturin develop first)
+maturin develop
+pytest tests/python -q
+```
+
+See the [Capstone](../modules/15-capstone.qmd) for the complete acceptance criteria.
