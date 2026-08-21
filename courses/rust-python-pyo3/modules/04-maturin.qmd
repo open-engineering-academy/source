@@ -18,6 +18,45 @@ From the Python consumer's point of view there should be no Cargo, no `.so` hunt
 | Development installs | `maturin develop` |
 | Release artifacts    | `maturin build` |
 
+## Create a virtual environment first
+
+`maturin develop` installs into the **active** Python environment. Maturin expects a virtualenv (or conda env); it will refuse to install into the system Python.
+
+From the `kernel/` directory:
+
+```bash
+# 1. Create a venv (once)
+python3 -m venv .venv
+
+# 2. Activate it
+#    Linux / macOS:
+source .venv/bin/activate
+#    Windows (cmd):
+#    .venv\Scripts\activate.bat
+#    Windows (PowerShell):
+#    .venv\Scripts\Activate.ps1
+
+# 3. Confirm you are inside the venv
+which python    # should point at .../kernel/.venv/bin/python
+python -c "import sys; print(sys.prefix)"
+
+# 4. Install Maturin into this venv
+pip install -U maturin
+```
+
+When the venv is active, your prompt often shows (.env).  
+To leave the venv later:
+```bash
+deactivate
+```
+
+## Optional: named venv elsewhere
+```bash
+python3 -m venv ~/venvs/oe-kernel
+source ~/venvs/oe-kernel/bin/activate
+pip install -U maturin
+```
+
 ## Development workflow
 
 ```bash
@@ -27,6 +66,12 @@ python -c "import open_engineering_kernel; print('ok')"
 ```
 
 `maturin develop` is the iterative loop while writing the course exercises.
+
+If you see:
+```text
+Couldn't find a virtualenv or conda environment
+```
+the venv is not active - run `source .venv/bin/activate` (or Windows equivalent) and try againc.
 
 ## Release workflow
 
