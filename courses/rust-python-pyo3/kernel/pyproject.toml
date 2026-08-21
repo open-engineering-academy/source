@@ -17,4 +17,7 @@ classifiers = [
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+# Native extension lives as open_engineering_kernel.open_engineering_kernel (.so)
+# Python package sources in python/ provide __init__.py that re-exports public API.
+python-source = "python"
 module-name = "open_engineering_kernel"
