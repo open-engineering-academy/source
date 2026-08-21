@@ -1,0 +1,95 @@
+---
+title: "Rust + Python — Building Native Python Modules with PyO3"
+subtitle: "Python describes what should happen. Rust guarantees how fundamental things happen."
+---
+
+## The architectural idea
+
+This course teaches an intentional boundary:
+
+```
+                Python
+                   │
+        AI / agents / workflows
+                   │
+                 PyO3
+                   │
+                   ▼
+            ┌─────────────┐
+            │  Rust Core  │
+            │ identifiers │
+            │ manifests   │
+            │ validation  │
+            │ rules       │
+            └─────────────┘
+```
+
+Rust should not replace Python.  
+Python should not duplicate functionality that belongs in a canonical kernel.
+
+## What you will build
+
+By the end of the course you will have produced a working **Open Engineering Mini Kernel**:
+
+| Component     | Responsibility                              |
+|---------------|---------------------------------------------|
+| `Identifier`  | Parse, validate, normalize domain identifiers |
+| `Manifest`    | Validate structured declarations            |
+| `Rule`        | Deterministic evaluation of simple rules    |
+
+The kernel is implemented in Rust and consumed from Python as an ordinary package.
+
+## Learning outcomes
+
+After completing the course you will be able to:
+
+1. Explain why Rust and Python are complementary.
+2. Create a Rust library and expose it with PyO3.
+3. Package the result with Maturin.
+4. Design coarse-grained language boundaries.
+5. Handle errors across the FFI boundary.
+6. Test both the Rust core and the Python API.
+7. Decide what should stay in Python and what belongs in Rust.
+8. Ship a small domain kernel that Python applications can import.
+
+## Course path
+
+| Module | Topic |
+|--------|-------|
+| [01](modules/01-why-rust-python.qmd) | Why Rust + Python? |
+| [02](modules/02-rust-library.qmd) | The Rust Library |
+| [03](modules/03-first-pyo3-binding.qmd) | First PyO3 Binding |
+| [04](modules/04-maturin.qmd) | Maturin |
+| [05](modules/05-types-across-boundary.qmd) | Types Across the Boundary |
+| [06](modules/06-strong-domain-types.qmd) | Strong Domain Types |
+| [07](modules/07-errors.qmd) | Errors |
+| [08](modules/08-structured-data.qmd) | Structured Data |
+| [09](modules/09-boundary-design.qmd) | Boundary Design |
+| [10](modules/10-testing.qmd) | Testing |
+| [11](modules/11-performance.qmd) | Performance |
+| [12](modules/12-concurrency-gil.qmd) | Concurrency and the GIL |
+| [13](modules/13-async.qmd) | Async Interoperability |
+| [14](modules/14-what-stays-python.qmd) | What Should Stay Python? |
+| [15](modules/15-capstone.qmd) | Capstone — Mini Kernel |
+
+## Prerequisites
+
+- Basic Python
+- Command-line tools and Git
+- No prior Rust experience required (concepts are introduced as needed)
+
+## Tooling
+
+```
+git
+python ≥ 3.9
+rustup / cargo
+maturin
+pytest
+```
+
+## Principle to remember
+
+> One semantic core, multiple interfaces.
+
+The same Rust kernel can later be reused via PyO3, CLI, or WASM without rewriting the domain logic.

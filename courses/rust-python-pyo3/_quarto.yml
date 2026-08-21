@@ -1,0 +1,122 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - glossary.qmd
+    - modules/01-why-rust-python.qmd
+    - modules/02-rust-library.qmd
+    - modules/03-first-pyo3-binding.qmd
+    - modules/04-maturin.qmd
+    - modules/05-types-across-boundary.qmd
+    - modules/06-strong-domain-types.qmd
+    - modules/07-errors.qmd
+    - modules/08-structured-data.qmd
+    - modules/09-boundary-design.qmd
+    - modules/10-testing.qmd
+    - modules/11-performance.qmd
+    - modules/12-concurrency-gil.qmd
+    - modules/13-async.qmd
+    - modules/14-what-stays-python.qmd
+    - modules/15-capstone.qmd
+    - labs/index.qmd
+
+website:
+  title: "Rust + Python with PyO3"
+  description: "Python describes what should happen; Rust guarantees how fundamental things happen."
+  site-url: "https://academy.open-engineering.io/courses/rust-python-pyo3/"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Modules
+        menu:
+          - href: modules/01-why-rust-python.qmd
+            text: "01 Why Rust + Python?"
+          - href: modules/02-rust-library.qmd
+            text: "02 The Rust Library"
+          - href: modules/03-first-pyo3-binding.qmd
+            text: "03 First PyO3 Binding"
+          - href: modules/04-maturin.qmd
+            text: "04 Maturin"
+          - href: modules/05-types-across-boundary.qmd
+            text: "05 Types Across the Boundary"
+          - href: modules/06-strong-domain-types.qmd
+            text: "06 Strong Domain Types"
+          - href: modules/07-errors.qmd
+            text: "07 Errors"
+          - href: modules/08-structured-data.qmd
+            text: "08 Structured Data"
+          - href: modules/09-boundary-design.qmd
+            text: "09 Boundary Design"
+          - href: modules/10-testing.qmd
+            text: "10 Testing"
+          - href: modules/11-performance.qmd
+            text: "11 Performance"
+          - href: modules/12-concurrency-gil.qmd
+            text: "12 Concurrency & GIL"
+          - href: modules/13-async.qmd
+            text: "13 Async"
+          - href: modules/14-what-stays-python.qmd
+            text: "14 What Stays Python?"
+          - href: modules/15-capstone.qmd
+            text: "15 Capstone"
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - section: "Modules"
+        contents:
+          - href: modules/01-why-rust-python.qmd
+            text: "01 Why Rust + Python?"
+          - href: modules/02-rust-library.qmd
+            text: "02 The Rust Library"
+          - href: modules/03-first-pyo3-binding.qmd
+            text: "03 First PyO3 Binding"
+          - href: modules/04-maturin.qmd
+            text: "04 Maturin"
+          - href: modules/05-types-across-boundary.qmd
+            text: "05 Types Across the Boundary"
+          - href: modules/06-strong-domain-types.qmd
+            text: "06 Strong Domain Types"
+          - href: modules/07-errors.qmd
+            text: "07 Errors"
+          - href: modules/08-structured-data.qmd
+            text: "08 Structured Data"
+          - href: modules/09-boundary-design.qmd
+            text: "09 Boundary Design"
+          - href: modules/10-testing.qmd
+            text: "10 Testing"
+          - href: modules/11-performance.qmd
+            text: "11 Performance"
+          - href: modules/12-concurrency-gil.qmd
+            text: "12 Concurrency & GIL"
+          - href: modules/13-async.qmd
+            text: "13 Async"
+          - href: modules/14-what-stays-python.qmd
+            text: "14 What Stays Python?"
+          - href: modules/15-capstone.qmd
+            text: "15 Capstone — Mini Kernel"
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Rust + Python with PyO3 — Open Engineering Academy"
+    right: "Built with Quarto"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto

@@ -1,0 +1,16 @@
+---
+title: "Glossary"
+---
+
+| Term | Meaning |
+|------|---------|
+| **PyO3** | Rust crate that enables writing native Python modules and embedding Python in Rust. |
+| **Maturin** | Build tool that produces Python wheels from Rust (PyO3) projects. |
+| **Identifier** | Canonical `namespace.kind.name` value. Academy compact form uses namespace `oe` (e.g. `oe.course.pico`). |
+| **Manifest** | Structured declaration of an entity (kind, name, optional version/identifier). |
+| **Rule** | Deterministic when/then evaluation unit living in the kernel. |
+| **Canonical semantics** | The single authoritative definition of what “valid” means. |
+| **Coarse-grained boundary** | An API that crosses languages with one meaningful operation rather than many tiny calls. |
+| **Mini Kernel** | The small Rust domain core (Identifier + Manifest + Rule) produced by this course. |
+| **GIL** | Python Global Interpreter Lock — only one thread executes Python bytecode at a time in a process. |
+| **`oe` namespace** | Compact Academy namespace used in metadata ids (`oe.course.pico`, `oe.lab.hello-pico`). |

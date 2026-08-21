@@ -1,0 +1,18 @@
+id: oe.course.rust-python-pyo3
+slug: rust-python-pyo3
+title: "Rust + Python — Building Native Python Modules with PyO3"
+level: intermediate
+duration: 16h
+prerequisites:
+  - basic Python
+  - command-line tools
+  - Git
+teaches:
+  - PyO3
+  - Maturin
+  - canonical domain logic in Rust
+  - intentional language boundary design
+  - packaging native Python extensions
+produces:
+  - open-engineering-kernel (Python package backed by Rust)
+  - Mini Open Engineering Kernel (Identifier, Manifest, Rule)
