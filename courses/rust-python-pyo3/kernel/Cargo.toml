@@ -1,0 +1,25 @@
+[package]
+name = "open_engineering_kernel"
+version = "0.1.0"
+edition = "2021"
+description = "Mini Open Engineering Kernel — canonical Identifier, Manifest, and Rule semantics in Rust"
+license = "Apache-2.0"
+authors = ["Open Engineering Academy"]
+readme = "README.md"
+
+[lib]
+name = "open_engineering_kernel"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+
+[dev-dependencies]
+pyo3 = { version = "0.22", features = ["auto-initialize"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
