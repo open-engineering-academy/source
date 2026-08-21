@@ -80,17 +80,20 @@ maturin build --release
 # → target/wheels/open_engineering_kernel-…‑….whl
 ```
 
-Then in a **clean** environment:
+Then in a **fresh** environment (definition of done for packaging):
 
 ```bash
+python3 -m venv /tmp/oe-clean
+source /tmp/oe-clean/bin/activate
 pip install path/to/open_engineering_kernel-*.whl
-python -c "from open_engineering_kernel import Identifier"
+python -c "from open_engineering_kernel import Identifier; print(Identifier.parse('oe.course.pico'))"
 ```
 
 The course must not stop at `maturin develop`. Shipping a wheel that installs cleanly is part of the definition of done.
 
 ## Concepts to understand (without drowning)
 
+- **Virtual environment** — isolated Python prefix; keeps course packages off the system interpreter
 - **Native extension** — compiled code loaded by the Python interpreter
 - **Wheel** — the standard binary distribution format for Python packages
 - **Platform tags** — Linux / macOS / Windows × CPU architecture × Python ABI
