@@ -78,6 +78,13 @@ the venv is not active - run `source .venv/bin/activate` (or Windows equivalent)
 ```bash
 maturin build --release
 # → target/wheels/open_engineering_kernel-…‑….whl
+ls target/wheels/
+```
+
+```bash
+# Absolute path to the wheel
+WHEEL=$(realpath target/wheels/open_engineering_kernel-*.whl)
+echo "$WHEEL"
 ```
 
 Then in a **fresh** environment (definition of done for packaging):
@@ -85,7 +92,7 @@ Then in a **fresh** environment (definition of done for packaging):
 ```bash
 python3 -m venv /tmp/oe-clean
 source /tmp/oe-clean/bin/activate
-pip install path/to/open_engineering_kernel-*.whl
+pip install "$WHEEL"    # path/to/open_engineering_kernel-*.whl
 python -c "from open_engineering_kernel import Identifier; print(Identifier.parse('oe.course.pico'))"
 ```
 
