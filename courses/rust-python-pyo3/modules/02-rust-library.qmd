@@ -28,6 +28,9 @@ name = "open_engineering_kernel"
 version = "0.1.0"
 edition = "2021"
 
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+
 [lib]
 name = "open_engineering_kernel"
 crate-type = ["cdylib", "rlib"]   # rlib for Rust tests, cdylib for Python
