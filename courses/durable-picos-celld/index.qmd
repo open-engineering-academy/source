@@ -1,0 +1,88 @@
+---
+title: "Durable Picos with celld"
+subtitle: "From Hello, Pico! to a persistent, addressable, hibernating actor"
+---
+
+## The architectural lesson
+
+```
+A Pico is not a container.
+A Pico is not a process.
+A Pico is not a Kubernetes Pod.
+A Pico is not a Durable Object.
+A Pico is not celld.
+
+              Pico
+                │
+                ▼
+        engineering entity
+                │
+                ▼
+           Runtime SPI
+          ╱      │      ╲
+         ╱       │       ╲
+     Native    celld     future
+                │
+                ▼
+          Durable Actor
+```
+
+**Pico is the Open Engineering abstraction. celld is one possible runtime implementation.**
+
+## The central experiment
+
+```
+POST hello  →  event_count = 1
+POST hello  →  event_count = 2
+# restart runtime
+POST hello  →  event_count = 3
+```
+
+State belongs to the Pico, not to the process that last executed it.
+
+## What you will build
+
+| Artifact | Role |
+|----------|------|
+| `HelloPico` | Domain behaviour (runtime-independent) |
+| `PicoRuntime` SPI | Abstract deploy / invoke / inspect / … |
+| `NativeRuntime` | Volatile in-process baseline |
+| `DurableRuntime` | SQLite-backed durable adapter (celld-shaped) |
+| Contract tests | Same suite passes on both runtimes |
+
+## Learning path
+
+```
+Hello, Pico!
+     │
+     ▼
+State vs process
+     │
+     ▼
+Actor model
+     │
+     ▼
+Pico Runtime SPI
+     │
+     ▼
+Durable state + restart recovery
+     │
+     ├─ multiple identities
+     ├─ alarms / hibernation
+     ├─ containers / Minikube
+     └─ Crossplane / Manifold (reuse Academy material)
+```
+
+## Runtime package
+
+Working code lives in `runtime/`:
+
+```bash
+cd runtime
+PYTHONPATH=src python -m pytest tests -q
+# 18 passed
+```
+
+## Principle
+
+> Prefer a semantic runtime request (`class: durable`) over hard-coding an implementation (`implementation: celld`).

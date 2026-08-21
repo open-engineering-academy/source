@@ -1,0 +1,14 @@
+---
+title: "Glossary"
+---
+
+| Term | Meaning |
+|------|---------|
+| **Pico** | Open Engineering engineering entity (behaviour + state + identity) |
+| **Pico Runtime SPI** | Abstract interface: deploy, invoke, inspect, … |
+| **NativeRuntime** | In-process volatile adapter |
+| **DurableRuntime** | SQLite-backed durable adapter (celld-shaped reference) |
+| **celld** | Self-hosted Durable Objects–style runtime (experimental) |
+| **Durable state** | State that survives process restart |
+| **Hibernation** | Release execution resources while keeping durable state |
+| **Runtime class** | Semantic request (e.g. `durable`), not an implementation name |

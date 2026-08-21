@@ -1,0 +1,16 @@
+id: oe.course.durable-picos-celld
+slug: durable-picos-celld
+title: "Durable Picos with celld"
+level: intermediate
+duration: 20h
+prerequisites:
+  - oe.course.pico
+  - Hello, Pico! lab
+teaches:
+  - Pico Runtime SPI
+  - durable actor model
+  - celld as one runtime implementation
+  - state vs process lifetime
+produces:
+  - oe-pico-runtime (SPI + Native + Durable adapters)
+  - durable Hello Pico reference

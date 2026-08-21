@@ -1,0 +1,86 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+    - glossary.qmd
+    - modules/01-revisit-hello-pico.qmd
+    - modules/02-state-versus-process.qmd
+    - modules/03-actor-oriented-picos.qmd
+    - modules/04-meet-celld.qmd
+    - modules/05-run-celld-locally.qmd
+    - modules/06-package-hello-pico.qmd
+    - modules/07-durable-state.qmd
+    - modules/08-multiple-identities.qmd
+    - modules/09-events-and-rpc.qmd
+    - modules/10-alarms.qmd
+    - modules/11-hibernation.qmd
+    - modules/12-containerize.qmd
+    - modules/13-minikube.qmd
+    - modules/14-runtime-spi.qmd
+    - labs/index.qmd
+
+website:
+  title: "Durable Picos with celld"
+  description: "Pico is the abstraction. celld is one possible durable runtime."
+  site-url: "https://academy.open-engineering.io/courses/durable-picos-celld/"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Modules
+        menu:
+          - href: modules/01-revisit-hello-pico.qmd
+            text: "01 Revisit Hello, Pico!"
+          - href: modules/02-state-versus-process.qmd
+            text: "02 State vs Process"
+          - href: modules/03-actor-oriented-picos.qmd
+            text: "03 Actor-oriented Picos"
+          - href: modules/04-meet-celld.qmd
+            text: "04 Meet celld"
+          - href: modules/07-durable-state.qmd
+            text: "07 Durable State"
+          - href: modules/08-multiple-identities.qmd
+            text: "08 Multiple Identities"
+          - href: modules/14-runtime-spi.qmd
+            text: "14 Runtime SPI"
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - section: "Modules"
+        contents:
+          - modules/01-revisit-hello-pico.qmd
+          - modules/02-state-versus-process.qmd
+          - modules/03-actor-oriented-picos.qmd
+          - modules/04-meet-celld.qmd
+          - modules/05-run-celld-locally.qmd
+          - modules/06-package-hello-pico.qmd
+          - modules/07-durable-state.qmd
+          - modules/08-multiple-identities.qmd
+          - modules/09-events-and-rpc.qmd
+          - modules/10-alarms.qmd
+          - modules/11-hibernation.qmd
+          - modules/12-containerize.qmd
+          - modules/13-minikube.qmd
+          - modules/14-runtime-spi.qmd
+      - href: labs/index.qmd
+        text: Labs
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Durable Picos with celld — Open Engineering Academy"
+    right: "Built with Quarto"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
