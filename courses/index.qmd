@@ -39,6 +39,9 @@ The three core courses map one-to-one onto the academy's three-layer story —
   are explicitly scaffolded.
 - **[Rust Python PyO3](rust-python-pyo3/)** — Rust + Python - Building 
   Native Python Modules with PyO3: description to follow.
+- **[Durable Picos CellD](durable-picos-celld)** - Pico is the Open 
+  Engineering abstraction. celld is one possible durable runtime 
+  implementation.
 
 ## Additional courses
 
