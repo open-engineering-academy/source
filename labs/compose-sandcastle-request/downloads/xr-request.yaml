@@ -1,0 +1,21 @@
+# Crossplane Composite Resource: the learner-authored *request* that
+# asks the control plane for a hello-world-pico artifact with a specific
+# greeting value. This file is the Part 2 counterpart to the Sandcastle
+# course's Part 1 blueprint: Part 1 asked "how would we construct a
+# hello-world-pico?"; Part 2 asks "how does Crossplane *request*
+# construction of one?".
+#
+# The apiVersion/kind/spec.value shape matches
+# labs/hello-pico-on-kubernetes/downloads/05-xr.yaml so the same request
+# would also be reconcilable by the downstream Kubernetes composition
+# once the branch this lab produces has been handed off.
+#
+# The greeting deliberately differs from "Hello, Pico!" so the runnable
+# path proves the Sandcastle honours what Crossplane *asked for* — the
+# construction stage is parametric on the request, not hard-coded.
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: greetings-de
+spec:
+  value: "Hallo, Pico!"

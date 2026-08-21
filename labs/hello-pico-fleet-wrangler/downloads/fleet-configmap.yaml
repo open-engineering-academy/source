@@ -1,0 +1,61 @@
+# On-cluster carrier for the Wrangler-authored Fleet.
+#
+# The fleet fragment (fleet.yaml, shipped alongside the lab) is the
+# authored declarative truth. Copying it into a ConfigMap keeps that
+# same truth reachable inside the Manifold RuntimeEnvironment on the
+# Kubernetes RuntimeSubstrate, so an operator inspecting the cluster
+# can read the exact fleet composition, per-Pico bindings, and
+# lifecycle intent the running fleet was deployed under.
+#
+# The `.data.fleet\.yaml` key holds the fragment verbatim so a
+# `kubectl -n manifold get cm hello-pico-fleet -o yaml` renders the
+# same YAML the learner authored. This ConfigMap does not run the
+# fleet — the underlying labs' own manifests remain the runtime path.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-pico-fleet
+  namespace: manifold
+  labels:
+    oe.academy/fleet: hello-pico-fleet
+data:
+  fleet.yaml: |
+    apiVersion: wrangler.oe.academy/v1alpha1
+    kind: Fleet
+    metadata:
+      name: hello-pico-fleet
+    spec:
+      runtimeEnvironment: manifold-on-kubernetes
+      topologies:
+        - name: hello-world-pico-on-manifold
+          source: labs/hello-pico-on-manifold/downloads/topology.yaml
+        - name: hello-two-picos
+          source: labs/hello-two-picos/downloads/topology.yaml
+      picos:
+        - name: hello-world-pico
+          topology: hello-world-pico-on-manifold
+          role: hosted
+        - name: hello-producer-pico
+          topology: hello-two-picos
+          role: producer
+        - name: hello-consumer-pico
+          topology: hello-two-picos
+          role: consumer
+      bindings:
+        - pico: hello-world-pico
+          topology: hello-world-pico-on-manifold
+          channel: hello
+          mode: subscribes
+        - pico: hello-producer-pico
+          topology: hello-two-picos
+          channel: greeting
+          mode: publishes
+        - pico: hello-consumer-pico
+          topology: hello-two-picos
+          channel: greeting
+          mode: subscribes
+      lifecycle:
+        desiredState: deployed
+        activation:
+          hello-world-pico-on-manifold: on-demand
+          hello-two-picos: on-demand

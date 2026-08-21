@@ -1,0 +1,57 @@
+# Home Assistant configuration snippet — Hello Pico on Home Assistant.
+#
+# This snippet layers a graphical ControlSurface (Phase 7 vocabulary) over
+# the same declared runtime truth the approved
+# `labs/hello-pico-on-manifold/` lab and the approved `pico runtime`
+# Python CLI already use. It does not introduce a new runtime, a new
+# ontology, or a bypass around Kubernetes, Manifold, Wrangler, or the
+# Python CLI. Every read and write below shells out to the `pico runtime`
+# CLI shipped at `bin/pico` in the academy repository, which itself
+# shells out to `kubectl` against the same Kubernetes-hosted Manifold
+# RuntimeEnvironment the underlying lab deploys.
+#
+# Merge these keys into your Home Assistant `configuration.yaml`. The
+# `pico` executable and a working `kubeconfig` must both be reachable
+# from inside the Home Assistant container (see downloads/README.md).
+
+# --- Observation surface -------------------------------------------------
+# One HA sensor that surfaces the current Pico engine Pod phase declared
+# on-cluster. The sensor runs the shipped helper script, which delegates
+# to `pico runtime inspect --lab hello-pico-on-manifold` and extracts the
+# Pod phase from the CLI's declared-truth output. HA never reads Pod
+# state directly; it only observes what the approved CLI reports.
+command_line:
+  - sensor:
+      name: hello_pico_engine_phase
+      unique_id: oe.lab.hello-pico-home-assistant.pico_engine_phase
+      command: "/config/hello-pico/hello-pico-ha-phase.sh"
+      scan_interval: 30
+      command_timeout: 15
+
+# --- Safe control action -------------------------------------------------
+# One HA shell_command that asserts one OperatorIntent by asking the
+# approved Python CLI ControlSurface to emit exactly one event onto the
+# same Wrangler-declared Channel the underlying lab uses. The argv is
+# byte-equal to what a learner would type at a shell prompt against the
+# same `hello-pico-on-manifold` lab.
+shell_command:
+  hello_pico_send_greeting: "pico runtime emit --lab hello-pico-on-manifold --channel hello --value 'Hello, Pico!'"
+
+# --- UI trigger ----------------------------------------------------------
+# One HA input_button that a learner presses in the default dashboard to
+# fire the shell_command above. input_button is HA's canonical
+# UI-triggerable one-shot control primitive; the automation binds it to
+# the shell_command without adding any state or logic of its own.
+input_button:
+  hello_pico_send_greeting:
+    name: "Send Hello, Pico!"
+
+automation:
+  - alias: "Hello Pico — send greeting on button press"
+    id: oe.lab.hello-pico-home-assistant.send_greeting_automation
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_button.hello_pico_send_greeting
+    action:
+      - service: shell_command.hello_pico_send_greeting

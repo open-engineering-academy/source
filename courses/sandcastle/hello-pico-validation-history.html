@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Hello Pico validation history and feedback – Sandcastle</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./shared/images/open-engineering-mark.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b441d67de2a47843d9aa327396f88357.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Sandcastle</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./part-1/index.html"> 
+<span class="menu-text">Part 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./part-2/index.html"> 
+<span class="menu-text">Part 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./part-3/index.html"> 
+<span class="menu-text">Part 3</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./hello-pico-realization-chain.html"> 
+<span class="menu-text">Chain</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./hello-pico-checkable-profile.html"> 
+<span class="menu-text">Profile</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./hello-pico-profile-validation.html"> 
+<span class="menu-text">Validate</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./hello-pico-validation-history.html"> 
+<span class="menu-text">History</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./glossary.html"> 
+<span class="menu-text">Glossary</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./../../"> 
+<span class="menu-text">Academy</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./hello-pico-validation-history.html">History</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-1/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part 1 — Inside a Sandcastle</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-1/01-inside-a-sandcastle/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 Inside a Sandcastle</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-1/01-inside-a-sandcastle/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-1/01-inside-a-sandcastle/lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-1/01-inside-a-sandcastle/summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-1/01-inside-a-sandcastle/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-2/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part 2 — Composing Sandcastles with Crossplane</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-2/01-composing-a-sandcastle-request/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 Composing a Sandcastle request</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-2/01-composing-a-sandcastle-request/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-2/01-composing-a-sandcastle-request/lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-2/01-composing-a-sandcastle-request/summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-2/01-composing-a-sandcastle-request/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-3/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Part 3 — Delivering artifacts from a Sandcastle</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-3/01-handing-off-to-kubernetes/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 Handing off to Kubernetes</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/01-handing-off-to-kubernetes/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/01-handing-off-to-kubernetes/lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/01-handing-off-to-kubernetes/summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/01-handing-off-to-kubernetes/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./part-3/02-outer-delivery-loop/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 The outer delivery loop</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/02-outer-delivery-loop/exercise.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercise</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/02-outer-delivery-loop/lab.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/02-outer-delivery-loop/summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Summary</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./part-3/02-outer-delivery-loop/quiz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quiz</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./labs/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Labs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hello-pico-realization-chain.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chain</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hello-pico-checkable-profile.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Profile</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hello-pico-profile-validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Validate</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./hello-pico-validation-history.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">History</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./glossary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Glossary</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-aggregate-means-here" id="toc-what-aggregate-means-here" class="nav-link active" data-scroll-target="#what-aggregate-means-here">What “aggregate” means here</a></li>
+  <li><a href="#the-report-index-on-the-hello-pico-path" id="toc-the-report-index-on-the-hello-pico-path" class="nav-link" data-scroll-target="#the-report-index-on-the-hello-pico-path">The report index on the Hello Pico path</a></li>
+  <li><a href="#historical-snapshots-on-the-hello-pico-path" id="toc-historical-snapshots-on-the-hello-pico-path" class="nav-link" data-scroll-target="#historical-snapshots-on-the-hello-pico-path">Historical snapshots on the Hello Pico path</a></li>
+  <li><a href="#feedback-loop-for-approved-claimants" id="toc-feedback-loop-for-approved-claimants" class="nav-link" data-scroll-target="#feedback-loop-for-approved-claimants">Feedback loop for approved claimants</a></li>
+  <li><a href="#reading-the-current-catalog-on-the-hello-pico-path" id="toc-reading-the-current-catalog-on-the-hello-pico-path" class="nav-link" data-scroll-target="#reading-the-current-catalog-on-the-hello-pico-path">Reading the current catalog on the Hello Pico path</a></li>
+  <li><a href="#coherence-with-phase-15-metadata-already-on-disk" id="toc-coherence-with-phase-15-metadata-already-on-disk" class="nav-link" data-scroll-target="#coherence-with-phase-15-metadata-already-on-disk">Coherence with Phase 1–5 metadata already on disk</a></li>
+  <li><a href="#where-compose-construct-behave-fit" id="toc-where-compose-construct-behave-fit" class="nav-link" data-scroll-target="#where-compose-construct-behave-fit">Where compose / construct / behave fit</a></li>
+  <li><a href="#what-this-page-does-not-add" id="toc-what-this-page-does-not-add" class="nav-link" data-scroll-target="#what-this-page-does-not-add">What this page does <em>not</em> add</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See also</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hello Pico validation history and feedback</h1>
+<p class="subtitle lead">How the opt-in <code>hello-pico-v1</code> reports on the taught Pico → Sandcastle → Crossplane → Kubernetes path aggregate over time and feed back into the governing Definition.</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This page is the academy’s <strong>aggregate validation-history and feedback reference</strong> for Hello Pico. Where <a href="./hello-pico-profile-validation.html">Hello Pico profile validation</a> explains the single-claimant Phase 5 workflow and the shape of one validation report, this page reads the <em>same</em> reports as a <strong>catalog over time</strong>: it names the Phase 6 report-index shape, the historical-snapshot convention that retains prior reports next to the current ones, and the narrow feedback loop that an approved claimant uses to refine the governing Definition.</p>
+<p>The aggregate contract itself is defined in the Phase 6 section of <code>templates/README.qmd</code> (in-repo scaffold, not published as a learner page). The single-report workflow it aggregates is defined in Phase 5; the shape rules those reports are written against are defined in Phase 4; the underlying vocabulary is defined in the Pico course’s <a href="../pico/constructive-realization.html">constructive-realization reference</a>.</p>
+<p>The aggregate loop is deliberately narrow. It is <strong>opt-in</strong> and <strong>non-blocking</strong>: it only catalogs reports for artifacts that already declared <code>checkable_profile: hello-pico-v1</code>, no render or publish step is gated on any verdict, and no historical snapshot, report index, or <code>feedback[]</code> entry is generated automatically. The loop reads files that already sit next to the per-claimant reports and <code>metadata.yaml</code>, and nothing else.</p>
+<section id="what-aggregate-means-here" class="level2">
+<h2 class="anchored" data-anchor-id="what-aggregate-means-here">What “aggregate” means here</h2>
+<p>An aggregate run answers exactly one additional question on top of the Phase 5 workflow: <em>“which <code>hello-pico-v1</code> claimants currently have a report on disk, what did the most recent report say, and — for the approved ones — is there an observation worth folding back into the governing Definition?”</em> It is a <strong>catalog</strong> over per-claimant reports, not a re-run of the profile check, not a diff engine, and not a dashboard.</p>
+<p>Aggregate reporting is distinct from three things it can be confused with on the Hello Pico path:</p>
+<ul>
+<li><strong>Phase 5 profile validation</strong> — that workflow produces one report per claimant against the Phase 4 shape rules. Aggregate reporting never re-evaluates a shape rule; it lists reports and their <code>overall</code> verdict as they already stand on disk.</li>
+<li><strong>Runtime validation via <code>verify.sh</code></strong> — the shipped <a href="../../labs/hello-pico-on-kubernetes/downloads/verify.sh">Hello Pico on Kubernetes <code>verify.sh</code></a> still asserts observable Job behaviour. Aggregate reporting never runs <code>verify.sh</code> and never recaptures runtime evidence.</li>
+<li><strong>Automated Definition refinement</strong> — Phase 6 makes the feedback loop visible via <code>feedback[].from_report</code>, but the Definition is still refined by its author as an ordinary <code>metadata.yaml</code> edit. A <code>feedback[]</code> entry is a suggestion; it never mutates a Definition field on its own.</li>
+</ul>
+</section>
+<section id="the-report-index-on-the-hello-pico-path" class="level2">
+<h2 class="anchored" data-anchor-id="the-report-index-on-the-hello-pico-path">The report index on the Hello Pico path</h2>
+<p>The Phase 6 report index is a small YAML or JSON file next to the per-claimant reports. On the Hello Pico path the reports already sit under <a href="../../templates/examples/hello-pico-v1/reports/"><code>templates/examples/hello-pico-v1/reports/</code></a>, so the index for <code>hello-pico-v1</code> lives next to them (for example, <code>templates/examples/hello-pico-v1/reports/index.yaml</code>).</p>
+<p>The two claimants opted in today are the Definition on <a href="../../courses/crossplane/metadata.yaml"><code>courses/crossplane/metadata.yaml</code></a> and the Realization on <a href="../../labs/hello-pico-on-kubernetes/metadata.yaml"><code>labs/hello-pico-on-kubernetes/metadata.yaml</code></a>. Their current per-claimant reports are <a href="../../templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml"><code>reports/oe-course-crossplane.yaml</code></a> and <a href="../../templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml"><code>reports/oe-lab-hello-pico-on-kubernetes.yaml</code></a>. Both currently carry <code>overall: conformant</code>.</p>
+<p>An index that catalogs those two reports has the following shape (the report index is an authoring artifact under <code>templates/</code>, not a <code>metadata.yaml</code> field):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">profile</span><span class="kw">:</span><span class="at"> hello-pico-v1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">generated_at</span><span class="kw">:</span><span class="at"> 2026-08-10</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">entries</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">subject</span><span class="kw">:</span><span class="at"> oe.course.crossplane</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">subject_role</span><span class="kw">:</span><span class="at"> definition</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">report</span><span class="kw">:</span><span class="at"> templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">overall</span><span class="kw">:</span><span class="at"> conformant</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">checked_at</span><span class="kw">:</span><span class="at"> 2026-08-10</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">history</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">subject</span><span class="kw">:</span><span class="at"> oe.lab.hello-pico-on-kubernetes</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">subject_role</span><span class="kw">:</span><span class="at"> realization</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">report</span><span class="kw">:</span><span class="at"> templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">overall</span><span class="kw">:</span><span class="at"> conformant</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">checked_at</span><span class="kw">:</span><span class="at"> 2026-08-10</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">history</span><span class="kw">:</span><span class="at"> </span><span class="kw">[]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The index does not restate any <code>findings[]</code>; the per-claimant reports remain the authoritative record for that. <code>history: []</code> reflects the current on-disk state — no prior snapshots have been retained yet on this path.</p>
+</section>
+<section id="historical-snapshots-on-the-hello-pico-path" class="level2">
+<h2 class="anchored" data-anchor-id="historical-snapshots-on-the-hello-pico-path">Historical snapshots on the Hello Pico path</h2>
+<p>Phase 6 retains prior reports in one of two acceptable layouts. Either form is acceptable for <code>hello-pico-v1</code>; authors on this path SHOULD pick one and use it consistently under <code>templates/examples/hello-pico-v1/reports/</code>:</p>
+<ul>
+<li><strong><code>history/</code> subdirectory</strong> — e.g.&nbsp;moving an outgoing Crossplane report to <code>templates/examples/hello-pico-v1/reports/history/oe-course-crossplane.2026-08-01.yaml</code> before regenerating the current file at <code>templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml</code>.</li>
+<li><strong>ISO-date suffix on the filename</strong> — e.g.&nbsp;renaming an outgoing Realization report to <code>templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.2026-08-01.yaml</code> before regenerating <code>templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml</code>.</li>
+</ul>
+<p>Snapshots are read-only observations of a prior run. On the Hello Pico path this means:</p>
+<ul>
+<li>The Phase 5 <code>validation_report</code> pointer on the claimant’s <code>metadata.yaml</code> (currently unset on both opted-in claimants; the reports are referenced by path from this page and from <a href="../../templates/examples/hello-pico-v1/README.md"><code>templates/examples/hello-pico-v1/README.md</code></a>) always names the <em>current</em> report, never a snapshot.</li>
+<li>A snapshot is never edited to reflect newer metadata; fix <code>courses/crossplane/metadata.yaml</code> or <code>labs/hello-pico-on-kubernetes/metadata.yaml</code>, then regenerate the current report and copy the outgoing report into <code>history/</code> (or rename it with an ISO-date suffix) first.</li>
+<li>Retention is manual and unbounded. Phase 6 does not prescribe a rotation, pruning, or diffing policy for the Hello Pico path.</li>
+</ul>
+</section>
+<section id="feedback-loop-for-approved-claimants" class="level2">
+<h2 class="anchored" data-anchor-id="feedback-loop-for-approved-claimants">Feedback loop for approved claimants</h2>
+<p>Both current <code>hello-pico-v1</code> claimants are approved today — <code>overall: conformant</code> on both per-claimant reports — so both are eligible under Phase 6 to feed Phase 2’s <code>feedback[]</code> loop with an optional <code>from_report</code> pointer.</p>
+<p>Approved status is what makes the loop meaningful. A <code>non-conformant</code> or <code>inconclusive</code> report is a correction signal aimed at <code>metadata.yaml</code> per the <a href="./hello-pico-profile-validation.html#reading-a-failing-or-inconclusive-report">Phase 5 authoring guidance</a>; it is not a feedback signal aimed at the Definition. The metadata is fixed first, the report regenerated, and only then does an observation from the resulting approved report belong under <code>feedback[]</code>.</p>
+<p>On the Hello Pico path the Phase 2 <code>feedback[]</code> shape sits in two places worth naming here — the Definition claimant already carries entries, while the Realization claimant does not yet:</p>
+<ul>
+<li><p><a href="../../courses/crossplane/metadata.yaml"><code>courses/crossplane/metadata.yaml</code></a> carries <code>feedback[]</code> on the Definition, currently sourced from lesson and walkthrough observations. A Phase 6 addition here would take an observation from <code>templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml</code> (for example, a Constraint that turned out to be trivially satisfied) and add a matching entry whose <code>about</code> names the Element, whose <code>refines</code> names <code>oe.course.crossplane</code>, and whose new optional <code>from_report</code> names the report file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">feedback</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">  - </span><span class="fu">observation</span><span class="kw">:</span><span class="at"> </span><span class="ch">&gt;-</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      The `Hello, Pico!` output Constraint is validated at three</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      distinct evidence points; the Definition MAY note that only</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      one is strictly required for profile conformance.</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">about</span><span class="kw">:</span><span class="at"> hello-world-pico-on-kubernetes</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">refines</span><span class="kw">:</span><span class="at"> oe.course.crossplane</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">from_report</span><span class="kw">:</span><span class="at"> templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><a href="../../labs/hello-pico-on-kubernetes/metadata.yaml"><code>labs/hello-pico-on-kubernetes/metadata.yaml</code></a> does not carry <code>feedback[]</code> on the Realization today. When a Realization-side observation genuinely comes from the validation report — for example, a version-pin note or screenshot target worth folding back from the lab into the aggregate view — a Phase 6 addition here would introduce a <code>feedback[]</code> list on the Realization and similarly cite <code>templates/examples/hello-pico-v1/reports/oe-lab-hello-pico-on-kubernetes.yaml</code> under <code>from_report</code>.</p></li>
+</ul>
+<p>Neither addition is required to keep the current chain runnable. Phase 2 <code>feedback[]</code> entries recorded from lesson summaries or lab retrospectives continue to use the Phase 2 shape <em>without</em> a <code>from_report</code> pointer.</p>
+</section>
+<section id="reading-the-current-catalog-on-the-hello-pico-path" class="level2">
+<h2 class="anchored" data-anchor-id="reading-the-current-catalog-on-the-hello-pico-path">Reading the current catalog on the Hello Pico path</h2>
+<p>Together, the two per-claimant reports, the (author-generated) report index above, and the empty <code>history/</code> state describe the Hello Pico aggregate today:</p>
+<ul>
+<li><strong>Coverage</strong> — the profile catalogs a Definition and a Realization. The Element role for the reference <code>hello-pico-v1</code> package is represented by <a href="../../templates/examples/hello-pico-v1/package.yaml"><code>templates/examples/hello-pico-v1/package.yaml</code></a> as the illustrative fallback that carries all three records in one place, but no separate Element-role report is on disk yet.</li>
+<li><strong>Verdict distribution</strong> — both current reports are <code>overall: conformant</code>. Neither claimant is currently in a state where a Phase 5 correction is owed before Phase 6 feedback can be recorded.</li>
+<li><strong>History depth</strong> — zero snapshots retained on either claimant. The first time either report changes and the outgoing file is worth keeping, that decision is a deliberate authoring step under the <a href="#historical-snapshots-on-the-hello-pico-path">snapshot convention above</a>.</li>
+<li><strong>Feedback wiring</strong> — the two <code>metadata.yaml</code> files above are the only places today where a <code>feedback[].from_report</code> pointer would sit honestly. No other course, lesson, or lab is expected to grow one in Phase 6.</li>
+</ul>
+</section>
+<section id="coherence-with-phase-15-metadata-already-on-disk" class="level2">
+<h2 class="anchored" data-anchor-id="coherence-with-phase-15-metadata-already-on-disk">Coherence with Phase 1–5 metadata already on disk</h2>
+<p>The Phase 6 additions reuse only shapes that already exist:</p>
+<ul>
+<li><code>realizes</code>, <code>produces</code>, <code>constraints</code>, <code>realization_pattern</code>, <code>validated_by</code> — Phase 1, unchanged.</li>
+<li><code>depends_on</code>, <code>composes</code>, <code>composition_pattern</code>, <code>conformance_status</code>, <code>validation_results</code>, <code>feedback</code> — Phase 2, unchanged (with <code>feedback[]</code> continuing to carry <code>observation</code>, <code>about</code>, and <code>refines</code>).</li>
+<li><code>lifecycle_state</code>, <code>evidence</code>, <code>evidence[].check</code>, <code>evidence[].path</code> — Phase 3, unchanged.</li>
+<li><code>checkable_profile</code>, <code>produced_by</code>, <code>validation_results[].validates_constraint</code> — Phase 4, unchanged.</li>
+<li><code>validation_report</code> and the per-claimant report shape — Phase 5, unchanged.</li>
+</ul>
+<p>The only new <code>metadata.yaml</code> addition in Phase 6 is the optional <code>feedback[].from_report</code> pointer described above. The report-index file and the historical-snapshot files are profile-tooling artefacts under <code>templates/examples/hello-pico-v1/reports/</code>, not <code>metadata.yaml</code> fields.</p>
+</section>
+<section id="where-compose-construct-behave-fit" class="level2">
+<h2 class="anchored" data-anchor-id="where-compose-construct-behave-fit">Where compose / construct / behave fit</h2>
+<p>Aggregate reporting sits on top of the same three-layer story that the <a href="./hello-pico-profile-validation.html">Phase 5 profile-validation reference</a> maps out, and adds the same three notes at the <em>catalog</em> layer:</p>
+<ul>
+<li><strong>Compose</strong> — the Realization report catalogs the Crossplane XR that composes a Kubernetes Job from an already-realized <code>hello-world-pico</code>; any <code>feedback[].from_report</code> drawn from it points at the composition-time observations worth folding back into the Definition.</li>
+<li><strong>Construct</strong> — the same report’s <code>depends_on</code> and <code>realization_pattern</code> findings anchor the durable Sandcastle branch as the constructed input to the hand-off; Feedback about the construction stage naturally cites the Realization report.</li>
+<li><strong>Behave</strong> — the observable <code>Hello, Pico!</code> behaviour remains the underlying Constraint on the Definition; the Definition report is the catalog entry a behaviour-level Feedback observation cites.</li>
+</ul>
+<p>The Definition threads through all three layers unchanged; the report index and the feedback loop just make the aggregate view of the metadata records auditable in a narrow, opt-in way.</p>
+</section>
+<section id="what-this-page-does-not-add" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-page-does-not-add">What this page does <em>not</em> add</h2>
+<ul>
+<li>No new metadata field beyond the single optional Phase 6 <code>feedback[].from_report</code> pointer already declared in <code>templates/README.qmd</code>.</li>
+<li>No new checkable profile — Phase 6 aggregates <code>hello-pico-v1</code>; it does not extend it or add other profiles.</li>
+<li>No broad retrofit of existing course, lesson, lab, or exercise <code>metadata.yaml</code> records; today’s adoption remains limited to the Crossplane course <code>metadata.yaml</code>, the Hello Pico on Kubernetes lab <code>metadata.yaml</code>, and the illustrative example package under <code>templates/examples/hello-pico-v1/</code>.</li>
+<li>No CI or render-time gating on report indexes, historical snapshots, or <code>feedback[]</code> entries; the aggregate loop is informational only.</li>
+<li>No automated report generation, snapshot rotation, diffing, dashboard, service, or notification pipeline.</li>
+<li>No automated propagation of <code>feedback[]</code> entries into edits on the governing <code>Definition</code>; Definitions are still refined by their authors as ordinary metadata edits.</li>
+<li>No formal schema, OWL, SHACL, JSON Schema, cross-course graph, or triple-store layer over the report index or the feedback loop.</li>
+</ul>
+</section>
+<section id="see-also" class="level2">
+<h2 class="anchored" data-anchor-id="see-also">See also</h2>
+<ul>
+<li><a href="./hello-pico-profile-validation.html">Hello Pico profile validation</a> — the Phase 5 single-claimant workflow whose per-claimant reports this page aggregates.</li>
+<li><a href="./hello-pico-checkable-profile.html">Hello Pico as a checkable realization</a> — the Phase 4 shape rules the underlying reports are written against.</li>
+<li><a href="./hello-pico-realization-chain.html">The Hello Pico realization chain</a> — the staged Pico → Sandcastle → Crossplane → Kubernetes chain the claimants sit inside.</li>
+<li><a href="../pico/hello-pico-exemplar.html">Hello Pico as a constructive exemplar</a> — the Phase 1 laptop Realization referenced by <code>depends_on</code> on the Realization claimant.</li>
+<li><a href="../crossplane/hello-pico-on-kubernetes-exemplar.html">Hello Pico on Kubernetes as a constructive exemplar</a> — the Phase 2 cross-course Realization whose <code>metadata.yaml</code> is the fullest profile-shaped record on disk.</li>
+<li><a href="../pico/constructive-realization.html">Constructive-realization reference</a> — the underlying vocabulary and where the compose / construct / behave layers map onto it.</li>
+<li><a href="./glossary.html">Glossary</a> — one-line definitions of the Sandcastle vocabulary used above.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/academy\.open-engineering\.io\/courses\/sandcastle\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Sandcastle — Open Engineering Academy</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

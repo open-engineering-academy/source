@@ -1,0 +1,41 @@
+# CompositeResourceDefinition for a new higher-level Kubernetes API:
+# `XHelloWorldPico` in the `oe.academy` group. A learner authors an XR of
+# this kind (see 05-xr.yaml) and the Composition (see 04-composition.yaml)
+# turns it into concrete Kubernetes resources.
+#
+# `scope: Cluster` matches the cluster-scoped Managed Resources this
+# Composition creates (provider-kubernetes' `Object` MR is cluster-scoped).
+apiVersion: apiextensions.crossplane.io/v2
+kind: CompositeResourceDefinition
+metadata:
+  name: xhelloworldpicoes.oe.academy
+spec:
+  scope: Cluster
+  group: oe.academy
+  names:
+    kind: XHelloWorldPico
+    plural: xhelloworldpicoes
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                value:
+                  type: string
+                  description: >-
+                    The greeting the composed Kubernetes Job will print.
+                    Set this to `Hello, Pico!` to match the Hello Pico lab.
+              required:
+                - value
+            status:
+              type: object
+              properties:
+                jobName:
+                  type: string
+                  description: Name of the composed Kubernetes Job.

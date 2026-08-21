@@ -1,0 +1,603 @@
+[
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "cd runtime\nPYTHONPATH=src python -m pytest tests -q\nProves:\n\nHello Pico domain behaviour\nNative + Durable pass the same contract\nevent_count survives restart (test_persistence.py)\nMultiple identities stay isolated across restart",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#vertical-slice-acceptance-gate",
+    "href": "labs/index.html#vertical-slice-acceptance-gate",
+    "title": "Labs",
+    "section": "",
+    "text": "cd runtime\nPYTHONPATH=src python -m pytest tests -q\nProves:\n\nHello Pico domain behaviour\nNative + Durable pass the same contract\nevent_count survives restart (test_persistence.py)\nMultiple identities stay isolated across restart",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#evidence-checklist",
+    "href": "labs/index.html#evidence-checklist",
+    "title": "Labs",
+    "section": "Evidence checklist",
+    "text": "Evidence checklist\nevidence/\n├── tests/          # pytest output\n├── persistence/    # restart recovery\n└── multi-pico/     # identity isolation",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "modules/13-minikube.html",
+    "href": "modules/13-minikube.html",
+    "title": "Module — Deploy to Minikube",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Deploy to Minikube"
+    ]
+  },
+  {
+    "objectID": "modules/11-hibernation.html",
+    "href": "modules/11-hibernation.html",
+    "title": "Module — Hibernation",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Hibernation"
+    ]
+  },
+  {
+    "objectID": "modules/09-events-and-rpc.html",
+    "href": "modules/09-events-and-rpc.html",
+    "title": "Module — Events and RPC",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Events and RPC"
+    ]
+  },
+  {
+    "objectID": "modules/07-durable-state.html",
+    "href": "modules/07-durable-state.html",
+    "title": "Module 07 — Durable state",
+    "section": "",
+    "text": "invoke → invoke → restart → invoke\n                 event_count == 3",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Durable state"
+    ]
+  },
+  {
+    "objectID": "modules/07-durable-state.html#milestone",
+    "href": "modules/07-durable-state.html#milestone",
+    "title": "Module 07 — Durable state",
+    "section": "",
+    "text": "invoke → invoke → restart → invoke\n                 event_count == 3",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Durable state"
+    ]
+  },
+  {
+    "objectID": "modules/07-durable-state.html#how-the-reference-durableruntime-works",
+    "href": "modules/07-durable-state.html#how-the-reference-durableruntime-works",
+    "title": "Module 07 — Durable state",
+    "section": "How the reference DurableRuntime works",
+    "text": "How the reference DurableRuntime works\nHelloPico (domain)\n      │\nDurableRuntime\n      │\n   SQLite\nOn each invoke, state is written to SQLite.\nDurableRuntime.reopen(db) simulates process restart with the same store.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Durable state"
+    ]
+  },
+  {
+    "objectID": "modules/07-durable-state.html#demonstration",
+    "href": "modules/07-durable-state.html#demonstration",
+    "title": "Module 07 — Durable state",
+    "section": "Demonstration",
+    "text": "Demonstration\nfrom oe_pico_runtime import DurableRuntime\n\nrt1 = DurableRuntime(\"/tmp/hello.db\")\nrt1.invoke(\"hello-pico\", \"hello\", {\"name\": \"One\"})\nrt1.invoke(\"hello-pico\", \"hello\", {\"name\": \"Two\"})\nrt1.close()\n\nrt2 = DurableRuntime.reopen(\"/tmp/hello.db\")\nprint(rt2.inspect(\"hello-pico\").event_count)  # 2\nprint(rt2.invoke(\"hello-pico\", \"hello\", {\"name\": \"Three\"}).event_count)  # 3",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Durable state"
+    ]
+  },
+  {
+    "objectID": "modules/07-durable-state.html#automated-proof",
+    "href": "modules/07-durable-state.html#automated-proof",
+    "title": "Module 07 — Durable state",
+    "section": "Automated proof",
+    "text": "Automated proof\ncd runtime\nPYTHONPATH=src python -m pytest tests/test_persistence.py -q",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Durable state"
+    ]
+  },
+  {
+    "objectID": "modules/07-durable-state.html#relation-to-celld",
+    "href": "modules/07-durable-state.html#relation-to-celld",
+    "title": "Module 07 — Durable state",
+    "section": "Relation to celld",
+    "text": "Relation to celld\nA future CelldRuntime implements the same PicoRuntime SPI against real celld cells.\nContract tests stay unchanged — that is the point of the SPI.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Durable state"
+    ]
+  },
+  {
+    "objectID": "modules/05-run-celld-locally.html",
+    "href": "modules/05-run-celld-locally.html",
+    "title": "Module — Run celld locally",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Run celld locally"
+    ]
+  },
+  {
+    "objectID": "modules/03-actor-oriented-picos.html",
+    "href": "modules/03-actor-oriented-picos.html",
+    "title": "Module 03 — Actor-oriented Picos",
+    "section": "",
+    "text": "message\n             │\n             ▼\n        ┌─────────┐\n        │  Pico   │\n        │  state  │\n        └─────────┘\n             │\n             ▼\n          response",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Actor-oriented Picos"
+    ]
+  },
+  {
+    "objectID": "modules/03-actor-oriented-picos.html#actor-model-only-what-is-needed",
+    "href": "modules/03-actor-oriented-picos.html#actor-model-only-what-is-needed",
+    "title": "Module 03 — Actor-oriented Picos",
+    "section": "",
+    "text": "message\n             │\n             ▼\n        ┌─────────┐\n        │  Pico   │\n        │  state  │\n        └─────────┘\n             │\n             ▼\n          response",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Actor-oriented Picos"
+    ]
+  },
+  {
+    "objectID": "modules/03-actor-oriented-picos.html#properties",
+    "href": "modules/03-actor-oriented-picos.html#properties",
+    "title": "Module 03 — Actor-oriented Picos",
+    "section": "Properties",
+    "text": "Properties\n\n\n\nProperty\nPico meaning\n\n\n\n\nIdentity\nAddressable Pico id\n\n\nEncapsulated state\nOnly the Pico mutates its state\n\n\nMessage handling\ninvoke(event, payload)\n\n\nSerialized execution\nOne event at a time per identity\n\n\nLocation transparency\nCaller need not know which machine\n\n\nLifecycle independence\nState can outlive a process",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Actor-oriented Picos"
+    ]
+  },
+  {
+    "objectID": "modules/03-actor-oriented-picos.html#exercise",
+    "href": "modules/03-actor-oriented-picos.html#exercise",
+    "title": "Module 03 — Actor-oriented Picos",
+    "section": "Exercise",
+    "text": "Exercise\nExplain in one paragraph why hello-pico/alice and hello-pico/bob are different Picos even when they share the same code.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Actor-oriented Picos"
+    ]
+  },
+  {
+    "objectID": "modules/01-revisit-hello-pico.html",
+    "href": "modules/01-revisit-hello-pico.html",
+    "title": "Module 01 — Revisit Hello, Pico!",
+    "section": "",
+    "text": "Reuse the existing Academy Hello, Pico! behaviour — do not invent a new sample.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Revisit Hello, Pico!"
+    ]
+  },
+  {
+    "objectID": "modules/01-revisit-hello-pico.html#goal",
+    "href": "modules/01-revisit-hello-pico.html#goal",
+    "title": "Module 01 — Revisit Hello, Pico!",
+    "section": "",
+    "text": "Reuse the existing Academy Hello, Pico! behaviour — do not invent a new sample.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Revisit Hello, Pico!"
+    ]
+  },
+  {
+    "objectID": "modules/01-revisit-hello-pico.html#domain-behaviour",
+    "href": "modules/01-revisit-hello-pico.html#domain-behaviour",
+    "title": "Module 01 — Revisit Hello, Pico!",
+    "section": "Domain behaviour",
+    "text": "Domain behaviour\nfrom oe_pico_runtime import HelloPico\n\np = HelloPico(\"hello-pico\")\ns = p.hello(\"Willem\")\n# event_count == 1, message == \"Hello, Willem!\"\nEach hello(name):\n\nreceives an event\nincrements event_count\nrecords last_run\nproduces a greeting\nexposes resulting PicoState",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Revisit Hello, Pico!"
+    ]
+  },
+  {
+    "objectID": "modules/01-revisit-hello-pico.html#classification",
+    "href": "modules/01-revisit-hello-pico.html#classification",
+    "title": "Module 01 — Revisit Hello, Pico!",
+    "section": "Classification",
+    "text": "Classification\n\n\n\n\n\n\n\nMaterial\nAction\n\n\n\n\nHello Pico domain logic\nREUSE (reimplemented here as the executable starting point)\n\n\nPico course concepts\nREFERENCE\n\n\nRust fundamentals\nDo not reteach",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Revisit Hello, Pico!"
+    ]
+  },
+  {
+    "objectID": "modules/01-revisit-hello-pico.html#exercise",
+    "href": "modules/01-revisit-hello-pico.html#exercise",
+    "title": "Module 01 — Revisit Hello, Pico!",
+    "section": "Exercise",
+    "text": "Exercise\ncd runtime\nPYTHONPATH=src python -c \"\nfrom oe_pico_runtime import HelloPico\np = HelloPico()\nprint(p.hello('Ada').to_dict())\nprint(p.hello('Willem').to_dict())\n\"\nPYTHONPATH=src python -m pytest tests/test_pico_unit.py -q",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Revisit Hello, Pico!"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Durable Picos with celld",
+    "section": "",
+    "text": "A Pico is not a container.\nA Pico is not a process.\nA Pico is not a Kubernetes Pod.\nA Pico is not a Durable Object.\nA Pico is not celld.\n\n              Pico\n                │\n                ▼\n        engineering entity\n                │\n                ▼\n           Runtime SPI\n          ╱      │      ╲\n         ╱       │       ╲\n     Native    celld     future\n                │\n                ▼\n          Durable Actor\nPico is the Open Engineering abstraction. celld is one possible runtime implementation.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#the-architectural-lesson",
+    "href": "index.html#the-architectural-lesson",
+    "title": "Durable Picos with celld",
+    "section": "",
+    "text": "A Pico is not a container.\nA Pico is not a process.\nA Pico is not a Kubernetes Pod.\nA Pico is not a Durable Object.\nA Pico is not celld.\n\n              Pico\n                │\n                ▼\n        engineering entity\n                │\n                ▼\n           Runtime SPI\n          ╱      │      ╲\n         ╱       │       ╲\n     Native    celld     future\n                │\n                ▼\n          Durable Actor\nPico is the Open Engineering abstraction. celld is one possible runtime implementation.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#the-central-experiment",
+    "href": "index.html#the-central-experiment",
+    "title": "Durable Picos with celld",
+    "section": "The central experiment",
+    "text": "The central experiment\nPOST hello  →  event_count = 1\nPOST hello  →  event_count = 2\n# restart runtime\nPOST hello  →  event_count = 3\nState belongs to the Pico, not to the process that last executed it.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-build",
+    "href": "index.html#what-you-will-build",
+    "title": "Durable Picos with celld",
+    "section": "What you will build",
+    "text": "What you will build\n\n\n\nArtifact\nRole\n\n\n\n\nHelloPico\nDomain behaviour (runtime-independent)\n\n\nPicoRuntime SPI\nAbstract deploy / invoke / inspect / …\n\n\nNativeRuntime\nVolatile in-process baseline\n\n\nDurableRuntime\nSQLite-backed durable adapter (celld-shaped)\n\n\nContract tests\nSame suite passes on both runtimes",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#learning-path",
+    "href": "index.html#learning-path",
+    "title": "Durable Picos with celld",
+    "section": "Learning path",
+    "text": "Learning path\nHello, Pico!\n     │\n     ▼\nState vs process\n     │\n     ▼\nActor model\n     │\n     ▼\nPico Runtime SPI\n     │\n     ▼\nDurable state + restart recovery\n     │\n     ├─ multiple identities\n     ├─ alarms / hibernation\n     ├─ containers / Minikube\n     └─ Crossplane / Manifold (reuse Academy material)",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#runtime-package",
+    "href": "index.html#runtime-package",
+    "title": "Durable Picos with celld",
+    "section": "Runtime package",
+    "text": "Runtime package\nWorking code lives in runtime/:\ncd runtime\nPYTHONPATH=src python -m pytest tests -q\n# 18 passed",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#principle",
+    "href": "index.html#principle",
+    "title": "Durable Picos with celld",
+    "section": "Principle",
+    "text": "Principle\n\nPrefer a semantic runtime request (class: durable) over hard-coding an implementation (implementation: celld).",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "glossary.html",
+    "href": "glossary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "Term\nMeaning\n\n\n\n\nPico\nOpen Engineering engineering entity (behaviour + state + identity)\n\n\nPico Runtime SPI\nAbstract interface: deploy, invoke, inspect, …\n\n\nNativeRuntime\nIn-process volatile adapter\n\n\nDurableRuntime\nSQLite-backed durable adapter (celld-shaped reference)\n\n\ncelld\nSelf-hosted Durable Objects–style runtime (experimental)\n\n\nDurable state\nState that survives process restart\n\n\nHibernation\nRelease execution resources while keeping durable state\n\n\nRuntime class\nSemantic request (e.g. durable), not an implementation name",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "modules/02-state-versus-process.html",
+    "href": "modules/02-state-versus-process.html",
+    "title": "Module 02 — State versus process",
+    "section": "",
+    "text": "Process dies\n     │\n     ▼\nWhat happens to Pico state?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — State versus process"
+    ]
+  },
+  {
+    "objectID": "modules/02-state-versus-process.html#the-problem",
+    "href": "modules/02-state-versus-process.html#the-problem",
+    "title": "Module 02 — State versus process",
+    "section": "",
+    "text": "Process dies\n     │\n     ▼\nWhat happens to Pico state?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — State versus process"
+    ]
+  },
+  {
+    "objectID": "modules/02-state-versus-process.html#native-volatile-baseline",
+    "href": "modules/02-state-versus-process.html#native-volatile-baseline",
+    "title": "Module 02 — State versus process",
+    "section": "Native (volatile) baseline",
+    "text": "Native (volatile) baseline\nWith NativeRuntime, state lives only in memory. Restart the process and the count is gone.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — State versus process"
+    ]
+  },
+  {
+    "objectID": "modules/02-state-versus-process.html#durable-requirement",
+    "href": "modules/02-state-versus-process.html#durable-requirement",
+    "title": "Module 02 — State versus process",
+    "section": "Durable requirement",
+    "text": "Durable requirement\nEntity lifetime and process lifetime are different concerns.\n\n\n\nConcept\nMeaning\n\n\n\n\nVolatile state\nLost when the process ends\n\n\nDurable state\nSurvives process restart\n\n\nRuntime lifecycle\nStart / stop of the executor\n\n\nEntity lifecycle\nLogical lifetime of the Pico",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — State versus process"
+    ]
+  },
+  {
+    "objectID": "modules/02-state-versus-process.html#exercise",
+    "href": "modules/02-state-versus-process.html#exercise",
+    "title": "Module 02 — State versus process",
+    "section": "Exercise",
+    "text": "Exercise\n\nInvoke Hello Pico twice on NativeRuntime.\nCreate a new NativeRuntime instance (simulating restart).\nObserve that state is gone.\nContrast with Module 07 (Durable State).",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — State versus process"
+    ]
+  },
+  {
+    "objectID": "modules/04-meet-celld.html",
+    "href": "modules/04-meet-celld.html",
+    "title": "Module 04 — Meet celld",
+    "section": "",
+    "text": "celld is a self-hosted implementation of significant parts of the Cloudflare Workers / Durable Objects model.\nLabel: evolving / experimental dependency.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Meet celld"
+    ]
+  },
+  {
+    "objectID": "modules/04-meet-celld.html#what-celld-is",
+    "href": "modules/04-meet-celld.html#what-celld-is",
+    "title": "Module 04 — Meet celld",
+    "section": "",
+    "text": "celld is a self-hosted implementation of significant parts of the Cloudflare Workers / Durable Objects model.\nLabel: evolving / experimental dependency.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Meet celld"
+    ]
+  },
+  {
+    "objectID": "modules/04-meet-celld.html#mapping",
+    "href": "modules/04-meet-celld.html#mapping",
+    "title": "Module 04 — Meet celld",
+    "section": "Mapping",
+    "text": "Mapping\n\n\n\nOpen Engineering\ncelld\n\n\n\n\nPico\nCell / Durable Object\n\n\nPico identity\nCell identity / address\n\n\nPico state\nDurable state\n\n\nPico runtime\nV8 isolate / Worker\n\n\nPersistence\nSQLite (+ S3-compatible replication)\n\n\nEvents\nRequest, RPC, alarm, WebSocket\n\n\nSuspension\nHibernation",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Meet celld"
+    ]
+  },
+  {
+    "objectID": "modules/04-meet-celld.html#what-this-course-must-not-do",
+    "href": "modules/04-meet-celld.html#what-this-course-must-not-do",
+    "title": "Module 04 — Meet celld",
+    "section": "What this course must not do",
+    "text": "What this course must not do\n\nRedefine Pico as a Durable Object\nHard-code implementation: celld into Pico definitions\nClaim stronger consistency or DR properties than the tested celld version provides",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Meet celld"
+    ]
+  },
+  {
+    "objectID": "modules/04-meet-celld.html#principle",
+    "href": "modules/04-meet-celld.html#principle",
+    "title": "Module 04 — Meet celld",
+    "section": "Principle",
+    "text": "Principle\nspec:\n  runtime:\n    class: durable      # semantic request\n# not:\n#   implementation: celld",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Meet celld"
+    ]
+  },
+  {
+    "objectID": "modules/06-package-hello-pico.html",
+    "href": "modules/06-package-hello-pico.html",
+    "title": "Module — Package Hello, Pico!",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Package Hello, Pico!"
+    ]
+  },
+  {
+    "objectID": "modules/08-multiple-identities.html",
+    "href": "modules/08-multiple-identities.html",
+    "title": "Module 08 — Multiple Pico identities",
+    "section": "",
+    "text": "same code + different identity = different Pico\nhello-pico/alice   event_count = 7\nhello-pico/bob     event_count = 2\nhello-pico/charlie event_count = 15",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Multiple Pico identities"
+    ]
+  },
+  {
+    "objectID": "modules/08-multiple-identities.html#idea",
+    "href": "modules/08-multiple-identities.html#idea",
+    "title": "Module 08 — Multiple Pico identities",
+    "section": "",
+    "text": "same code + different identity = different Pico\nhello-pico/alice   event_count = 7\nhello-pico/bob     event_count = 2\nhello-pico/charlie event_count = 15",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Multiple Pico identities"
+    ]
+  },
+  {
+    "objectID": "modules/08-multiple-identities.html#exercise",
+    "href": "modules/08-multiple-identities.html#exercise",
+    "title": "Module 08 — Multiple Pico identities",
+    "section": "Exercise",
+    "text": "Exercise\nrt = DurableRuntime(\"/tmp/multi.db\")\nfor _ in range(7):\n    rt.invoke(\"alice\", \"hello\", {\"name\": \"Alice\"})\nfor _ in range(2):\n    rt.invoke(\"bob\", \"hello\", {\"name\": \"Bob\"})\nrt.close()\n\nrt2 = DurableRuntime.reopen(\"/tmp/multi.db\")\nassert rt2.inspect(\"alice\").event_count == 7\nassert rt2.inspect(\"bob\").event_count == 2\nIsolation + persistence after restart is required.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Multiple Pico identities"
+    ]
+  },
+  {
+    "objectID": "modules/10-alarms.html",
+    "href": "modules/10-alarms.html",
+    "title": "Module — Alarms",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Alarms"
+    ]
+  },
+  {
+    "objectID": "modules/12-containerize.html",
+    "href": "modules/12-containerize.html",
+    "title": "Module — Containerize celld",
+    "section": "",
+    "text": "Content follows Memo 7.\nThe vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate. Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module — Containerize celld"
+    ]
+  },
+  {
+    "objectID": "modules/14-runtime-spi.html",
+    "href": "modules/14-runtime-spi.html",
+    "title": "Module 14 — Pico Runtime SPI",
+    "section": "",
+    "text": "Pico definition\n      │\nPicoRuntime SPI\n      │\n  ┌───┴───┐\nNative  Durable (celld-shaped)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 14 — Pico Runtime SPI"
+    ]
+  },
+  {
+    "objectID": "modules/14-runtime-spi.html#the-boundary",
+    "href": "modules/14-runtime-spi.html#the-boundary",
+    "title": "Module 14 — Pico Runtime SPI",
+    "section": "",
+    "text": "Pico definition\n      │\nPicoRuntime SPI\n      │\n  ┌───┴───┐\nNative  Durable (celld-shaped)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 14 — Pico Runtime SPI"
+    ]
+  },
+  {
+    "objectID": "modules/14-runtime-spi.html#operations",
+    "href": "modules/14-runtime-spi.html#operations",
+    "title": "Module 14 — Pico Runtime SPI",
+    "section": "Operations",
+    "text": "Operations\n\n\n\nOperation\nMeaning\n\n\n\n\ndeploy\nEnsure identity exists\n\n\ninvoke\nSend event, return state\n\n\ninspect\nRead state without mutation\n\n\nsuspend / resume\nOptional lifecycle\n\n\ndelete\nRemove identity + state",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 14 — Pico Runtime SPI"
+    ]
+  },
+  {
+    "objectID": "modules/14-runtime-spi.html#capabilities",
+    "href": "modules/14-runtime-spi.html#capabilities",
+    "title": "Module 14 — Pico Runtime SPI",
+    "section": "Capabilities",
+    "text": "Capabilities\nRuntimes advertise what they support (DURABLE_STATE, MULTI_IDENTITY, …).",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 14 — Pico Runtime SPI"
+    ]
+  },
+  {
+    "objectID": "modules/14-runtime-spi.html#contract-tests",
+    "href": "modules/14-runtime-spi.html#contract-tests",
+    "title": "Module 14 — Pico Runtime SPI",
+    "section": "Contract tests",
+    "text": "Contract tests\nPico Runtime Contract\n        │\n        ├── NativeRuntime  → PASS\n        └── DurableRuntime → PASS\nThis proves the durable adapter implements Pico semantics, rather than redefining them.\nPYTHONPATH=src python -m pytest tests/test_runtime_contract.py -q",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 14 — Pico Runtime SPI"
+    ]
+  }
+]

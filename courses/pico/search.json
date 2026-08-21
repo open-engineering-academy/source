@@ -1,0 +1,797 @@
+[
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "Labs referenced by the Pico course. Course-scoped labs live under courses/pico/labs/; reusable labs shared with other courses live under the repository-root labs/ directory.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#referenced-labs",
+    "href": "labs/index.html#referenced-labs",
+    "title": "Labs",
+    "section": "Referenced labs",
+    "text": "Referenced labs\n\nHello Pico — the introductory lab used from Part 1 · Introduction. Descriptor: labs/hello-pico/metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#authoring-course-scoped-labs",
+    "href": "labs/index.html#authoring-course-scoped-labs",
+    "title": "Labs",
+    "section": "Authoring course-scoped labs",
+    "text": "Authoring course-scoped labs\nCourse-scoped labs live in this directory and follow the shared lab template. Reuse a repository-root lab when the same lab is useful for more than one course.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "part-2/index.html",
+    "href": "part-2/index.html",
+    "title": "Part 2 — Building",
+    "section": "",
+    "text": "Part 2 walks through building your first Pico end-to-end: authoring Rules, running the Parser, and using the Composer to produce hello-world-pico.",
+    "crumbs": [
+      "Home",
+      "Part 2 — Building"
+    ]
+  },
+  {
+    "objectID": "part-2/index.html#lessons",
+    "href": "part-2/index.html#lessons",
+    "title": "Part 2 — Building",
+    "section": "Lessons",
+    "text": "Lessons\nLesson content for Part 2 is authored following the same lesson layout as Part 1, lesson 1. This page will list lessons as they are added.\n\n\n\n\n\n\nWarningScaffold — not yet runnable\n\n\n\nPart 2 is intentionally scaffolded rather than written out in full. It is included so the reference course demonstrates a multi-part structure, but it does not yet carry runnable learner content. Use the Introduction lesson as the canonical example of the lesson structure to follow.",
+    "crumbs": [
+      "Home",
+      "Part 2 — Building"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html",
+    "href": "part-1/01-introduction/summary.html",
+    "title": "Summary · Introduction",
+    "section": "",
+    "text": "A Pico is a small declarative, composable Open Engineering artifact.\nA Pico is produced by a pipeline: Rules → Parser → Composer → Pico.\nRules are authored in YAML; the Parser and Composer do the mechanical work of turning Rules into a Pico.\nThe Pico course website itself is the reference structure for every academy course: parts, lessons, exercises, labs, summaries, quizzes, glossary, and a machine-readable metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html#key-takeaways",
+    "href": "part-1/01-introduction/summary.html#key-takeaways",
+    "title": "Summary · Introduction",
+    "section": "",
+    "text": "A Pico is a small declarative, composable Open Engineering artifact.\nA Pico is produced by a pipeline: Rules → Parser → Composer → Pico.\nRules are authored in YAML; the Parser and Composer do the mechanical work of turning Rules into a Pico.\nThe Pico course website itself is the reference structure for every academy course: parts, lessons, exercises, labs, summaries, quizzes, glossary, and a machine-readable metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html#what-comes-next",
+    "href": "part-1/01-introduction/summary.html#what-comes-next",
+    "title": "Summary · Introduction",
+    "section": "What comes next",
+    "text": "What comes next\n\nPart 2 — Building walks through the pipeline end-to-end.\nPart 3 — Extending covers composing multiple Picos and connecting them to other artifacts.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html#next",
+    "href": "part-1/01-introduction/summary.html#next",
+    "title": "Summary · Introduction",
+    "section": "Next",
+    "text": "Next\nTake the Quiz.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html",
+    "href": "part-1/01-introduction/exercise.html",
+    "title": "Exercise · Introduction",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#task",
+    "href": "part-1/01-introduction/exercise.html#task",
+    "title": "Exercise · Introduction",
+    "section": "Task",
+    "text": "Task\nWrite a one-sentence description of a Pico in your own words, and list three examples of things in your day-to-day work that could plausibly be modeled as Picos.\n\n\n\n\n\n\nNote\n\n\n\nThere is no single correct answer. The goal is to internalize the “Rules → Parser → Composer → Pico” mental model from the lesson.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#success-criteria",
+    "href": "part-1/01-introduction/exercise.html#success-criteria",
+    "title": "Exercise · Introduction",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour description mentions that a Pico is declarative and composable.\nYou can name at least three candidate Picos.\nFor at least one candidate, you can sketch what the Rules might look like in YAML.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#automatable-check",
+    "href": "part-1/01-introduction/exercise.html#automatable-check",
+    "title": "Exercise · Introduction",
+    "section": "Automatable check",
+    "text": "Automatable check\nIf you sketched at least one Rule in YAML, save it as rules/&lt;your-slug&gt;.yaml under a scratch working directory and confirm it matches the reference Parser’s flat id / kind / value shape using the pico CLI shipped in this repository (see the Hello Pico one-time setup for the PATH export):\npico parse rules/&lt;your-slug&gt;.yaml --out /tmp/parsed.json \\\n  && echo \"OK: parsed rules/&lt;your-slug&gt;.yaml\"\nThe command exits with status 0 and prints an OK: line when the sketch is well-formed. This is an optional accompaniment to the reflection questions — the exercise’s primary goal remains internalizing the mental model, but any YAML you draft can now be mechanically validated.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#reflect",
+    "href": "part-1/01-introduction/exercise.html#reflect",
+    "title": "Exercise · Introduction",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhich of your three examples is the simplest to model?\nWhich one would be the hardest, and why?",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#next",
+    "href": "part-1/01-introduction/exercise.html#next",
+    "title": "Exercise · Introduction",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html",
+    "href": "part-1/index.html",
+    "title": "Part 1 — Foundations",
+    "section": "",
+    "text": "Part 1 introduces the vocabulary and mental model for Picos. It is designed to be completed before Parts 2 and 3.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html#lessons",
+    "href": "part-1/index.html#lessons",
+    "title": "Part 1 — Foundations",
+    "section": "Lessons",
+    "text": "Lessons\n\n1. Introduction — what a Pico is, why it exists, and how the pieces fit together.\n\nEach lesson in this course follows the same page layout — see the course overview for the full pattern.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html",
+    "href": "constructive-realization.html",
+    "title": "Constructive realization",
+    "section": "",
+    "text": "This page is the course-facing reference for the academy’s small constructive-realization vocabulary. It is written for learners and course authors working in the Pico course; the underlying contract lives in templates/README.qmd (in-repo scaffold, not published as a learner page; Phase 1).\nPhase 1 is documentation and metadata only. Nothing here changes how a Pico is built; it names the concepts you are already using so lessons, labs, and metadata can point at them consistently.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#the-five-terms",
+    "href": "constructive-realization.html#the-five-terms",
+    "title": "Constructive realization",
+    "section": "The five terms",
+    "text": "The five terms\n\nDefinition — what an artifact is supposed to be: its purpose, intent, and expected outcome. In this course, a Pico’s Rules together with the surrounding lesson framing state a Definition.\nElement — the concrete realized thing. In this course, a running hello-world-pico produced by the pipeline is an Element.\nRealization — the constructive path from Definition to Element. In this course, the Rules → Parser → Composer → Pico pipeline is the Realization, and the Hello Pico lab records it step by step.\nConstraint — a condition a valid Element must satisfy (for example: “the Pico responds to the hello event”, “the Rules parse without error”).\nValidation — an executable or observable check that tests an Element against its Constraints (for example: a lab’s verify.sh, a course quiz, or an end-to-end lab walkthrough).",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#mapping-onto-the-pico-pipeline",
+    "href": "constructive-realization.html#mapping-onto-the-pico-pipeline",
+    "title": "Constructive realization",
+    "section": "Mapping onto the Pico pipeline",
+    "text": "Mapping onto the Pico pipeline\nThe pipeline you already know maps cleanly onto the vocabulary:\nRules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico\n(Definition)   (Realization)   (Realization)     (Element)\n\nRules carry the Definition of the Pico you intend to build.\nParser + Composer are the Realization: the constructive path that turns a Definition into an Element.\nPico (for example hello-world-pico) is the Element.\nConstraints are the conditions the produced Pico must meet.\nValidations are the checks — lab verifications, quizzes, observable behavior — that confirm the Element satisfies its Constraints.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#mapping-onto-compose-construct-behave",
+    "href": "constructive-realization.html#mapping-onto-compose-construct-behave",
+    "title": "Constructive realization",
+    "section": "Mapping onto compose → construct → behave",
+    "text": "Mapping onto compose → construct → behave\nThe academy’s three-layer story — Crossplane composes, Sandcastle constructs, Picos behave — is a story about Realization at three different scales:\n\n\n\n\n\n\n\nLayer\nConstructive-realization view\n\n\n\n\nCrossplane composes\nRealization by composition from sub-elements; a composed resource is the Element.\n\n\nSandcastle constructs\nThe bounded engineering environment inside which Realizations safely run and produce Elements.\n\n\nPicos behave\nThe Elements themselves at runtime; their behavior is the observable evidence of Realization.\n\n\n\nConcretely, in this course:\n\nThe Pico course teaches how a single Pico Element behaves.\nThe Crossplane course teaches how such Elements are composed on a control plane.\nThe Sandcastle course teaches the construction environment inside which Realization happens safely.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#where-the-terms-show-up-in-course-material",
+    "href": "constructive-realization.html#where-the-terms-show-up-in-course-material",
+    "title": "Constructive realization",
+    "section": "Where the terms show up in course material",
+    "text": "Where the terms show up in course material\nYou will most often encounter these concepts in the places you already work:\n\nCourse and lesson index.qmd — typically states a Definition (learning objectives, what the produced artifact is).\nlab.qmd and the shared labs/ — typically records a Realization and the Element it produces.\nmetadata.yaml — the machine-readable side of the same story. The Phase 1 fields (constructive_role, realizes, constraints, validated_by, realization_pattern) are optional and additive; see templates/README.qmd (in-repo scaffold, not published as a learner page) for the full contract.\nquiz.qmd and lab verifications — natural places for Validations that check an Element against its Constraints.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#authoring-guidance-for-this-course",
+    "href": "constructive-realization.html#authoring-guidance-for-this-course",
+    "title": "Constructive realization",
+    "section": "Authoring guidance for this course",
+    "text": "Authoring guidance for this course\n\nPrefer natural-language Constraints in prose and named Validations (a verify.sh, a quiz question, an observable behavior) over formal schemas.\nWhen a lesson produces a named artifact, treat that artifact name as the Element identity; a downstream lab realizes the same Definition when it lists it under realizes in its metadata.\nDo not retrofit existing pico lessons or labs to the new metadata fields as part of this reference — the Phase 1 fields are optional and sit alongside existing metadata.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#out-of-scope-on-this-page",
+    "href": "constructive-realization.html#out-of-scope-on-this-page",
+    "title": "Constructive realization",
+    "section": "Out of scope on this page",
+    "text": "Out of scope on this page\nThis page intentionally does not:\n\nIntroduce a formal ontology, schema, or conformance checker.\nChange the Pico pipeline, lesson layout, or lab format.\nRetrofit existing courses, lessons, or labs to the Phase 1 fields.\n\nSee the Glossary for one-line definitions of these terms and the course overview for how the pieces fit together. For a fully worked example that points each term at concrete Hello Pico material, see Hello Pico as a constructive exemplar.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Pico",
+    "section": "",
+    "text": "Welcome to Pico, the reference course of the Open Engineering Academy. This course teaches how to design and build your first Pico — a small, declarative, composable engineering artifact — and doubles as the canonical example for how every academy course website is structured.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#where-this-course-fits",
+    "href": "index.html#where-this-course-fits",
+    "title": "Pico",
+    "section": "Where this course fits",
+    "text": "Where this course fits\nPico is the academy’s behaviour layer. The three-layer story is:\n\nCrossplane composes, Sandcastle constructs, Picos behave.\n\nThis course teaches what a Pico does at runtime — how a hello-world-pico receives events, evaluates rules, and produces actions. Its sibling courses teach the other two layers:\n\nCrossplane course — declares and composes what should exist on a control plane.\nSandcastle course — the bounded engineering environment inside which artifacts like Picos are safely built.\n\nPico is the foundation for the other two: complete this course first so you know what a durable Pico artifact looks like before you compose it with Crossplane or construct it inside a Sandcastle.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-learn",
+    "href": "index.html#what-you-will-learn",
+    "title": "Pico",
+    "section": "What you will learn",
+    "text": "What you will learn\nBy the end of the course you will be able to:\n\nExplain what a Pico is and how it fits into Open Engineering.\nAuthor Rules, a Parser, and a Composer for a minimal Pico.\nProduce a working hello-world-pico and describe it with metadata.\n\nSee the course descriptor in metadata.yaml for the machine-readable summary (id, level, duration, prerequisites, teaches, produces).",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#how-this-course-is-structured",
+    "href": "index.html#how-this-course-is-structured",
+    "title": "Pico",
+    "section": "How this course is structured",
+    "text": "How this course is structured\nThe course is organized into parts, each part into lessons, and each lesson into a consistent set of pages:\ncourses/pico/\n  _quarto.yml          # this course website\n  index.qmd            # you are here\n  metadata.yaml        # machine-readable course descriptor\n  glossary.qmd         # course glossary\n  part-1/              # section\n    index.qmd\n    01-introduction/   # lesson\n      index.qmd\n      exercise.qmd\n      lab.qmd\n      summary.qmd\n      quiz.qmd\n      assets/\n  part-2/\n  part-3/\n  labs/                # course-scoped labs\n  assets/              # course-scoped assets",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#start-here",
+    "href": "index.html#start-here",
+    "title": "Pico",
+    "section": "Start here",
+    "text": "Start here\n\nPart 1 — Foundations\nPart 2 — Building\nPart 3 — Extending\nLabs and the shared Hello Pico lab.\nConstructive realization — how Definition, Element, Realization, Constraint, and Validation map onto the Rules → Parser → Composer → Pico pipeline.\nHello Pico as a constructive exemplar — the first worked example, pointing each of those terms at concrete Hello Pico material.\nGlossary",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#reference-course-notice",
+    "href": "index.html#reference-course-notice",
+    "title": "Pico",
+    "section": "Reference course notice",
+    "text": "Reference course notice\nThis course is the reference implementation for all other academy course websites. When authoring a new course under courses/&lt;name&gt;/, mirror the files, navigation, and lesson structure used here.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "glossary.html",
+    "href": "glossary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "Terms used across the Pico course. Course-specific vocabulary lives here so lessons can link to a single definition instead of redefining terms.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#composer",
+    "href": "glossary.html#composer",
+    "title": "Glossary",
+    "section": "Composer",
+    "text": "Composer\nA component that takes parsed Rules and produces a Pico output artifact.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#constraint",
+    "href": "glossary.html#constraint",
+    "title": "Glossary",
+    "section": "Constraint",
+    "text": "Constraint\nA condition a valid Element must satisfy (for example, “the Pico responds to the hello event”). See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#definition",
+    "href": "glossary.html#definition",
+    "title": "Glossary",
+    "section": "Definition",
+    "text": "Definition\nWhat an artifact is supposed to be: purpose, intent, and expected outcome. In this course, a Pico’s Rules together with the surrounding lesson framing state a Definition. See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#element",
+    "href": "glossary.html#element",
+    "title": "Glossary",
+    "section": "Element",
+    "text": "Element\nThe concrete realized thing. In this course, a running hello-world-pico produced by the Rules → Parser → Composer pipeline is an Element. See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#open-engineering",
+    "href": "glossary.html#open-engineering",
+    "title": "Glossary",
+    "section": "Open Engineering",
+    "text": "Open Engineering\nThe overarching approach of treating engineering artifacts as declarative, composable, versioned, and machine-readable definitions.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#parser",
+    "href": "glossary.html#parser",
+    "title": "Glossary",
+    "section": "Parser",
+    "text": "Parser\nA component that reads Rule definitions and turns them into an internal representation the Composer can operate on.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#pico",
+    "href": "glossary.html#pico",
+    "title": "Glossary",
+    "section": "Pico",
+    "text": "Pico\nThe small, declarative engineering artifact this course teaches you to build. A Pico is defined by Rules and produced by a Parser + Composer pipeline.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#realization",
+    "href": "glossary.html#realization",
+    "title": "Glossary",
+    "section": "Realization",
+    "text": "Realization\nThe constructive path from a Definition to an Element. In this course, the Rules → Parser → Composer → Pico pipeline is the Realization. See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#rule",
+    "href": "glossary.html#rule",
+    "title": "Glossary",
+    "section": "Rule",
+    "text": "Rule\nA single declarative statement that shapes the behavior or content of a Pico.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#validation",
+    "href": "glossary.html#validation",
+    "title": "Glossary",
+    "section": "Validation",
+    "text": "Validation\nAn executable or observable check that tests an Element against its Constraints (for example, a lab’s verify.sh or a course quiz). See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html",
+    "href": "hello-pico-exemplar.html",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "",
+    "text": "This page is the course’s first explicit constructive exemplar. It takes the constructive-realization vocabulary (Definition, Element, Realization, Constraint, Validation) and points each term at a concrete piece of the existing Hello Pico material — the same Rule, pipeline, and executable you build in Part 1 · Introduction and the Hello Pico lab.\nPhase 1 is documentation and metadata only. Nothing here changes how you build a Pico; it names, for one worked example, the things you are already doing so lessons, labs, and metadata can point at them consistently.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#the-hello-pico-definition",
+    "href": "hello-pico-exemplar.html#the-hello-pico-definition",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "The Hello Pico Definition",
+    "text": "The Hello Pico Definition\nThe Hello Pico Definition is: “a minimal Pico that, given a single greeting Rule, produces an executable artifact named hello-world-pico that prints a greeting to standard output.”\nWhere this Definition already lives in the course:\n\nThe course descriptor names the artifact in courses/pico/metadata.yaml under produces: [hello-world-pico].\nPart 1 · Introduction states the learning objectives that frame the Definition.\nThe Hello Pico lab objectives restate the Definition from the learner’s perspective.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#the-hello-pico-realization",
+    "href": "hello-pico-exemplar.html#the-hello-pico-realization",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "The Hello Pico Realization",
+    "text": "The Hello Pico Realization\nThe Realization is the constructive path from that Definition to a running Element. In Hello Pico it is the familiar Rules → Parser → Composer → Pico pipeline, driven by the reference pico CLI shipped at bin/pico.\nrules/hello.yaml  ─▶  pico parse  ─▶  build/parsed.json  ─▶  pico compose  ─▶  build/hello-world-pico\n   (Definition)          (Realization step 1)                    (Realization step 2)         (Element)\nThe concrete Rule that seeds the Realization is the one Rule you author in the lab walkthrough:\n# rules/hello.yaml\nid: rule.hello\nkind: greeting\nvalue: \"Hello, Pico!\"\nThe two Realization commands are the ones documented in the Hello Pico walkthrough:\npico parse rules/hello.yaml --out build/parsed.json\npico compose build/parsed.json --out build/hello-world-pico\nThis maps onto the Phase 1 metadata field realization_pattern, for which the label used here is rules-parser-composer-pipeline.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#the-hello-pico-element",
+    "href": "hello-pico-exemplar.html#the-hello-pico-element",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "The Hello Pico Element",
+    "text": "The Hello Pico Element\nThe Element is the concrete build/hello-world-pico executable produced by pico compose. Its identity — the name hello-world-pico — is the same name the pico course metadata lists under produces, and the same name the Hello Pico lab metadata lists under produces. That shared name is what makes the lab a Realization of the course-level Definition.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#constraints-on-a-valid-hello-pico-element",
+    "href": "hello-pico-exemplar.html#constraints-on-a-valid-hello-pico-element",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "Constraints on a valid Hello Pico Element",
+    "text": "Constraints on a valid Hello Pico Element\nA valid Hello Pico Element must satisfy all of the following, each directly implied by the existing lab material:\n\nWell-formed Rule — rules/hello.yaml uses the flat id / kind / value shape the reference Parser accepts.\nSupported kind — the Rule’s kind is greeting, the only kind the reference Composer handles.\nSuccessful pipeline — both pico parse and pico compose exit with status 0.\nProduced artifact exists — build/hello-world-pico is created by the Composer and is executable.\nObservable behavior — running ./build/hello-world-pico prints exactly Hello, Pico! on standard output.\n\nThese are the Constraints named in the sense of constructive realization: conditions a valid Element must satisfy. They are natural-language on purpose — Phase 1 does not introduce formal schemas.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#validations-that-check-the-element",
+    "href": "hello-pico-exemplar.html#validations-that-check-the-element",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "Validations that check the Element",
+    "text": "Validations that check the Element\nEach Constraint above is checked by something a learner already runs. Validations are pointed at by the Phase 1 validated_by field on the Hello Pico lab metadata.\n\n\n\nConstraint\nValidation (what the learner runs)\n\n\n\n\nWell-formed Rule\nWalkthrough Step 3 — pico parse succeeds.\n\n\nSupported kind\nWalkthrough Step 4 — pico compose succeeds.\n\n\nSuccessful pipeline\nNon-zero exit codes surfaced in Troubleshooting.\n\n\nProduced artifact exists\nWalkthrough Step 4 — build/hello-world-pico is written.\n\n\nObservable behavior\nWalkthrough Step 5 and the Solution — ./build/hello-world-pico prints Hello, Pico!.\n\n\nRule shape (learner-authored)\nThe Introduction lesson exercise — pico parse on the learner’s own YAML.\n\n\nTerminology understanding\nThe Introduction lesson quiz.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#where-compose-construct-behave-fit",
+    "href": "hello-pico-exemplar.html#where-compose-construct-behave-fit",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "Where compose / construct / behave fit",
+    "text": "Where compose / construct / behave fit\nHello Pico teaches the behave layer of Crossplane composes, Sandcastle constructs, Picos behave:\n\nThe Element (hello-world-pico) is the behaviour — a runnable Pico that prints its greeting.\nSibling courses reuse the same Hello Pico Element as an input to their own Realizations: the Crossplane course composes it onto a control plane, and the Sandcastle course shows how it is constructed inside a sandboxed engineering environment.\n\nThe Definition stays the same across all three layers; only the Realization changes.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#what-phase-1-does-not-add-here",
+    "href": "hello-pico-exemplar.html#what-phase-1-does-not-add-here",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "What Phase 1 does not add here",
+    "text": "What Phase 1 does not add here\n\nNo new Pico pipeline stages, CLI flags, or lab steps.\nNo formal schema validation of metadata.yaml.\nNo retrofit of other courses, lessons, or labs to the Phase 1 vocabulary.\n\nSee the constructive-realization reference for the full Phase 1 scope, and templates/README.qmd (in-repo scaffold, not published as a learner page) for the underlying metadata contract. For the full staged Pico → Sandcastle → Crossplane → Kubernetes chain, see The Hello Pico realization chain in the Sandcastle course. For the same path read through the Phase 4 hello-pico-v1 checkable profile — shape rules mapped to concrete metadata.yaml and evidence — see Hello Pico as a checkable realization. For the opt-in Phase 5 workflow that verifies a hello-pico-v1 claim against those shape rules, and the shape of the resulting validation report, see Hello Pico profile validation. For the Phase 6 aggregate view over those reports — the report index across current hello-pico-v1 claimants, the historical-snapshot convention, and the narrow feedback loop back into the governing Definition — see Hello Pico validation history and feedback.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html",
+    "href": "part-1/01-introduction/index.html",
+    "title": "1. Introduction",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nDescribe what a Pico is in one sentence.\nName the three main components (Rules, Parser, Composer) and their role.\nIdentify where a Pico sits in the Open Engineering ecosystem.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#learning-objectives",
+    "href": "part-1/01-introduction/index.html#learning-objectives",
+    "title": "1. Introduction",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nDescribe what a Pico is in one sentence.\nName the three main components (Rules, Parser, Composer) and their role.\nIdentify where a Pico sits in the Open Engineering ecosystem.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#prerequisites",
+    "href": "part-1/01-introduction/index.html#prerequisites",
+    "title": "1. Introduction",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nA working shell and text editor.\nComfort reading YAML.\nNo prior Pico experience is required.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#what-is-a-pico",
+    "href": "part-1/01-introduction/index.html#what-is-a-pico",
+    "title": "1. Introduction",
+    "section": "What is a Pico?",
+    "text": "What is a Pico?\nA Pico is the smallest useful Open Engineering artifact: a declarative, composable unit described by Rules and produced by a Parser and a Composer. See the Glossary for full definitions of each term.\n\n\n\n\n\n\nTip\n\n\n\nIf you can describe a thing with a handful of Rules and produce it from those Rules, you can model it as a Pico.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#the-rules-parser-composer-pipeline",
+    "href": "part-1/01-introduction/index.html#the-rules-parser-composer-pipeline",
+    "title": "1. Introduction",
+    "section": "The Rules → Parser → Composer pipeline",
+    "text": "The Rules → Parser → Composer pipeline\nRules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico\n(YAML)         (reads Rules)   (produces output)  (hello-world-pico)\nPart 2 walks through this pipeline in detail. This lesson focuses on vocabulary and the mental model.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#lesson-pages",
+    "href": "part-1/01-introduction/index.html#lesson-pages",
+    "title": "1. Introduction",
+    "section": "Lesson pages",
+    "text": "Lesson pages\nEvery lesson in this course has the same page layout. Use it as the reference when authoring lessons in other courses.\n\nExercise — a short, guided task you complete inline.\nLab — a longer, hands-on activity, often linking to a reusable lab under labs/.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#next",
+    "href": "part-1/01-introduction/index.html#next",
+    "title": "1. Introduction",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html",
+    "href": "part-1/01-introduction/lab.html",
+    "title": "Lab · Hello Pico",
+    "section": "",
+    "text": "The lab for this lesson is the shared Hello Pico lab. It lives at the repository root so it can be reused from other courses.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html#where-to-go",
+    "href": "part-1/01-introduction/lab.html#where-to-go",
+    "title": "Lab · Hello Pico",
+    "section": "Where to go",
+    "text": "Where to go\nOpen the Hello Pico lab and follow the walkthrough. It uses the shared lab template with these pages:\n\nObjectives\nWalkthrough\nSolution",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html#what-you-will-produce",
+    "href": "part-1/01-introduction/lab.html#what-you-will-produce",
+    "title": "Lab · Hello Pico",
+    "section": "What you will produce",
+    "text": "What you will produce\nBy the end of the lab you will have a working hello-world-pico — the produces entry from the course metadata.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html#next",
+    "href": "part-1/01-introduction/lab.html#next",
+    "title": "Lab · Hello Pico",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html",
+    "href": "part-1/01-introduction/quiz.html",
+    "title": "Quiz · Introduction",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#what-is-a-pico",
+    "href": "part-1/01-introduction/quiz.html#what-is-a-pico",
+    "title": "Quiz · Introduction",
+    "section": "1. What is a Pico?",
+    "text": "1. What is a Pico?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nA small, declarative, composable Open Engineering artifact described by Rules and produced by a Parser and a Composer.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#name-the-three-main-components-of-the-pico-pipeline.",
+    "href": "part-1/01-introduction/quiz.html#name-the-three-main-components-of-the-pico-pipeline.",
+    "title": "Quiz · Introduction",
+    "section": "2. Name the three main components of the Pico pipeline.",
+    "text": "2. Name the three main components of the Pico pipeline.\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nRules, Parser, and Composer.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#which-file-describes-the-course-in-a-machine-readable-form",
+    "href": "part-1/01-introduction/quiz.html#which-file-describes-the-course-in-a-machine-readable-form",
+    "title": "Quiz · Introduction",
+    "section": "3. Which file describes the course in a machine-readable form?",
+    "text": "3. Which file describes the course in a machine-readable form?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nmetadata.yaml at the root of the course.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#where-does-the-reusable-hello-pico-lab-live",
+    "href": "part-1/01-introduction/quiz.html#where-does-the-reusable-hello-pico-lab-live",
+    "title": "Quiz · Introduction",
+    "section": "4. Where does the reusable “Hello Pico” lab live?",
+    "text": "4. Where does the reusable “Hello Pico” lab live?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nUnder the repository-root labs/hello-pico/ directory, so it can be referenced from more than one course.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#next",
+    "href": "part-1/01-introduction/quiz.html#next",
+    "title": "Quiz · Introduction",
+    "section": "Next",
+    "text": "Next\nReturn to Part 1 or continue to Part 2.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/index.html",
+    "href": "part-3/index.html",
+    "title": "Part 3 — Extending",
+    "section": "",
+    "text": "Part 3 covers extending a Pico: adding rules, composing multiple Picos, and connecting a Pico to other Open Engineering artifacts.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending"
+    ]
+  },
+  {
+    "objectID": "part-3/index.html#lessons",
+    "href": "part-3/index.html#lessons",
+    "title": "Part 3 — Extending",
+    "section": "Lessons",
+    "text": "Lessons\nLesson content for Part 3 is authored following the lesson layout established in Part 1, lesson 1.\n\n\n\n\n\n\nWarningScaffold — not yet runnable\n\n\n\nPart 3 is intentionally scaffolded. It is included so the reference course demonstrates a multi-part structure that other course websites can mirror, but it does not yet carry runnable learner content.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending"
+    ]
+  }
+]
