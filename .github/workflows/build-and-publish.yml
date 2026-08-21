@@ -48,6 +48,9 @@ jobs:
       - name: Render manifold course website
         run: quarto render courses/manifold
 
+      - name: Render rust-python-pyo3 course website
+        run: quarto render courses/rust-python-pyo3
+
       - name: Verify root render output
         run: |
           test -f docs/index.html || {
@@ -90,6 +93,13 @@ jobs:
             exit 1
           }
 
+      - name: Verify rust-python-pyo3 render output
+        run: |
+          test -f courses/rust-python-pyo3/_site/index.html || {
+            echo "::error::Missing courses/rust-python-pyo3/_site/index.html — rust-python-pyo3 render did not produce expected output"
+            exit 1
+          }
+
       - name: Assemble combined site
         run: |
           mkdir -p docs/courses/pico
@@ -102,6 +112,8 @@ jobs:
           cp -R courses/sandcastle/_site/. docs/courses/sandcastle/
           mkdir -p docs/courses/manifold
           cp -R courses/manifold/_site/. docs/courses/manifold/
+          mkdir -p docs/courses/rust-python-pyo3
+          cp -R courses/rust-python-pyo3/_site/. docs/courses/rust-python-pyo3/
 
       # The `pages` branch is the artifact consumed by a git-pages server
       # (https://codeberg.org/git-pages/git-pages). A git-pages server pulls
