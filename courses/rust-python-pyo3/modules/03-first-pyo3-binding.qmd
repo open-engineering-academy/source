@@ -27,6 +27,7 @@ Rust
 
 ```rust
 use pyo3::prelude::*;
+use pyo3::types::{PyModule, PyResult};
 
 #[pyfunction]
 fn normalize_identifier(value: &str) -> String {
