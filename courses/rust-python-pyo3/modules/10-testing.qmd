@@ -1,0 +1,56 @@
+---
+title: "Module 10 — Testing"
+---
+
+## Goal
+
+Test the system at two layers that serve different purposes.
+
+```
+             Rust core
+             ▲       ▲
+             │       │
+        Rust tests   PyO3
+                     │
+                     ▼
+                  Python API
+                     ▲
+                     │
+                  pytest
+```
+
+## Layer 1 — Rust tests (canonical behaviour)
+
+```bash
+cargo test
+```
+
+These tests exercise the domain logic **without** Python in the loop.
+
+They answer: “Does the kernel implement the rules correctly?”
+
+## Layer 2 — Python tests (public contract)
+
+```bash
+pytest tests/python
+```
+
+These tests exercise the exposed API the way a Python application would use it.
+
+They answer: “Does the package we ship behave as documented for Python callers?”
+
+## Why both are required
+
+| Layer        | Protects against |
+|--------------|------------------|
+| Rust tests   | Logic regressions inside the kernel |
+| Python tests | Binding mistakes, conversion bugs, packaging gaps |
+
+A pure Rust test suite cannot catch a broken `#[pyfunction]` annotation.  
+A pure Python test suite is a slow way to debug a pure domain-logic error.
+
+## Exercise
+
+1. Run `cargo test` and confirm the domain tests pass.
+2. Run the Python test suite (see `kernel/tests/python/`).
+3. Intentionally break one Rust invariant and observe which layer fails first.

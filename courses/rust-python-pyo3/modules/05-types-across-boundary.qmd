@@ -1,0 +1,63 @@
+---
+title: "Module 05 — Types Across the Boundary"
+---
+
+## Goal
+
+Move beyond free functions and expose a Rust type as a Python class.
+
+## Domain type (Rust)
+
+```rust
+pub struct Identifier {
+    namespace: String,
+    kind: String,
+    name: String,
+}
+```
+
+## Python-facing surface
+
+```python
+identifier = Identifier(
+    namespace="open-engineering",
+    kind="pico",
+    name="lamp",
+)
+# or
+identifier = Identifier.parse("oe.pico.lamp")
+
+print(identifier.namespace)  # property
+print(identifier.kind)
+print(identifier.name)
+print(str(identifier))
+```
+
+## What PyO3 gives you
+
+| Rust concept     | Typical Python mapping |
+|------------------|------------------------|
+| `struct`         | `@pyclass` |
+| Constructor      | `#[new]` |
+| Method           | `#[pymethods]` |
+| Field access     | `#[getter]` |
+| `&str` / `String`| `str` |
+| `Option<T>`      | `T | None` |
+| `Vec<T>`         | `list` |
+| `HashMap`        | `dict` (when appropriate) |
+
+## Important distinction
+
+**Rust domain representation** and **Python-facing API representation** do not have to be identical.
+
+- Internally the kernel may use newtypes, enums, and private fields.
+- Externally the Python API should feel natural to Python callers.
+
+The boundary is a deliberate translation layer, not a 1:1 mirror.
+
+## Exercise
+
+1. Locate the `Identifier` / `PyIdentifier` implementation in `kernel/src/`.
+2. Construct an identifier from parts and from a string.
+3. Inspect the properties from Python.
+4. Confirm that equality (`==`) works between two instances that represent the same identifier.

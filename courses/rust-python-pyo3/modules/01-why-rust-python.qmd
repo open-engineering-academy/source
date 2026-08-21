@@ -1,0 +1,59 @@
+---
+title: "Module 01 — Why Rust + Python?"
+---
+
+## The question this course answers
+
+When should an Open Engineering system keep logic in Python, and when should it place that logic in a Rust kernel?
+
+## A familiar starting point
+
+```python
+def normalize_identifier(value: str) -> str:
+    return value.strip().lower()
+```
+
+This is perfectly acceptable for many situations. The course does **not** claim that every string transformation belongs in Rust.
+
+## When the implementation becomes part of the platform contract
+
+Rust becomes attractive when:
+
+- parsing and validation rules grow complex
+- the same semantics must be shared across Python, CLI, WASM, or other runtimes
+- incorrect implementations would silently break downstream systems
+- performance of the core algorithm matters
+- you want the type system to make invalid states hard to construct
+
+## Five motivations (not just speed)
+
+| Motivation            | Meaning |
+|-----------------------|---------|
+| **Correctness**       | One canonical implementation of the rules |
+| **Safety**            | Memory safety and strong typing for critical paths |
+| **Canonical semantics** | The definition of “valid” lives in one place |
+| **Portability**       | Same logic reusable from Python, CLI, WASM |
+| **Performance**       | When the work is CPU-bound and measured |
+
+The strongest architectural argument is usually **canonical semantics**.
+
+## Classification exercise
+
+For each component, decide: **Python**, **Rust candidate**, or **Depends**.
+
+| Component                  | Suggested classification | Reasoning |
+|---------------------------|--------------------------|---------|
+| LLM prompt orchestration  | Python                   | Experimentation & ecosystem |
+| Identifier parser         | Rust candidate           | Shared semantics, validation |
+| MQTT integration          | Python                   | Network + library ecosystem |
+| Graph traversal engine    | Rust candidate           | Deterministic, performance |
+| REST API orchestration    | Python                   | Rapid change, frameworks |
+| Manifest validator        | Rust candidate           | Platform contract |
+| Agent workflow            | Python                   | Composition & AI tooling |
+| State-machine engine      | Rust candidate           | Correctness & determinism |
+
+Your reasoning matters more than absolute answers.
+
+## Reflection
+
+> Use Rust when the implementation itself becomes part of the platform contract.

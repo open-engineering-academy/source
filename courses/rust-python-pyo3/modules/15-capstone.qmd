@@ -1,0 +1,90 @@
+---
+title: "Module 15 — Capstone: Mini Open Engineering Kernel"
+---
+
+## Goal
+
+Ship a working domain kernel that Python applications can import:
+
+```python
+from open_engineering_kernel import (
+    Identifier,
+    validate_manifest,
+    evaluate_rule,
+)
+```
+
+## Architecture
+
+```
+Python application
+       │
+       ├── AI / agents / workflows
+       ▼
+   Python API
+       │
+      PyO3
+       │
+       ▼
+┌───────────────────────────┐
+│    Open Engineering       │
+│       Mini Kernel         │
+│  Identifier · Manifest    │
+│  Rule · Validation        │
+└───────────────────────────┘
+            │
+           Rust
+```
+
+## Requirement 1 — Identifier
+
+```python
+id = Identifier.parse("oe.pico.lamp")
+print(id.namespace)  # open-engineering
+print(id.kind)       # pico
+print(id.name)       # lamp
+```
+
+Invalid input must raise `InvalidIdentifierError`.
+
+## Requirement 2 — Manifest
+
+```python
+result = validate_manifest({
+    "kind": "pico",
+    "name": "lamp",
+})
+assert result["valid"] is True
+assert result["manifest"]["identifier"] == "oe.pico.lamp"
+```
+
+## Requirement 3 — Rule
+
+```python
+rule = {
+    "id": "nod-when-ready",
+    "when": {"op": "eq", "key": "intent", "value": "nod"},
+    "then": {"op": "emit", "event": "nod"},
+}
+result = evaluate_rule(rule, {"intent": "nod"})
+assert result["matched"] is True
+```
+
+## Packaging
+
+```bash
+maturin build --release
+# then install the resulting wheel into a clean environment
+```
+
+## Definition of done (learner)
+
+- [ ] Rust tests pass (`cargo test`)
+- [ ] Python API imports cleanly
+- [ ] Identifier, Manifest, and Rule examples succeed
+- [ ] Wheel builds and installs in a fresh environment
+- [ ] You can explain why each piece lives on the Rust side of the boundary
+
+## Principle
+
+> One semantic core, multiple interfaces.

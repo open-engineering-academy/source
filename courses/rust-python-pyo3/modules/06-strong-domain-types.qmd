@@ -1,0 +1,58 @@
+---
+title: "Module 06 — Strong Domain Types"
+---
+
+## Goal
+
+Stop treating everything as strings. Encode invariants in the type system so invalid identifiers are hard (or impossible) to construct.
+
+## From loose strings to structured values
+
+```
+string
+   │
+   ▼
+parser
+   │
+   ├── valid ─────► Identifier
+   │
+   └── invalid ───► Error
+```
+
+## What “strong” means here
+
+```rust
+// Preferred: construction goes through validation
+let id = Identifier::parse("oe.pico.lamp")?;
+
+// Or through a checked constructor
+let id = Identifier::new("open-engineering", "pico", "lamp")?;
+```
+
+There is no public way to build an `Identifier` that violates the grammar.
+
+## Grammar used in the kernel
+
+Canonical form: `namespace.kind.name`
+
+Rules:
+
+- exactly three segments separated by `.`
+- each segment non-empty
+- only lowercase letters, digits, and hyphens
+- segments normalized to lowercase on parse
+- no leading or trailing hyphen inside a segment
+
+These rules live in Rust so every consumer (Python, later CLI/WASM) inherits the same definition of “valid”.
+
+## Why this matters for Open Engineering
+
+A platform contract that is only documented in prose will drift.
+
+A platform contract that is enforced by a single typed implementation does not.
+
+## Exercise
+
+1. Attempt to parse several invalid strings from Python and observe the error.
+2. List three additional invariants you might want an Open Engineering identifier to enforce in a later version of the kernel.
+3. Explain why those invariants belong in the Rust type rather than in ad-hoc Python checks.

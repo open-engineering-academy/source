@@ -1,0 +1,37 @@
+---
+title: "Module 12 — Concurrency and the GIL"
+---
+
+## Goal
+
+Understand just enough about the Python Global Interpreter Lock to design safe PyO3 boundaries.
+
+## What the GIL is (practical view)
+
+Python bytecode in a single process is generally executed by only one thread at a time. Native extensions can release the GIL while they do pure Rust work that does not touch Python objects.
+
+## When Rust can run independently of Python
+
+| Situation                         | Typical approach |
+|-----------------------------------|------------------|
+| CPU-heavy pure computation        | Release the GIL around the hot loop |
+| Long-running native operation     | Release the GIL; re-acquire only to return results |
+| Touching Python objects           | Must hold the GIL |
+| Simple, fast domain calls         | Holding the GIL is often fine |
+
+## What this course does *not* require
+
+- A complete tour of CPython internals
+- Writing your own free-threaded interpreter build
+- Premature parallelisation of every kernel call
+
+## Practical guidance for the Mini Kernel
+
+Most Identifier / Manifest / Rule operations are short. Keeping them synchronous and coarse-grained is the right default.
+
+If you later add a heavy graph algorithm or bulk validation pass, measure first, then consider releasing the GIL around the pure-Rust section.
+
+## Exercise
+
+1. Read the current kernel entry points and note whether any of them perform long-running work.
+2. Explain in one paragraph when you would *not* release the GIL for a kernel function.

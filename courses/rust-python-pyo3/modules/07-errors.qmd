@@ -1,0 +1,57 @@
+---
+title: "Module 07 — Errors"
+---
+
+## Goal
+
+Make failures across the language boundary useful, not opaque.
+
+## Rust side
+
+Domain operations return `Result<T, KernelError>`:
+
+```rust
+pub enum KernelError {
+    InvalidIdentifier(String),
+    InvalidManifest(String),
+    RuleEvaluation(String),
+}
+```
+
+## Python side
+
+Those errors become typed exceptions:
+
+```python
+from open_engineering_kernel import (
+    Identifier,
+    InvalidIdentifierError,
+    InvalidManifestError,
+    RuleEvaluationError,
+)
+
+try:
+    Identifier.parse("not-valid")
+except InvalidIdentifierError as e:
+    print(e)   # clear message, catchable by type
+```
+
+## What to avoid
+
+| Anti-pattern              | Why it is bad |
+|---------------------------|---------------|
+| `panic!` crossing the boundary | Turns into an opaque crash |
+| Returning only a string   | Callers cannot distinguish error kinds |
+| Swallowing errors in Rust | Hides failures from Python |
+
+## Design rule
+
+The boundary is part of the **public API**.
+
+Error types and messages are therefore a deliberate product decision, not an afterthought.
+
+## Exercise
+
+1. Trigger `InvalidIdentifierError` and `InvalidManifestError` from Python.
+2. Confirm each can be caught by its specific exception class.
+3. Read the message and decide whether a future learner would understand what went wrong.

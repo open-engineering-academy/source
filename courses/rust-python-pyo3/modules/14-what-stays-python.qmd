@@ -1,0 +1,52 @@
+---
+title: "Module 14 — What Should Stay Python?"
+---
+
+## Goal
+
+Resist the urge to move everything into Rust. Know when Python is the right home.
+
+## Examples that often stay in Python
+
+```python
+agent.ask(...)
+llm.generate(...)
+mqtt.publish(...)
+home_assistant.call_service(...)
+workflow.execute(...)
+```
+
+## Typical reasons to remain in Python
+
+| Reason                         | Why it matters |
+|--------------------------------|----------------|
+| Network latency dominates      | Native speed is irrelevant |
+| Rapid experimentation          | Python iteration speed wins |
+| Ecosystem integration          | Rich libraries already exist |
+| Implementation changes often   | Avoid rewriting native code |
+| Performance is irrelevant      | Clarity beats micro-optimisation |
+| Orchestration readability      | Agents and workflows are easier to follow |
+
+## The course principle restated
+
+> Do not introduce Rust merely to eliminate Python.
+
+Rust earns its place when the implementation is part of the **platform contract**: shared semantics, validation, deterministic evaluation, portable domain logic.
+
+Python remains the flexible orchestration and AI environment.
+
+## Decision checklist
+
+Ask for each component:
+
+1. Is there a single definition of “correct” that many consumers must share?
+2. Would an incorrect implementation silently break the platform?
+3. Do we need the same logic from Python, CLI, and possibly WASM?
+4. Have we measured a real performance problem?
+
+If most answers are “no”, keep it in Python.
+
+## Exercise
+
+Revisit the classification table from Module 01.  
+Update any answers now that you have seen the full kernel and boundary design.

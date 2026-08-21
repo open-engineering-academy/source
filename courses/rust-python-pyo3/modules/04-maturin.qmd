@@ -1,0 +1,69 @@
+---
+title: "Module 04 — Maturin"
+---
+
+## Goal
+
+Package the Rust library so Python can import it as an ordinary module.
+
+From the Python consumer's point of view there should be no Cargo, no `.so` hunting, and no special knowledge of the build system.
+
+## What Maturin does
+
+| Concern              | Maturin responsibility |
+|----------------------|------------------------|
+| Compile the Rust crate | Yes |
+| Produce a Python extension module | Yes |
+| Build wheels         | Yes |
+| Development installs | `maturin develop` |
+| Release artifacts    | `maturin build` |
+
+## Development workflow
+
+```bash
+# Inside kernel/
+maturin develop          # builds + installs into the active environment
+python -c "import open_engineering_kernel; print('ok')"
+```
+
+`maturin develop` is the iterative loop while writing the course exercises.
+
+## Release workflow
+
+```bash
+maturin build --release
+# → target/wheels/open_engineering_kernel-…‑….whl
+```
+
+Then in a **clean** environment:
+
+```bash
+pip install path/to/open_engineering_kernel-*.whl
+python -c "from open_engineering_kernel import Identifier"
+```
+
+The course must not stop at `maturin develop`. Shipping a wheel that installs cleanly is part of the definition of done.
+
+## Concepts to understand (without drowning)
+
+- **Native extension** — compiled code loaded by the Python interpreter
+- **Wheel** — the standard binary distribution format for Python packages
+- **Platform tags** — Linux / macOS / Windows × CPU architecture × Python ABI
+- **Development vs release builds** — speed of iteration vs optimised artifacts
+
+## Design rule
+
+Downstream Python code should treat the kernel like any other package:
+
+```python
+from open_engineering_kernel import Identifier, validate_manifest
+```
+
+No `sys.path` hacks, no `ctypes` loading, no knowledge of `target/debug`.
+
+## Exercise
+
+1. Run `maturin develop` successfully.
+2. Import the module from a Python REPL.
+3. Build a release wheel.
+4. Install that wheel into a fresh virtual environment and import again.

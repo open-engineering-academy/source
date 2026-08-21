@@ -1,0 +1,97 @@
+---
+title: "Module 02 — The Rust Library"
+---
+
+## Goal
+
+Create the initial Rust library that will become the Open Engineering Mini Kernel.
+
+The domain implementation must exist **independently** of any Python binding.
+
+## Project layout
+
+```
+kernel/
+├── Cargo.toml
+├── pyproject.toml      # added later for Maturin
+├── src/
+│   └── lib.rs
+├── tests/              # integration tests (optional)
+└── README.md
+```
+
+## Cargo.toml essentials
+
+```toml
+[package]
+name = "open_engineering_kernel"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "open_engineering_kernel"
+crate-type = ["cdylib", "rlib"]   # rlib for Rust tests, cdylib for Python
+```
+
+## First domain function
+
+```rust
+/// Normalize an identifier candidate: trim whitespace and lowercase.
+pub fn normalize_identifier(value: &str) -> String {
+    value.trim().to_lowercase()
+}
+```
+
+## Rust concepts introduced (only what is needed)
+
+| Concept     | Why it appears here |
+|-------------|---------------------|
+| Functions   | Entry points for domain logic |
+| `&str` / `String` | Borrowed vs owned text |
+| Modules     | Later split into `identifier`, `manifest`, `rule` |
+| `Result`    | Used when we introduce fallible parsing |
+| Cargo       | Build, test, and dependency management |
+
+## Establish the independence principle
+
+Write the native Rust test **before** any Python binding exists:
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn normalize_trims_and_lowercases() {
+        assert_eq!(
+            normalize_identifier("  OE.PICO.LAMP  "),
+            "oe.pico.lamp"
+        );
+    }
+}
+```
+
+Run:
+
+```bash
+cargo test
+```
+
+## Why this order matters
+
+```
+Rust domain logic
+       ▲
+       │  tested here first
+       │
+   later: PyO3 binding
+```
+
+If the kernel only works when called from Python, the boundary has leaked into the domain.
+
+## Exercise
+
+1. Create the crate (or use the provided `kernel/` directory).
+2. Implement `normalize_identifier`.
+3. Add the unit test above.
+4. Confirm `cargo test` passes with no Python tooling installed.

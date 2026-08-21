@@ -1,0 +1,44 @@
+---
+title: "Module 13 — Async Interoperability"
+---
+
+## Goal
+
+Understand that Python `asyncio` and Rust async (e.g. Tokio) are different runtime environments, and choose deliberately whether to bridge them.
+
+## Two runtimes
+
+```
+Python asyncio loop          Rust async runtime (Tokio, …)
+        │                              │
+        └──────── PyO3 bridge ─────────┘
+```
+
+Bridging them is possible (via current PyO3 async helpers) but is an architectural decision, not a default.
+
+## When a synchronous coarse-grained API is better
+
+- The Rust work is short and deterministic (Identifier, Manifest, Rule)
+- The Python side is already orchestrating with agents / workflows
+- You want a simple, testable boundary
+
+The Mini Kernel intentionally stays **synchronous**.
+
+## When async on the Rust side might be justified
+
+- Native networking or long I/O inside the kernel
+- Bulk background processing that should not block the event loop
+- A future Pico runtime that is itself async
+
+Even then, prefer exposing a clear async *or* sync API rather than leaking runtime details.
+
+## Design rule
+
+Do not introduce async merely because it exists.
+
+A synchronous, coarse-grained kernel API is often the simpler and more portable choice.
+
+## Exercise
+
+1. List the current kernel operations and classify each as sync-appropriate or potentially async-worthy.
+2. Write one sentence explaining why the course keeps the Mini Kernel synchronous.

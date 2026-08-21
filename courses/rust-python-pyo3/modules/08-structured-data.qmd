@@ -1,0 +1,52 @@
+---
+title: "Module 08 — Structured Data"
+---
+
+## Goal
+
+Accept structured input (Python dicts) and return structured results without turning the boundary into a free-for-all of nested conversions.
+
+## Manifest example
+
+```python
+result = validate_manifest({
+    "kind": "pico",
+    "name": "lamp",
+    "version": "1.0",
+})
+
+# result →
+# {
+#   "valid": True,
+#   "errors": [],
+#   "manifest": {
+#     "kind": "pico",
+#     "name": "lamp",
+#     "version": "1.0",
+#     "identifier": "open-engineering.pico.lamp"
+#   }
+# }
+```
+
+## Approaches considered in the course
+
+| Approach                    | When it is useful |
+|-----------------------------|-------------------|
+| Direct Python dict → Rust   | Simple, explicit validation boundary |
+| Typed PyO3 objects          | Stronger typing on the Python side |
+| JSON string round-trip      | Easy interop, clear serialization point |
+| serde-backed structures     | Canonical internal representation |
+
+The kernel uses a clear validation boundary: Python supplies a dict, Rust validates and returns a structured result.
+
+## Design guidance
+
+- Do **not** blindly translate every Python dictionary into internal Rust state.
+- Validate at the boundary.
+- Keep the domain model free of Python-specific types.
+
+## Exercise
+
+1. Call `validate_manifest` with a valid dict and inspect the result.
+2. Call it with missing `kind` / `name` and inspect the error list.
+3. Explain where validation occurs (Python vs Rust) and why that placement was chosen.

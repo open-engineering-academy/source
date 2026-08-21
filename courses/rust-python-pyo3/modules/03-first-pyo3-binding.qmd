@@ -1,0 +1,55 @@
+---
+title: "Module 03 — First PyO3 Binding"
+---
+
+## Goal
+
+Expose a pure Rust function to Python so that:
+
+```python
+from open_engineering_kernel import normalize_identifier
+assert normalize_identifier("  OE.PICO.LAMP  ") == "oe.pico.lamp"
+```
+
+## Conceptual flow
+
+```
+Python
+   │  function call
+   ▼
+PyO3
+   │
+   ▼
+Rust
+```
+
+## The binding (simplified)
+
+```rust
+use pyo3::prelude::*;
+
+#[pyfunction]
+fn normalize_identifier(value: &str) -> String {
+    value.trim().to_lowercase()
+}
+
+#[pymodule]
+fn open_engineering_kernel(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(normalize_identifier, m)?)?;
+    Ok(())
+}
+```
+
+(The actual course kernel uses the current stable PyO3 API; see `kernel/src/lib.rs`.)
+
+## What you should understand
+
+- The domain function can be tested in Rust *before* any Python binding exists.
+- PyO3 is the bridge, not the place where domain rules live.
+- From the Python side the result looks like an ordinary function.
+
+## Exercise
+
+1. Locate `normalize_identifier` in the kernel.
+2. Call it from a small Python script after `maturin develop`.
+3. Confirm the Rust unit test for the same logic still passes with `cargo test`.

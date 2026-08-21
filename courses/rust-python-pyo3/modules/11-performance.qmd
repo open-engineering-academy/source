@@ -1,0 +1,47 @@
+---
+title: "Module 11 — Performance"
+---
+
+## Goal
+
+Measure rather than assume. Rust does not automatically make an application faster.
+
+## What can make a Rust path *slower*
+
+| Cost                    | When it appears |
+|-------------------------|-----------------|
+| Object conversion       | Every boundary crossing |
+| Allocation              | Building `String`s / collections for Python |
+| Serialization           | Dict ↔ structured value |
+| FFI transitions         | Many tiny calls instead of one coarse call |
+| GIL interactions        | Holding the GIL while doing little native work |
+
+## Experiment shape
+
+Compare three approaches for the same logical work:
+
+1. **Pure Python** implementation of the operation
+2. **Python → Rust** with a coarse-grained API (one call)
+3. **Pathological** version: many tiny boundary calls in a loop
+
+Only the second pattern is typically worth the complexity. The third teaches why Module 09 (Boundary Design) matters.
+
+## What to measure
+
+- Wall-clock time for a realistic batch size
+- Allocation behaviour if you have tools available
+- Clarity of the resulting Python code
+
+Do not optimise a one-liner that runs once at startup.
+
+## Design rule
+
+Introduce Rust for **canonical semantics** first.  
+Treat performance as a measured property, not a slogan.
+
+## Exercise
+
+1. Time a pure-Python identifier normalizer over 100_000 inputs.
+2. Time the kernel `normalize_identifier` / `Identifier.parse` path over the same inputs.
+3. Time a pathological loop that crosses the boundary once per character or once per field.
+4. Record which approach won and why the pathological case lost.

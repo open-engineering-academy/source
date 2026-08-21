@@ -1,0 +1,61 @@
+---
+title: "Module 09 — Boundary Design"
+---
+
+## Prefer coarse-grained operations
+
+This is generally preferable:
+
+```python
+result = engine.evaluate_model(model)
+```
+
+to this:
+
+```python
+for item in model:
+    engine.evaluate_field(item.x)
+    engine.evaluate_field(item.y)
+    engine.evaluate_field(item.z)
+```
+
+## Why
+
+Every crossing of the language boundary has a cost:
+
+- argument conversion
+- allocation
+- possible GIL interaction
+- cognitive load for the reader
+
+A single meaningful operation keeps the boundary clear:
+
+```
+Python
+      │  one meaningful operation
+      ▼
+┌──────────────────────┐
+│        Rust          │
+│ parse · validate     │
+│ calculate · evaluate │
+│ construct result     │
+└──────────────────────┘
+      │
+      ▼
+Python result
+```
+
+## Design guideline
+
+Design the **API**, not just the FFI syntax.
+
+Ask:
+
+- What is the unit of work that is useful on the Python side?
+- What invariants belong inside the Rust kernel?
+- Can invalid states be made unrepresentable on the Rust side?
+
+## Exercise
+
+Review the three kernel entry points (`Identifier.parse`, `validate_manifest`, `evaluate_rule`).  
+For each, write one sentence explaining why the boundary is coarse-grained rather than fine-grained.
