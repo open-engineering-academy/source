@@ -77,7 +77,7 @@ mod tests {
 Run:
 
 ```bash
-cargo test
+cargo test --lib
 ```
 
 ## Why this order matters
