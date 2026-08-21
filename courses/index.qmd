@@ -37,6 +37,8 @@ The three core courses map one-to-one onto the academy's three-layer story —
   lab walkthrough; a runnable Sandcastle lab is deferred to a later
   curriculum wave and is clearly labelled on the course. Parts 2 and 3
   are explicitly scaffolded.
+- **[Rust Python PyO3](rust-python-pyo3/)** — Rust + Python - Building 
+  Native Python Modules with PyO3: description to follow.
 
 ## Additional courses
 
