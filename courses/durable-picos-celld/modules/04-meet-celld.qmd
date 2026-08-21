@@ -1,0 +1,37 @@
+---
+title: "Module 04 — Meet celld"
+---
+
+## What celld is
+
+[celld](https://github.com/denoland/celld) is a self-hosted implementation of significant parts of the Cloudflare Workers / Durable Objects model.
+
+**Label:** evolving / experimental dependency.
+
+## Mapping
+
+| Open Engineering | celld |
+|------------------|-------|
+| Pico | Cell / Durable Object |
+| Pico identity | Cell identity / address |
+| Pico state | Durable state |
+| Pico runtime | V8 isolate / Worker |
+| Persistence | SQLite (+ S3-compatible replication) |
+| Events | Request, RPC, alarm, WebSocket |
+| Suspension | Hibernation |
+
+## What this course must not do
+
+- Redefine Pico *as* a Durable Object
+- Hard-code `implementation: celld` into Pico definitions
+- Claim stronger consistency or DR properties than the tested celld version provides
+
+## Principle
+
+```
+spec:
+  runtime:
+    class: durable      # semantic request
+# not:
+#   implementation: celld
+```

@@ -1,0 +1,8 @@
+---
+title: "Module — Hibernation"
+---
+
+Content follows Memo 7.
+
+The vertical slice (Hello Pico → SPI → DurableRuntime → persistence tests) is the acceptance gate.
+Further modules extend that slice toward real celld, containers, and Minikube using Academy reuse-first material.

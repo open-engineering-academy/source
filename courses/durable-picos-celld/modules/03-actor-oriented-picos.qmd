@@ -1,0 +1,33 @@
+---
+title: "Module 03 — Actor-oriented Picos"
+---
+
+## Actor model (only what is needed)
+
+```
+          message
+             │
+             ▼
+        ┌─────────┐
+        │  Pico   │
+        │  state  │
+        └─────────┘
+             │
+             ▼
+          response
+```
+
+## Properties
+
+| Property | Pico meaning |
+|----------|--------------|
+| Identity | Addressable Pico id |
+| Encapsulated state | Only the Pico mutates its state |
+| Message handling | `invoke(event, payload)` |
+| Serialized execution | One event at a time per identity |
+| Location transparency | Caller need not know which machine |
+| Lifecycle independence | State can outlive a process |
+
+## Exercise
+
+Explain in one paragraph why `hello-pico/alice` and `hello-pico/bob` are different Picos even when they share the same code.

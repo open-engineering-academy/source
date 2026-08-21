@@ -1,0 +1,50 @@
+---
+title: "Module 07 — Durable state"
+---
+
+## Milestone
+
+```
+invoke → invoke → restart → invoke
+                 event_count == 3
+```
+
+## How the reference DurableRuntime works
+
+```
+HelloPico (domain)
+      │
+DurableRuntime
+      │
+   SQLite
+```
+
+On each `invoke`, state is written to SQLite.  
+`DurableRuntime.reopen(db)` simulates process restart with the same store.
+
+## Demonstration
+
+```python
+from oe_pico_runtime import DurableRuntime
+
+rt1 = DurableRuntime("/tmp/hello.db")
+rt1.invoke("hello-pico", "hello", {"name": "One"})
+rt1.invoke("hello-pico", "hello", {"name": "Two"})
+rt1.close()
+
+rt2 = DurableRuntime.reopen("/tmp/hello.db")
+print(rt2.inspect("hello-pico").event_count)  # 2
+print(rt2.invoke("hello-pico", "hello", {"name": "Three"}).event_count)  # 3
+```
+
+## Automated proof
+
+```bash
+cd runtime
+PYTHONPATH=src python -m pytest tests/test_persistence.py -q
+```
+
+## Relation to celld
+
+A future `CelldRuntime` implements the same `PicoRuntime` SPI against real celld cells.  
+Contract tests stay unchanged — that is the point of the SPI.

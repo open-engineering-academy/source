@@ -1,0 +1,46 @@
+---
+title: "Module 01 — Revisit Hello, Pico!"
+---
+
+## Goal
+
+Reuse the existing Academy Hello, Pico! behaviour — do not invent a new sample.
+
+## Domain behaviour
+
+```python
+from oe_pico_runtime import HelloPico
+
+p = HelloPico("hello-pico")
+s = p.hello("Willem")
+# event_count == 1, message == "Hello, Willem!"
+```
+
+Each `hello(name)`:
+
+1. receives an event
+2. increments `event_count`
+3. records `last_run`
+4. produces a greeting
+5. exposes resulting `PicoState`
+
+## Classification
+
+| Material | Action |
+|----------|--------|
+| Hello Pico domain logic | **REUSE** (reimplemented here as the executable starting point) |
+| Pico course concepts | **REFERENCE** |
+| Rust fundamentals | **Do not reteach** |
+
+## Exercise
+
+```bash
+cd runtime
+PYTHONPATH=src python -c "
+from oe_pico_runtime import HelloPico
+p = HelloPico()
+print(p.hello('Ada').to_dict())
+print(p.hello('Willem').to_dict())
+"
+PYTHONPATH=src python -m pytest tests/test_pico_unit.py -q
+```

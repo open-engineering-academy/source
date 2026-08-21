@@ -1,0 +1,43 @@
+---
+title: "Module 14 — Pico Runtime SPI"
+---
+
+## The boundary
+
+```
+Pico definition
+      │
+PicoRuntime SPI
+      │
+  ┌───┴───┐
+Native  Durable (celld-shaped)
+```
+
+## Operations
+
+| Operation | Meaning |
+|-----------|---------|
+| `deploy` | Ensure identity exists |
+| `invoke` | Send event, return state |
+| `inspect` | Read state without mutation |
+| `suspend` / `resume` | Optional lifecycle |
+| `delete` | Remove identity + state |
+
+## Capabilities
+
+Runtimes advertise what they support (`DURABLE_STATE`, `MULTI_IDENTITY`, …).
+
+## Contract tests
+
+```
+Pico Runtime Contract
+        │
+        ├── NativeRuntime  → PASS
+        └── DurableRuntime → PASS
+```
+
+This proves the durable adapter implements **Pico semantics**, rather than redefining them.
+
+```bash
+PYTHONPATH=src python -m pytest tests/test_runtime_contract.py -q
+```

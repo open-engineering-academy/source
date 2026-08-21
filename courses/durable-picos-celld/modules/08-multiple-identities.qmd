@@ -1,0 +1,32 @@
+---
+title: "Module 08 — Multiple Pico identities"
+---
+
+## Idea
+
+```
+same code + different identity = different Pico
+```
+
+```
+hello-pico/alice   event_count = 7
+hello-pico/bob     event_count = 2
+hello-pico/charlie event_count = 15
+```
+
+## Exercise
+
+```python
+rt = DurableRuntime("/tmp/multi.db")
+for _ in range(7):
+    rt.invoke("alice", "hello", {"name": "Alice"})
+for _ in range(2):
+    rt.invoke("bob", "hello", {"name": "Bob"})
+rt.close()
+
+rt2 = DurableRuntime.reopen("/tmp/multi.db")
+assert rt2.inspect("alice").event_count == 7
+assert rt2.inspect("bob").event_count == 2
+```
+
+Isolation + persistence after restart is required.

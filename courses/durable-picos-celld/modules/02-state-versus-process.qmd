@@ -1,0 +1,34 @@
+---
+title: "Module 02 — State versus process"
+---
+
+## The problem
+
+```
+Process dies
+     │
+     ▼
+What happens to Pico state?
+```
+
+## Native (volatile) baseline
+
+With `NativeRuntime`, state lives only in memory. Restart the process and the count is gone.
+
+## Durable requirement
+
+Entity lifetime and process lifetime are **different concerns**.
+
+| Concept | Meaning |
+|---------|---------|
+| Volatile state | Lost when the process ends |
+| Durable state | Survives process restart |
+| Runtime lifecycle | Start / stop of the executor |
+| Entity lifecycle | Logical lifetime of the Pico |
+
+## Exercise
+
+1. Invoke Hello Pico twice on `NativeRuntime`.
+2. Create a **new** `NativeRuntime` instance (simulating restart).
+3. Observe that state is gone.
+4. Contrast with Module 07 (Durable State).
