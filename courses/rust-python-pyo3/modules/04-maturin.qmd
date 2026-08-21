@@ -111,7 +111,9 @@ No `sys.path` hacks, no `ctypes` loading, no knowledge of `target/debug`.
 
 ## Exercise
 
-1. Run `maturin develop` successfully.
-2. Import the module from a Python REPL.
-3. Build a release wheel.
-4. Install that wheel into a fresh virtual environment and import again.
+1. Create and activate a venv under `kernel/.venv`.
+2. Install Maturin with `pip install maturin`.
+3. Run `maturin develop` successfully.
+4. Import the module from a Python REPL **while the venv is active**.
+5. Build a release wheel with `maturin build --release`.
+6. Install that wheel into a **second** clean venv and import again.
