@@ -1,0 +1,26 @@
+---
+title: "Labs"
+---
+
+## Vertical slice (acceptance gate)
+
+```bash
+cd runtime
+PYTHONPATH=src python -m pytest tests -q
+```
+
+Proves:
+
+1. Hello Pico domain behaviour
+2. Native + Durable pass the same contract
+3. `event_count` survives restart (`test_persistence.py`)
+4. Multiple identities stay isolated across restart
+
+## Evidence checklist
+
+```
+evidence/
+├── tests/          # pytest output
+├── persistence/    # restart recovery
+└── multi-pico/     # identity isolation
+```
