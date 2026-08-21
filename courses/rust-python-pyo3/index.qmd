@@ -90,14 +90,12 @@ pytest
 
 ## Installation
 
-```
-[git](https://github.com/git-guides/install-git)
-[python 3](https://www.python.org/downloads/)
-[rustup](https://rustup.rs)
-[cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
-[maturin](https://www.maturin.rs/installation.html)
-[pytest](https://docs.pytest.org/en/stable/getting-started.html)
-```
+- [git](https://github.com/git-guides/install-git)
+- [python 3](https://www.python.org/downloads/)
+- [rustup](https://rustup.rs)
+- [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+- [maturin](https://www.maturin.rs/installation.html)
+- [pytest](https://docs.pytest.org/en/stable/getting-started.html)
 
 ## Principle to remember
 
