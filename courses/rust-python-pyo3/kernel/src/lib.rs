@@ -21,7 +21,8 @@ pub use rule::{
 
 use pyo3::exceptions::{PyException, PyValueError};
 use pyo3::prelude::*;
-use pyo3::types::{PyDict, PyList, PyModule, PyResult};
+use pyo3::types::{PyDict, PyList, PyModule};
+use pyo3::PyResult;
 use serde_json::Value;
 use std::collections::HashMap;
 
