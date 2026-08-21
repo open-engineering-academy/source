@@ -1,0 +1,13 @@
+[project]
+name = "oe-pico-runtime"
+version = "0.1.0"
+description = "Open Engineering Pico Runtime SPI and durable Hello Pico reference"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
