@@ -1,9 +1,9 @@
 # Memo 9: Introduce Technical Storytelling with AI Audio in Open Engineering Academy
 
-Status: Proposed
-Target: Open Engineering Academy
-Artifact: New Academy course/lab
-Working title: Engineering Stories — From Architecture to Audio Drama
+Status: Proposed  
+Target: Open Engineering Academy  
+Artifact: New Academy course/lab  
+Working title: Engineering Stories — From Architecture to Audio Drama  
 
 ## 1. Purpose
 
