@@ -1,4 +1,4 @@
-# Memo9: Introduce Technical Storytelling with AI Audio in Open Engineering Academy
+# Memo 9: Introduce Technical Storytelling with AI Audio in Open Engineering Academy
 
 Status: Proposed
 Target: Open Engineering Academy
