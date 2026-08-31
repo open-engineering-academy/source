@@ -1,0 +1,41 @@
+---
+title: "Quiz · Hands"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What distinguishes Mind from Hands?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **Mind** determines *should I do this?*; the **Hands** determine *how do
+I do this?*.
+:::
+
+## 2. Why are Hands provider-neutral (capability-based)?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+So the Pico depends on capabilities like `email.send` rather than a
+provider's tool names like `GMAIL_SEND_EMAIL`. The provider can then be
+swapped without changing Pico behaviour or rules.
+:::
+
+## 3. What is the fundamental security rule for Hands?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No Hand acts without identity and authorization context. A valid credential
+does not imply authorization.
+:::
+
+## 4. How are Hands different from MCP?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Hands are the Pico capability abstraction; MCP is an integration mechanism
+through which tools may be discovered or executed; Composio is a
+provider/platform. These concerns remain separate.
+:::
+
+## Next
+
+Return to the [Part 3 overview](../index.qmd) or the
+[course home](../../index.qmd).

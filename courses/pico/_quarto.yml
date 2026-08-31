@@ -36,6 +36,11 @@ project:
     - part-3/04-portability/lab.qmd
     - part-3/04-portability/summary.qmd
     - part-3/04-portability/quiz.qmd
+    - part-3/05-hands/index.qmd
+    - part-3/05-hands/exercise.qmd
+    - part-3/05-hands/lab.qmd
+    - part-3/05-hands/summary.qmd
+    - part-3/05-hands/quiz.qmd
     - labs/index.qmd
 
 website:
@@ -131,6 +136,17 @@ website:
               - href: part-3/04-portability/summary.qmd
                 text: Summary
               - href: part-3/04-portability/quiz.qmd
+                text: Quiz
+          - section: "05 Hands"
+            href: part-3/05-hands/index.qmd
+            contents:
+              - href: part-3/05-hands/exercise.qmd
+                text: Exercise
+              - href: part-3/05-hands/lab.qmd
+                text: Lab
+              - href: part-3/05-hands/summary.qmd
+                text: Summary
+              - href: part-3/05-hands/quiz.qmd
                 text: Quiz
       - href: labs/index.qmd
         text: Labs

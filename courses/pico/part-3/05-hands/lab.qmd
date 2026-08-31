@@ -1,0 +1,114 @@
+---
+title: "Lab · Give a Pico Hands"
+---
+
+In this lab you will author a complete Hands-equipped Pico definition, a
+governed action request with identity context, and a ruleset — then validate
+the YAML with the `pico` CLI.
+
+The scenario follows the memo progression: a Pico observes a condition,
+evaluates a rule, decides on an action, and uses its Hands to perform it
+(a low-risk, reversible action such as creating a GitHub issue).
+
+## Setup
+
+```bash
+mkdir -p scratch/hands
+```
+
+## Step 1 — Pico definition with Hands
+
+Create `scratch/hands/pico.yaml`:
+
+```yaml
+# scratch/hands/pico.yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: issue-reporter
+spec:
+  hands:
+    - name: external
+      provider: composio
+      capabilities:
+        - github.issue.read
+        - github.issue.create
+    - name: cluster
+      provider: kubernetes
+      capabilities:
+        - kubernetes.resource.read
+```
+
+## Step 2 — Governed action request
+
+Create `scratch/hands/action.yaml` — the "identity before action" boundary:
+
+```yaml
+# scratch/hands/action.yaml
+actor:
+  pico: issue-reporter
+principal:
+  type: user
+  id: user.example
+action:
+  provider: composio
+  capability: github.issue.create
+authorization:
+  capability: github.issue.create
+```
+
+## Step 3 — Rules with constraints
+
+Create `scratch/hands/rules.yaml`:
+
+```yaml
+# scratch/hands/rules.yaml
+rules:
+  - capability: github.issue.create
+    effect: allow
+    constraints:
+      repositories:
+        - academy-test/*
+  - capability: kubernetes.resource.read
+    effect: allow
+  - capability: kubernetes.resource.delete
+    effect: deny
+  - capability: github.issue.create
+    effect: deny
+    constraints:
+      repositories:
+        - production/*
+```
+
+## Step 4 — Validate all three
+
+```bash
+pico parse scratch/hands/pico.yaml --out /tmp/h1.json \
+  && echo "OK: pico definition parses"
+pico parse scratch/hands/action.yaml --out /tmp/h2.json \
+  && echo "OK: action request parses"
+pico parse scratch/hands/rules.yaml --out /tmp/h3.json \
+  && echo "OK: rules parse"
+```
+
+## Step 5 — Reflect
+
+Answer, using your files:
+
+- Which file expresses *what the Pico can be equipped to do*?
+- Which file expresses *what the Pico is permitted to do in a given
+  context*?
+- Why is the action request tied to an actor and capability rather than only
+  a provider tool?
+- What extra constraint would you add to require **human approval** for a
+  production `github.issue.create`?
+
+## What you will produce
+
+A Hands-equipped Pico definition, a governed action request, and a
+constraint-bearing ruleset that together show Hands as governed, governed
+execution.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

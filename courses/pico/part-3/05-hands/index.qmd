@@ -1,0 +1,193 @@
+---
+title: "5. Hands"
+subtitle: "Giving a Pico the ability to act."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why a Pico needs a controlled mechanism for acting on the world.
+- Distinguish **Mind** (should I do this?) from **Hands** (how do I do
+  this?).
+- Describe the provider-neutral Hands capability model.
+- Author a Pico definition and rule that express Hands capabilities.
+- Explain why a valid credential does not imply authorization.
+
+## Prerequisites
+
+- [Pico Identity](../01-pico-identity/index.qmd).
+- [Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd).
+- [Trust and Authorization](../03-trust-and-authorization/index.qmd).
+
+## A Pico that can change the world
+
+A Pico can reason, observe, remember, communicate, and make decisions. To
+affect systems outside itself, however, it also needs a controlled mechanism
+for taking action. We call this capability **Hands**.
+
+> A Pico without Hands can understand the world.
+> A Pico with Hands can change it.
+
+The resulting principle:
+
+> A Composer equips a Pico with Hands. The Pico decides when to use them.
+> The Hands perform the action.
+
+## Mind versus Hands
+
+The Pico character provides a useful vocabulary:
+
+```
+Pico
+│
+├── Identity
+│
+├── Mind      →  What should I do?
+│
+├── Senses    →  What is happening?
+│
+├── Voice     →  What should I communicate?
+│
+└── Hands     →  What should I change or execute?
+```
+
+The distinction between Mind and Hands is particularly important:
+
+- The **Mind** determines: *Should I do this?*
+- The **Hands** determine: *How do I do this?*
+
+## Provider independence
+
+Picos MUST NOT be architecturally dependent upon any particular tool
+provider. Open Engineering defines the abstract capability — **Pico Hands** —
+and Composio becomes one implementation of that capability:
+
+```
+Pico
+ │
+ ▼
+Hands
+ │
+ ├── ComposioHands
+ ├── LocalHands
+ ├── KubernetesHands
+ └── PhysicalHands
+```
+
+This follows the Open Engineering principle of separating Definition from
+Implementation.
+
+## The capability model
+
+Hands should expose **capabilities**, not merely provider-specific tool
+names. For example:
+
+```
+github.issue.create
+email.send
+messaging.post
+kubernetes.resource.read
+mqtt.publish
+servo.position.set
+```
+
+A provider maps these capabilities onto implementation-specific operations.
+For example, the capability `email.send` maps onto Composio's
+`GMAIL_SEND_EMAIL` tool. This keeps Pico rules independent from any
+provider's API vocabulary.
+
+## Identity before action
+
+Hands MUST integrate with Pico identity. The fundamental security rule:
+
+> No Hand acts without identity and authorization context.
+
+The Pico is not merely saying "send this email." It is saying:
+
+```
+I am Pico X.
+I am acting within this identity context.
+My rules permit this capability.
+My Hands provider can perform it.
+Execute the requested action.
+```
+
+## Authorization boundary
+
+Authentication and authorization MUST remain conceptually separate. A valid
+credential MUST NOT imply authorization. Composio may answer "can this
+connected account authenticate to Gmail?" Open Engineering must answer "is
+this Pico permitted to send this email?"
+
+```
+Open Engineering
+      │
+      ├── Identity
+      ├── Rules
+      ├── Policy
+      ├── Capability authorization
+      └── Evidence
+             │
+             ▼
+          Hands
+             │
+             ▼
+          Composio
+             │
+             ▼
+       External System
+```
+
+## Governed execution
+
+Hands integrate with Pico rules. Rules declare which capabilities are
+allowed, and richer rules constrain destinations, namespaces, environments,
+time windows, and approvals. For example:
+
+```
+capability: kubernetes.resource.apply
+constraints:
+  namespaces:
+    - pico-*
+  environments:
+    - development
+    - test
+```
+
+This turns Hands into **governed execution** rather than unrestricted tool
+calling. Some operations support human approval gates, so the architecture
+supports future human-in-the-loop execution.
+
+## Hands versus MCP
+
+Hands and MCP should not be treated as synonyms. MCP may be one mechanism
+through which tools become discoverable or executable.
+
+```
+Pico
+ ↓
+Hands
+ ↓
+Provider / Protocol
+ ├── Composio
+ ├── MCP
+ ├── REST
+ ├── Kubernetes
+ ├── MQTT
+ └── local execution
+```
+
+Hands are the Pico capability abstraction. MCP is an integration mechanism.
+Composio is a provider/platform. These concerns remain separate.
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — author a Hands-equipped Pico definition and rules.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).
