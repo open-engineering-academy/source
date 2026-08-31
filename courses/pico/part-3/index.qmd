@@ -25,6 +25,8 @@ in Pico Engine 1.6 and are designed to be completed in order after
   implications for Open Engineering rules and parsers.
 - [4. Portability](04-portability/index.qmd) — what it takes to move a Pico
   between engines without losing who it is.
+- [5. Hands](05-hands/index.qmd) — giving a Pico the ability to act on the
+  world, with provider-neutral capabilities and governed execution.
 
 Each lesson follows the same page layout as the rest of the course — see the
 [course overview](../index.qmd) for the full pattern.

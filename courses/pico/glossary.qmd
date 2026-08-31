@@ -93,3 +93,25 @@ cryptographic peer DIDs and encrypted with DIDComm.
 A signed claim about a Pico's attributes or authority. A future
 layer on top of the identity architecture that will allow Picos to
 prove what they are and what authority they hold.
+
+## Capability
+A provider-neutral action a Pico may perform, such as `email.send` or
+`github.issue.create`. Pico rules name capabilities rather than
+provider-specific tool names, keeping the Pico independent of any
+particular tool provider.
+
+## Composio
+A provider/platform that supplies tools to Picos. In this course it is
+the primary external Hands provider, but the Pico Hands abstraction
+must remain independent of Composio or any other provider.
+
+## Hands
+The controlled mechanism through which a Pico acts on the world. A
+Composer equips a Pico with Hands; the Pico decides when to use them;
+the Hands perform the action. Hands are governed by identity, rules,
+policy, and authorization.
+
+## Hands Provider
+An implementation of the Pico Hands capability, such as ComposioHands,
+KubernetesHands, LocalHands, or PhysicalHands. Providers map Pico
+capabilities onto implementation-specific operations.

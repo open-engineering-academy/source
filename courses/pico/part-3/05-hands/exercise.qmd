@@ -1,0 +1,85 @@
+---
+title: "Exercise · Hands"
+---
+
+A short, guided task. Complete it before moving on to the lab.
+
+## Task
+
+For a Pico you have been modeling across Part 3, write a capability-based
+Hands declaration that is provider-neutral:
+
+```yaml
+# hands-capabilities.yaml
+hands:
+  - name: external
+    capabilities:
+      - github.issue.read
+      - github.issue.create
+  - name: cluster
+    capabilities:
+      - kubernetes.resource.read
+```
+
+Then write rules that govern one capability:
+
+```yaml
+# hands-rules.yaml
+rules:
+  - capability: github.issue.create
+    effect: allow
+  - capability: kubernetes.resource.delete
+    effect: deny
+```
+
+Answer the questions below.
+
+::: {.callout-note}
+There is no single correct answer. The goal is to internalize the
+capability-over-provider model: rules name capabilities, not provider tool
+names, so the provider can be swapped without changing Pico behaviour.
+:::
+
+## Success criteria
+
+- [ ] Your Hands declaration is provider-neutral (no provider tool names such
+      as `GMAIL_SEND_EMAIL`).
+- [ ] You declare at least **two** capabilities across at least **one**
+      hand/provider.
+- [ ] Your rules name capabilities, not provider-specific tools.
+- [ ] At least one rule uses `effect: deny`.
+
+## Automatable check
+
+Save both snippets under a scratch working directory and confirm they parse:
+
+```bash
+mkdir -p scratch-hands
+cat > scratch-hands/hands.yaml <<'EOF'
+hands:
+  - name: external
+    capabilities:
+      - github.issue.read
+      - github.issue.create
+rules:
+  - capability: github.issue.create
+    effect: allow
+  - capability: kubernetes.resource.delete
+    effect: deny
+EOF
+pico parse scratch-hands/hands.yaml --out /tmp/hands.json \
+  && echo "OK: Hands declaration parses"
+```
+
+The command exits with status `0` and prints an `OK:` line when the
+declaration is well-formed.
+
+## Reflect
+
+- Why would a rule say `email.send` rather than `GMAIL_SEND_EMAIL`?
+- What does "a valid credential must not imply authorization" mean for a
+  Pico with a connected account?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

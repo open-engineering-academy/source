@@ -1,0 +1,37 @@
+---
+title: "Summary · Hands"
+---
+
+## Key takeaways
+
+- **Hands** are the controllable mechanism through which a Pico acts on the
+  world — the boundary between understanding and changing.
+- **Mind** decides *should I do this?*; **Hands** determine *how do I do
+  this?*.
+- Hands are **provider-neutral**: the Pico depends on capabilities
+  (`email.send`, `github.issue.create`), not provider tool names
+  (`GMAIL_SEND_EMAIL`). Composio is one provider among many.
+- **Identity before action**: no Hand acts without identity and
+  authorization context. A valid credential does not imply authorization.
+- Hands are **governed execution**: rules decide which capabilities are
+  allowed, with constraints and optional human approvals.
+- Hands ≠ MCP. Hands are the Pico capability abstraction; MCP is an
+  integration mechanism; Composio is a provider/platform.
+
+## The governing principle
+
+```
+The Composer equips.
+The Pico decides.
+The Hands act.
+Open Engineering governs.
+```
+
+## What comes next
+
+- Return to the [Part 3 overview](../index.qmd) to review all lessons, or
+  revisit any lesson in this course: [Course home](../../index.qmd).
+
+## Next
+
+Take the [Quiz](quiz.qmd) to finish the lesson.
