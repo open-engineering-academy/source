@@ -6,3 +6,30 @@ prerequisites: []
 teaches: []
 produces: []
 referenced_by: []
+# Optional: declare that this substantial Lab follows the Agentic Learning
+# Loop (agentic-software-engineering-conventions). Omit this block for small
+# exercises, which do not require the loop.
+# learning:
+#   convention:
+#     id: agentic-software-engineering
+#     version: "1"
+#   type: lab
+#   phases:
+#     - predict
+#     - delegate
+#     - observe
+#     - compare
+#     - generalize
+#     - validate
+#     - internalize
+# Optional: declare LikeC4 visualization of the seven phases.
+# visualization:
+#   methodology: likec4
+#   views:
+#     - lab-predict
+#     - lab-delegate
+#     - lab-observe
+#     - lab-compare
+#     - lab-generalize
+#     - lab-validate
+#     - lab-internalize

@@ -14,6 +14,17 @@ and what a successful outcome looks like.
 - [Walkthrough](walkthrough.qmd)
 - [Solution](solution.qmd)
 
+## Substantial labs (Agentic Learning Loop)
+
+Substantial, judgement-building labs follow the
+[Agentic Learning Loop](https://github.com/open-engineering-conventions/agentic-software-engineering-conventions):
+`Predict → Delegate → Observe → Compare → Generalize → Validate → Internalize`.
+
+Courses teach; Labs train engineering judgement. Small exercises do not
+require the loop — do not expand a short exercise into a seven-section Lab
+for structural consistency. When a Lab follows the loop, declare it in
+`metadata.yaml` under `learning:`.
+
 ## Downloads
 
 Starter files live under `downloads/`. Screenshots referenced from the
