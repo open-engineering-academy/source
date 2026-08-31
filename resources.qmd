@@ -39,6 +39,13 @@ academy content is structured:
 - [lab-conventions](https://github.com/open-engineering-conventions/lab-conventions)
 - [lesson-conventions](https://github.com/open-engineering-conventions/lesson-conventions)
 - [quiz-conventions](https://github.com/open-engineering-conventions/quiz-conventions)
+- [agentic-software-engineering-conventions](https://github.com/open-engineering-conventions/agentic-software-engineering-conventions) — the seven-phase Agentic Learning Loop applied to substantial Labs.
+
+Substantial Academy Labs follow the
+[Agentic Learning Loop](https://github.com/open-engineering-conventions/agentic-software-engineering-conventions):
+`Predict → Delegate → Observe → Compare → Generalize → Validate → Internalize`.
+Courses teach; Labs train engineering judgement. Lessons, examples, and small
+exercises are not required to follow the loop.
 
 ## Course metadata
 
