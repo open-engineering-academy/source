@@ -1,0 +1,45 @@
+---
+title: "Quiz · Portability"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. Does Pico Engine 1.6 complete Pico portability?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. It provides an essential **prerequisite** (cryptographic identity,
+pairwise relationships, encrypted communication). The engine's base URL still
+remains part of the did:webvh, so identity cannot yet move unchanged between
+engines.
+:::
+
+## 2. Name two of the four remaining-work areas.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Full identity portability, verifiable credentials, key management, and
+identity-aware authorization.
+:::
+
+## 3. What is the design objective for key management?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Losing a cryptographic key should not mean losing the Pico. Keys should move
+toward OS key vaults, hardware-backed storage, secure enclaves, or external
+KMS, with key rotation and recovery developed.
+:::
+
+## 4. Why must the Open Engineering identifier stay distinct from the runtime DID?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+They answer different questions: the OE identifier says "what Open
+Engineering element is this?" while the did:webvh says "which cryptographic
+Pico is this?" and the did:peer says "which private relationship is this?"
+Keeping them separate supports portability — the semantic identity should
+survive an engine move even when the runtime DID changes.
+:::
+
+## Next
+
+Return to the [Part 3 overview](../index.qmd) or the
+[course home](../../index.qmd).

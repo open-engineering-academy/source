@@ -15,6 +15,12 @@ teaches:
   - Rules
   - Parser
   - Composer
+  - DID
+  - DIDComm
+  - Identity
+  - Trust
+  - Portability
+  - Channel Policy
 produces:
   - hello-world-pico
 references_labs:

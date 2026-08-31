@@ -16,6 +16,26 @@ project:
     - part-1/01-introduction/quiz.qmd
     - part-2/index.qmd
     - part-3/index.qmd
+    - part-3/01-pico-identity/index.qmd
+    - part-3/01-pico-identity/exercise.qmd
+    - part-3/01-pico-identity/lab.qmd
+    - part-3/01-pico-identity/summary.qmd
+    - part-3/01-pico-identity/quiz.qmd
+    - part-3/02-cross-mesh-communication/index.qmd
+    - part-3/02-cross-mesh-communication/exercise.qmd
+    - part-3/02-cross-mesh-communication/lab.qmd
+    - part-3/02-cross-mesh-communication/summary.qmd
+    - part-3/02-cross-mesh-communication/quiz.qmd
+    - part-3/03-trust-and-authorization/index.qmd
+    - part-3/03-trust-and-authorization/exercise.qmd
+    - part-3/03-trust-and-authorization/lab.qmd
+    - part-3/03-trust-and-authorization/summary.qmd
+    - part-3/03-trust-and-authorization/quiz.qmd
+    - part-3/04-portability/index.qmd
+    - part-3/04-portability/exercise.qmd
+    - part-3/04-portability/lab.qmd
+    - part-3/04-portability/summary.qmd
+    - part-3/04-portability/quiz.qmd
     - labs/index.qmd
 
 website:
@@ -67,6 +87,51 @@ website:
         href: part-2/index.qmd
       - section: "Part 3 — Extending"
         href: part-3/index.qmd
+        contents:
+          - section: "01 Pico Identity"
+            href: part-3/01-pico-identity/index.qmd
+            contents:
+              - href: part-3/01-pico-identity/exercise.qmd
+                text: Exercise
+              - href: part-3/01-pico-identity/lab.qmd
+                text: Lab
+              - href: part-3/01-pico-identity/summary.qmd
+                text: Summary
+              - href: part-3/01-pico-identity/quiz.qmd
+                text: Quiz
+          - section: "02 Cross-Mesh Communication"
+            href: part-3/02-cross-mesh-communication/index.qmd
+            contents:
+              - href: part-3/02-cross-mesh-communication/exercise.qmd
+                text: Exercise
+              - href: part-3/02-cross-mesh-communication/lab.qmd
+                text: Lab
+              - href: part-3/02-cross-mesh-communication/summary.qmd
+                text: Summary
+              - href: part-3/02-cross-mesh-communication/quiz.qmd
+                text: Quiz
+          - section: "03 Trust and Authorization"
+            href: part-3/03-trust-and-authorization/index.qmd
+            contents:
+              - href: part-3/03-trust-and-authorization/exercise.qmd
+                text: Exercise
+              - href: part-3/03-trust-and-authorization/lab.qmd
+                text: Lab
+              - href: part-3/03-trust-and-authorization/summary.qmd
+                text: Summary
+              - href: part-3/03-trust-and-authorization/quiz.qmd
+                text: Quiz
+          - section: "04 Portability"
+            href: part-3/04-portability/index.qmd
+            contents:
+              - href: part-3/04-portability/exercise.qmd
+                text: Exercise
+              - href: part-3/04-portability/lab.qmd
+                text: Lab
+              - href: part-3/04-portability/summary.qmd
+                text: Summary
+              - href: part-3/04-portability/quiz.qmd
+                text: Quiz
       - href: labs/index.qmd
         text: Labs
       - href: constructive-realization.qmd

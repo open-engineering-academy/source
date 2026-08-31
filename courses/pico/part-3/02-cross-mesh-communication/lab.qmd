@@ -1,0 +1,91 @@
+---
+title: "Lab · Cross-Mesh Subscription"
+---
+
+In this lab you will author a complete cross-mesh subscription, a DIDComm
+message envelope, and a family-channel comparison — then validate the YAML
+with the `pico` CLI.
+
+## Setup
+
+```bash
+mkdir -p scratch/mesh
+```
+
+## Step 1 — Subscription configuration
+
+Create `scratch/mesh/subscription-a-b.yaml`:
+
+```yaml
+# scratch/mesh/subscription-a-b.yaml
+subscription:
+  initiator:
+    id: oep.pico.alice
+    did: did:webvh:https://engine-a.example.com/picos/alice
+    peer: did:peer:rel-alice-bob
+  recipient:
+    id: oep.pico.bob
+    did: did:webvh:https://engine-b.example.com/picos/bob
+    peer: did:peer:rel-bob-alice
+  handshake: didcomm-introduction-v1
+```
+
+## Step 2 — DIDComm message envelope
+
+Create `scratch/mesh/message-a-to-b.yaml`:
+
+```yaml
+# scratch/mesh/message-a-to-b.yaml
+message:
+  from: did:peer:rel-alice-bob
+  to: did:peer:rel-bob-alice
+  type: pico/query
+  body:
+    query: get-status
+    request-id: req-001
+```
+
+## Step 3 — Family channel comparison
+
+Create `scratch/mesh/family-channel.yaml`:
+
+```yaml
+# scratch/mesh/family-channel.yaml
+family:
+  parent:
+    id: oep.pico.root
+    eci: eci:root-family
+  child:
+    id: oep.pico.alice
+    eci: eci:alice-family
+  transport: local
+```
+
+## Step 4 — Validate all three
+
+```bash
+pico parse scratch/mesh/subscription-a-b.yaml --out /tmp/s1.json \
+  && echo "OK: subscription parses"
+pico parse scratch/mesh/message-a-to-b.yaml --out /tmp/s2.json \
+  && echo "OK: DIDComm envelope parses"
+pico parse scratch/mesh/family-channel.yaml --out /tmp/s3.json \
+  && echo "OK: family channel parses"
+```
+
+## Step 5 — Compare
+
+Answer, using your files:
+
+- Which file uses a did:webvh, and for what purpose?
+- Which file uses did:peer, and why?
+- Which file uses an ECI, and what kind of relationship does it model?
+
+## What you will produce
+
+A subscription config, a DIDComm envelope, and a family-channel config that
+together demonstrate the three identity/addressing mechanisms and the two
+relationship classes.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

@@ -1,0 +1,109 @@
+---
+title: "Lab · Portable Pico Definition"
+---
+
+In this lab you will author a complete portable Pico definition, a migration
+checklist, and a validation script that checks the definition for
+completeness.
+
+## Setup
+
+```bash
+mkdir -p scratch/portable
+```
+
+## Step 1 — Portable Pico definition
+
+Create `scratch/portable/pico-alice.yaml`:
+
+```yaml
+# scratch/portable/pico-alice.yaml
+oepid: oep.pico.alice.v1
+identity:
+  type: did
+  public:
+    method: webvh
+    url: https://engine-a.example.com/picos/alice/did.json
+relationships:
+  identity:
+    method: peer
+  existing:
+    - did:peer:rel-alice-bob
+messaging:
+  protocol: didcomm
+authorization:
+  mechanism: channel-policy
+future:
+  verifiable-credentials: false
+  portable-key-management: false
+  identity-aware-authorization: false
+```
+
+## Step 2 — Migration checklist
+
+Create `scratch/portable/migration-checklist.yaml`:
+
+```yaml
+# scratch/portable/migration-checklist.yaml
+migration:
+  source: engine-a.example.com
+  target: engine-b.example.com
+  checks:
+    - did-webvh-resolvable-after-move
+    - keys-exportable-from-secure-storage
+    - peer-relationships-reestablished
+    - credentials-verifiable-after-move
+    - authorization-policy-carried-over
+```
+
+## Step 3 — Validation script
+
+Create `scratch/portable/verify.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+DIR="${1:-.}"
+FILES=(pico-alice.yaml migration-checklist.yaml)
+
+for f in "${FILES[@]}"; do
+  if [[ ! -f "$DIR/$f" ]]; then
+    echo "missing: $f" >&2
+    exit 1
+  fi
+done
+
+for f in "${FILES[@]}"; do
+  pico parse "$DIR/$f" --out "/tmp/$(basename "$f").json"
+  echo "OK: $f parses"
+done
+
+echo "All portable Pico files present and well-formed."
+```
+
+Make it executable and run it:
+
+```bash
+chmod +x scratch/portable/verify.sh
+scratch/portable/verify.sh scratch/portable
+```
+
+## Step 4 — Reflect
+
+Answer, using your files:
+
+- Which section of your definition would change if you moved the Pico to a
+  different engine?
+- Which `future` flags remain false, and what would flip them to true?
+- Why does keeping `oepid` separate from `did:webvh` support portability?
+
+## What you will produce
+
+A portable Pico definition, a migration checklist, and an executable
+validation script that mechanically confirms all files are present and
+well-formed.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

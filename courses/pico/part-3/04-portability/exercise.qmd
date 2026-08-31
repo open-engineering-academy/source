@@ -1,0 +1,67 @@
+---
+title: "Exercise · Portability"
+---
+
+A short, guided task. Complete it before moving on to the lab.
+
+## Task
+
+For the Pico you have been modeling across Part 3, write the beginning of a
+**portable Pico definition** that keeps the Open Engineering identity
+separate from the runtime identity:
+
+```yaml
+# portable-pico.yaml
+oepid: oep.pico.alice.v1
+identity:
+  type: did
+  public:
+    method: webvh
+    url: https://engine-a.example.com/picos/alice/did.json
+relationships:
+  identity:
+    method: peer
+messaging:
+  protocol: didcomm
+authorization:
+  mechanism: channel-policy
+```
+
+Answer the questions below.
+
+::: {.callout-note}
+This example follows the shape from the [lesson](index.qmd). The important
+point is that identity should become a first-class property of a Pico rather
+than an implementation-specific extension.
+:::
+
+## Success criteria
+
+- [ ] Your definition keeps the Open Engineering identifier (`oepid`)
+      separate from the runtime `did:webvh`.
+- [ ] You separate identity, relationships, messaging, and authorization
+      into distinct sections.
+- [ ] You can name at least **two** of the four remaining-work areas that
+      stand between this definition and a fully portable Pico.
+
+## Automatable check
+
+Validate your definition parses:
+
+```bash
+pico parse portable-pico.yaml --out /tmp/pp.json \
+  && echo "OK: portable Pico definition parses"
+```
+
+The command exits `0` and prints the `OK:` line when well-formed.
+
+## Reflect
+
+- Why must the Open Engineering identifier and the runtime DID remain
+  distinct?
+- What would "losing a cryptographic key should not mean losing the Pico"
+  require of an implementation?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

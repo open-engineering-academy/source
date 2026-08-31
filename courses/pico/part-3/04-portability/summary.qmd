@@ -1,0 +1,26 @@
+---
+title: "Summary · Portability"
+---
+
+## Key takeaways
+
+- Pico Engine 1.6 provides the **prerequisite** for portability, not its
+  completion. The engine's base URL still remains part of the did:webvh.
+- The foundation that exists: cryptographic identity, pairwise relationships,
+  and encrypted communication.
+- The remaining work: fully portable did:webvh, durable key management,
+  verifiable credentials, and identity-aware authorization.
+- **Losing a cryptographic key should not mean losing the Pico.**
+- An Open Engineering identifier (semantic/catalog identity) must stay
+  distinct from the runtime DID (cryptographic identity) and the did:peer
+  (relationship identity).
+
+## What comes next
+
+- Return to the [Part 3 overview](../index.qmd) to review all lessons, or
+  revisit any lesson in this course:
+  [Course home](../../index.qmd).
+
+## Next
+
+Take the [Quiz](quiz.qmd) to finish the lesson.

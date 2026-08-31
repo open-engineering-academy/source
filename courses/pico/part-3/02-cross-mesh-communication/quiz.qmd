@@ -1,0 +1,39 @@
+---
+title: "Quiz · Cross-Mesh Communication"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What does a Pico use to initiate a subscription with an unknown Pico?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The recipient's **did:webvh**. The initiator resolves the identity, performs
+an introduction handshake, and creates peer DIDs.
+:::
+
+## 2. When a relationship is established, what identifier do events and queries use?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The pairwise **did:peer** relationship, not the public did:webvh.
+:::
+
+## 3. What protocol provides encrypted communication across meshes?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**DIDComm**, using the peer relationship.
+:::
+
+## 4. When does a Pico relationship use an ECI rather than a DID?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+For **family relationships** — parent and child Picos communicating over
+their family channels. A DID-based introduction would be unnecessary
+overhead for relationships already established structurally within a Pico
+family.
+:::
+
+## Next
+
+Return to [Part 3](../index.qmd) or continue to
+[Trust and Authorization](../03-trust-and-authorization/index.qmd).

@@ -1,0 +1,43 @@
+---
+title: "Quiz · Trust and Authorization"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What is the Open Engineering principle separating identity from authorization?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+"Identity establishes who; policy establishes what." The DID infrastructure
+does not replace channel authorization; the two concerns stay separate.
+:::
+
+## 2. What does a Pico need to establish trust across meshes without a central federation?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Nothing more than the ability to resolve identities, agree to establish a
+relationship, and create pairwise identities. No shared identity provider,
+central broker, federation agreement, or shared Pico Engine is required.
+:::
+
+## 3. Why should a parser not treat a DID as another form of ECI?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+They serve different semantic purposes: an ECI identifies a communication
+channel; a DID identifies a cryptographic actor or relationship. That
+distinction must survive translation between Open Engineering definitions
+and Pico Engine/Manifold representations.
+:::
+
+## 4. What can identity-aware authorization consider that channel-only policy cannot?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The authenticated identity behind the channel — including credentials,
+relationship, requested action, resource, and context — rather than only the
+channel itself.
+:::
+
+## Next
+
+Return to [Part 3](../index.qmd) or continue to
+[Portability](../04-portability/index.qmd).
