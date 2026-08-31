@@ -1,0 +1,91 @@
+---
+title: "Glossary"
+---
+
+## Actuator
+
+A physical device that produces motion. In this course, the Dynamixel AX-12A
+rotates the lamp head. Referenced as an abstraction, not a register bank.
+
+## Capability
+
+A semantic operation a consumer can request (for example `nod`), independent of
+how it is realized. Consumers request capabilities; implementations choose the
+realization.
+
+## Digital twin
+
+A Pico-based representation of the logical actuator and its state — distinct
+from merely mirroring a hardware register. Holds **desired state** and
+**observed state**.
+
+## Desired state
+
+What the system has been asked to be (for example `desiredPosition`).
+
+## Observed state
+
+What the system reports it currently is (for example `actualPosition`).
+
+## Edge adapter
+
+Hardware/software that sits at the boundary between Open Engineering semantics
+and a device protocol. The ESP32 is the edge adapter in this course: it speaks
+actuator-level commands to the AX-12A and never character meaning.
+
+## Home Assistant
+
+A home automation platform used here strictly as a **human control surface**.
+It requests capabilities (`nod`, `center`, `stop`); it does not own the
+actuator behavior or implement a servo trajectory.
+
+## Control surface
+
+The Open Engineering term for an interface that lets a human (or another actor)
+express intent, without becoming the runtime or the ontology owner.
+
+## Pico
+
+The Open Engineering abstraction for a declarative, composable digital entity
+described by Rules and produced by a Parser and a Composer. In this course a
+Pico represents the logical head-pitch actuator.
+
+## Manifold
+
+The Pico runtime execution environment: a Kubernetes-hosted `RuntimeEnvironment`
+that hosts a Pico Element and executes its rules when events arrive.
+
+## Crossplane
+
+Declarative composition for the control plane. In this course it composes the
+resources needed to realize the requested actuator capability — *what should
+exist*.
+
+## Open Engineering event
+
+A semantic message that represents something happening in the system, carried
+below the semantic layer by a transport (for example MQTT). A nod request
+becomes an event such as `pixstars.head.nod.requested`.
+
+## Correlation identifier
+
+A unique identifier attached to every request so one `nod` can be followed
+through Home Assistant → event → Pico → rule → command → edge → servo →
+completion → telemetry.
+
+## Nod
+
+The first, mandatory gesture. A deterministic motion sequence: center → slightly
+down → slightly up → return to center. Exact safe servo positions are
+configurable and calibrated, never hard-coded into generic definitions.
+
+## Simulation-before-physics
+
+The principle that every capability should be testable without hardware. The
+`SimulatedActuator` and `DynamixelAX12AActuator` implement the same contract.
+
+## Safe limits
+
+Configurable minimum/maximum positions, movement speed, timeout, emergency
+stop, and safe startup/shutdown states within which all physical movement must
+operate.

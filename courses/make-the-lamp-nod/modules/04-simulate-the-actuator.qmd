@@ -1,0 +1,225 @@
+---
+title: "Module 04 — Simulate the Actuator"
+description: "Simulation first: run nod without physical hardware, and prove it in CI with tests."
+---
+
+## Goal
+
+Implement the actuator in simulation so `nod` runs **without any physical
+hardware**. This is the *simulation-before-physics* principle: every capability
+should be testable without hardware — in CI, by automated tests, and by any
+learner who does not own an ESP32, a servo, or a lamp.
+
+This module **shall be executable in CI**. When you finish the exercise, the
+tests pass headlessly, with no physical device attached.
+
+## Two adapters, one contract
+
+We support at least two actuator adapters:
+
+- `SimulatedActuator` — runs now, no hardware.
+- `DynamixelAX12AActuator` — the future physical adapter, added later.
+
+Both implement the **same logical actuator contract**. Because the contract is
+identical, you can run the whole architecture against the simulation first:
+
+```
+Home Assistant
+      ↓
+     nod
+      ↓
+Pico
+      ↓
+Simulated Actuator
+```
+
+and later swap in the physical device:
+
+```
+Home Assistant
+      ↓
+     nod
+      ↓
+Pico
+      ↓
+Physical AX-12A
+```
+
+without rewriting anything above the adapter. That property buys a lot:
+
+- **CI** — the non-physical path is testable in every build.
+- **automated testing** — behavior is verified deterministically.
+- **learners without hardware** — the course is completable with no lamp.
+- **development safety** — you can probe failure modes without moving metal.
+- **debugging** — state transitions are inspectable step by step.
+- **repeatability** — the simulation behaves identically every run.
+
+## The contract
+
+The contract ([simulation/simulated_actuator.py](../simulation/simulated_actuator.py))
+defines the logical actuator operations and its state:
+
+```python
+class ActuatorState:
+    desiredPosition: int = 0
+    actualPosition: int = 0
+    moving: bool = False
+    torqueEnabled: bool = True
+    connected: bool = True
+    temperature: Optional[float] = None
+    voltage: Optional[float] = None
+    lastCommand: Optional[str] = None
+    lastCommandStatus: Optional[str] = None
+    lastUpdated: Optional[str] = None
+
+
+class SafeLimits:
+    def __init__(self, min_position=-30, max_position=30): ...
+    def within(self, position: int) -> bool: ...
+
+
+class ActuatorContract:
+    def nod(self) -> str: ...
+    def center(self) -> str: ...
+    def stop(self) -> str: ...
+    def set_position(self, degrees: int) -> str: ...
+    def get_state(self) -> ActuatorState: ...
+```
+
+Consumers call the capabilities (`nod`, `center`, `stop`, `set_position`) —
+never raw register writes. This is the same capability interface from Module 2,
+now as an executable contract.
+
+## The simulated implementation
+
+`SimulatedActuator` realizes that contract. `nod` runs the canonical gesture
+sequence `center → down → up → center`, updates the state at each step, and
+reports completion:
+
+```python
+class SimulatedActuator(ActuatorContract):
+    def __init__(self, limits: SafeLimits | None = None):
+        self.limits = limits or SafeLimits()
+        self.state = ActuatorState()
+        self._connected = True
+
+    def nod(self) -> str:
+        if not self._connected:
+            self.state.lastCommandStatus = "failed"
+            return "nod failed: actuator unavailable"
+        if not self.limits.within(self.state.actualPosition):
+            self.state.lastCommandStatus = "failed"
+            return "command rejected: outside configured safe limits"
+        self.state.lastCommand = "nod"
+        self.state.lastCommandStatus = "executing"
+        self.state.moving = True
+        for pos in (0, 15, -8, 0):
+            self.state.desiredPosition = pos
+            self.state.actualPosition = pos
+        self.state.moving = False
+        self.state.lastCommandStatus = "completed"
+        self.state.lastUpdated = self._now()
+        return "nod completed"
+```
+
+Notice how the implementation *realizes* what the consumer *requested*. The
+consumer says `nod()`; the simulation decides the sequence, moves through it,
+tracks the state, and reports the outcome. `SafeLimits` enforce the configured
+minimum/maximum position so even the simulation rejects unsafe movement.
+
+## The tests
+
+Automated tests verify the non-physical behavior
+([tests/test_simulated_actuator.py](../tests/test_simulated_actuator.py)):
+
+```python
+def test_nod_produces_expected_state_transitions(actuator):
+    actuator.nod()
+    st = actuator.get_state()
+    assert st.lastCommandStatus == "completed"
+    assert st.moving is False
+    assert st.lastCommand == "nod"
+
+
+def test_invalid_movement_is_rejected(actuator):
+    actuator.set_position(9999)
+    assert actuator.get_state().lastCommandStatus == "failed"
+
+
+def test_safe_limits_are_enforced():
+    narrow = SimulatedActuator(SafeLimits(min_position=-5, max_position=5))
+    assert "rejected" in narrow.set_position(15)
+```
+
+The test set also covers: accepting `center`, returning to center after a nod,
+the unavailable actuator producing an error, and desired vs observed state being
+tracked. The default CI pipeline runs the **unit, integration, and simulation**
+tests. Any **hardware** tests live separately and are opt-in — they never run in
+the default CI.
+
+## The desired-state principle
+
+A central lesson of this course:
+
+> Requesting motion is not proof that motion occurred.
+
+`COMMAND SENT` is **not** equivalent to `GESTURE COMPLETED`. The system always
+distinguishes the lifecycle of a command:
+
+```
+requested → accepted → executing → completed → failed
+```
+
+The simulation makes this visible in `lastCommandStatus`. Calling `nod()` moves
+it through `executing` to `completed`; an unavailable actuator moves it to
+`failed`. A consumer that only checked "did I send the command?" would miss the
+difference — and that difference is exactly what separates "the lamp nodded"
+from "I told it to nod."
+
+::: {.callout-tip}
+This is why Module 00 emphasized the event trace reporting `nod.completed`
+rather than merely `command sent`. The *completion* is the evidence; the send is
+just the attempt. See the [Architecture — Desired-state
+principle](../architecture.qmd#desired-state-principle).
+:::
+
+## Exercise
+
+Run the tests and verify the state transitions:
+
+```bash
+cd courses/make-the-lamp-nod/simulation
+python -m pytest ../tests/test_simulated_actuator.py -q
+```
+
+All tests should pass with **no hardware connected**.
+
+Then, in a Python shell (or a small script), walk through the states manually:
+
+```python
+from simulated_actuator import SimulatedActuator, SafeLimits
+
+a = SimulatedActuator()
+print(a.nod())
+print(a.get_state().lastCommandStatus)   # completed
+print(a.get_state().actualPosition)      # 0 (returned to center)
+print(a.set_position(9999))              # rejected
+print(a.get_state().lastCommandStatus)   # failed
+```
+
+Answer, using the output:
+
+- What `lastCommandStatus` values does `nod()` pass through, and what does each
+  mean?
+- After a successful nod, where does `actualPosition` end up, and why?
+- What happens when you request a position outside the safe limits, and which
+  layer enforces that?
+- Why does the test for an unavailable actuator read `actuator unavailable` —
+  and what does that have to do with the desired-state principle?
+
+## Next
+
+The capability now works headlessly. In the next module you compose it
+declaratively with Crossplane so that requesting an actuator builds its Pico,
+runtime, and connectivity for you: [Module 05 — Compose the
+Actuator](05-compose-the-actuator.qmd).

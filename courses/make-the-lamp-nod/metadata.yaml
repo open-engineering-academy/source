@@ -1,0 +1,51 @@
+id: oe.course.make-the-lamp-nod
+slug: make-the-lamp-nod
+title: "Make the Lamp Nod — From Digital Twin to Physical Actuation with Open Engineering"
+level: advanced
+duration: 16h
+entry: index.qmd
+glossary: glossary.qmd
+sections:
+  - modules
+  - architecture
+prerequisites:
+  - oe.course.kubernetes
+  - oe.course.crossplane
+  - oe.course.pico
+  - oe.course.manifold
+  - oe.lab.hello-pico-home-assistant
+teaches:
+  - Cyber-physical Open Engineering
+  - Digital twins through Pico
+  - Capability-oriented engineering
+  - Semantic interfaces over hardware interfaces
+  - Desired vs observed state
+  - Crossplane composition of an actuator
+  - Pico runtime on Manifold
+  - Event-driven actuation
+  - Edge adapters and device protocols
+  - Open Engineering events and messaging
+  - Home Assistant as control surface
+  - Observability and correlation
+  - Safe physical actuation
+  - Simulation before physics
+produces:
+  - pixstars-head-pitch (digital twin)
+  - pixstars-head-actuator (actuator capability)
+  - simulated-actuator reference
+  - edge-adapter (ESP32) reference
+  - nod gesture
+references_labs:
+  - oe.lab.hello-pico-on-kubernetes
+  - oe.lab.hello-pico-on-manifold
+  - oe.lab.hello-two-picos
+  - oe.lab.hello-pico-home-assistant
+references_exercises: []
+constructive_role: definition
+constraints:
+  - "A valid nod is requested as a semantic capability (nod), not as raw actuator register writes."
+  - "The Pico digital twin maintains both desired and observed state."
+  - "The simulated actuator and the physical AX-12A implement the same logical actuator contract."
+  - "The ESP32 edge adapter understands actuator-level commands but not character semantics."
+  - "Physical movement operates only inside explicitly configured safe limits after calibration."
+  - "The course is completable end-to-end in simulation without hardware."

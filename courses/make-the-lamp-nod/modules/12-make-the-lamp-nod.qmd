@@ -1,0 +1,154 @@
+---
+title: "Module 12 — Make the Lamp Nod"
+description: "The capstone — demonstrate the complete cyber-physical execution and the simulated implementation."
+---
+
+## Goal
+
+No new major technology. This module is the capstone exercise where everything
+composed in modules 0 through 11 produces a physical result.
+
+## The exercise
+
+### Step 1 — Open Home Assistant
+
+Open the dashboard. The display reads:
+
+```
+PixStars Lamp
+Status: READY
+[ NOD ]
+```
+
+### Step 2 — Inspect actuator readiness
+
+Verify the Pico twin reports `connected: true`, `torqueEnabled: true`,
+`moving: false`, `lastCommandStatus: completed` (or null if this is the
+first execution). The safe limits are loaded. The servo is at center.
+
+### Step 3 — Press NOD
+
+Press the NOD button.
+
+### Step 4 — Observe the physical movement
+
+The lamp lowers its head. It raises its head. It returns to center.
+
+### Step 5 — Inspect the event trace
+
+The observability output reports the complete chain:
+
+```
+nod.requested  (correlation: 01H...XYZ)
+rule.executed
+actuator.commanded
+edge.command.sent
+servo.moving
+servo.position.changed
+nod.completed
+```
+
+### Step 6 — Inspect updated Pico state
+
+The Pico twin's state has updated. `lastCommandStatus` reads `completed`.
+`actualPosition` reads 0. `moving` reads false. The telemetry ascent path
+worked.
+
+## The pedagogical payoff
+
+After working through definitions, Kubernetes, MiniKube, Crossplane,
+composition, Pico, Manifold, rules, events, digital twins, edge adapters,
+networking, device protocols, telemetry, Home Assistant, and observability
+— you reach this moment.
+
+The dashboard says READY. You press NOD. The lamp lowers its head, raises
+it, returns to center. The telemetry updates. The event trace reports
+`nod.completed`.
+
+That moment is the explanation of why all the preceding abstractions exist.
+
+Each abstraction exists because the system needs it: definitions to declare
+what should exist, Crossplane to compose it, Kubernetes to run it, Pico to
+twin it, Manifold to execute it, the edge adapter to translate it, the
+74HCT245 to electrically bridge it, the AX-12A to physically move it. The
+telemetry brings it back. The observability proves it happened.
+
+## Definition of Done — Learner
+
+You have completed this course when you can demonstrate all of the following:
+
+- [ ] Home Assistant → NOD → Open Engineering → Pico → Manifold → ESP32 → AX-12A → physical nod
+- [ ] The complete execution is observable (correlation id, evidence at each step)
+- [ ] The simulated implementation works end-to-end (no hardware required)
+- [ ] You can explain the responsibility of each layer
+- [ ] You can trace a failure through the same observability path
+
+The physical and the simulated implementations both demonstrate the same
+architecture. Neither is a shortcut for the other.
+
+## Returning to Module 0
+
+In [Module 0 — The Challenge](./00-the-challenge.qmd), you saw the finished
+result: press a button, the lamp nods. You did not know how it worked.
+
+Now you do.
+
+You know that the button press is a semantic request routed through a
+ControlSurface. You know that Open Engineering resolves the capability and
+creates an event. You know that Pico maintains a digital twin with desired
+and observed state. You know that Manifold executes a rule. You know that
+the edge adapter translates semantics to device protocol. You know that the
+74HCT245 bridges voltage levels. You know that the AX-12A physically moves.
+You know that telemetry returns through the same chain. You know that
+correlation ties it all together.
+
+The lamp nods. The architecture works.
+
+## The character boundary
+
+This course stops at explicit human instruction of a physical gesture.
+You pressed NOD. The lamp nodded. That is the complete scope.
+
+The architecture deliberately does not cross the character boundary. There
+is no autonomous reasoning, no emotional intent, no gesture selection based
+on observation. Those belong to a future course:
+
+```
+Character
+   ↓
+Observation
+   ↓
+Reasoning
+   ↓
+Emotional/semantic intent
+   ↓
+Gesture selection
+   ↓
+nod
+   ↓
+Physical nod
+```
+
+Today: the human presses NOD. Tomorrow: the character decides to nod. The
+actuator foundation built in this course survives that transition without
+rewriting a single layer below gesture intent.
+
+## Future expansion
+
+The architecture intentionally enables:
+
+- **Multiple actuators** — head pitch, head yaw, base rotation, lamp arm, light
+- **Gesture composition** — look-left, look-right, shake-head, wake-up, sleep
+- **Character embodiment** — a Character Pico that plans gestures through actuator Picos
+- **Voice** — voice instruction decoded to gesture intent
+- **AI reasoning** — observation, LLM reasoning, character decision, gesture intent
+- **Choreography** — multiple capabilities coordinated with lighting, audio, speech, projection, movement, stage cues
+
+None of these require replacing the architecture. They compose on top of it.
+
+## Next
+
+Return to [Module 0 — The Challenge](./00-the-challenge.qmd) to revisit the
+opening question with everything you now know. Or explore the
+[architecture page](../architecture.qmd) to review the complete system map
+and [glossary](../glossary.qmd) for the terms used throughout this course.

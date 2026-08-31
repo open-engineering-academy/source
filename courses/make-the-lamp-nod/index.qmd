@@ -1,0 +1,95 @@
+---
+title: "Make the Lamp Nod"
+subtitle: "From Digital Twin to Physical Actuation with Open Engineering"
+description: "A capstone course: declare a semantic capability and follow it all the way until a physical lamp nods."
+order: 1
+---
+
+## The challenge
+
+Press **NOD** in Home Assistant, and a physical lamp nods its head.
+
+That simple gesture teaches something much bigger: how an Open Engineering
+declaration can travel through abstractions, a Pico digital twin, a runtime,
+an event, an edge adapter, and an electrical interface — until the physical
+world actually changes.
+
+> *Declare a meaningful capability in Open Engineering and follow it all the way
+> until the physical world changes.*
+
+## Why this course exists
+
+Everything you have learned separately — Kubernetes, MiniKube, Crossplane,
+Pico, Manifold, events, Home Assistant — is a single, cooperating system here.
+This is a **capstone**: it composes what you already know instead of teaching
+each technology again.
+
+It is also the academy's first **cyber-physical** course. Open Engineering is
+not only a way to describe and operate *software*; it is a method for composing
+*cyber-physical* systems.
+
+## The conceptual journey
+
+```
+Human Intent
+     ↓
+Home Assistant
+     ↓
+Open Engineering Capability
+     ↓
+Pico Digital Twin
+     ↓
+Manifold Runtime
+     ↓
+Open Engineering Event
+     ↓
+Edge Adapter
+     ↓
+ESP32
+     ↓
+74HCT245
+     ↓
+AX-12A
+     ↓
+Mechanical Lamp Head
+     ↓
+Physical Motion
+```
+
+The final proof that the architecture works is:
+
+**The lamp nods.**
+
+## Learning path
+
+The course is a single forward build wrapped by a challenge and a capstone:
+
+- Module 0 — **The Challenge**: see the finished result before building it.
+- Modules 1–2 — **The physical system and the capability**: meet the hardware,
+  then the *semantic* capability it exposes.
+- Modules 3–4 — **Digital twin and simulation**: model the actuator as a Pico,
+  run it without hardware.
+- Modules 5–7 — **Compose, run, bring alive**: Crossplane, MiniKube, Manifold.
+- Modules 8–9 — **The edge**: the ESP32 adapter and the physical AX-12A.
+- Modules 10–12 — **Expose, trace, and nod**: Home Assistant, observability,
+  and the capstone.
+
+## Reuse-first
+
+This course deliberately does **not** repeat your earlier courses. It links to
+them:
+
+- [Kubernetes](../kubernetes/) — the local cluster and MiniKube foundation.
+- [Crossplane](../crossplane/) — XRDs, XRs, Compositions, providers.
+- [Pico](../pico/) — Rules, Parser, Composer, Pico digital entities.
+- [Manifold](../manifold/) — the Pico runtime execution environment.
+- [Hello Pico on Home Assistant](../../labs/hello-pico-home-assistant/) — Home
+  Assistant as a control surface.
+
+The **prerequisites** page lists exactly what you need, and the
+**architecture** page is the map you will follow.
+
+## Get started
+
+Begin with [Module 0 — The Challenge](modules/00-the-challenge.qmd), where you
+first *see* the lamp nod before learning how it is built.

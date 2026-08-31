@@ -1,0 +1,213 @@
+---
+title: "Module 05 — Compose the Actuator"
+description: "Declare an actuator capability and let Crossplane compose everything needed to realize it."
+---
+
+## Goal
+
+Reuse the existing Crossplane course for XRDs, XRs, Compositions, Composition
+Functions, reconciliation, and providers. This module does not repeat
+foundational Crossplane material. It answers the more advanced question:
+**What happens when the thing being composed eventually controls a physical
+actuator?**
+
+## Crossplane composes; Manifold executes
+
+This course makes one separation explicit and keeps it:
+
+- **Crossplane** answers: *What should exist?* (declarative composition).
+- **Manifold / Pico runtime** answers: *What should happen?* (runtime behavior).
+
+These are not interchangeable. The thing being composed eventually controls a
+physical actuator -- but composition and execution remain separate concerns.
+See the [Crossplane course](../../crossplane/) for the full treatment of
+XRDs, XRs, Compositions, Composition Functions, reconciliation, and providers.
+
+## The capability claim
+
+A developer or learner does NOT manually assemble every runtime resource.
+Instead, they declare what they want:
+
+```yaml
+apiVersion: robotics.open-engineering.io/v1alpha1
+kind: Actuator
+metadata:
+  name: pixstars-head
+spec:
+  capabilities:
+    - nod
+    - center
+    - stop
+  gesture:
+    name: nod
+```
+
+This is the claim (`../definitions/actuator-claim.yaml`): "I want a
+head-pitch actuator that can nod, center, and stop." The learner does NOT
+define the Pico, the runtime registration, the event connectivity, the
+edge-adapter configuration, the observability, or the Home Assistant exposure.
+Crossplane composes all of those.
+
+## The XRD
+
+The XRD (`../definitions/actuator-xrd.yaml`) defines the shape of the new
+higher-level API:
+
+```yaml
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xactuators.robotics.open-engineering.io
+spec:
+  group: robotics.open-engineering.io
+  names:
+    kind: XActuator
+    plural: xactuators
+  claimNames:
+    kind: Actuator
+    plural: actuators
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                capabilities:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - nod
+                      - center
+                      - stop
+                      - set-position
+                gesture:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                        - nod
+                    calibration:
+                      type: object
+                      properties:
+                        center:
+                          type: integer
+                        down:
+                          type: integer
+                        up:
+                          type: integer
+                        repetitions:
+                          type: integer
+                        speed:
+                          type: string
+              required:
+                - capabilities
+```
+
+The claim kind is `Actuator`; the composite resource kind is `XActuator`. This
+follows the same pattern as the
+[Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/) where
+`XHelloWorldPico` is the XR and `HelloWorldPico` is the claim.
+
+## What Crossplane composes
+
+The Composition (`../compositions/actuator.yaml`) declares how an instance of
+the Actuator claim is realized. Conceptually:
+
+```
+Actuator XR
+    |
+    +-- Pico representation          (pixstars-head-pitch)
+    +-- runtime registration         (Manifold RuntimeEnvironment registration)
+    +-- event connectivity           (Wrangler Channel + subscription)
+    +-- edge-adapter configuration   (ESP32 endpoint + command set)
+    +-- observability                (correlation, telemetry)
+    +-- Home Assistant exposure      (control surface)
+```
+
+Each branch is a composed resource. The learner requests a semantic actuator
+capability; Crossplane composes the dependencies needed to realize it. This is
+[declarative composition over manual assembly](../architecture.qmd).
+
+The Composition itself:
+
+```yaml
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xactuators.robotics.open-engineering.io
+spec:
+  compositeTypeRef:
+    apiVersion: robotics.open-engineering.io/v1alpha1
+    kind: XActuator
+  mode: Pipeline
+  pipeline:
+    - step: patch-selection
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        resources:
+          - name: pico-representation
+            base:
+              apiVersion: open-engineering.io/v1alpha1
+              kind: Pico
+          - name: runtime-registration
+            base:
+              apiVersion: manifold.open-engineering.io/v1alpha1
+              kind: RuntimeRegistration
+              spec:
+                runtime: manifold
+          - name: event-connectivity
+            base:
+              apiVersion: wrangler.open-engineering.io/v1alpha1
+              kind: Channel
+              spec:
+                name: pixstars-head
+                eventTypes:
+                  - pixstars.head.nod.requested
+          - name: edge-adapter-config
+            base:
+              apiVersion: edge.open-engineering.io/v1alpha1
+              kind: EdgeAdapterConfig
+          - name: observability
+            base:
+              apiVersion: observability.open-engineering.io/v1alpha1
+              kind: CorrelationConfig
+          - name: home-assistant-exposure
+            base:
+              apiVersion: home-assistant.open-engineering.io/v1alpha1
+              kind: ControlSurfaceExposure
+```
+
+This mirrors the same Pipeline-mode Composition pattern taught in the
+[Crossplane course](../../crossplane/) and used in the
+[Hello Pico on Kubernetes lab](../../labs/hello-pico-on-kubernetes/).
+
+::: {.callout-tip}
+Declarative composition means the learner writes one YAML file (the claim)
+and Crossplane produces every dependent resource. The alternative -- manually
+creating the Pico, the runtime registration, the Channel, the edge-adapter
+Config, the observability config, and the Home Assistant exposure -- is exactly
+what Crossplane eliminates.
+:::
+
+## Exercise
+
+Extend the composition with an additional composed resource. For example, add a
+`NotificationConfig` resource that emits a status event when the actuator
+composition completes. Follow the same `base` + `patches` pattern already
+present in `../compositions/actuator.yaml` and consult the
+[Crossplane course](../../crossplane/) for the full Composition pipeline
+syntax.
+
+## Next
+
+[Module 06 -- Run It Locally](06-run-it-locally.qmd)

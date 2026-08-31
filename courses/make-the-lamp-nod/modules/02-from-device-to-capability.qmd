@@ -1,0 +1,199 @@
+---
+title: "Module 02 — From Device to Capability"
+description: "Transform the AX-12A the device into HeadPitchActuator the semantic capability, led by the capability nod."
+---
+
+## Goal
+
+Move from thinking about a *device* (an AX-12A servo) to thinking about a
+*capability* (a `HeadPitchActuator` that can `nod`). This is capability-oriented
+engineering, and it is one of the central lessons of the whole course.
+
+## The device is not the interface
+
+A hardware-centric view says "I have an AX-12A servo; let me control its
+registers." That is how you talk to a piece of metal — not how you express what
+you want from a system.
+
+We transform that view:
+
+```
+AX-12A servo            →      HeadPitchActuator
+(specific hardware)            (semantic capability)
+                                  └── nod
+```
+
+The capability is **semantic**. It must **not** expose raw Dynamixel register
+manipulation to the caller. The desired abstraction is:
+
+```python
+nod()
+```
+
+not:
+
+```python
+writeRegister(30, 614)
+sleep(300)
+writeRegister(30, 410)
+...
+```
+
+The second form leaks the *how* into every caller. Every consumer would have to
+know Dynamixel Protocol 1.0, register addresses, and timing — and would break
+the moment the hardware changed.
+
+## The principle
+
+> Consumers request capabilities. Implementations determine how those
+> capabilities are realized.
+
+This one sentence carries a lot:
+
+- The **consumer** says *what* it wants (`nod`), never *how*.
+- The **implementation** decides *how* the gesture is realized, down to
+  register values.
+- Because the consumer never depends on the *how*, the implementation can be
+  swapped freely — a simulated actuator today, a physical AX-12A tomorrow.
+
+## The capability set
+
+The head-pitch actuator exposes a small, deliberate set of capabilities:
+
+| Capability | Meaning |
+| --- | --- |
+| `nod` | mandatory — the headline gesture |
+| `center` | return to center position |
+| `stop` | halt current motion |
+| `set-position` | move to a specified position |
+
+`nod` is the principal capability and the one this course is named for. `center`
+and `stop` are supporting safety and control capabilities that a human operator
+needs around it.
+
+::: {.callout-tip}
+Notice what is **not** in the list: `write-register` and `raw-motion`. Those are
+explicitly denied at the rules layer (see [rules/nod.yaml](../rules/nod.yaml)).
+A consumer cannot accidentally reach past the capabilities into raw hardware.
+:::
+
+## Definitions: the claim and the XRD
+
+In Open Engineering you do not assemble the whole actuator by hand. You request
+the capability, and Crossplane composes everything needed to realize it. The
+**claim** expresses what you want:
+
+```yaml
+# definitions/actuator-claim.yaml
+apiVersion: robotics.open-engineering.io/v1alpha1
+kind: Actuator
+metadata:
+  name: pixstars-head
+spec:
+  capabilities:
+    - nod
+    - center
+    - stop
+  gesture:
+    name: nod
+```
+
+See [definitions/actuator-claim.yaml](../definitions/actuator-claim.yaml).
+
+The **XRD** (CompositeResourceDefinition) declares that `Actuator` capability
+type — its schema, its allowed capabilities, and its gesture shape:
+
+```yaml
+# definitions/actuator-xrd.yaml (excerpt)
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xactuators.robotics.open-engineering.io
+spec:
+  group: robotics.open-engineering.io
+  names:
+    kind: XActuator
+  claimNames:
+    kind: Actuator
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                capabilities:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - nod
+                      - center
+                      - stop
+                      - set-position
+```
+
+See [definitions/actuator-xrd.yaml](../definitions/actuator-xrd.yaml) for the
+full schema. The important idea: the learner requests a **semantic** actuator
+capability, never raw servo registers.
+
+## The gesture shape
+
+The `nod` gesture itself is a deterministic motion sequence. Its **logical**
+shape is fixed:
+
+```
+center → slightly down → slightly up → center
+```
+
+Its **physical calibration** values are separate and configurable — they must be
+calibrated against the real lamp (see [rules/nod-gesture.yaml](../rules/nod-gesture.yaml)).
+This separation of *logical gesture* from *physical calibration* is another
+instance of the same principle: the capability is stable while the realization
+is tuned.
+
+## Many interfaces, one capability
+
+Because `nod` is semantic, it can originate from many places — and none of them
+needs to know Dynamixel Protocol 1.0:
+
+- Home Assistant
+- a CLI
+- a web application
+- an automated test
+- another Pico
+- a workflow
+- an AI agent
+- a character runtime
+- a voice instruction
+- a story timeline
+
+Every one of those sources says the same thing — `nod()` — and the
+implementation decides how to realize it. That is why the capability model pays
+off: it keeps the *what* stable while the *who* and the *how* are free to vary.
+
+## Exercise
+
+Pick a hardware device you know — a small motor, a light, a camera gimbal, a
+door lock — and express it as a small capability set:
+
+1. Name its `HeadPitchActuator`-style logical capability (for example
+   `DoorLock`).
+2. List 2–4 capabilities it exposes, with `nod` as the model: semantic verbs a
+   consumer would request without knowing the hardware.
+3. State one capability you would deliberately **deny** (like `raw-motion`) and
+   why.
+4. Write the claim that requests one of those capabilities.
+
+The exact YAML shape is less important than the reasoning: which verbs are
+semantic, which are hardware leakage, and why.
+
+## Next
+
+A capability needs a home that tracks its state. In the next module we create
+that home as a digital twin: [Module 03 — Create the Digital
+Twin](03-create-the-digital-twin.qmd).

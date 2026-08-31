@@ -1,0 +1,108 @@
+---
+title: "Module 06 — Run It Locally"
+description: "Verify that a local MiniKube cluster can host the full Make the Lamp Nod runtime."
+---
+
+## Goal
+
+Reuse the [Kubernetes course](../../kubernetes/) for the canonical MiniKube
+home. This module does not re-teach MiniKube install, Pod creation, or
+Deployment management. The learner must already know Pods, Deployments,
+Services, ConfigMaps, Secrets, namespaces, controllers, and reconciliation.
+
+## Local architecture
+
+MiniKube hosts the complete runtime on one developer workstation:
+
+```
+Developer Workstation
++-----------------------------------------------+
+| MiniKube                                      |
+|                                               |
+| Crossplane                                    |
+| Open Engineering resources                    |
+| Manifold                                      |
+| Pico runtime                                  |
+| event/messaging infrastructure                |
+| Home Assistant integration                    |
+| observability                                 |
++-----------------------------------------------+
+                       |
+                       | LAN / Wi-Fi
+                       v
+                    ESP32
+                       |
+                       v
+                   74HCT245
+                       |
+                       v
+                    AX-12A
+                       |
+                       v
+                     Lamp
+```
+
+See [MiniKube](../../kubernetes/) for installation, profiles, and cluster
+management. Everything inside the dashed box runs in MiniKube; the ESP32
+connects over the local network.
+
+## Validation commands
+
+These commands verify that the prerequisites for this course are present. They
+do not install anything -- they confirm what the [Kubernetes course](../../kubernetes/)
+already set up.
+
+### Kubernetes cluster
+
+```bash
+kubectl cluster-info
+```
+
+Expected: the control plane URL is reported and the cluster is reachable.
+
+```bash
+kubectl get nodes
+```
+
+Expected: at least one node in `Ready` state.
+
+### Crossplane
+
+```bash
+kubectl get pods -n crossplane-system
+```
+
+Expected: the Crossplane pod is `Running`.
+
+```bash
+kubectl get provider
+```
+
+Expected: the Kubernetes Provider is `Installed` and `Healthy`.
+
+### Pico CLI
+
+```bash
+which pico
+pico --version
+```
+
+Expected: the `pico` binary resolves on `PATH` and reports a version.
+
+::: {.callout-tip}
+If any of these checks fail, return to the prerequisite course for the
+relevant technology and resolve it before continuing. The
+[Kubernetes course](../../kubernetes/) is the canonical source for cluster
+setup; the [Crossplane course](../../crossplane/) covers Crossplane
+installation.
+:::
+
+## Exercise
+
+Run every validation command above and confirm the expected output. If any
+command fails, identify which prerequisite course covers the fix and complete
+that step before proceeding to Module 07.
+
+## Next
+
+[Module 07 -- Bring the Pico Alive](07-bring-the-pico-alive.qmd)

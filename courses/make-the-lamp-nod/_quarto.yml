@@ -1,0 +1,107 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - shared/images/open-engineering-mark.svg
+  render:
+    - index.qmd
+    - glossary.qmd
+    - prerequisites.qmd
+    - architecture.qmd
+    - modules/00-the-challenge.qmd
+    - modules/01-meet-the-physical-system.qmd
+    - modules/02-from-device-to-capability.qmd
+    - modules/03-create-the-digital-twin.qmd
+    - modules/04-simulate-the-actuator.qmd
+    - modules/05-compose-the-actuator.qmd
+    - modules/06-run-it-locally.qmd
+    - modules/07-bring-the-pico-alive.qmd
+    - modules/08-build-the-edge-adapter.qmd
+    - modules/09-connect-the-physical-ax12.qmd
+    - modules/10-expose-the-capability.qmd
+    - modules/11-trace-the-nod.qmd
+    - modules/12-make-the-lamp-nod.qmd
+
+website:
+  title: "Make the Lamp Nod"
+  description: "From digital twin to physical actuation with Open Engineering."
+  site-url: "https://academy.open-engineering.io/courses/make-the-lamp-nod/"
+  favicon: shared/images/open-engineering-mark.svg
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: Modules
+        menu:
+          - href: modules/00-the-challenge.qmd
+            text: "00 The Challenge"
+          - href: modules/01-meet-the-physical-system.qmd
+            text: "01 Meet the Physical System"
+          - href: modules/02-from-device-to-capability.qmd
+            text: "02 From Device to Capability"
+          - href: modules/03-create-the-digital-twin.qmd
+            text: "03 Create the Digital Twin"
+          - href: modules/04-simulate-the-actuator.qmd
+            text: "04 Simulate the Actuator"
+          - href: modules/05-compose-the-actuator.qmd
+            text: "05 Compose the Actuator"
+          - href: modules/06-run-it-locally.qmd
+            text: "06 Run It Locally"
+          - href: modules/07-bring-the-pico-alive.qmd
+            text: "07 Bring the Pico Alive"
+          - href: modules/08-build-the-edge-adapter.qmd
+            text: "08 Build the Edge Adapter"
+          - href: modules/09-connect-the-physical-ax12.qmd
+            text: "09 Connect the Physical AX-12A"
+          - href: modules/10-expose-the-capability.qmd
+            text: "10 Home Assistant"
+          - href: modules/11-trace-the-nod.qmd
+            text: "11 Trace the Nod"
+          - href: modules/12-make-the-lamp-nod.qmd
+            text: "12 Make the Lamp Nod"
+      - href: prerequisites.qmd
+        text: Prerequisites
+      - href: architecture.qmd
+        text: Architecture
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - href: prerequisites.qmd
+        text: Prerequisites
+      - href: architecture.qmd
+        text: Architecture
+      - section: "Modules"
+        contents:
+          - modules/00-the-challenge.qmd
+          - modules/01-meet-the-physical-system.qmd
+          - modules/02-from-device-to-capability.qmd
+          - modules/03-create-the-digital-twin.qmd
+          - modules/04-simulate-the-actuator.qmd
+          - modules/05-compose-the-actuator.qmd
+          - modules/06-run-it-locally.qmd
+          - modules/07-bring-the-pico-alive.qmd
+          - modules/08-build-the-edge-adapter.qmd
+          - modules/09-connect-the-physical-ax12.qmd
+          - modules/10-expose-the-capability.qmd
+          - modules/11-trace-the-nod.qmd
+          - modules/12-make-the-lamp-nod.qmd
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Make the Lamp Nod — Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto
