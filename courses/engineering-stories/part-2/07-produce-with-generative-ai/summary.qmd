@@ -1,0 +1,33 @@
+---
+title: "Summary — Produce with Generative AI"
+description: "Key takeaways from Module 7."
+order: 7
+---
+
+## Key takeaways
+
+- **The screenplay becomes audio through a production platform.** Voices +
+  narration + ambience + sound effects + music → `audio-play.mp3`.
+
+- **Capabilities, not products.** Declare what the producer must be able to do
+  (`multi_voice`, `narration`, `sound_effects`, `ambience`, `scene_control`,
+  `audio_export`) and evaluate providers against it. This prevents accidental
+  dependency on one commercial service.
+
+- **Wondercraft is the initially validated provider.** Document it as the
+  validated implementation and the workflow, not a single mandatory UI path.
+
+- **The workflow is portable.** Import screenplay, assign voices, add ambience,
+  insert SFX, adjust pacing, export. This works for any capable provider.
+
+- **Pricing is not stable course content.** Free tiers may add watermarks, ads,
+  generation limits, or restricted exports, and these change. Document
+  capabilities, not prices.
+
+- **Renderers "fix" rendering only.** Pronunciation and pacing belong to the
+  renderer; the architecture, metaphor, and story belong to the model.
+
+## Producing production.md and audio-play.mp3
+
+Your output from this module is `production.md` and the rendered `audio-play.mp3`.
+Next, you listen like an engineer and evaluate the result.

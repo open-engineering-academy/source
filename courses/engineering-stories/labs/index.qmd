@@ -1,0 +1,65 @@
+---
+title: "The Lab"
+---
+
+The course culminates in a practical lab: turn an engineering concept of your
+choice into a **2–5 minute educational audio drama**.
+
+The Crossplane restaurant remains the **reference implementation** — it is a
+worked example, not a mandatory project. You should choose your own concept so
+the process transfers.
+
+Suggested subjects if you cannot decide:
+
+- Kubernetes
+- Crossplane
+- GitOps
+- PKI
+- TLS
+- OAuth
+- DNS
+- CI/CD
+- event-driven architecture
+- message queues
+- API gateways
+- containers
+- dependency injection
+
+## The lab
+
+- [Objectives and prerequisites](audio-drama-lab/objectives.qmd)
+- [Walkthrough](audio-drama-lab/walkthrough.qmd) — the seven-phase Lab Method
+- [Solution](audio-drama-lab/solution.qmd) — the reference solution
+
+## Suggested repository structure
+
+```
+technical-audio-story/
+├── README.md
+├── concept.md
+├── metaphor.md
+├── characters.md
+├── scenes.md
+├── screenplay.md
+├── production.md
+├── evaluation.md
+├── reflection.md
+└── output/
+    └── audio-play.mp3
+
+# Optional
+├── diagrams/
+├── prompts/
+├── assets/
+└── transcripts/
+```
+
+## What "done" means
+
+- A 2–5 minute educational audio drama about a real engineering concept.
+- Every stage artifact: concept → metaphor → characters → scenes → screenplay →
+  production → evaluation (+ reflection).
+- The drama is **technically accurate first** — a beautiful production that
+  teaches the wrong architecture does not pass.
+- You can explain the underlying technical model because of, not despite, the
+  story.

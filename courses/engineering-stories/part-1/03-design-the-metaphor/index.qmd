@@ -1,0 +1,141 @@
+---
+title: "3. Design the Metaphor"
+description: "Translate the technical model into a familiar world with an explicit technical-to-narrative mapping. Produce metaphor.md."
+order: 3
+---
+
+## Overview
+
+A metaphor translates the technical model into a familiar world — a restaurant,
+a theatre, an airport, a factory, a detective agency, or any setting where the
+listener already has intuition about how things work. This lesson teaches you to
+design a metaphor that is an **attempt at an isomorphism**: for every important
+fact in the model there should be a counterpart in the story, and the story must
+not introduce serious misconceptions.
+
+You will produce a `metaphor.md` file with an explicit mapping table.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Translate a technical model into a metaphorical world with an explicit mapping
+  table.
+- Identify whether a metaphor is defensible: complete, isomorphic, navigable, and
+  honest.
+- Recognize and correct misconception injection — where the metaphor contradicts
+  the model.
+- Apply the "game the map" technique to test a metaphor against the key facts.
+
+## Choosing a world
+
+The metaphor must be a world the listener already understands intuitively. The
+more familiar the world, the less explanation the metaphor itself needs and the
+more energy you can spend on the technical content.
+
+Common worlds:
+
+| World | Good for modeling | Example mapping |
+| --- | --- | --- |
+| Restaurant | Request → fulfillment pipelines | Crossplane restaurant |
+| Theatre | Role-based coordination | Actors, director, stage |
+| Airport | Security, routing, gates | Requests flowing through checkpoints |
+| Hotel | Reservation → service delivery | Guest requests processed by staff |
+| Factory | Assembly, components, quality | Parts composed into products |
+| Postal service | Addressing, routing, delivery | Messages flowing through a system |
+| Detective agency | Investigation, evidence, resolution | Tracing problems to root cause |
+| Orchestra | Coordination, roles, conductor | Many parts producing one output |
+
+The world you choose must support the relationships in your concept. If your
+system has a pipeline of hand-offs, a restaurant or factory works well. If it is
+about coordination of many roles, an orchestra or theatre might be better.
+
+## The mapping table
+
+The `metaphor.md` file contains an explicit mapping table that connects every
+entity in the technical model to its counterpart in the story world. This table
+is the **contract** between `concept.md` and every other file in the pipeline.
+
+Every character, scene, and sound effect must honor this table.
+
+Here is the mapping from the Crossplane restaurant reference example:
+
+| Crossplane (technical model) | Restaurant (metaphor) | Why it fits |
+| --- | --- | --- |
+| XRD (CompositeResourceDefinition) | Menu | Defines what can be requested. |
+| Claim (XRC) | Order placed by a server | The developer's request for a specific dish. |
+| Composite Resource (XR) | The order ticket | The concrete instance of the request. |
+| Composition | Recipe | Says which components make up the dish. |
+| Managed Resources (MR) | Prepared components | The individual parts of the dish. |
+| Provider | Kitchen capability | How the real components actually get made. |
+| Reconciliation | Chefs checking and perfecting | Desired state continuously matched to reality. |
+| Crossplane engine | The restaurant's staff | The thing that composes and reconciles. |
+| Developer | Customer | Requests the composite environment. |
+
+## Attempt at an isomorphism
+
+A defensible metaphor satisfies four properties:
+
+- **Complete enough** — it covers the participating entities and their
+  relationships. Every entity in the concept must appear in the mapping.
+- **Isomorphic** — it adds no serious contradiction to the model. The mapping is
+  one-to-one for the important facts.
+- **Navigable** — a listener can map back from story to model. They can hear a
+  character and know which technical entity it represents.
+- **Playful but honest** — it is entertaining in service of understanding, never
+  at its cost.
+
+## Game the map
+
+Before finalizing your metaphor, **game the map**: walk through each key fact
+from your concept and check that the metaphor respects it.
+
+For example, the Crossplane restaurant's key facts:
+
+1. The developer asks for a *composite* environment, not individual pieces.
+   → The customer orders a dish, not separate ingredients. Check.
+2. The XRD defines *what can be requested*; the Composition defines *how it is
+   built*.
+   → The menu defines what can be ordered; the recipe says how it is made. Check.
+3. The developer does **not** talk directly to providers.
+   → The customer does not talk to the kitchen appliances. Check.
+
+If any key fact fails the check, the metaphor must change — not the model.
+
+## Avoiding misconceptions
+
+The biggest risk in metaphor design is **misconception injection**: the story
+introduces an idea that contradicts the real system.
+
+For example, if the restaurant metaphor had the customer walking into the kitchen
+and choosing their own ingredients, this would contradict the key fact that the
+developer does not talk directly to providers. The customer must stay at the
+table.
+
+Be especially careful with:
+
+- **Direction of communication** — does the story show the wrong entity talking
+  to the wrong entity?
+- **Timing** — does the story imply something happens at the wrong point in the
+  process?
+- **Scope** — does the story suggest an entity does more or less than it actually
+  does?
+
+## Reference example
+
+Read the complete Crossplane restaurant metaphor under
+[`reference-example/metaphor.md`](../../reference-example/metaphor.md).
+
+Notice how it includes:
+
+- The explicit mapping table.
+- A note on conversational form (dialogue that carries the explanation).
+- An optional "breaking the fourth wall" technique.
+- The four properties of a defensible metaphor.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — design a metaphor for your own concept and document
+  the mapping table.
+- [Summary](summary.qmd) — key takeaways from this lesson.
+- [Quiz](quiz.qmd) — check your understanding.

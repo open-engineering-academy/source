@@ -1,0 +1,177 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - shared/images/open-engineering-mark.svg
+  render:
+    - index.qmd
+    - glossary.qmd
+    - part-1/index.qmd
+    - part-1/01-engineering-through-stories/index.qmd
+    - part-1/01-engineering-through-stories/exercise.qmd
+    - part-1/01-engineering-through-stories/summary.qmd
+    - part-1/01-engineering-through-stories/quiz.qmd
+    - part-1/02-find-the-technical-truth/index.qmd
+    - part-1/02-find-the-technical-truth/exercise.qmd
+    - part-1/02-find-the-technical-truth/summary.qmd
+    - part-1/02-find-the-technical-truth/quiz.qmd
+    - part-1/03-design-the-metaphor/index.qmd
+    - part-1/03-design-the-metaphor/exercise.qmd
+    - part-1/03-design-the-metaphor/summary.qmd
+    - part-1/03-design-the-metaphor/quiz.qmd
+    - part-1/04-cast-the-system/index.qmd
+    - part-1/04-cast-the-system/exercise.qmd
+    - part-1/04-cast-the-system/summary.qmd
+    - part-1/04-cast-the-system/quiz.qmd
+    - part-2/index.qmd
+    - part-2/05-design-the-scenes/index.qmd
+    - part-2/05-design-the-scenes/exercise.qmd
+    - part-2/05-design-the-scenes/summary.qmd
+    - part-2/05-design-the-scenes/quiz.qmd
+    - part-2/06-write-the-audio-screenplay/index.qmd
+    - part-2/06-write-the-audio-screenplay/exercise.qmd
+    - part-2/06-write-the-audio-screenplay/summary.qmd
+    - part-2/06-write-the-audio-screenplay/quiz.qmd
+    - part-2/07-produce-with-generative-ai/index.qmd
+    - part-2/07-produce-with-generative-ai/exercise.qmd
+    - part-2/07-produce-with-generative-ai/summary.qmd
+    - part-2/07-produce-with-generative-ai/quiz.qmd
+    - part-2/08-listen-like-an-engineer/index.qmd
+    - part-2/08-listen-like-an-engineer/exercise.qmd
+    - part-2/08-listen-like-an-engineer/summary.qmd
+    - part-2/08-listen-like-an-engineer/quiz.qmd
+    - labs/index.qmd
+    - labs/audio-drama-lab/objectives.qmd
+    - labs/audio-drama-lab/walkthrough.qmd
+    - labs/audio-drama-lab/solution.qmd
+    - reference-example/README.md
+    - reference-example/concept.md
+    - reference-example/metaphor.md
+    - reference-example/characters.md
+    - reference-example/scenes.md
+    - reference-example/screenplay.md
+    - reference-example/production.md
+    - reference-example/evaluation.md
+
+website:
+  title: "Engineering Stories"
+  description: "From architecture to audio drama — teach technical storytelling independently of any vendor."
+  site-url: "https://academy.open-engineering.io/courses/engineering-stories/"
+  favicon: shared/images/open-engineering-mark.svg
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: part-1/index.qmd
+        text: Part 1
+      - href: part-2/index.qmd
+        text: Part 2
+      - href: labs/index.qmd
+        text: Lab
+      - href: reference-example/README.md
+        text: Reference example
+      - href: glossary.qmd
+        text: Glossary
+    right:
+      - text: "Academy"
+        href: "../../"
+  sidebar:
+    style: docked
+    contents:
+      - href: index.qmd
+        text: Overview
+      - section: "Part 1 — The Craft"
+        href: part-1/index.qmd
+        contents:
+          - section: "01 Engineering Through Stories"
+            href: part-1/01-engineering-through-stories/index.qmd
+            contents:
+              - href: part-1/01-engineering-through-stories/exercise.qmd
+                text: Exercise
+              - href: part-1/01-engineering-through-stories/summary.qmd
+                text: Summary
+              - href: part-1/01-engineering-through-stories/quiz.qmd
+                text: Quiz
+          - section: "02 Find the Technical Truth"
+            href: part-1/02-find-the-technical-truth/index.qmd
+            contents:
+              - href: part-1/02-find-the-technical-truth/exercise.qmd
+                text: Exercise
+              - href: part-1/02-find-the-technical-truth/summary.qmd
+                text: Summary
+              - href: part-1/02-find-the-technical-truth/quiz.qmd
+                text: Quiz
+          - section: "03 Design the Metaphor"
+            href: part-1/03-design-the-metaphor/index.qmd
+            contents:
+              - href: part-1/03-design-the-metaphor/exercise.qmd
+                text: Exercise
+              - href: part-1/03-design-the-metaphor/summary.qmd
+                text: Summary
+              - href: part-1/03-design-the-metaphor/quiz.qmd
+                text: Quiz
+          - section: "04 Cast the System"
+            href: part-1/04-cast-the-system/index.qmd
+            contents:
+              - href: part-1/04-cast-the-system/exercise.qmd
+                text: Exercise
+              - href: part-1/04-cast-the-system/summary.qmd
+                text: Summary
+              - href: part-1/04-cast-the-system/quiz.qmd
+                text: Quiz
+      - section: "Part 2 — The Production"
+        href: part-2/index.qmd
+        contents:
+          - section: "05 Design the Scenes"
+            href: part-2/05-design-the-scenes/index.qmd
+            contents:
+              - href: part-2/05-design-the-scenes/exercise.qmd
+                text: Exercise
+              - href: part-2/05-design-the-scenes/summary.qmd
+                text: Summary
+              - href: part-2/05-design-the-scenes/quiz.qmd
+                text: Quiz
+          - section: "06 Write the Audio Screenplay"
+            href: part-2/06-write-the-audio-screenplay/index.qmd
+            contents:
+              - href: part-2/06-write-the-audio-screenplay/exercise.qmd
+                text: Exercise
+              - href: part-2/06-write-the-audio-screenplay/summary.qmd
+                text: Summary
+              - href: part-2/06-write-the-audio-screenplay/quiz.qmd
+                text: Quiz
+          - section: "07 Produce with Generative AI"
+            href: part-2/07-produce-with-generative-ai/index.qmd
+            contents:
+              - href: part-2/07-produce-with-generative-ai/exercise.qmd
+                text: Exercise
+              - href: part-2/07-produce-with-generative-ai/summary.qmd
+                text: Summary
+              - href: part-2/07-produce-with-generative-ai/quiz.qmd
+                text: Quiz
+          - section: "08 Listen Like an Engineer"
+            href: part-2/08-listen-like-an-engineer/index.qmd
+            contents:
+              - href: part-2/08-listen-like-an-engineer/exercise.qmd
+                text: Exercise
+              - href: part-2/08-listen-like-an-engineer/summary.qmd
+                text: Summary
+              - href: part-2/08-listen-like-an-engineer/quiz.qmd
+                text: Quiz
+      - href: labs/index.qmd
+        text: Lab
+      - href: reference-example/README.md
+        text: Reference example
+      - href: glossary.qmd
+        text: Glossary
+  page-footer:
+    left: "Engineering Stories — Open Engineering Academy"
+    right: "Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+
+execute:
+  freeze: auto

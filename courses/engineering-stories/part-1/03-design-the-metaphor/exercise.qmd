@@ -1,0 +1,60 @@
+---
+title: "Exercise · Design the Metaphor"
+---
+
+A short, guided task. Complete it before moving on to the next lesson.
+
+## Starting point
+
+Use the `concept.md` you wrote for the ticketing system in the
+[Lesson 2 exercise](../02-find-the-technical-truth/exercise.qmd), or use the
+following brief concept if you did not complete it:
+
+> The support desk has: Customers who submit tickets, a Ticket Queue that holds
+> them, a Dispatcher that assigns tickets to Agents by category, Agents who work
+> tickets, and a Notification System that alerts customers on resolution.
+
+## Task
+
+1. **Choose a world.** Pick a metaphorical world for the ticketing system.
+   Consider: detective agency, post office, hospital triage, call centre, or
+   another world that fits the request → dispatch → work → resolve flow.
+
+2. **Write the mapping table.** Create a table with columns: Technical Model,
+   Metaphor, Why it fits. Map every entity from the concept to its counterpart.
+
+3. **Game the map.** Walk through each key fact from your concept and verify the
+   metaphor respects it. Write down any conflicts you find and how you resolve
+   them.
+
+## Format for the mapping table
+
+| Technical model | Metaphor | Why it fits |
+| --- | --- | --- |
+| Customer | ... | ... |
+| Ticket Queue | ... | ... |
+| Dispatcher | ... | ... |
+| Agent | ... | ... |
+| Category | ... | ... |
+| Status transitions | ... | ... |
+| Notification | ... | ... |
+
+## Success criteria
+
+- [ ] You chose a world and can justify why it fits the system's flow.
+- [ ] Your mapping table covers every entity in the concept.
+- [ ] You gamed the map and documented any conflicts and their resolutions.
+- [ ] No key fact from the concept is contradicted by the metaphor.
+
+## Reflect
+
+- Did any entity resist being mapped? What does that tell you about the world
+  you chose?
+- Would a different world make the mapping more natural?
+- Did you find yourself changing the metaphor to fit the model, or the model to
+  fit the metaphor?
+
+## Next
+
+Continue to [Lesson 4](../04-cast-the-system/index.qmd) or review the
+[Summary](summary.qmd).

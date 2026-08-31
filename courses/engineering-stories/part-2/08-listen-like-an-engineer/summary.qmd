@@ -1,0 +1,36 @@
+---
+title: "Summary — Listen Like an Engineer"
+description: "Key takeaways from Module 8."
+order: 8
+---
+
+## Key takeaways
+
+- **Generation is not completion.** Producing audio creates a draft; engineering
+  judgment decides whether it teaches the right thing clearly.
+
+- **Review on four fronts:** technical correctness, educational effectiveness,
+  narrative clarity, and audio quality.
+
+- **The five-dimension rubric:** Technical accuracy, Metaphor quality, Narrative
+  clarity, Audio communication, Learning outcome.
+
+- **Technical accuracy is weighted significantly.** A beautiful production that
+  teaches the wrong architecture must not pass.
+
+- **Narrative clarity** means the listener can tell who is speaking, where the
+  scene occurs, what happened, and why it matters.
+
+- **Audio quality** covers voice distinction, pronunciation, pacing, silence,
+  ambience, sound levels, effects, and scene transitions.
+
+- **Trace defects to their origin.** A wrong metaphor is fixed in `metaphor.md`,
+  not in the recording. Each stage is inspectable — fix at the source.
+
+- **Record and iterate.** Write findings to `evaluation.md`, fix the
+  highest-impact defect first, re-render, and re-evaluate.
+
+## Producing evaluation.md
+
+Your output from this module is `evaluation.md`, completing the forward
+construction of your audio drama and closing the loop back to the model.

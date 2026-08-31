@@ -1,0 +1,51 @@
+---
+title: "Quiz · Cast the System"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. Why are characters described as "responsibilities in disguise"?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Each character maps to a responsibility in the system. A line of dialogue between
+two characters is a way of explaining a system interaction. The teaching power
+comes from this mapping, not from the character's personality.
+:::
+
+## 2. What is the recommended maximum cast size for an audio drama?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Five or six characters. In audio-only, the listener has no visual cues, so each
+character must be distinguishable by voice alone. More than six becomes hard to
+track.
+:::
+
+## 3. What is "breaking the fourth wall" in this context?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+An optional technique where a character briefly acknowledges its technical
+counterpart (e.g. "Hello Developer — ahum, I mean Customer") to re-anchor the
+listener to the architecture without abandoning the narrative. It should be used
+sparingly.
+:::
+
+## 4. What are the six fields recorded for each character in characters.md?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Character, Technical counterpart, Responsibility, Personality, Voice, and
+Relationship to other characters.
+:::
+
+## 5. Should a character exist without a responsibility?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. Every character must trace back to the mapping in metaphor.md. No character
+should be introduced purely for comic effect or flavour without a responsibility
+behind it.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Part 2](../../part-2/index.qmd).

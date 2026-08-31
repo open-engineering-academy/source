@@ -1,0 +1,52 @@
+---
+title: "Objectives & prerequisites"
+description: "What this lab teaches and what you need before you start."
+---
+
+## Learning objectives
+
+By the end of this lab you will be able to:
+
+- Model the technical truth of a real system before creating any metaphor.
+- Design an isomorphic metaphor with an explicit technical-to-narrative mapping.
+- Cast system responsibilities as characters with distinct voices.
+- Break an explanation into scenes, each with an educational outcome.
+- Write an audio-first, scene-oriented screenplay that is renderer-independent.
+- Produce a 2–5 minute educational audio drama with a generative AI workflow.
+- Evaluate the result across technical accuracy, metaphor quality, narrative
+  clarity, audio communication, and learning outcome — with technical accuracy
+  weighted highest.
+
+## Lab method
+
+This is a **substantial, judgement-building lab**. It follows the Open
+Engineering Lab Method, mapped to the story pipeline:
+
+```
+OBSERVE      Understand the technical system.
+INVESTIGATE  Identify actors, responsibilities, and relationships.
+DESIGN       Create the metaphor and narrative mapping.
+COMPOSE      Create characters, scenes, and screenplay.
+EXECUTE      Generate the audio production.
+EVALUATE     Review technical, educational, and audio quality.
+REFLECT      Document what the metaphor clarified and what it obscured.
+```
+
+## Prerequisites
+
+- Completion of the eight course modules (or equivalent familiarity).
+- A text editor.
+- A generative audio-production account (e.g. Wondercraft) with multivoice and
+  sound-effect support; a free tier may suffice but may add watermarks or
+  limits.
+
+## Environment
+
+- Operating system: any
+- Required tools: a text editor; a generative audio production service
+- Estimated time: 2–4 hours
+
+## Related lessons
+
+- All eight modules of the Engineering Stories course.
+- The [Reference example](../reference-example/README.md).

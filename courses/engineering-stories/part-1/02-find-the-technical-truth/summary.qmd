@@ -1,0 +1,23 @@
+---
+title: "Summary · Find the Technical Truth"
+---
+
+## Key takeaways
+
+- The **technical model** comes first, before any metaphor or story.
+- Extract six categories from any system: actors, resources, responsibilities,
+  relationships, events, and state transitions.
+- The output is `concept.md` — a plain-language description with no narrative
+  imagery.
+- The **key facts** section is the most important: it lists hard constraints that
+  any metaphor must never violate.
+- If a metaphor contradicts the model, the metaphor changes — not the model.
+
+## What comes next
+
+- [Lesson 3](../03-design-the-metaphor/index.qmd) — translate the technical
+  model into a familiar world with an explicit mapping.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

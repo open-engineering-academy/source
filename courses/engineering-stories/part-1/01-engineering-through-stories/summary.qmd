@@ -1,0 +1,26 @@
+---
+title: "Summary · Engineering Through Stories"
+---
+
+## Key takeaways
+
+- **Technical storytelling** explains a real system through narrative without
+  abandoning the engineering model.
+- **Audio drama** is a useful medium because the ear-only constraint forces
+  precision: if the listener cannot hear it, it does not exist.
+- The **architectural principle** pipeline has five inspectable stages:
+  Technical Model, Metaphor, Story, Screenplay, and Audio Producer.
+- Each stage answers a distinct question: WHAT IS TRUE, HOW EXPLAIN, HOW
+  EXPERIENCE, HOW REPRESENT, HOW RENDER.
+- Errors can be traced back to their origin because each stage is inspectable.
+- The course uses a **reverse-engineering approach**: experience the finished
+  story first, then deconstruct how it was built, then construct your own.
+
+## What comes next
+
+- [Lesson 2](../02-find-the-technical-truth/index.qmd) — extract the technical
+  model from architecture and documentation.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

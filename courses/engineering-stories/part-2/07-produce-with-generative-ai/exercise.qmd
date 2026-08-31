@@ -1,0 +1,49 @@
+---
+title: "Exercise — Produce with Generative AI"
+description: "Document the production workflow and capability requirements for your concept."
+order: 7
+---
+
+## Task
+
+Write a `production.md` file documenting the production workflow and capability
+requirements for your own concept, then render your screenplay.
+
+## Steps
+
+1. **Declare required capabilities.** Adapt the neutral capability list to your
+   project:
+
+   ```yaml
+   capabilities:
+     multi_voice: true
+     narration: true
+     sound_effects: true
+     ambience: true
+     scene_control: true
+     audio_export: true
+   ```
+
+   If your story needs something extra (for example, distinct music cues per
+   scene), add it as a capability.
+
+2. **Evaluate at least one provider.** Take a provider you have access to and
+   check it against your capability list. Record which capabilities it satisfies
+   and which it lacks.
+
+3. **Document the workflow.** Write the steps you will take to render your
+   `screenplay.md` into audio — import, voices, ambience, SFX, pacing, export.
+
+4. **Render your screenplay.** Produce `audio-play.mp3` using your chosen
+   provider.
+
+5. **Record caveats.** Note any licensing restrictions, watermarks, generation
+   limits, or export restrictions on the free tier you used.
+
+## Checklist
+
+- [ ] Capabilities are declared as a neutral list in `production.md`.
+- [ ] At least one provider is evaluated against the capability list.
+- [ ] The workflow is documented as steps, not provider-specific UI.
+- [ ] `audio-play.mp3` was produced.
+- [ ] Free-tier caveats, if any, are recorded.

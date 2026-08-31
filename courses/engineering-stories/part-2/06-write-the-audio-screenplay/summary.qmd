@@ -1,0 +1,37 @@
+---
+title: "Summary — Write the Audio Screenplay"
+description: "Key takeaways from Module 6."
+order: 6
+---
+
+## Key takeaways
+
+- **If the listener cannot hear it, it does not exist.** Every important action
+  must reach the ear through dialogue, narration, sound effect, ambience, or
+  music.
+
+- **Visual vs. audio.** A visual screenplay can show actions; an audio screenplay
+  must make them audible.
+
+- **Scene-oriented format.** Each scene has AMBIENCE, NARRATOR, dialogue, and
+  SFX, plus an educational outcome stated in closing narration.
+
+- **Semantic sound design.** Each sound effect represents an event or state in
+  the technical model — sound is part of the model, not decoration.
+
+- **Narration and dialogue.** Dialogue carries relationships and state
+  transitions; narration carries connective tissue and learning outcomes.
+
+- **Pacing and transitions.** Give the listener time to absorb each outcome;
+  end scenes on a note that leads into the next.
+
+- **Fourth-wall breaks (optional).** Use sparingly to re-anchor a listener who
+  has forgotten the mapping.
+
+- **Intermediate representation.** The screenplay sits between knowledge and the
+  rendered artifact. It must stay useful independently of the renderer.
+
+## Producing screenplay.md
+
+Your output from this module is `screenplay.md`. In the next module it becomes
+the input to an audio production platform.

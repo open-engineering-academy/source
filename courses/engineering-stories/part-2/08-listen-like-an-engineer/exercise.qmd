@@ -1,0 +1,57 @@
+---
+title: "Exercise — Listen Like an Engineer"
+description: "Evaluate your own audio with the five-dimension rubric and record findings."
+order: 8
+---
+
+## Task
+
+Evaluate the `audio-play.mp3` you produced in Module 7, record findings, and
+iterate until your artifact teaches the right architecture.
+
+## Steps
+
+1. **Listen once for narrative.** Listen without stopping. Can you tell who is
+   speaking, where the scene occurs, what happened, and why it matters?
+
+2. **Listen again for technical accuracy.** Map what you hear back to
+   `concept.md`. Does the metaphor still accurately describe the system? Note
+   any drift.
+
+3. **Recruit a listener (ideal).** Ask someone unfamiliar with the technology
+   to explain the concept after listening. Note what they could and could not
+   explain.
+
+4. **Score with the rubric.** Assign a score (e.g. 1–5) per dimension and compute
+   a weighted total, with technical accuracy weighted highest:
+
+   ```yaml
+   dimensions:
+     technical_accuracy:  { score: 4 }
+     metaphor_quality:    { score: 4 }
+     narrative_clarity:   { score: 5 }
+     audio_communication: { score: 3 }
+     learning_outcome:    { score: 4 }
+   weighted_total: 4.2
+   ```
+
+5. **Trace defects to origin.** For each weakness, identify the stage it came
+   from (model, metaphor, scenes, screenplay, or renderer) and fix it at the
+   origin.
+
+6. **Iterate.** Re-render and re-evaluate until technical accuracy holds and the
+   weighted total meets your pass threshold.
+
+7. **Record findings** in `evaluation.md`, including audio-quality notes:
+   voice distinction, pronunciation, pacing, silence, ambience, sound levels,
+   effects, and scene transitions.
+
+## Checklist
+
+- [ ] All five dimensions scored.
+- [ ] Technical accuracy weighted highest.
+- [ ] A weighted total and verdict (pass / needs-revision) recorded.
+- [ ] At least one defect traced to its origin stage.
+- [ ] Audio-quality notes recorded (voice distinction, pronunciation, pacing,
+      silence, ambience, levels, effects, transitions).
+- [ ] Iterated at least once if anything scored below your pass threshold.

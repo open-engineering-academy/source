@@ -1,0 +1,27 @@
+---
+title: "Summary · Cast the System"
+---
+
+## Key takeaways
+
+- **Characters are responsibilities in disguise.** Each character maps to a
+  responsibility in the system.
+- Dialogue carries the explanation: a conversation between two characters shows a
+  responsibility hand-off that the listener can hear.
+- Keep the cast **small** (four to six characters) and **distinct** enough for
+  audio-only identification.
+- Every character must trace back to the mapping in `metaphor.md`. No character
+  exists purely for decoration.
+- **Breaking the fourth wall** is an optional technique to re-anchor the listener
+  to the technical model. Use it sparingly.
+- The output is `characters.md` with six fields per character: Character,
+  Technical counterpart, Responsibility, Personality, Voice, Relationship.
+
+## What comes next
+
+- [Part 2](../../part-2/index.qmd) — Design the Scenes, Write the Audio
+  Screenplay, Produce with Generative AI, and Listen Like an Engineer.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

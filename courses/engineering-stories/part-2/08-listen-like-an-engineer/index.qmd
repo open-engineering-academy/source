@@ -1,0 +1,113 @@
+---
+title: "4. Listen Like an Engineer"
+description: "Review the produced audio, evaluate it against the five-dimension rubric, and iterate. Produce evaluation.md."
+order: 8
+---
+
+## Overview
+
+Producing an audio file is **not** completion. Generation produces a draft;
+engineering judgment decides whether it teaches the right thing, clearly, in a
+way a listener can follow and later explain. This lesson teaches you to review
+your audio as an engineer: check the technical truth, then evaluate, record
+findings, and iterate.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why generation is not completion.
+- Review audio for technical correctness, educational effectiveness, narrative
+  clarity, and audio quality.
+- Apply the five-dimension evaluation rubric, with technical accuracy weighted
+  significantly.
+- Trace a defect back to its origin stage and fix it there.
+- Record findings and iterate to a passing artifact.
+
+## Generation is not completion
+
+The renderer turns your screenplay into sound. But a beautiful production that
+teaches the *wrong* architecture must not pass just because it is entertaining.
+The produced audio is a draft that needs engineering review.
+
+Review the audio on four fronts:
+
+- **Technical correctness** — does the metaphor still accurately describe the
+  system? Have any facts drifted as you wrote dialogue and narration?
+- **Educational effectiveness** — could someone unfamiliar with the technology
+  explain the important concepts afterward?
+- **Narrative clarity** — can the listener tell who is speaking, where the scene
+  occurs, what happened, and why it matters?
+- **Audio quality** — voice distinction, pronunciation, pacing, silence,
+  ambience, sound levels, effects, and scene transitions.
+
+## The five-dimension rubric
+
+Score your artifact across five dimensions, each answering one question:
+
+| Dimension | Question |
+| --- | --- |
+| Technical accuracy | Does the story correctly represent the engineering concept? |
+| Metaphor quality | Does the metaphor improve understanding without introducing serious misconceptions? |
+| Narrative clarity | Can the listener follow the story without visual assistance? |
+| Audio communication | Do voice, narration, and sound communicate actions and context effectively? |
+| Learning outcome | Can the listener explain the underlying technical model afterward? |
+
+### Weighting
+
+Technical accuracy carries **significant weight**. A passing artifact must teach
+the right architecture. A typical weighting: technical accuracy at 40%, with the
+other dimensions sharing the remainder.
+
+::: {.callout-tip}
+Play the audio to someone unfamiliar with the technology and ask them to explain
+the concept back. This is the strongest test of learning outcome and educational
+effectiveness — and it will expose technical drift you may have gone blind to.
+:::
+
+## Tracing defects to their origin
+
+Each stage of your pipeline is inspectable, so defects trace to a stage:
+
+| Symptom | Likely origin | Fix where |
+| --- | --- | --- |
+| Wrong architecture conveyed | The model was wrong or misunderstood | `concept.md` / the real docs |
+| Misleading comparison | The metaphor mis-fits the model | `metaphor.md` |
+| Confusing dialogue | The story didn't carry the relationship | `scenes.md` / `screenplay.md` |
+| Wrong pronunciation / bad pacing | The renderer | `production.md` |
+
+When you find a defect, fix it at its origin — do not try to patch audio with a
+voice-over. If the metaphor is wrong, fix the metaphor, not the recording.
+
+## Recording findings and iterating
+
+Record your findings in an `evaluation.md` file:
+
+```yaml
+dimensions:
+  technical_accuracy: { score: 4, notes: "..." }
+  metaphor_quality:   { score: 4, notes: "..." }
+  narrative_clarity:  { score: 5, notes: "..." }
+  audio_communication:{ score: 4, notes: "..." }
+  learning_outcome:   { score: 4, notes: "..." }
+
+weighted_total: 4.2
+verdict: pass   # or: needs-revision
+
+findings:
+  - "The service-bell SFX is too quiet under the kitchen ambience."
+  - verification_notes: "..."
+```
+
+Then iterate: fix the highest-impact defect first, re-render, and re-evaluate.
+A pass requires technical accuracy to hold — a wrong architecture cannot pass,
+however enjoyable it is.
+
+Read the reference-evaluation at
+[`reference-example/evaluation.md`](../../reference-example/evaluation.md).
+
+## Next steps
+
+- [Exercise](exercise.qmd) — evaluate your own audio with the rubric.
+- [Summary](summary.qmd) — key takeaways.
+- [Quiz](quiz.qmd) — knowledge check.

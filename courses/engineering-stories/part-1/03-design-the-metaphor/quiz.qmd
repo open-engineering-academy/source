@@ -1,0 +1,48 @@
+---
+title: "Quiz · Design the Metaphor"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What is an "attempt at an isomorphism"?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+A metaphor where every important fact in the model has a counterpart in the story,
+and the story does not introduce serious misconceptions that contradict the model.
+:::
+
+## 2. What are the four properties of a defensible metaphor?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Complete enough (covers all participating entities), isomorphic (no serious
+contradiction to the model), navigable (listener can map back from story to
+model), and playful but honest (entertaining in service of understanding).
+:::
+
+## 3. What is "gaming the map"?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Walking through each key fact from the concept and verifying that the metaphor
+respects it. If any key fact fails, the metaphor changes — not the model.
+:::
+
+## 4. What is misconception injection?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+When the metaphor introduces an idea that contradicts the real system. For
+example, showing the developer talking directly to providers when the model says
+they do not.
+:::
+
+## 5. Where does the metaphor table live?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+In `metaphor.md`, which serves as the contract between `concept.md` and every
+other file in the pipeline.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Lesson 4](../04-cast-the-system/index.qmd).

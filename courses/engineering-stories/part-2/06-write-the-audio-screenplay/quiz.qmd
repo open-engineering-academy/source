@@ -1,0 +1,59 @@
+---
+title: "Quiz — Write the Audio Screenplay"
+description: "Knowledge check for Module 6."
+order: 6
+---
+
+## Questions
+
+1. **What is the fundamental constraint of audio writing?**
+
+   a) Every scene must have four characters.
+   b) If the listener cannot hear it, it does not exist.
+   c) Dialogue must be shorter than narration.
+   d) Each scene must end with a sound effect.
+
+2. **Which of the following can carry an action to the ear in audio?**
+
+   a) Dialogue only
+   b) Narration only
+   c) Dialogue, narration, SFX, ambience, or music
+   d) Staging and camera
+
+3. **In a visual screenplay, "The chef places the ticket beside the stove" is
+   shown. What must happen in an audio screenplay?**
+
+   a) Nothing — the listener will guess.
+   b) It must be made audible through narration or SFX.
+   c) It should be removed from the story.
+   d) It is replaced with music.
+
+4. **What is semantic sound design?**
+
+   a) Making dialogue rhyme.
+   b) Using sound effects that represent events in the technical model.
+   c) Adding background music to every scene.
+   d) Keeping sound minimal to save bandwidth.
+
+5. **Why must the screenplay remain useful independently of the renderer?**
+
+   a) Because the producer decides the story.
+   b) Because it is an intermediate representation usable by any renderer.
+   c) Because sound effects vary by platform.
+   d) Because narration is optional.
+
+6. **Where should the learning outcome of a scene be stated?**
+
+   a) In the AMBIENCE line
+   b) In the closing narration
+   c) Only in the SFX
+   d) It does not need to be stated
+
+## Answers
+
+1. b) If the listener cannot hear it, it does not exist
+2. c) Dialogue, narration, SFX, ambience, or music
+3. b) It must be made audible through narration or SFX
+4. b) Using sound effects that represent events in the technical model
+5. b) Because it is an intermediate representation usable by any renderer
+6. b) In the closing narration

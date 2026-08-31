@@ -1,0 +1,60 @@
+---
+title: "Exercise · Cast the System"
+---
+
+A short, guided task. Complete it before moving on to the next part.
+
+## Starting point
+
+Use the `metaphor.md` you wrote for the ticketing system in the
+[Lesson 3 exercise](../03-design-the-metaphor/exercise.qmd).
+
+## Task
+
+Write a `characters.md` for your ticketing system metaphor. For each character,
+fill in the six fields: Character, Technical counterpart, Responsibility,
+Personality, Voice, Relationship to other characters.
+
+## Guidelines
+
+- Every character must trace back to an entity in your metaphor mapping table.
+- Keep the cast small — aim for four to six characters. If you have more, check
+  whether two responsibilities can be carried by one character.
+- Each character needs a **distinct voice** so the listener can tell them apart
+  without visual cues.
+- Every character must have a responsibility. No character purely for flavour.
+
+## Suggested format
+
+```markdown
+| Character | Technical counterpart | Responsibility | Personality | Voice | Relationship |
+| --- | --- | --- | --- | --- | --- |
+| ... | ... | ... | ... | ... | ... |
+```
+
+## Bonus: fourth-wall moment
+
+Write one optional "breaking the fourth wall" line for one of your characters.
+This is a moment where the character acknowledges its technical role, e.g.:
+
+> "Let me check the queue — ahem, I mean the dispatch board."
+
+## Success criteria
+
+- [ ] Your cast has four to six characters.
+- [ ] Every character has all six fields filled in.
+- [ ] Every character traces back to a row in your metaphor mapping table.
+- [ ] Each character has a distinct personality and voice description.
+- [ ] You included at least one line of dialogue that shows a responsibility
+      hand-off between two characters.
+
+## Reflect
+
+- Did any responsibility resist being turned into a character? Why?
+- Which character was hardest to give a distinct voice?
+- How does keeping the cast small affect the story's clarity?
+
+## Next
+
+Continue to [Part 2](../../part-2/index.qmd) or review the
+[Summary](summary.qmd).

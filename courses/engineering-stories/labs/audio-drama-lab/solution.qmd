@@ -1,0 +1,75 @@
+---
+title: "Solution"
+description: "Reference solution for this lab."
+---
+
+## Reference solution
+
+The reference solution is the **Crossplane restaurant** — the canonical worked
+example for this course. It is not a copy-paste answer; it shows what a
+complete, passing project looks like across every phase and artifact. Read it
+alongside your own project and compare.
+
+| Phase (Lab Method) | Reference artifact |
+| --- | --- |
+| Observe / Investigate | `reference-example/concept.md` |
+| Design | `reference-example/metaphor.md` |
+| Compose | `reference-example/characters.md`, `scenes.md`, `screenplay.md` |
+| Execute | `reference-example/production.md`, `output/` |
+| Evaluate | `reference-example/evaluation.md` |
+| Reflect | your own `reflection.md` |
+
+### How the reference satisfies the objectives
+
+- **Technical truth first.** `concept.md` describes the Crossplane model (XRD,
+  claim, XR, Composition, Managed Resources, Provider, reconciliation) with no
+  restaurant imagery — a clean model precedes any metaphor.
+- **Isomorphic metaphor.** `metaphor.md` maps XRD→Menu, XR→Order,
+  Composition→Recipe, Managed Resources→Prepared components, Provider→Kitchen
+  capability, with a rationale per row and no serious misconception.
+- **Small, distinct cast.** Five voices, one per responsibility, each with
+  voice and relationship; the developer never talks to providers.
+- **Scene-oriented with learning outcomes.** Seven scenes, each with a purpose
+  and an answer to "what did the learner understand?".
+- **Audio-first screenplay.** Every action reaches the ear; semantic sound
+  design maps sounds to model events (ticket printer → claim created, recipe
+  book → composition selected, service bell → successful reconciliation,
+  kitchen alarm → failure).
+- **Provider-neutral production.** `production.md` declares neutral
+  capabilities and documents Wondercraft only as the validated implementation.
+- **Evaluation with weighted technical accuracy.** The five-dimension rubric is
+  applied, with technical accuracy weighted highest, and defects traced to
+  their origin stage.
+
+## Verification
+
+You can verify the reference yourself by reverse-engineering it, as Module 1
+teaches:
+
+1. Read the final `screenplay.md` (or listen to the produced audio).
+2. For each scene, identify the technical concept it teaches.
+3. Check that every element (character, sound, narration) maps back through
+   `metaphor.md` to an entity in `concept.md` without contradiction.
+4. Score the result with the five-dimension rubric and confirm no serious
+   technical inaccuracy.
+
+A passing project of yours will show the same properties — on your own concept.
+
+## A note on your own artifact
+
+Your `output/audio-play.mp3` is a **2–5 minute educational audio drama**. Raw
+binary audio need not be committed to Git if size or licensing makes that
+undesirable; follow the Open Engineering artifact conventions in that case and
+link to the artifact instead. The **text artifacts** (concept, metaphor,
+characters, scenes, screenplay, production, evaluation, reflection) are the
+primary reviewable deliverable.
+
+## Variations
+
+- **Different world:** any isomorphic metaphor (theatre, airport, orchestra)
+  is valid as long as the mapping stays honest.
+- **Different renderer:** another AI audio service, human actors, or studio
+  production is fine — the screenplay is renderer-independent.
+- **Deferred Composer:** a future Composer could generate a first screenplay
+  draft from the model; your artifacts are structured so this remains possible,
+  but human review of metaphor and narrative stays essential.

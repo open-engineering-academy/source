@@ -1,0 +1,25 @@
+---
+title: "Part 1 — The Craft"
+---
+
+Part 1 establishes the architectural principle and the craft of turning a real
+system into a story: understand the model first, transform it deliberately.
+
+It follows a **reverse-engineering** approach. You will begin by *hearing* the
+finished Crossplane restaurant story, then progressively reveal how it was
+constructed — from technical model, to metaphor, to characters.
+
+## Lessons
+
+- [1. Engineering Through Stories](01-engineering-through-stories/index.qmd) —
+  what technical storytelling is, its benefits and risks, and your first
+  listening of the Crossplane restaurant.
+- [2. Find the Technical Truth](02-find-the-technical-truth/index.qmd) — model
+  the system first, before any metaphor. Produce `concept.md`.
+- [3. Design the Metaphor](03-design-the-metaphor/index.qmd) — translate the
+  model into a familiar world with an explicit mapping. Produce `metaphor.md`.
+- [4. Cast the System](04-cast-the-system/index.qmd) — turn responsibilities
+  into characters with voice and relationship. Produce `characters.md`.
+
+Each lesson in this course follows the same page layout — see the
+[course overview](../index.qmd) for the full pattern.

@@ -1,0 +1,112 @@
+// Engineering Stories — Technical Audio Story Lab
+// LikeC4 visualization of the seven-phase Lab Method and its artifacts.
+// See memo7: LikeC4 Visualization Methodology for Open Engineering Academy Labs.
+
+model {
+  system "Lab" {
+    // Stage artifacts of the story pipeline
+    component "Technical System" {
+      description "The real engineering concept chosen by the learner."
+    }
+    component "Concept Model" {
+      description "concept.md — actors, resources, responsibilities, relationships, events, state transitions."
+    }
+    component "Metaphor" {
+      description "metaphor.md — technical-to-narrative mapping (an isomorphism)."
+    }
+    component "Characters" {
+      description "characters.md — responsibilities cast as characters with voice."
+    }
+    component "Scenes" {
+      description "scenes.md — the explanation broken into scenes with learning outcomes."
+    }
+    component "Screenplay" {
+      description "screenplay.md — audio-first, renderer-independent intermediate representation."
+    }
+    component "Audio Generator" {
+      description "production.md — generative audio production platform."
+    }
+    component "MP3" {
+      description "output/audio-play.mp3 — the rendered audio artifact."
+    }
+    component "Evaluation" {
+      description "evaluation.md — five-dimension rubric, technical accuracy weighted highest."
+    }
+
+    // The Lab Method phases as a flow
+    Technical System -> Concept Model : "Observe / Investigate"
+    Concept Model -> Metaphor : "Design"
+    Metaphor -> Characters : "Compose"
+    Characters -> Scenes : "Compose"
+    Scenes -> Screenplay : "Compose"
+    Screenplay -> Audio Generator : "Execute"
+    Audio Generator -> MP3 : "Render"
+    MP3 -> Evaluation : "Evaluate"
+    Evaluation -> Concept Model : "Reflect / iterate"
+  }
+}
+
+views {
+  view "technical-system" {
+    title "Phase 1-2 — Observe / Investigate"
+    include
+      Technical System
+      Concept Model
+    $edges = LabeledEdges
+  }
+
+  view "concept-model" {
+    title "Concept Model (concept.md)"
+    include Concept Model
+  }
+
+  view "metaphor" {
+    title "Phase 3 — Design the Metaphor"
+    include
+      Concept Model
+      Metaphor
+    $edges = LabeledEdges
+  }
+
+  view "characters" {
+    title "Phase 4 — Compose: Characters"
+    include
+      Metaphor
+      Characters
+    $edges = LabeledEdges
+  }
+
+  view "scenes" {
+    title "Phase 4 — Compose: Scenes"
+    include
+      Characters
+      Scenes
+    $edges = LabeledEdges
+  }
+
+  view "screenplay" {
+    title "Phase 4 — Compose: Screenplay"
+    include
+      Scenes
+      Screenplay
+    $edges = LabeledEdges
+  }
+
+  view "audio-generator" {
+    title "Phase 5 — Execute: Audio Generator"
+    include
+      Screenplay
+      Audio Generator
+      MP3
+    $edges = LabeledEdges
+  }
+
+  view "evaluation" {
+    title "Phase 6-7 — Evaluate / Reflect"
+    include
+      MP3
+      Evaluation
+      Concept Model
+    $edges = LabeledEdges
+  }
+}

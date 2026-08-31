@@ -1,0 +1,131 @@
+---
+title: "4. Cast the System"
+description: "Turn important responsibilities into characters with voice, personality, and relationship. Produce characters.md."
+order: 4
+---
+
+## Overview
+
+Characters are **not** arbitrary decoration. Each one represents a
+responsibility in the system, and each line of dialogue is an explanation of a
+system interaction. That is what makes the story teach rather than merely
+entertain.
+
+This lesson teaches you to turn responsibilities into characters. You will
+produce a `characters.md` file that records each character's technical
+counterpart, responsibility, personality, voice, and relationships.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Convert a system responsibility into a character with a distinct personality and
+  voice.
+- Write `characters.md` with all required fields: Character, Technical
+  counterpart, Responsibility, Personality, Voice, Relationship to other
+  characters.
+- Keep the cast small and distinct enough for audio-only identification.
+- Apply the "breaking the fourth wall" technique when appropriate.
+
+## Characters are responsibilities in disguise
+
+Each character maps to a responsibility in the system. The Customer represents
+the Developer's role of requesting an environment. The Chef represents the
+engine that selects a recipe and composes the dish. The Manager represents
+reconciliation — checking and re-checking until reality matches desire.
+
+This mapping is what gives the story its teaching power. A line of dialogue
+between two characters is a way of explaining a system interaction. Compare:
+
+- **Narration:** "The developer creates a composite resource." (tells)
+- **Dialogue:** "One application environment, please." / "Certainly. I'll use the
+  recipe associated with that order." (shows the responsibility hand-off)
+
+Dialogue carries the explanation. Narration handles connective tissue that has no
+character voice.
+
+## The characters.md format
+
+For each character, record:
+
+| Field | Description |
+| --- | --- |
+| Character | The name of the character in the story world. |
+| Technical counterpart | Which entity or responsibility from `concept.md` it represents. |
+| Responsibility | What the character does in the story (and what the technical entity does in the system). |
+| Personality | The character's demeanour — how they come across to the listener. |
+| Voice | The vocal quality or tone the listener will hear. |
+| Relationship to other characters | How this character interacts with the rest of the cast. |
+
+## The reference cast
+
+The Crossplane restaurant uses five characters (plus a narrator). Read the
+complete version under
+[`reference-example/characters.md`](../../reference-example/characters.md).
+
+| Character | Technical counterpart | Responsibility |
+| --- | --- | --- |
+| Customer | Developer | Requests a composite environment |
+| Server | Claim (XRC) | Carries the request to the kitchen |
+| Chef | Crossplane + Composition | Selects the recipe, composes the dish |
+| Apprentice | Composition → MRs | Helps assemble the prepared components |
+| Manager | Reconciliation | Checks and perfects the dish |
+
+### Roles vs. things
+
+Notice that a character may represent a **role or process** (Chef = the engine
+and its recipe selection) rather than a single object. What matters is that the
+listener can attach a name to each responsibility and follow the conversation.
+
+## Dialogue as system interaction
+
+Dialogue should *carry* the explanation. When the Customer says "I would like one
+application environment," and the Chef replies "Certainly. I'll use the recipe
+associated with that order," the listener learns that the engine consults a
+recipe — without being told directly.
+
+Prefer dialogue for the **relationships and state transitions** that matter most.
+Reserve narration for connective tissue.
+
+## Keeping the cast small
+
+In audio drama, the listener has no visual cues to distinguish characters. Each
+character must be identifiable by voice alone. This bounds the cast size — five
+or six characters is typically the maximum a listener can track.
+
+Every character must trace back to the mapping in `metaphor.md`. No character
+should be introduced purely for comic effect without a responsibility behind it.
+If a responsibility can be carried by an existing character, do not add a new one.
+
+## Breaking the fourth wall
+
+Occasionally a character may acknowledge its technical counterpart. This is an
+**optional technique**, used sparingly, to re-anchor the listener when the
+metaphor risks becoming so entertaining that they forget what each character
+represents.
+
+For example:
+
+> **Chef:** Hello Developer — ahum, I mean *Customer*. What can I serve you
+> today?
+
+This reinforces the mapping between the story and the technical model without
+abandoning the narrative.
+
+Use it only when a re-anchor is genuinely needed. Overuse destroys immersion.
+
+## Dialogue style: conversational form
+
+Dialogue turns technical relationships into conversation. Instead of narrating
+"the developer creates an XR," the characters speak to each other and the
+responsibility hand-off becomes audible.
+
+The response should expose a new responsibility the same way a system component
+would. When the Chef says "I'll use the recipe associated with that order," the
+listener learns about Composition without the word ever being defined.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — define characters.md for your own concept.
+- [Summary](summary.qmd) — key takeaways from this lesson.
+- [Quiz](quiz.qmd) — check your understanding.

@@ -1,0 +1,117 @@
+id: oe.course.engineering-stories
+slug: engineering-stories
+title: Engineering Stories — From Architecture to Audio Drama
+level: intermediate
+duration: 8h
+entry: index.qmd
+glossary: glossary.qmd
+sections:
+  - part-1
+  - part-2
+prerequisites: []
+teaches:
+  - Technical storytelling
+  - Metaphor design
+  - Narrative learning
+  - Audio drama
+  - Scene-oriented screenplay
+  - Semantic sound design
+  - AI audio production
+  - Technical reverse-engineering of story artifacts
+produces:
+  - audio-drama
+references_labs:
+  - oe.lab.technical-audio-story
+references_exercises: []
+constructive_role: explanation
+constraints:
+  - "Technical truth is modeled (concept.md) before any metaphor is created."
+  - "Metaphor mappings are explicitly documented (metaphor.md)."
+  - "The screenplay (screenplay.md) is audio-first and scene-oriented."
+  - "The learner produces a 2-5 minute educational audio drama and evaluates it, with technical accuracy weighted highest."
+</think>Now the course `index.qmd`:
+
+<｜DSML｜tool_calls>
+<｜DSML｜invoke name="write">
+<｜DSML｜parameter name="content" string="true">---
+title: "Engineering Stories"
+description: "From architecture to audio drama — turn real technical systems into short, educational audio stories, independently of any vendor."
+order: 1
+---
+
+## Course overview
+
+**Engineering Stories** teaches a single discipline: how to transform a real
+technical system into a short, educational **audio drama** — without ever
+abandoning the engineering model underneath it.
+
+The foundational principle of this course:
+
+> *We do not simplify technology by abandoning its engineering model. We
+> understand the model first, transform it deliberately, and use story to make
+> that understanding accessible.*
+
+## Why audio drama?
+
+Audio is one of the most constrained media to write for — *if the listener
+cannot hear it, it does not exist.* That constraint forces you to be precise:
+every important action must reach the ear through dialogue, narration, sound,
+or music. This makes audio an excellent *test* of how well you really
+understand your system and how clearly you can explain it.
+
+## What you will learn
+
+The course is organized as a reverse-engineering journey. You first
+**experience** a finished audio story (the Crossplane restaurant), then
+**deconstruct** how it was built, and finally **construct** your own.
+
+- **Module 1 — Engineering Through Stories** — what technical storytelling is,
+  its benefits and risks.
+- **Module 2 — Find the Technical Truth** — model the system *first*, before any
+  metaphor.
+- **Module 3 — Design the Metaphor** — translate the model into a familiar world.
+- **Module 4 — Cast the System** — turn responsibilities into characters.
+- **Module 5 — Design the Scenes** — break the explanation into scenes.
+- **Module 6 — Write the Audio Screenplay** — the audio-first intermediate
+  representation.
+- **Module 7 — Produce with Generative AI** — render the screenplay to audio.
+- **Module 8 — Listen Like an Engineer** — review, evaluate, and iterate.
+
+## The reference implementation
+
+The course is built around the **Crossplane restaurant** — a canonical worked
+example that maps Crossplane architecture onto a restaurant kitchen:
+
+| Crossplane | Restaurant |
+| --- | --- |
+| XRD | Menu |
+| XR | Order |
+| Composition | Recipe |
+| Managed Resources | Prepared components |
+| Provider | Kitchen capability |
+
+Read the complete worked example in the
+[Reference example](reference-example/README.md). You will reverse-engineer it
+throughout Part 1, then apply the process to your own concept.
+
+## Prerequisites
+
+No prerequisites. A basic familiarity with any declarative system (e.g.
+Crossplane, Kubernetes, GitOps) helps but is not required — Module 2 shows you
+how to extract the technical truth from documentation even for technology you
+have not used before.
+
+## Structure
+
+- **Part 1 — The Craft** (Modules 1–4): the architectural principle, modeling
+  truth, designing metaphor, casting characters.
+- **Part 2 — The Production** (Modules 5–8): scenes, screenplay, generative
+  production, and engineering-style review.
+- **The Lab**: turn an engineering concept of your choice into a 2–5 minute
+  educational audio drama, evaluated with the five-dimension rubric.
+
+## Get started
+
+Open [Part 1](part-1/index.qmd) and begin with
+[Module 1](part-1/01-engineering-through-stories/index.qmd) — where you will
+first *hear* the Crossplane story before you learn how it was made.

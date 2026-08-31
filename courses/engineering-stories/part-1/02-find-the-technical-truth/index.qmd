@@ -1,0 +1,112 @@
+---
+title: "2. Find the Technical Truth"
+description: "Extract the technical model from architecture and documentation. Identify actors, resources, responsibilities, relationships, events, and state transitions."
+order: 2
+---
+
+## Overview
+
+Before you can explain a system, you must understand it. This lesson teaches you
+to extract the **technical truth** — the factual description of a system — from
+architecture and documentation. You will produce a `concept.md` file that
+captures everything the story must never contradict.
+
+The technical model comes **first**, before any metaphor. This is the
+foundational principle in action: we understand the model first, transform it
+deliberately, and use story to make that understanding accessible.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Identify actors, resources, responsibilities, relationships, events, and state
+  transitions from architecture documentation.
+- Write a `concept.md` file that captures the technical model of a system.
+- Verify that the concept contains no metaphor or narrative imagery.
+- Understand why the technical model must precede any storytelling work.
+
+## The technical model comes first
+
+It is tempting to start with a story idea. A restaurant! A detective agency! A
+theatre! But if you start with the metaphor, you will smuggle in assumptions
+about the system that may not be true, and you will leave out facts that
+matter.
+
+Instead, start with the architecture. Read the documentation. Draw the diagrams.
+Identify who does what, what depends on what, and what happens when. Only when
+you understand the model should you begin translating it into a story.
+
+## What to extract
+
+From any technical system, extract six categories of information:
+
+| Category | Question | Example (Crossplane) |
+| --- | --- | --- |
+| **Actors** | Who participates? | Developer, Platform, Cloud Provider |
+| **Resources** | What objects or entities exist? | XRD, XR, Composition, Managed Resource |
+| **Responsibilities** | Who is accountable for what? | Provider realizes resources; Engine reconciles |
+| **Relationships** | How do entities connect? | XR is matched to Composition; Composition generates MRs |
+| **Events** | What moments matter? | Claim submitted, Composition selected, Reconciliation pass |
+| **State transitions** | What changes from one state to another? | Desired vs observed; drift detected and corrected |
+
+## The concept.md format
+
+The output of this stage is a `concept.md` file. It has three parts:
+
+1. **Plain-language model** — a step-by-step description of how the system works,
+   in natural language, with no metaphor.
+2. **Entities and responsibilities** — a table mapping each entity to its
+   responsibility.
+3. **Key facts the story must never contradict** — a list of hard constraints
+   that any metaphor must respect.
+
+::: {.callout-tip}
+The concept must contain **no narrative imagery**. No restaurants, no characters,
+no dialogue. It is the raw engineering truth. Metaphor comes in the next module.
+:::
+
+## Reference example
+
+Read the complete Crossplane restaurant concept under
+[`reference-example/concept.md`](../../reference-example/concept.md).
+
+Notice how it:
+
+- Describes the system in plain language first.
+- Lists entities and responsibilities in a table.
+- Specifies relationships as a tree.
+- Identifies events and state transitions.
+- States hard constraints that the story must never violate.
+
+## The key facts rule
+
+The last section of `concept.md` is the most important. It lists facts that the
+story must **never contradict**. These are your safety net against metaphor drift
+and misconception injection.
+
+For example, in the Crossplane restaurant:
+
+- The developer asks for a *composite* environment, not individual pieces.
+- The XRD defines *what can be requested*; the Composition defines *how it is
+  built*.
+- The developer does **not** talk directly to providers.
+
+If a metaphor would contradict any of these, the metaphor changes — not the
+model.
+
+## Common mistakes
+
+- **Including narrative imagery.** If your concept.md mentions a restaurant, a
+  character name, or a scene, you have gone too far. Strip it back to the
+  engineering truth.
+- **Omitting state transitions.** A story that only describes structure misses
+  the dynamics. Make sure you capture what *happens* and *changes*.
+- **Listing too much.** The concept should capture the model at the level of
+  detail the story needs, not a complete technical reference. Focus on the
+  entities and interactions the story will explain.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — extract a concept from a provided system description.
+- [Summary](summary.qmd) — key takeaways from this lesson.
+- [Quiz](quiz.qmd) — check your understanding.
