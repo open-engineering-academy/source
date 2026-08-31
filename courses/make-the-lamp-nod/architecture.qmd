@@ -1,0 +1,186 @@
+---
+title: "Architecture"
+description: "The map of the Make the Lamp Nod system — the thing being composed eventually controls a physical actuator."
+---
+
+This page is the reference map for the whole course. Every module points back
+to it. If an arrow on this page cannot be explained, tested, or observed, the
+implementation is not yet complete.
+
+## The system in one diagram
+
+```
+HOME ASSISTANT            ← human interface (control surface only)
+     │  nod (semantic request)
+     ▼
+OPEN ENGINEERING          ← capability resolution + events + identifiers
+     │  capability / event
+     ▼
+PICO TWIN                 ← pixstars-head-pitch digital twin (desired + observed)
+     │  rule
+     ▼
+MANIFOLD                  ← Pico runtime execution environment
+     │  actuator command
+     ▼
+EDGE ADAPTER              ← Open Engineering semantics → device protocol
+     │  network message
+     ▼
+ESP32                     ← actuator-level commands; no character reasoning
+     │  Dynamixel Protocol 1.0
+     ▼
+74HCT245                  ← electrical interface (voltage levels, bus, direction)
+     │  electrical communication
+     ▼
+AX-12A                    ← physical actuator
+     │  rotation
+     ▼
+LAMP HEAD → NOD           ← physical motion
+     │  telemetry (ascent path)
+     ▼
+...back up to PICO and HOME ASSISTANT
+```
+
+## Two halves of the same loop
+
+This course is **not** remote control. It is a minimal closed-loop
+cyber-physical architecture:
+
+**Command (descent):**
+```
+Human → Home Assistant → Open Engineering → Pico → Manifold → Edge Adapter → ESP32 → AX-12A → physical nod
+```
+
+**Telemetry (ascent):**
+```
+Physical device → telemetry → Edge Adapter → Pico state → Open Engineering → Home Assistant → human
+```
+
+## Semantic layering (a key teaching artifact)
+
+Every layer answers a distinct question. Do not collapse them:
+
+```
+WHY              Character meaning            "PixStars agrees"
+                    ↓
+WHAT             Gesture intent              "nod"
+                    ↓
+HOW — LOGICAL    Gesture sequence            down → up → center
+                    ↓
+HOW — DEVICE     Servo positions & speeds    safe, configured
+                    ↓
+HOW — PROTOCOL   Dynamixel Protocol 1.0      register writes, packets
+                    ↓
+HOW — ELECTRICAL ESP32 + 74HCT245            voltage levels, bus, direction
+                    ↓
+PHYSICS          AX-12A rotates lamp head    torque, rotation, motion
+```
+
+Rules of this layering:
+
+- **Higher layers request capabilities.** They say *what* ("nod"), never *how*.
+- **Lower layers implement capabilities.** They decide *how* the gesture is
+  realized, down to register values.
+- **The ESP32 must not contain character reasoning.** It understands
+  actuator-level concepts (`set-position`, `center`, `execute-motion`, `stop`,
+  `get-position`, `get-temperature`, `get-status`) — never concepts like
+  `agreement`, `disagreement`, `happiness`, `attention`, `confusion`.
+- **The 74HCT245 is purely physical communication.** It is not a semantic Open
+  Engineering entity; it is where abstractions cross a hardware boundary of
+  voltage levels, buses, and electrical communication.
+
+## Responsibilities by layer
+
+| Layer | Responsible for | Not responsible for |
+| --- | --- | --- |
+| Home Assistant | Human interface; requesting `nod`, `center`, `stop` | Implementing the servo trajectory; owning actuator behavior |
+| Open Engineering | Capabilities, identifiers, events, composition, observability | Device protocol details |
+| Pico digital twin | Logical head-pitch actuator; desired & observed state | Physics |
+| Manifold / Pico runtime | Executing rules when events arrive | Deciding *what should exist* (that is Crossplane) |
+| Crossplane | Declarative composition — *what should exist* | Runtime behavior (*what should happen*) |
+| Edge adapter (ESP32) | Receiving commands, validating, converting to Dynamixel Protocol 1.0, UART, reporting state | Character semantics, when PixStars should nod |
+| AX-12A | Physical rotation of the head | Being the whole digital twin |
+| 74HCT245 | Electrical interface | Anything semantic |
+
+## The critical separation: Crossplane vs Manifold
+
+This course makes one distinction explicit and keeps it:
+
+- **Crossplane** answers: *What should exist?* (declarative composition).
+- **Manifold / Pico runtime** answers: *What should happen?* (runtime behavior).
+
+These are not interchangeable. The thing being composed eventually controls a
+physical actuator — but composition and execution remain separate concerns.
+
+## Digital twin over remote control
+
+The Pico twin maintains **desired state** and **observed state**:
+```
+desiredPosition   the position we asked for
+actualPosition    the position the actuator reports
+moving            is the actuator in motion
+torqueEnabled     is torque on
+connected         is the actuator reachable
+temperature       telemetry (where available)
+lastCommand       the most recent command
+lastCommandStatus requested | accepted | executing | completed | failed
+```
+
+A difference between desired and observed is **not** inherently an error:
+
+```
+desiredPosition = +15°
+actualPosition  = +12°
+```
+
+This is evidence that the physical system is *moving toward* the desired state.
+
+## Capability over directives
+
+The principal capability is `nod`. Consumers request `nod()` — never:
+
+```
+writeRegister(30, 614)
+sleep(300)
+writeRegister(30, 410)
+...
+```
+
+Consumers request capabilities; implementations determine how those
+capabilities are realized.
+
+## Desired-state principle
+
+> Requesting motion is not proof that motion occurred.
+
+`COMMAND SENT` is **not** equivalent to `GESTURE COMPLETED`. The system always
+distinguishes:
+```
+requested → accepted → executing → completed → failed
+```
+
+## Every arrow is a contract
+
+For every arrow in the system diagram, the course explains:
+
+- **what** crosses the boundary,
+- **who owns** the contract,
+- **how failure** is represented,
+- **how** the interaction is tested,
+- **how** the interaction is observed.
+
+The full per-arrow walkthrough lives in [Module 11 — Trace the Nod](modules/11-trace-the-nod.qmd).
+
+## Architectural principles
+
+This course reinforces the academy principles most relevant to physical systems:
+
+- **Composition over duplication** — reuse academy courses and capabilities.
+- **Semantic interfaces over hardware interfaces** — expose `nod`, not registers.
+- **Digital twin over remote control** — maintain desired and observed state.
+- **Declarative composition over manual assembly** — use Crossplane.
+- **Runtime behavior separate from infrastructure** — Crossplane vs Manifold.
+- **Edge adapters isolate hardware** — the ESP32 knows the device, not character meaning.
+- **Simulation before physics** — every capability is testable without hardware.
+- **Evidence over assumption** — a sent command does not prove physical execution.
+- **Safe by design** — movement operates inside explicitly configured boundaries.
+- **Replaceable implementations** — the logical head actuator survives replacement of the AX-12A.

@@ -1,0 +1,168 @@
+---
+title: "Module 07 — Bring the Pico Alive"
+description: "Register the pixstars-head-pitch Pico, emit a simulated nod event, and observe the response."
+---
+
+## Goal
+
+Reuse the [Manifold course](../../manifold/) for the Pico runtime execution
+environment. Manifold provides the RuntimeEnvironment; the Pico engine hosts
+the Pico Element; Wrangler declares the InteractionTopology. This module does
+not repeat foundational Manifold material.
+
+## Runtime substrate vocabulary
+
+The runtime vocabulary follows the Phase 7 constructive-realization contract:
+
+| Layer | Role |
+|-------|------|
+| Kubernetes | RuntimeSubstrate -- the underlying execution layer |
+| Manifold | RuntimeEnvironment -- Kubernetes-hosted host for Pico Elements |
+| Pico engine | In-process host inside Manifold that runs Pico Elements |
+| Wrangler | InteractionTopology authoring -- declares Channels and subscriptions |
+| Crossplane | Realization step -- composes runtime resources onto the substrate |
+
+See the [Manifold course](../../manifold/) for the full treatment of
+RuntimeSubstrate, RuntimeEnvironment, InteractionTopology, Channel, EventType,
+and Observation.
+
+## The Pico digital twin
+
+The pixstars-head-pitch Pico (`../picos/pixstars-head-pitch.yaml`) represents
+the logical head-pitch actuator and its state -- not merely a hardware
+register:
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: pixstars-head-pitch
+spec:
+  type: actuator
+  capabilities:
+    - nod
+    - center
+    - stop
+    - set-position
+  implementation:
+    deviceClass: dynamixel
+    model: AX-12A
+  state:
+    desiredPosition: 0
+    actualPosition: 0
+    moving: false
+    torqueEnabled: true
+    connected: true
+    temperature: null
+    voltage: null
+    lastCommand: null
+    lastCommandStatus: null
+    lastUpdated: null
+  events:
+    subscribesTo:
+      channel: pixstars-head
+      eventTypes:
+        - pixstars.head.nod.requested
+        - pixstars.head.center.requested
+        - pixstars.head.stop.requested
+    emits:
+      - pixstars.head.nod.completed
+      - pixstars.head.nod.failed
+      - pixstars.head.state.updated
+```
+
+The Pico subscribes to the `pixstars-head` Channel for the event type
+`pixstars.head.nod.requested`. When that event arrives, the runtime evaluates
+the Rules and executes the configured behavior.
+
+## Rules gate
+
+The Rules (`../rules/nod.yaml`) define what the Pico is permitted to do:
+
+```yaml
+rules:
+  - capability: actuator.nod
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+      gate:
+        connected: true
+        ready: true
+        withinSafeLimits: true
+  - capability: actuator.center
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+  - capability: actuator.stop
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+  - capability: actuator.set-position
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+      withinSafeLimits: true
+  - capability: actuator.write-register
+    effect: deny
+  - capability: actuator.raw-motion
+    effect: deny
+```
+
+The nod gate requires three conditions: `connected: true`, `ready: true`, and
+`withinSafeLimits: true`. If any condition is not met, the nod is rejected.
+Raw register writes and raw motion are explicitly denied -- the Pico exposes
+semantic capabilities, never device-level operations.
+
+## Runtime behavior
+
+When a `pixstars.head.nod.requested` event arrives, the Pico runtime executes:
+
+```
+ON pixstars.head.nod.requested
+IF actuator.connected
+AND actuator.ready
+AND actuator.withinSafeLimits
+THEN execute nod
+ELSE report failure
+```
+
+Runtime behavior is separate from infrastructure. Crossplane determines what
+should exist; Manifold determines what should happen. This separation is
+explicit in the [architecture](../architecture.qmd).
+
+## Simulated nod
+
+The nod gesture is a deterministic motion sequence (see `rules/nod-gesture.yaml`):
+
+```
+center (0) -> down (+15) -> up (-8) -> center (0)
+```
+
+In simulation, the Pico processes the event, evaluates the Rules gate, runs
+the gesture sequence against a SimulatedActuator, and emits
+`pixstars.head.nod.completed`. The state transitions are observable:
+
+```
+requested -> accepted -> executing -> completed
+```
+
+::: {.callout-tip}
+A sent command is not proof that motion occurred. The system always
+distinguishes `requested`, `accepted`, `executing`, `completed`, and `failed`.
+This is the [desired-state principle](../architecture.qmd).
+:::
+
+## Exercise
+
+1. Register the pixstars-head-pitch Pico with the Manifold RuntimeEnvironment
+   (follow the registration pattern from the
+   [Manifold course](../../manifold/)).
+2. Emit a simulated `pixstars.head.nod.requested` event onto the `pixstars-head`
+   Channel.
+3. Observe the Pico response: the Rules gate opens, the nod gesture executes
+   in simulation, and `pixstars.head.nod.completed` is emitted.
+4. Verify the Pico state reflects the completed command.
+
+## Next
+
+[Module 08 -- Build the Edge Adapter](08-build-the-edge-adapter.qmd)

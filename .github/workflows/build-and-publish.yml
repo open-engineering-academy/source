@@ -54,6 +54,9 @@ jobs:
       - name: Render durable-picos-celld course website
         run: quarto render courses/durable-picos-celld       
 
+      - name: Render make-the-lamp-nod course website
+        run: quarto render courses/make-the-lamp-nod
+
       - name: Verify root render output
         run: |
           test -f docs/index.html || {
@@ -110,6 +113,13 @@ jobs:
             exit 1
           }
 
+      - name: Verify make-the-lamp-nod render output
+        run: |
+          test -f courses/make-the-lamp-nod/_site/index.html || {
+            echo "::error::Missing courses/make-the-lamp-nod/_site/index.html — make-the-lamp-nod render did not produce expected output"
+            exit 1
+          }
+
       - name: Assemble combined site
         run: |
           mkdir -p docs/courses/pico
@@ -126,6 +136,8 @@ jobs:
           cp -R courses/rust-python-pyo3/_site/. docs/courses/rust-python-pyo3/
           mkdir -p docs/courses/durable-picos-celld
           cp -R courses/durable-picos-celld/_site/. docs/courses/durable-picos-celld/         
+          mkdir -p docs/courses/make-the-lamp-nod
+          cp -R courses/make-the-lamp-nod/_site/. docs/courses/make-the-lamp-nod/
 
       # The `pages` branch is the artifact consumed by a git-pages server
       # (https://codeberg.org/git-pages/git-pages). A git-pages server pulls

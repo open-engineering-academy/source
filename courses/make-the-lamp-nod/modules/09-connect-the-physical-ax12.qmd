@@ -1,0 +1,222 @@
+---
+title: "Module 09 — Connect the Physical AX-12A"
+description: "Wire the ESP32 to the AX-12A through the 74HCT245 electrical interface and verify safe, observable physical actuation."
+---
+
+::: {.callout-warning title="Hardware module — opt-in"}
+This module requires the PixStars reference hardware: ESP32, 74HCT245
+level-shifter, Dynamixel AX-12A servo, and the physical anglepoise lamp.
+It is an explicit extension of the simulation-first architecture. Modules
+4, 7, and 12 can be completed without hardware. Only proceed here if you
+have the physical system wired and powered.
+:::
+
+## Goal
+
+Connect the ESP32 edge adapter to the physical AX-12A through the 74HCT245
+electrical interface. Execute a safe, ordered calibration sequence. Only after
+every step succeeds may the nod gesture be enabled.
+
+## The physical chain
+
+```
+ESP32 edge adapter
+     ↓
+74HCT245 (electrical interface — voltage levels, bus, direction)
+     ↓
+Dynamixel AX-12A
+     ↓
+Mechanical lamp head pivot
+```
+
+The 74HCT245 is purely physical communication. It is where Open Engineering
+abstractions cross a hardware boundary of voltage levels, buses, and electrical
+communication. It never appears as a semantic Open Engineering entity. See the
+[edge adapter reference](../edge/esp32/edge-adapter.md) for the ESP32's full
+responsibility set.
+
+## Why this module exists
+
+Modules 1 through 8 built the complete software architecture: definitions,
+digital twin, simulation, Crossplane composition, MiniKube runtime, Manifold
+execution, and the ESP32 edge adapter firmware. That entire chain works
+without hardware. This module is the first point where a physical servo moves.
+
+Physical actuation introduces safety requirements that purely virtual systems
+do not have. Unrestricted servo movement can damage the lamp, the servo, or
+injure the learner. Every step in this module exists because of that reality.
+
+## The safe sequence
+
+The safe sequence is defined in memo5 section 14:
+
+```
+Discover
+   ↓
+Connect
+   ↓
+Read current state
+   ↓
+Establish safe limits
+   ↓
+Test small movement
+   ↓
+Return to center
+   ↓
+Enable gesture
+```
+
+Each step must complete successfully before the next begins. There are no
+shortcuts.
+
+## Step 1 — Connectivity test
+
+Verify that the ESP32 can communicate with the AX-12A over the 74HCT245.
+This tests the electrical boundary: UART direction management, Dynamixel
+Protocol 1.0 packet exchange, and servo presence detection.
+
+```bash
+pico runtime inspect --lab make-the-lamp-nod --pico pixstars-head-pitch
+```
+
+Expected: the actuator reports `connected: true`. If the actuator is
+unreachable, check wiring, power, UART direction control on the ESP32,
+and 74HCT245 bus orientation before proceeding.
+
+::: {.callout-tip title="Evidence"}
+Connectivity is the first piece of evidence. A `connected: false` response
+is a clear, observable failure — not an assumption that things are probably
+wired correctly.
+:::
+
+## Step 2 — Telemetry read
+
+Read the current servo state: position, temperature, torque status, and
+error flags. This confirms the telemetry ascent path works:
+
+```
+AX-12A → ESP32 → Pico twin → Open Engineering → observable state
+```
+
+The Pico twin's `observed state` fields should populate with live values.
+A missing or stale telemetry value means the ascent path is broken — do
+not proceed to movement until telemetry flows.
+
+## Step 3 — Safe-limit configuration
+
+Load the safe limits from [rules/nod-gesture.yaml](../rules/nod-gesture.yaml):
+
+```yaml
+safety:
+  minPosition: -30
+  maxPosition: 30
+  movementSpeed: safe
+  commandTimeoutMs: 2000
+  emergencyStop: true
+  safeStartupState: center
+  safeShutdownState: center
+```
+
+These boundaries govern every physical movement the system will perform.
+The learner MUST NOT execute unrestricted servo movement. The configured
+limits are the outer boundary; the nod sequence positions (center 0, down
++15, up -8) sit well within them.
+
+::: {.callout-warning title="Safety boundary"}
+The positions in `nod-gesture.yaml` are illustrative until calibrated
+against the physical lamp. The logical nod sequence (center down up center)
+is fixed; the numeric values are configurable and must be calibrated before
+any gesture executes. This distinction between logical gesture and physical
+calibration is a core teaching point — see the [architecture](../architecture.qmd)
+semantic layering.
+:::
+
+## Step 4 — Small movement
+
+Command a small, controlled movement within the safe limits. Verify the
+servo responds and that the telemetry reports the changing `actualPosition`.
+Verify the movement does not exceed configured limits.
+
+This is the first physical motion in the course. The descent path is:
+
+```
+command → ESP32 → Dynamixel Protocol 1.0 → 74HCT245 → AX-12A → rotation
+```
+
+And the ascent path returns:
+
+```
+rotation → telemetry → ESP32 → Pico twin → observed state
+```
+
+Both directions must work before proceeding.
+
+## Step 5 — Return to center
+
+Command the servo back to center (position 0). Verify the Pico twin's
+`actualPosition` converges to the `desiredPosition`. This confirms the
+closed-loop cyber-physical architecture: commanded state and observed
+state closing to agreement.
+
+A difference between desired and observed is not inherently an error.
+`desiredPosition = 0` and `actualPosition = 3` means the servo is
+*moving toward* the desired state. Evidence over assumption.
+
+## Step 6 — Stop test
+
+Trigger an emergency stop. Verify the servo halts immediately and reports
+the stopped state. The emergency stop must work at any point during
+movement. If it does not, do not enable gesture execution.
+
+## Enabling the gesture
+
+Only after all six steps succeed may the nod gesture be enabled. Enabling
+the gesture means the Manifold runtime is permitted to execute the nod
+rule against the physical actuator. Until this point, the system has been
+in a calibration-only mode.
+
+The nod sequence itself is defined in [rules/nod-gesture.yaml](../rules/nod-gesture.yaml):
+
+```yaml
+nod:
+  center: 0
+  down: 15
+  up: -8
+  repetitions: 1
+  speed: safe
+```
+
+The logical gesture is fixed: center, slightly down, slightly up, return
+to center. The numeric positions are calibrated values, not hard-coded
+generic definitions. The ESP32 receives actuator-level commands
+(`set-position`, `center`, `execute-motion`) and never interprets the
+gesture's semantic meaning.
+
+## Checklist
+
+| Step | What you verified |
+|------|-------------------|
+| 1 | ESP32 ↔ AX-12A connectivity through 74HCT245 |
+| 2 | Telemetry flows: position, temperature, torque, errors |
+| 3 | Safe limits loaded: min, max, speed, timeout, emergency stop |
+| 4 | Small movement succeeds within safe limits |
+| 5 | Return to center succeeds; desired/observed converge |
+| 6 | Emergency stop halts servo immediately |
+| 7 | Gesture enabled only after steps 1-6 pass |
+
+## What you have proven
+
+The physical boundary is working. The ESP32 edge adapter converts
+Open Engineering semantics into Dynamixel Protocol 1.0 packets, the
+74HCT245 manages the electrical interface, and the AX-12A rotates the
+lamp head. Telemetry returns through the same chain to the Pico twin.
+
+This is the point where the cyber-physical architecture becomes real.
+The [architecture page](../architecture.qmd) arrow map now has physical
+evidence behind every arrow from Manifold downward.
+
+## Next
+
+[Module 10 — Expose the Capability](./10-expose-the-capability.qmd), where
+Home Assistant becomes the first human control interface for the physical
+lamp.

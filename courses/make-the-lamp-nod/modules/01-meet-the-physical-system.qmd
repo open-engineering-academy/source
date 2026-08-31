@@ -1,0 +1,173 @@
+---
+title: "Module 01 — Meet the Physical System"
+description: "The hardware boundary: ESP32, 74HCT245, and AX-12A, and what each one is — and is not — responsible for."
+---
+
+## Goal
+
+Understand the physical boundary of the system: where Open Engineering
+abstractions stop and hardware begins. Meet the ESP32, the 74HCT245, and the
+AX-12A, and — just as importantly — what each one is **not**.
+
+## The physical reference architecture
+
+This course is anchored to a single, concrete physical chain:
+
+```
+ESP32
+  ↓
+74HCT245
+  ↓
+Dynamixel AX-12A
+  ↓
+Mechanical head pivot
+  ↓
+Anglepoise lamp head
+```
+
+The AX-12A provides the physical head-pitch degree of freedom. When the lamp
+"nods", the AX-12A rotates the head pivot through the nod motion and the lamp
+head moves with it.
+
+## The ESP32 is an edge adapter
+
+The ESP32 is where Open Engineering semantics cross into a device protocol. Its
+responsibilities are deliberately narrow:
+
+- network connectivity
+- receiving actuator commands
+- validating device-level commands
+- converting commands to Dynamixel Protocol 1.0
+- communicating with the AX-12A
+- managing UART communication and communication direction where required
+- reporting actuator state, errors, and connectivity
+- exposing health information
+
+The ESP32 understands **actuator-level** concepts only:
+
+```
+set-position      move the servo to a position
+center            return to center
+execute-motion    run a configured motion sequence
+stop              halt motion
+get-position      report current position
+get-temperature   report temperature telemetry
+get-status        report status / health
+```
+
+::: {.callout-tip}
+The ESP32 must **not** contain character reasoning. It must **not** decide when
+the lamp should nod, and it must **not** interpret `agreement`, `disagreement`,
+`happiness`, `attention`, or `confusion`. Those concepts belong at higher
+semantic layers — never in the edge adapter. See the
+[edge adapter reference](../edge/esp32/edge-adapter.md) for the full
+specification.
+:::
+
+## The 74HCT245 is purely physical
+
+The 74HCT245 sits between the ESP32 and the AX-12A. In this course it has
+**no semantic role at all**. It belongs entirely to the physical communication
+implementation:
+
+```
+Open Engineering
+     ↓
+ESP32 edge adapter
+     ↓
+electrical interface
+     ↓
+74HCT245
+     ↓
+AX-12A
+```
+
+This is the place where abstractions cross a hardware boundary of **voltage
+levels, buses, and electrical communication**. The 74HCT245 is not a semantic
+Open Engineering entity; it is a component that makes the electrical interface
+work. Do not search it for meaning — search for electrical correctness.
+
+## The AX-12A is the actuator, not the twin
+
+The AX-12A is the physical actuator. It does the rotating. But it is **not** the
+complete digital representation of anything:
+
+```
+Pico
+ │
+ │ represents
+ ▼
+Logical Head-Pitch Actuator
+ │
+ │ currently implemented by
+ ▼
+AX-12A
+```
+
+The distinction matters: the logical head-pitch actuator is a *capability and a
+state model*, while the AX-12A is one *current physical implementation* of it.
+A future implementation could replace the AX-12A with another servo without
+changing the semantic capability exposed to higher layers.
+
+## Where this fits on your machine
+
+The Open Engineering runtime runs in a local Kubernetes cluster via MiniKube,
+on your workstation, and talks to the ESP32 over the LAN:
+
+```
+Developer Workstation
+┌───────────────────────────────────────────────┐
+│ MiniKube                                      │
+│                                               │
+│ Crossplane                                    │
+│ Open Engineering resources                    │
+│ Manifold                                      │
+│ Pico runtime                                  │
+│ event/messaging infrastructure                │
+│ Home Assistant integration                    │
+│ observability                                 │
+└───────────────────────────────────────────────┘
+                       │
+                       │ LAN / Wi-Fi
+                       ▼
+                    ESP32
+                       │
+                       ▼
+                    74HCT245
+                       │
+                       ▼
+                    AX-12A
+                       │
+                       ▼
+                      Lamp
+```
+
+The [Prerequisites](../prerequisites.qmd) page lists what you need installed;
+the [Architecture](../architecture.qmd) page is the map of the whole system.
+
+## Where we stop in this course
+
+Physical hardware has no intelligence. This module is deliberately
+**character-free**: the course stops at explicit human instruction of a physical
+gesture. Nothing here infers, reasons, or decides to nod — a human asks, and the
+physical system moves. Character behavior is a future layer that builds *on top
+of* this physical foundation, never inside it.
+
+## Exercise
+
+Explain, in your own words:
+
+- What three responsibilities does the ESP32 have, and which three things is it
+  explicitly **forbidden** from doing?
+- Why is the 74HCT245 described as "purely physical communication" rather than
+  a semantic entity?
+- What is the difference between the *logical head-pitch actuator* and the
+  *AX-12A*?
+- Trace the command `set-position` and the physical chain it must pass through
+  from the ESP32 to the lamp head.
+
+## Next
+
+The physical chain gives us a *device*. In the next module we turn that device
+into a *capability*: [Module 02 — From Device to
+Capability](02-from-device-to-capability.qmd).

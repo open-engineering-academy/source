@@ -1,0 +1,66 @@
+---
+title: "Prerequisites"
+description: "What you need before starting Make the Lamp Nod."
+---
+
+This course **reuses** the academy's existing courses. It does not repeat them.
+Before you begin, you should be comfortable with the following, each with its
+authoritative source:
+
+## Required courses
+
+| You need | So that | Taught by |
+| --- | --- | --- |
+| Kubernetes basics (Pods, Deployments, Services, ConfigMaps, controllers, reconciliation) | you can run and reason about the local runtime | [Kubernetes for Open Engineering](../kubernetes/) |
+| MiniKube setup | you have a local cluster for this course | [Kubernetes for Open Engineering](../kubernetes/) — the canonical minikube home |
+| Crossplane (XRDs, XRs, Compositions, Composition Functions, reconciliation, providers) | you can declare "what should exist" declaratively | [Crossplane](../crossplane/) |
+| Pico (Rules, Parser, Composer, Pico digital entities) | you can build a digital twin | [Pico](../pico/) |
+| Manifold (Pico runtime on Kubernetes, Wrangler channels) | you can run the Pico | [Manifold](../manifold/) |
+| Home Assistant as a control surface | you can expose a human interface | [Hello Pico on Home Assistant](../../labs/hello-pico-home-assistant/) |
+
+## Recommended order
+
+```
+Kubernetes
+   ↓
+MiniKube
+   ↓
+Crossplane
+   │
+   ├─────────────┐
+   ▼             ▼
+Definitions    Pico
+   │             │
+Conventions    Manifold
+   │             │
+Rules           │
+   └──────┬──────┘
+          ▼
+    Home Assistant
+          │
+          ▼
+    MAKE THE LAMP NOD
+```
+
+Where your own background differs, existing canonical academy courses take
+precedence over this graph.
+
+## Environment you will need
+
+- A workstation with **MiniKube** running (see the Kubernetes course).
+- **Crossplane** installed in the cluster.
+- The **`bin/pico`** Open Engineering CLI.
+- **Home Assistant** available as a control surface (see the Home Assistant lab).
+- For the **simulation path**: nothing else — this course is completable
+  without hardware.
+- For the **physical path**: the PixStars anglepoise lamp (ESP32 + 74HCT245 +
+  Dynamixel AX-12A). Hardware exercises are labelled and run entirely
+  opt-in.
+
+## Simulation does not require hardware
+
+This course is built **simulation first**. Modules 4, 7, and 12 work end-to-end
+using a simulated actuator, so you can complete the full course without an
+ESP32, a servo, or a lamp. The physical hardware path is an explicit,
+opt-in extension of the same architecture — nothing needs to be rewritten to
+move from simulation to physics.

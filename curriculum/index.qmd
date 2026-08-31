@@ -40,6 +40,7 @@ The initial catalog of learning paths (in various stages of development):
 - Wrangler
 - Manifold
 - Home Assistant Integration
+- Make the Lamp Nod (cyber-physical / actuators / digital twins)
 - GitOps with FluxCD
 - Building AI-native Engineering Systems
 

@@ -1,0 +1,123 @@
+---
+title: "Module 00 — The Challenge"
+description: "See the finished result before you build it: press a button and make the lamp nod."
+---
+
+## Goal
+
+See the finished result first. Before we explain any of the machinery, you will
+watch the final moment this whole course exists to produce.
+
+## The desired result
+
+**Press a button and make the lamp nod.**
+
+That is the entire challenge. Everything else in this course — every definition,
+every abstraction, every runtime, every wire — exists to make that one button
+press reach a physical object.
+
+## The final moment
+
+This is the dashboard near the end of the course:
+
+```
+PixStars Lamp
+Status: READY
+[ NOD ]
+```
+
+You press **NOD**. The lamp lowers its head. It raises its head. It returns to
+center. The telemetry updates. The event trace reports `nod.completed`.
+
+That brief motion is the payoff for everything preceding it — it is the moment
+the abstractions stop being software and touch the physical world.
+
+::: {.callout-tip}
+Hold this image in mind. When a later module feels abstract, ask: *does this
+get me closer to the lamp nodding?*
+:::
+
+## The vision
+
+This course can be summarized in a single sentence:
+
+> Declare a meaningful capability in Open Engineering and follow it all the way
+> until the physical world changes.
+
+A lamp nodding is a deliberately small example, but the architecture is not. The
+same path that carries `nod` to a lamp can carry a gesture, a voice, or a
+character's decision to a physical body.
+
+## The conceptual journey
+
+`nod` will travel a long, layered path:
+
+```
+Human Intent
+     ↓
+Home Assistant
+     ↓
+Open Engineering Capability
+     ↓
+Pico Digital Twin
+     ↓
+Manifold Runtime
+     ↓
+Open Engineering Event
+     ↓
+Edge Adapter
+     ↓
+ESP32
+     ↓
+74HCT245
+     ↓
+AX-12A
+     ↓
+Mechanical Lamp Head
+     ↓
+Physical Motion
+```
+
+Every arrow on this ladder is a contract. Each later module explains one side:
+what crosses the arrow, who owns it, how failure is represented, how it is
+tested, and how it is observed.
+
+The [Architecture](../architecture.qmd) page is the map you will follow, and the
+[Glossary](../glossary.qmd) defines the terms as they are used here.
+
+## Simulation first
+
+You do not need an ESP32, a servo, or a lamp to complete this course. We build
+it **simulation first**: a `SimulatedActuator` shares the exact same logical
+contract as the physical `DynamixelAX12AActuator`, so the whole path runs
+without hardware — in CI, in tests, and on any learner's machine. The physical
+path is an explicit, opt-in extension of the same architecture; nothing has to
+be rewritten to move from simulation to physics.
+
+## A challenge, not a tutorial
+
+This is a capstone. It composes what you already learned in Kubernetes,
+MiniKube, Crossplane, Pico, Manifold, and Home Assistant rather than re-teaching
+each one. You will be expected to reuse those courses rather than wait to be
+told everything again.
+
+## Exercise
+
+Before moving on, write down, in your own words:
+
+- What exactly does "The lamp nods" prove about the architecture?
+- Which layer in the journey ladder is responsible for *what* is requested
+  (`nod`) rather than *how* it is realized?
+- Why is it meaningful that the event trace reports `nod.completed` rather than
+  simply `command sent`?
+
+:::{.callout-tip}
+Keep your answer to the last question. Module 4 returns to it as the
+*desired-state principle*.
+:::
+
+## Next
+
+Return to this page at the end of the course — the final capstone is this exact
+moment, real and physical. Now begin with [Module 01 — Meet the Physical
+System](01-meet-the-physical-system.qmd).

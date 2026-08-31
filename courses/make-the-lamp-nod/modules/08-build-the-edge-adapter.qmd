@@ -1,0 +1,138 @@
+---
+title: "Module 08 — Build the Edge Adapter"
+description: "The ESP32 bridges Open Engineering semantics to the Dynamixel Protocol 1.0 device layer."
+---
+
+## Goal
+
+Introduce the ESP32 adapter and teach the boundary between Open Engineering
+semantics and device protocol. The full edge-adapter reference lives at
+`../edge/esp32/edge-adapter.md`.
+
+## Semantic layering
+
+Every layer answers a distinct question. Do not collapse them:
+
+```
+WHY              Character meaning            "PixStars agrees"
+                    |
+WHAT             Gesture intent              "nod"
+                    |
+HOW -- LOGICAL    Gesture sequence            down -> up -> center
+                    |
+HOW -- DEVICE     Servo positions & speeds    safe, configured
+                    |
+HOW -- PROTOCOL   Dynamixel Protocol 1.0      register writes, packets
+                    |
+HOW -- ELECTRICAL ESP32 + 74HCT245            voltage levels, bus, direction
+                    |
+PHYSICS          AX-12A rotates lamp head    torque, rotation, motion
+```
+
+Rules of this layering:
+
+- **Higher layers request capabilities.** They say *what* ("nod"), never *how*.
+- **Lower layers implement capabilities.** They decide *how* the gesture is
+  realized, down to register values.
+- **The ESP32 must not contain character reasoning.** It understands
+  actuator-level concepts (`set-position`, `center`, `execute-motion`, `stop`,
+  `get-position`, `get-temperature`, `get-status`) -- never concepts like
+  `agreement`, `disagreement`, `happiness`, `attention`, or `confusion`.
+- **The 74HCT245 is purely physical communication.** It is where abstractions
+  cross a hardware boundary of voltage levels, buses, and electrical
+  communication.
+
+See the [architecture page](../architecture.qmd) for the full layering
+diagram and per-layer responsibility table.
+
+## What the ESP32 understands
+
+The ESP32 speaks actuator-level commands only:
+
+```
+set-position      move the servo to a position
+center            return to center
+execute-motion    run a configured motion sequence
+stop              halt motion
+get-position      report current position
+get-temperature   report temperature telemetry
+get-status        report status / health
+```
+
+The ESP32 MUST NOT interpret character meaning. It MUST NOT decide when
+PixStars should nod. Those decisions belong at the semantic layer.
+
+## Communication direction
+
+The AX-12A uses Dynamixel Protocol 1.0 over a half-duplex UART. The ESP32
+controls communication direction on the shared line (transmit vs receive).
+This direction management is one of the ESP32's explicit responsibilities.
+
+## Messaging
+
+The semantic event reaches the ESP32 through a transport chain:
+
+```
+Semantic event
+     |
+     v
+Open Engineering messaging
+     |
+     v
+transport adapter
+     |
+     v
+MQTT
+     |
+     v
+ESP32
+```
+
+The semantic architecture MUST NOT become coupled to MQTT topic naming. This
+ensures that another transport can later replace MQTT without redefining nod.
+Transport details remain below the semantic event layer (the ESP32 is where
+HOW -- PROTOCOL meets the device; see the [architecture page](../architecture.qmd)
+for the full layering).
+
+## Safety at the edge
+
+The ESP32 enforces safety as defense in depth:
+
+- Enforce configured safe limits even at the edge.
+- Enforce the command timeout.
+- Support an emergency stop.
+- Report actuator state, errors, and connectivity upward as telemetry.
+- Boot to a safe startup state; return to center before shutdown.
+
+## Conversion responsibility
+
+The ESP32 receives a command such as `set-position` and produces the Dynamixel
+Protocol 1.0 packets (instruction/status packets, register addresses,
+checksums) that realize it. The nod sequence itself is decided at the semantic
+layer (see `rules/nod-gesture.yaml`); the ESP32 executes the lower level.
+
+::: {.callout-tip}
+The ESP32 is the boundary where Open Engineering semantics become a device
+protocol. It implements HOW -- DEVICE and HOW -- PROTOCOL. It does not reason
+about WHY or WHAT.
+:::
+
+## Exercise
+
+Define the mapping from one semantic command to its device-level
+responsibilities. Choose `center` as the example:
+
+1. What semantic event triggers the command? (`pixstars.head.center.requested`)
+2. What device-level command does the ESP32 receive? (`center`)
+3. What Dynamixel Protocol 1.0 packets does the ESP32 produce? (register write
+   to the goal-position register with the calibrated center value)
+4. What safety checks does the ESP32 apply? (safe limits, timeout, emergency
+   stop)
+5. What telemetry does the ESP32 report? (position, temperature, status,
+   connectivity)
+
+Document the full mapping for one command before moving to the next module.
+
+## Next
+
+[Module 09 -- Connect the Physical AX-12A](09-connect-the-physical-ax12.qmd)

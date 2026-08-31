@@ -1,0 +1,89 @@
+# Crossplane Composition — realize an Actuator XR.
+#
+# The learner requests an Actuator capability. Crossplane composes everything
+# needed to realize it. Conceptual output (adapt schema to the Crossplane
+# course conventions):
+#
+#   Actuator XR
+#     ├── Pico representation          (pixstars-head-pitch)
+#     ├── runtime registration         (Manifold RuntimeEnvironment registration)
+#     ├── event connectivity           (Wrangler Channel + subscription)
+#     ├── edge-adapter configuration   (ESP32 endpoint + command set)
+#     ├── observability                (correlation, telemetry)
+#     └── Home Assistant exposure      (control surface)
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: xactuators.robotics.open-engineering.io
+spec:
+  compositeTypeRef:
+    apiVersion: robotics.open-engineering.io/v1alpha1
+    kind: XActuator
+  mode: Pipeline
+  pipeline:
+    - step: patch-selection
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        patchSets:
+          - name: common
+            patches:
+              - fromFieldPath: spec.capabilities
+                toFieldPath: spec.capabilities
+              - fromFieldPath: spec.gesture
+                toFieldPath: spec.gesture
+        resources:
+          - name: pico-representation
+            base:
+              apiVersion: open-engineering.io/v1alpha1
+              kind: Pico
+              spec: {}
+            patches:
+              - fromFieldPath: spec.capabilities
+                toFieldPath: spec.capabilities
+          - name: runtime-registration
+            base:
+              apiVersion: manifold.open-engineering.io/v1alpha1
+              kind: RuntimeRegistration
+              spec:
+                runtime: manifold
+          - name: event-connectivity
+            base:
+              apiVersion: wrangler.open-engineering.io/v1alpha1
+              kind: Channel
+              spec:
+                name: pixstars-head
+                eventTypes:
+                  - pixstars.head.nod.requested
+          - name: edge-adapter-config
+            base:
+              apiVersion: edge.open-engineering.io/v1alpha1
+              kind: EdgeAdapterConfig
+              spec:
+                protocol: dynamixel-protocol-1.0
+                host: pixstars-esp32
+                commandSet:
+                  - set-position
+                  - center
+                  - execute-motion
+                  - stop
+                  - get-position
+                  - get-temperature
+                  - get-status
+          - name: observability
+            base:
+              apiVersion: observability.open-engineering.io/v1alpha1
+              kind: CorrelationConfig
+              spec:
+                enabled: true
+          - name: home-assistant-exposure
+            base:
+              apiVersion: home-assistant.open-engineering.io/v1alpha1
+              kind: ControlSurfaceExposure
+              spec:
+                capabilities:
+                  - nod
+                  - center
+                  - stop

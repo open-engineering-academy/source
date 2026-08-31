@@ -1,0 +1,169 @@
+---
+title: "Module 11 — Trace the Nod"
+description: "Follow one nod request through every layer — observability, correlation, evidence, and failure."
+---
+
+## Goal
+
+The complete forward execution must be observable. This module teaches you to
+follow a single nod request through every arrow in the
+[architecture](../architecture.qmd) and identify the evidence at each boundary.
+
+## The 15-step chain
+
+When a human presses NOD, the following happens. Every step is observable.
+
+```
+ 1. User presses NOD
+ 2. Home Assistant emits a nod request
+ 3. Open Engineering resolves the target capability
+ 4. An event is created
+ 5. The Pico receives the event
+ 6. Manifold executes the applicable rule
+ 7. The nod gesture becomes actuator commands
+ 8. Commands are sent to the ESP32 edge adapter
+ 9. ESP32 translates to Dynamixel Protocol 1.0
+10. Commands pass through the electrical interface (74HCT245)
+11. AX-12A moves
+12. Lamp head moves
+13. Telemetry is returned
+14. Pico observed state changes
+15. Home Assistant reflects the updated state
+```
+
+Steps 1 through 12 are the **descent** (command) path. Steps 13 through 15
+are the **ascent** (telemetry) path. Together they form a closed loop — not
+remote control.
+
+See the full arrow map in the [architecture page](../architecture.qmd) and the
+[C4 diagram](../diagrams/make-the-lamp-nod.c4).
+
+## Correlation
+
+Every nod request carries a **correlation identifier**. This is a unique
+identifier attached at creation time so one nod can be followed through
+Home Assistant, event, Pico, rule, command, edge, servo, completion, and
+telemetry. The correlation id is the thread that ties the entire execution
+together.
+
+## The lifecycle
+
+The system distinguishes between requesting and completing. This is the
+desired-state principle from the [architecture](../architecture.qmd):
+
+```
+requested → accepted → executing → completed → failed
+```
+
+`COMMAND SENT` is **not** equivalent to `GESTURE COMPLETED`. Requesting
+motion is not proof that motion occurred. Evidence over assumption.
+
+## Trace: nod.requested through nod.completed
+
+### nod.requested
+
+Home Assistant fires `shell_command.pixstars_nod`. The approved CLI emits
+one event: `pixstars.head.nod.requested`. The correlation id is created.
+
+**Evidence:** event created with correlation id and event type.
+
+### rule.executed
+
+Manifold receives the event. The Pico twin's rule fires: the nod capability
+is resolved, safe limits are checked, and actuator commands are generated.
+
+**Evidence:** rule executed; rule name and correlation id logged.
+
+### actuator.commanded
+
+The nod sequence (center, down, up, center) is decomposed into
+actuator-level position commands. These are semantic commands — not yet
+Dynamixel register writes.
+
+**Evidence:** actuator commands generated; target positions and speeds
+recorded.
+
+### edge.command.sent
+
+Manifold sends the actuator commands to the ESP32 edge adapter. The
+correlation id travels with the command across the network boundary.
+
+**Evidence:** command sent to edge adapter; correlation id and command
+details logged.
+
+### servo.moving
+
+The ESP32 converts to Dynamixel Protocol 1.0, sends register writes
+through the 74HCT245 electrical interface, and the AX-12A begins moving.
+Telemetry reports `moving: true`.
+
+**Evidence:** servo in motion; position changing toward target.
+
+### servo.position.changed
+
+Telemetry reports the actual position changing: center → down → up →
+center. The Pico twin's `actualPosition` field updates with each
+telemetry sample.
+
+**Evidence:** position telemetry at each step of the sequence.
+
+### nod.completed
+
+The servo has reached the final center position. Telemetry reports
+`moving: false` and `actualPosition` converges to `desiredPosition`.
+The Pico twin's `lastCommandStatus` transitions to `completed`.
+
+**Evidence:** final state reported; correlation id with `completed`
+status.
+
+## Failure scenarios
+
+The course deliberately teaches failure modes. Each produces a clear,
+observable result.
+
+| Failure | Expected result |
+|---------|-----------------|
+| Servo unavailable | `nod failed: actuator unavailable` |
+| ESP32 disconnected | `edge adapter unavailable` |
+| Unsafe requested position | `command rejected: outside configured safe limits` |
+| Timeout (servo does not reach target) | `gesture failed: actuator did not reach expected state` |
+| Runtime unavailable | capability reports degraded/unavailable |
+
+::: {.callout-tip title="Evidence over assumption"}
+Every failure is observable. The system does not pretend execution succeeded
+when it did not. A missing response is not a success — it is a gap in
+evidence that demands investigation.
+:::
+
+## The semantic layering in the trace
+
+The trace makes the [semantic layering](../architecture.qmd) concrete. At
+each step, a different layer is responsible:
+
+| Step | Layer | Question answered |
+|------|-------|-------------------|
+| nod.requested | WHAT — gesture intent | "What should happen?" |
+| rule.executed | HOW — logical | "What sequence of positions?" |
+| actuator.commanded | HOW — device | "What positions and speeds?" |
+| edge.command.sent | HOW — protocol | "What Dynamixel packets?" |
+| servo.moving | HOW — electrical | "What voltage, what direction?" |
+| nod.completed | WHAT — gesture intent | "Did the nod happen?" |
+
+The ESP32 never answers "Why did PixStars nod?" That is a question for
+a character layer that does not exist in this course. The character
+boundary is explicit — see memo5 section 27.
+
+## Exercise
+
+1. Trigger a nod from Home Assistant or the CLI.
+2. Identify the correlation id in the observability output.
+3. For each of the seven evidence steps above, find the corresponding
+   log entry or state change.
+4. Introduce one failure condition (for example, disconnect the servo)
+   and trace the failure through the same observability path.
+5. Confirm the system reports a clear failure, not a silent success.
+
+## Next
+
+[Module 12 — Make the Lamp Nod](./12-make-the-lamp-nod.qmd), the capstone
+exercise where everything comes together.

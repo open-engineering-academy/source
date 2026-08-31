@@ -1,0 +1,169 @@
+---
+title: "Module 03 — Create the Digital Twin"
+description: "Model the logical head-pitch actuator as the pixstars-head-pitch Pico, with desired state, observed state, identity, and events."
+---
+
+## Goal
+
+Create the digital twin: the `pixstars-head-pitch` Pico. The Pico represents the
+**logical** actuator and its state — not merely a hardware register. It is the
+home where a capability (`nod`) lives, is tracked, and is observed.
+
+## Reuse the Pico course
+
+A Pico is a declarative, composable digital entity described by **Rules** and
+produced by a **Parser** and a **Composer**. We reuse that model exactly rather
+than inventing a new format.
+
+- [Pico course](../../pico/)
+- [Pico Glossary](../../pico/glossary.qmd)
+
+::: {.callout-tip}
+The Pico is the *logical* head-pitch actuator. The AX-12A is one *current
+implementation* of it. The Pico's capability must survive replacing the AX-12A
+with another servo — the Pico describes what the actuator *is*, not which servo
+currently realizes it.
+:::
+
+## The canonical Pico
+
+Here is the canonical Pico representing the logical PixStars head-pitch
+actuator ([picos/pixstars-head-pitch.yaml](../picos/pixstars-head-pitch.yaml)):
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: pixstars-head-pitch
+spec:
+  type: actuator
+  capabilities:
+    - nod
+    - center
+    - stop
+    - set-position
+  implementation:
+    deviceClass: dynamixel
+    model: AX-12A
+  state:
+    desiredPosition: 0
+    actualPosition: 0
+    moving: false
+    torqueEnabled: true
+    connected: true
+    temperature: null
+    voltage: null
+    lastCommand: null
+    lastCommandStatus: null
+    lastUpdated: null
+  events:
+    subscribesTo:
+      channel: pixstars-head
+      eventTypes:
+        - pixstars.head.nod.requested
+        - pixstars.head.center.requested
+        - pixstars.head.stop.requested
+    emits:
+      - pixstars.head.nod.completed
+      - pixstars.head.nod.failed
+      - pixstars.head.state.updated
+```
+
+Three parts carry the meaning:
+
+- **`capabilities`** — what the actuator can do (`nod`, `center`, `stop`,
+  `set-position`). This is the semantic interface from Module 2.
+- **`implementation`** — the current device class and model (Dynamixel AX-12A).
+  This is *replaceable*: swap it for another servo and the capability survives.
+- **`state`** — the twin's picture of the actuator, split into desired and
+  observed fields.
+
+## Desired state vs observed state
+
+The state model keeps **desired state** and **observed state** explicitly
+separate:
+
+```
+desiredPosition   the position we asked for
+actualPosition    the position the actuator reports
+moving            is the actuator in motion
+torqueEnabled     is torque on
+connected         is the actuator reachable
+temperature       telemetry (where available)
+lastCommand       the most recent command
+lastCommandStatus requested | accepted | executing | completed | failed
+```
+
+This distinction must be taught explicitly:
+
+```
+desiredPosition = +15°
+actualPosition  = +12°
+```
+
+This is **not** an error. It is evidence that the physical system is *moving
+toward* the desired state. A digital twin that only mirrored one number could
+not tell "moving correctly" from "failed". Because we keep both, the difference
+between them is meaningful signal, not noise.
+
+::: {.callout-tip}
+See the [Architecture](../architecture.qmd) page — **Digital twin over remote
+control** — for the full list of state fields and the example where `+15°`
+desired vs `+12°` actual is evidence of motion, not failure.
+:::
+
+## Identity
+
+Every important Open Engineering entity uses the canonical Open Engineering
+identifier conventions — we do not create a separate identity scheme. At minimum
+identities exist for:
+
+- the physical actuator
+- the Pico digital twin
+- the actuator capability
+- the edge adapter
+- the runtime instance
+- the relevant events
+
+Each `nod` also carries a **correlation identifier** so one request can be
+traced through Home Assistant → event → Pico → rule → command → edge → servo →
+completion → telemetry. With identities in place, you can follow a single
+execution end to end instead of hoping the pieces line up.
+
+## Events
+
+The twin does its work through events. It subscribes to requests (`nod`,
+`center`, `stop`) and emits results (`nod.completed`, `nod.failed`,
+`state.updated`). The request→result loop is what makes the digital twin
+observable: you can watch a command enter, state change, and a result come out.
+
+The rule that governs what the Pico is permitted to do lives in
+[rules/nod.yaml](../rules/nod.yaml). Notice it allows the semantic capabilities
+and **denies** `actuator.write-register` and `actuator.raw-motion` — the 
+device-level leakage we excluded in Module 2.
+
+## Link back to architecture
+
+The Pico twin sits in the middle of the closed loop — it holds the desired and
+observed state that makes the system a *digital twin over remote control*, not
+mere remote control. See [Architecture — Digital twin over remote
+control](../architecture.qmd#digital-twin-over-remote-control).
+
+## Exercise
+
+Extend the state model or add a telemetry field:
+
+1. Add a new field to `state` (for example `voltage` already exists, so try
+   something like `load`, `health`, or `lastError`) and give it a sensible
+   initial value in the Pico YAML above.
+2. Update the `events` section if your field would emit a new event type, and
+   name that event with the canonical dotted style.
+3. Add the corresponding identity for that event so it can be traced.
+4. Explain, in one or two sentences, whether your new field is *desired* state,
+   *observed* state, or both — and why.
+
+## Next
+
+A digital twin with state is only useful if we can run it. In the next module we
+prove the `nod` capability works *without any hardware*: [Module 04 — Simulate
+the Actuator](04-simulate-the-actuator.qmd).

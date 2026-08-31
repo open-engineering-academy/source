@@ -1,0 +1,198 @@
+---
+title: "Module 10 — Expose the Capability"
+description: "Connect Home Assistant as the first human control surface for the physical and simulated lamp."
+---
+
+## Goal
+
+Wire Home Assistant to the Open Engineering runtime so a human can press NOD,
+CENTER, and STOP, and observe actuator state. Home Assistant is the first human
+control interface. It is NOT the controller.
+
+## Home Assistant is a ControlSurface
+
+In Phase 7 vocabulary, Home Assistant is a **ControlSurface**: an interface
+that lets a human express intent without becoming the runtime or the ontology
+owner. Every read and every write goes through the approved `pico runtime`
+CLI. Home Assistant does not talk to Kubernetes directly, does not implement
+the servo trajectory, and does not own actuator behavior.
+
+See the [Hello Pico on Home Assistant lab](../../../labs/hello-pico-home-assistant/)
+for the foundational ControlSurface pattern this module reuses.
+
+## The incorrect and correct patterns
+
+The course teaches a critical distinction from memo5 section 24:
+
+**Incorrect** — Home Assistant implements the servo trajectory:
+
+```
+Home Assistant
+     ↓
+position 15
+     ↓
+delay
+     ↓
+position -8
+     ↓
+delay
+     ↓
+position 0
+```
+
+**Correct** — Home Assistant requests a capability; the architecture resolves it:
+
+```
+Home Assistant
+     ↓
+nod (semantic request)
+     ↓
+Open Engineering
+     ↓
+gesture behavior
+     ↓
+actuator implementation
+```
+
+The incorrect pattern couples the UI to the device protocol. The correct
+pattern allows any future interface — CLI, web app, AI agent, voice
+instruction — to request exactly the same capability without knowing
+Dynamixel Protocol 1.0.
+
+## The configuration snippet
+
+The canonical configuration lives at
+[home-assistant/configuration.yaml](../home-assistant/configuration.yaml).
+It follows the same pattern proven by the
+[Hello Pico Home Assistant lab](../../../labs/hello-pico-home-assistant/downloads/configuration.yaml):
+`command_line` sensor for observation, `shell_command` for safe control
+actions, `input_button` for UI triggers, and `automation` to bind them.
+
+### Observation surface — command_line sensor
+
+```yaml
+command_line:
+  - sensor:
+      name: pixstars_head_state
+      unique_id: oe.course.make-the-lamp-nod.head_state
+      command: "/config/make-the-lamp-nod/head-state.sh"
+      scan_interval: 5
+      command_timeout: 10
+```
+
+This sensor reflects the Pico twin's reported state via the CLI. Home
+Assistant observes what the approved CLI reports; it never reads state
+directly. The sensor surfaces connection status, head position, moving
+state, torque, last command, and last result.
+
+### Safe control actions — shell_command
+
+```yaml
+shell_command:
+  pixstars_nod: "pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.nod.requested --value '{}'"
+  pixstars_center: "pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.center.requested --value '{}'"
+  pixstars_stop: "pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.stop.requested --value '{}'"
+```
+
+Each shell_command emits exactly one semantic event. The `pico runtime emit`
+CLI is byte-equal to what a learner would type at a shell prompt. This is
+the same ControlSurface pattern as the Hello Pico lab — every write delegates
+to the approved CLI, which delegates to the Pico runtime.
+
+### UI triggers — input_button
+
+```yaml
+input_button:
+  pixstars_nod:
+    name: "NOD"
+  pixstars_center:
+    name: "CENTER"
+  pixstars_stop:
+    name: "STOP"
+```
+
+`input_button` is Home Assistant's canonical UI-triggerable one-shot control
+primitive. The automation binds it to the shell_command without adding any
+state or logic of its own.
+
+### Automations
+
+```yaml
+automation:
+  - alias: "PixStars — nod on button press"
+    id: oe.course.make-the-lamp-nod.nod_automation
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_button.pixstars_nod
+    action:
+      - service: shell_command.pixstars_nod
+```
+
+The automations bind buttons to shell_commands. They contain no business
+logic. NOD is mandatory; CENTER and STOP are provided as additional
+safe controls.
+
+## The minimum dashboard
+
+The dashboard exposes actuator state and safe controls:
+
+```
+PixStars Lamp
+Connection:       Connected
+Head position:    0
+Moving:           No
+Torque:           Enabled
+Last command:     nod
+Last result:      Success
+[ NOD ]
+[ CENTER ]
+[ STOP ]
+```
+
+NOD is mandatory. CENTER and STOP should also be provided. The dashboard
+reflects runtime truth through the `command_line` sensor — it does not
+invent its own state.
+
+## What Home Assistant is not
+
+::: {.callout-warning title="Home Assistant is not the controller"}
+- Home Assistant is not a runtime. Manifold is the runtime.
+- Home Assistant is not an ontology owner. Open Engineering owns capabilities.
+- Home Assistant is not a bypass around Kubernetes or the Pico runtime.
+- Home Assistant requests nod. It does not decide *when* to nod, *how* to
+  nod, or *what positions* the servo should reach.
+:::
+
+Any Home Assistant integration that talks to Kubernetes directly, implements
+a servo trajectory, or maintains its own actuator state violates the
+ControlSurface contract. All reads and writes must go through the approved
+`pico runtime` CLI.
+
+## The ascent path
+
+The `command_line` sensor completes the closed loop. Telemetry flows:
+
+```
+AX-12A → ESP32 → Pico twin → pico runtime inspect → command_line sensor → HA dashboard
+```
+
+The human sees the physical state reflected in the UI. This is not remote
+control — it is a minimal closed-loop cyber-physical architecture.
+
+## Exercise
+
+1. Merge the configuration snippet from
+   [home-assistant/configuration.yaml](../home-assistant/configuration.yaml)
+   into your Home Assistant `configuration.yaml`.
+2. Verify the `command_line` sensor reports actuator state.
+3. Press NOD and verify the `shell_command` fires.
+4. Add one new sensor or button to the dashboard that exposes additional
+   telemetry (for example, servo temperature or voltage if your hardware
+   reports it).
+
+## Next
+
+[Module 11 — Trace the Nod](./11-trace-the-nod.qmd), where you learn
+observability and correlation — following a single nod request through
+every layer of the architecture.
