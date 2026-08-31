@@ -1,0 +1,59 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix oee: <https://openengineering.example/ontology#> .
+@prefix ex:  <https://academy.openengineering.example/pico#> .
+
+# ---------------------------------------------------------------------------
+# SHACL operational quality gate (reference shapes)
+#
+# Phase 8 reference. SHACL expresses the operational quality gate: what a
+# valid engineering record must contain for a realized Element to count as
+# conformant. The shapes below mirror the Phase 1-4 shape rules for the
+# `hello-pico-v1` checkable profile as typed triples over the reference
+# ontology. They are additive and opt-in; nothing validates against them
+# unless it chooses to.
+# ---------------------------------------------------------------------------
+
+# A valid Hello Pico Element must conform to the hello-pico-definition and
+# expose the observed output expected by that Definition.
+ex:HelloPicoElementShape a sh:NodeShape ;
+  sh:targetClass oee:Element ;
+
+  sh:property [
+    sh:path oee:conformsTo ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:hasValue ex:hello-pico-definition ;
+  ] ;
+
+  sh:property [
+    sh:path oee:hasObservedOutput ;
+    sh:minCount 1 ;
+    sh:hasValue "Hello, Pico!" ;
+  ] .
+
+# A conformant Hello Pico Element must be checked by at least three
+# Validations (one per Constraint on the Definition).
+ex:HelloPicoValidationShape a sh:NodeShape ;
+  sh:targetNode ex:hello-pico-job-001 ;
+
+  sh:property [
+    sh:path [ sh:inversePath oee:checks ] ;
+    sh:minCount 3 ;
+  ] .
+
+# Every Value of a Validation must be one of the recorded outcomes.
+ex:ValidationResultShape a sh:NodeShape ;
+  sh:targetClass oee:Validation ;
+
+  sh:property [
+    sh:path oee:validationResult ;
+    sh:minCount 1 ;
+    sh:in (
+      "passed"
+      "failed"
+      "not-run"
+    ) ;
+  ] .

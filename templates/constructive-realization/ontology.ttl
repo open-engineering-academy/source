@@ -1,0 +1,95 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix oee: <https://openengineering.example/ontology#> .
+@prefix ex:  <https://academy.openengineering.example/pico#> .
+
+# ---------------------------------------------------------------------------
+# Constructive-realization ontology (OWL-style reference schema)
+#
+# Phase 8 reference. Expresses the constructive semantics of the Open
+# Engineering Ecosystem: what kinds of things exist and how they relate.
+# This file is an additive, opt-in reference; it does not change the Phase 1-7
+# metadata.yaml contract and nothing validates against it unless it chooses to.
+# ---------------------------------------------------------------------------
+
+oee:Definition a owl:Class .
+oee:Realization a owl:Class .
+oee:Element a owl:Class .
+oee:Constraint a owl:Class .
+oee:Validation a owl:Class .
+oee:Dependency a owl:Class .
+oee:Feedback a owl:Class .
+
+# A Realization realizes exactly the Definition it is a constructive path for.
+oee:realizes a owl:ObjectProperty ;
+  rdfs:domain oee:Realization ;
+  rdfs:range oee:Definition .
+
+# A Realization produces the Element(s) it brings into existence.
+oee:produces a owl:ObjectProperty ;
+  rdfs:domain oee:Realization ;
+  rdfs:range oee:Element .
+
+# An Element conforms to the Definition it realizes.
+oee:conformsTo a owl:ObjectProperty ;
+  rdfs:domain oee:Element ;
+  rdfs:range oee:Definition .
+
+# A Realization uses the Dependencies required to construct its Element.
+oee:usesDependency a owl:ObjectProperty ;
+  rdfs:domain oee:Realization ;
+  rdfs:range oee:Dependency .
+
+# A Validation checks an Element against the Definition's requirements.
+oee:checks a owl:ObjectProperty ;
+  rdfs:domain oee:Validation ;
+  rdfs:range oee:Element .
+
+# A Validation establishes a specific Constraint on the checked Element.
+oee:validatesConstraint a owl:ObjectProperty ;
+  rdfs:domain oee:Validation ;
+  rdfs:range oee:Constraint .
+
+# The runtime-observed output of a realized Element.
+oee:hasObservedOutput a owl:DatatypeProperty ;
+  rdfs:domain oee:Element ;
+  rdfs:range xsd:string .
+
+# The outcome recorded by a Validation.
+oee:validationResult a owl:DatatypeProperty ;
+  rdfs:domain oee:Validation ;
+  rdfs:range xsd:string .
+
+# Human-readable label carried by any of the classes.
+oee:name a owl:DatatypeProperty ;
+  rdfs:range xsd:string .
+
+# The intended meaning expressed by a Definition.
+oee:semanticIntent a owl:DatatypeProperty ;
+  rdfs:domain oee:Definition ;
+  rdfs:range xsd:string .
+
+# The role a Dependency serves in a Realization.
+oee:purpose a owl:DatatypeProperty ;
+  rdfs:range xsd:string .
+
+# The natural-language condition a Constraint states.
+oee:rule a owl:DatatypeProperty ;
+  rdfs:domain oee:Constraint ;
+  rdfs:range xsd:string .
+
+# The observed operational state of an Element.
+oee:hasState a owl:DatatypeProperty ;
+  rdfs:range xsd:string .
+
+# A Definition carries one or more Constraints it requires valid Elements to hold.
+oee:hasConstraint a owl:ObjectProperty ;
+  rdfs:domain oee:Definition ;
+  rdfs:range oee:Constraint .
+
+# Feedback refines the Definition it is drawn from.
+oee:refines a owl:ObjectProperty ;
+  rdfs:domain oee:Feedback ;
+  rdfs:range oee:Definition .

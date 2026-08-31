@@ -8,6 +8,7 @@ project:
     - glossary.qmd
     - constructive-realization.qmd
     - hello-pico-exemplar.qmd
+    - formal-realization-schema.qmd
     - part-1/index.qmd
     - part-1/01-introduction/index.qmd
     - part-1/01-introduction/exercise.qmd
@@ -64,6 +65,8 @@ website:
         text: Model
       - href: hello-pico-exemplar.qmd
         text: Exemplar
+      - href: formal-realization-schema.qmd
+        text: Formal schema
       - href: glossary.qmd
         text: Glossary
     right:
@@ -154,6 +157,8 @@ website:
         text: Model
       - href: hello-pico-exemplar.qmd
         text: Exemplar
+      - href: formal-realization-schema.qmd
+        text: Formal schema
       - href: glossary.qmd
         text: Glossary
   page-footer:
