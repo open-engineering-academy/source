@@ -49,4 +49,4 @@ REFLECT      Document what the metaphor clarified and what it obscured.
 ## Related lessons
 
 - All eight modules of the Engineering Stories course.
-- The [Reference example](../reference-example/README.md).
+- The [Reference example](../../reference-example/README.md).
