@@ -1,0 +1,69 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix oee: <https://openengineering.example/ontology#> .
+@prefix ex:  <https://academy.openengineering.example/pico#> .
+
+# ---------------------------------------------------------------------------
+# `Hello, Pico!` instance data (reference)
+#
+# Phase 8 reference. A concrete evidence artifact showing Definition ->
+# Realization -> Element -> Validation -> Feedback for Hello Pico, expressed
+# as triples over the reference ontology. This mirrors, in formal form, the
+# Phase 1-6 narrative and the Phase 4 `hello-pico-v1` checkable profile.
+# ---------------------------------------------------------------------------
+
+# --- Definition -------------------------------------------------------------
+ex:hello-pico-definition a oee:Definition ;
+  oee:name "Hello, Pico!" ;
+  oee:semanticIntent "Emit the exact text Hello, Pico! once." ;
+  oee:hasConstraint ex:exact-output, ex:kubernetes-job, ex:successful-completion .
+
+ex:exact-output a oee:Constraint ;
+  oee:rule "Observed output equals Hello, Pico!" .
+
+ex:kubernetes-job a oee:Constraint ;
+  oee:rule "The Element is materialized as a Kubernetes Job." .
+
+ex:successful-completion a oee:Constraint ;
+  oee:rule "The Job reaches successful completion." .
+
+# --- Realization (Sandcastle -> Crossplane -> MiniKube) ----------------------
+ex:hello-pico-realization-v1 a oee:Realization ;
+  oee:realizes ex:hello-pico-definition ;
+  oee:usesDependency ex:sandcastle, ex:crossplane, ex:minikube ;
+  oee:produces ex:hello-pico-job-001 .
+
+ex:sandcastle a oee:Dependency ;
+  oee:name "Sandcastle" ;
+  oee:purpose "Package the Pico realization." .
+
+ex:crossplane a oee:Dependency ;
+  oee:name "Crossplane" ;
+  oee:purpose "Declare and bind the required infrastructure and platform resources." .
+
+ex:minikube a oee:Dependency ;
+  oee:name "MiniKube" ;
+  oee:purpose "Provide the local Kubernetes runtime." .
+
+# --- Element -----------------------------------------------------------------
+ex:hello-pico-job-001 a oee:Element ;
+  oee:conformsTo ex:hello-pico-definition ;
+  oee:hasObservedOutput "Hello, Pico!" ;
+  oee:hasState "Completed" .
+
+# --- Validations (one per Constraint) ---------------------------------------
+ex:output-validation a oee:Validation ;
+  oee:checks ex:hello-pico-job-001 ;
+  oee:validatesConstraint ex:exact-output ;
+  oee:validationResult "passed" .
+
+ex:job-form-validation a oee:Validation ;
+  oee:checks ex:hello-pico-job-001 ;
+  oee:validatesConstraint ex:kubernetes-job ;
+  oee:validationResult "passed" .
+
+ex:completion-validation a oee:Validation ;
+  oee:checks ex:hello-pico-job-001 ;
+  oee:validatesConstraint ex:successful-completion ;
+  oee:validationResult "passed" .

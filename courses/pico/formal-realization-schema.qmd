@@ -1,0 +1,76 @@
+---
+title: "Formal realization schema"
+subtitle: "The Phase 8 OWL/SHACL reference encoding of the constructive-realization vocabulary."
+---
+
+This page is the course-facing reference for the academy's **formal**
+constructive-realization schema (Phase 8). Where
+[Constructive realization](constructive-realization.qmd) names the five terms
+in natural language and maps them onto the Pico pipeline, this page points at
+the machine-readable **Turtle** encoding of the same vocabulary and quality
+gate.
+
+Phase 8 is reference-only and opt-in. Nothing here changes how a Pico is
+built, and no artifact validates against these files unless it opts in. If you
+are writing a lesson or lab, keep authoring Constraints in natural language
+as [the Phase 1 vocabulary](constructive-realization.qmd#the-five-terms)
+requires; treat the files on this page as a formal restatement you can link
+to, not an authoring format.
+
+The reference files live in
+[`templates/constructive-realization/`](../../templates/constructive-realization/):
+
+- [ontology.ttl](../../templates/constructive-realization/ontology.ttl) —
+  the classes and relations.
+- [quality-gate.schema.ttl](../../templates/constructive-realization/quality-gate.schema.ttl)
+  — the operational quality gate.
+- [hello-pico-instances.ttl](../../templates/constructive-realization/hello-pico-instances.ttl)
+  — the concrete `Hello, Pico!` record.
+
+## What the formal schema adds
+
+The informal terms and the formal names describe the same thing. The formal
+schema gives each concept a stable identifier you can reference and, on a
+small size, a way to state the quality gate precisely.
+
+| Informal (Phase 1)        | Formal (Phase 8)            |
+| ------------------------- | --------------------------- |
+| Definition                | `oee:Definition`            |
+| Realization               | `oee:Realization`           |
+| Element                   | `oee:Element`               |
+| Constraint                | `oee:Constraint`            |
+| Validation                | `oee:Validation`            |
+| (a Definition's conditions) | `oee:hasConstraint`       |
+| (an Element's link to its Definition) | `oee:conformsTo` |
+| (a Validation's check of an Element)  | `oee:checks`       |
+
+## The Hello Pico record
+
+The reference instance data expresses, in formal form, the same path the
+course already teaches:
+
+```text
+Definition -> Realization -> Element -> Validation
+```
+
+- **Definition** — `hello-pico-definition` names three Constraints:
+  exact output, Kubernetes Job form, and successful completion.
+- **Realization** — `hello-pico-realization-v1` realizes the Definition and
+  uses the Sandcastle, Crossplane, and MiniKube Dependencies.
+- **Element** — `hello-pico-job-001` conforms to the Definition and carries
+  the observed output `Hello, Pico!`.
+- **Validations** — three checks, one per Constraint, each recorded as `passed`.
+
+## Relationship to the phases
+
+- Phases 1–7 keep formal OWL/SHACL out of scope and express shape rules with
+  `metadata.yaml` fields and natural-language Constraints.
+- Phase 8 re-states those same shape rules as reference triples. The formal
+  schema mirrors the Phase 4 `hello-pico-v1` checkable profile and the
+  Phase 1–6 vocabulary; it never replaces them.
+
+See [Constructive realization](constructive-realization.qmd) for the Phase 1
+vocabulary, [Hello Pico as a constructive exemplar](hello-pico-exemplar.qmd)
+for the first concrete exemplar, the [Glossary](glossary.qmd) for one-line
+definitions, and `templates/README.qmd` (in-repo scaffold, not published as a
+learner page) for the Phase 8 contract.

@@ -1152,3 +1152,73 @@ Phase 7 intentionally does **not** implement:
   vocabulary.
 
 These remain candidates for later phases.
+
+## Constructive realization (Phase 8)
+
+Phase 8 adds a **formal, opt-in reference encoding** of the constructive
+realization vocabulary using the reference files in
+[`templates/constructive-realization/`](constructive-realization/). Where
+Phases 1–7 expressed the same shape rules with natural-language Constraints
+and `metadata.yaml` fields, Phase 8 **re-states** them as Turtle triples — an
+OWL-style class/property vocabulary, a SHACL quality gate, and a concrete
+`Hello, Pico!` instance record — so course authors who want a machine-checkable
+form have one source of truth in-repo.
+
+Phase 8 is strictly additive. It does **not** change the Phase 1–7 contract,
+does **not** require any artifact to validate against the files, and keeps the
+natural-language authoring guidance from earlier phases in force.
+
+### Reference files
+
+| File | Purpose |
+| ---- | ------- |
+| `templates/constructive-realization/ontology.ttl` | OWL-style schema: the classes and relations that define constructive realization. |
+| `templates/constructive-realization/quality-gate.schema.ttl` | SHACL shapes: the operational quality gate for a conformant realized Element. |
+| `templates/constructive-realization/hello-pico-instances.ttl` | Concrete `Hello, Pico!` instance data mirroring the Phase 4 `hello-pico-v1` checkable profile. |
+
+### Vocabulary mapping (informal -> formal)
+
+The Phase 1–7 fields map onto the formal vocabulary as follows. The formal
+names restate what the metadata fields already express; they do not extend the
+contract.
+
+| Phase 1–7 concept | `metadata.yaml` | Formal (Phase 8) |
+| ----------------- | --------------- | ---------------- |
+| Definition | `constructive_role: definition`, `constraints`, `produces` | `oee:Definition`, `oee:hasConstraint` |
+| Realization | `constructive_role: realization`, `realizes`, `realization_pattern`, `depends_on` | `oee:Realization`, `oee:realizes`, `oee:usesDependency` |
+| Element | `constructive_role: element`, `produced_by`, `conforms_to` | `oee:Element`, `oee:conformsTo` |
+| Constraint | inline `constraints` entries | `oee:Constraint`, `oee:rule` |
+| Validation | `validated_by`, `validation_results[]` | `oee:Validation`, `oee:checks`, `oee:validatesConstraint` |
+| Feedback | `feedback[]` (Phase 2) | `oee:Feedback`, `oee:refines` |
+
+Note: `conforms_to` is a new optional field introduced by Phase 8 so an
+Element record can name the Definition it conforms to in a way the formal
+`oee:conformsTo` triple mirrors. It is optional and descriptive; missing it
+does not fail any render or validation.
+
+### Course-authoring guidance
+
+- Treat Phase 8 files as a **reference**, not an authoring format. In Phase
+  1–7 material, keep authoring Constraints in natural language as the earlier
+  phases require.
+- When a page needs to show the formal vocabulary or the quality gate, link
+  to the corresponding reference file rather than duplicating Turtle inline.
+- Reach for the formal encoding only when a machine-checkable statement of a
+  shape rule is genuinely useful (for example, a dedicated reference page);
+  do not scatter Turtle across lessons or labs.
+- Existing metadata (Phase 1–7 fields) is preserved unchanged; the Phase 8
+  files and the optional `conforms_to` field sit alongside them.
+
+### Out of scope for Phase 8
+
+Phase 8 intentionally does **not** implement:
+
+- Any retrofit of existing courses, lessons, labs, or exercises to author
+  Turtle or to validate against the reference files.
+- Automated conformance checking, triple-store persistence, a graph database,
+  or CI gating driven by the reference schema. The files are reference
+  encodings only; running them against data is a reader's choice.
+- Extending the Phase 4 `hello-pico-v1` profile shape rules to require the
+  formal files, or adding new checkable profiles.
+- Changing the Phase 1–7 `metadata.yaml` contract; where this phase adds the
+  optional `conforms_to` field, it does so additively only.
