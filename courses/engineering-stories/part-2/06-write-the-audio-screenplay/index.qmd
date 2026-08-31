@@ -1,0 +1,173 @@
+---
+title: "2. Write the Audio Screenplay"
+description: "Transform the scene plan into an audio-first, scene-oriented screenplay. Produce screenplay.md."
+order: 6
+---
+
+## Overview
+
+The screenplay is the **audio-first, scene-oriented** intermediate
+representation that sits between your technical knowledge and the rendered audio.
+It must be renderable by an AI audio producer, human actors, or conventional
+studio work — and it must be useful *independently* of the renderer.
+
+This lesson teaches the fundamental constraint of audio writing and the format
+of a scene-oriented screenplay.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain the constraint "If the listener cannot hear it, it does not exist."
+- Distinguish a visual screenplay from an audio screenplay.
+- Write scene blocks with AMBIENCE, NARRATOR, dialogue, and SFX.
+- Design a sound vocabulary where each sound represents a technical event.
+- Use narration, dialogue, pacing, transitions, and fourth-wall breaks
+  deliberately.
+- Describe the screenplay as an intermediate representation in the production
+  pipeline.
+
+## The fundamental constraint
+
+> **If the listener cannot hear it, it does not exist.**
+
+In a visual screenplay, staging can show actions the ear would miss. In audio,
+every important action must reach the ear through at least one of:
+
+- **Dialogue** — characters say what is happening.
+- **Narration** — the narrator describes what cannot be shown.
+- **Sound effect (SFX)** — a sound marks an event.
+- **Ambience** — background environment tells the listener where they are.
+- **Music** — a cue signals tone, tension, or transition.
+
+If an action is important and none of these carry it, the listener will miss it.
+That is the discipline of audio writing.
+
+## Visual vs. audio screenplay
+
+| Visual screenplay | Audio screenplay |
+| --- | --- |
+| "The chef places the ticket beside the stove." | NARRATOR: "The chef tears the ticket from the rail." [SFX: paper tearing] |
+| Camera shows the kitchen | AMBIENCE: "Busy restaurant kitchen." |
+| A character glances at the door | NARRATOR: "The manager notices something is wrong." |
+
+The visual version relies on what the eye can see. The audio version must make
+every detail audible.
+
+## The scene-oriented format
+
+Each scene block in the screenplay contains:
+
+```
+## SCENE 01 — THE TITLE
+
+**LOCATION:** [where the scene takes place]
+**AMBIENCE:** [background environment]
+
+**NARRATOR:** [connective narration]
+
+**CHARACTER:** (voice note) [dialogue]
+
+**SFX:** [sound effect that marks an event]
+
+**NARRATOR:** [closing narration — the learning outcome]
+```
+
+### Rules
+
+- One scene per `## SCENE` block.
+- AMBIENCE goes first — it tells the listener where they are.
+- NARRATOR lines carry the explanation that no character voice handles.
+- Dialogue carries relationships and state transitions.
+- SFX marks specific technical events (see the sound vocabulary below).
+- Every scene ends with a closing narration that restates the learning outcome.
+
+## Semantic sound design
+
+Sound effects are not decoration. Each one represents an event or state in the
+technical model. Build a **sound vocabulary** early — a table mapping events to
+sounds:
+
+| Event / state | Sound |
+| --- | --- |
+| Request submitted | Ticket printer |
+| Template / recipe selected | Book opening |
+| Components created | Preparation sounds |
+| Provider operation | Appliance hum |
+| Successful reconciliation | Service bell |
+| Reconciliation failure | Alarm or interruption |
+
+When the listener hears the ticket printer, they know a request was submitted —
+without anyone saying so. This is **semantic sound design**: sound as part of the
+model.
+
+## Narration and dialogue
+
+- **Use dialogue for relationships and state transitions.** Dialogue shows the
+  hand-off between responsibilities: "One application environment, please." →
+  "Certainly — I will use the recipe for that order."
+- **Use narration for connective tissue.** Narration explains what no character
+  voice can carry: the learning outcome, context changes, and the technical
+  takeaway.
+- **Reserve narration for scene openings and closings.** The opening narration
+  sets context; the closing narration states the learning outcome.
+
+## Pacing, transitions, and fourth-wall breaks
+
+- **Pacing.** Give the listener time to absorb each learning outcome. Pause
+  before closing narration. Do not rush the final lines of a scene.
+- **Transitions.** End each scene on a note that leads into the next — a
+  question, a handoff, or a sound that bridges scenes.
+- **Fourth-wall breaks.** Occasionally a character may acknowledge its technical
+  counterpart ("Hello Developer — ahum, I mean Customer"). Use sparingly. It
+  re-anchors the listener when the metaphor risks becoming too entertaining and
+  they forget the mapping.
+
+## The screenplay as intermediate representation
+
+The screenplay sits between knowledge and the rendered audio artifact:
+
+```
+SOURCE MODEL
+Architecture / Documentation / Schemas
+        |
+TRANSFORMATION
+Technical model (concept.md)
+Metaphor (metaphor.md)
+Characters (characters.md)
+Scenes (scenes.md)
+        |
+INTERMEDIATE REPRESENTATION
+screenplay.md
+        |
+RENDERERS
+Wondercraft / Other AI audio / Human actors / Studio
+        |
+ARTIFACT
+audio-play.mp3
+```
+
+This means the screenplay must stay useful independently of the renderer. A
+screenplay written for Wondercraft should also be usable by human actors or
+another AI system without modification.
+
+Read the full screenplay at
+[`reference-example/screenplay.md`](../../reference-example/screenplay.md).
+
+## Writing your screenplay.md
+
+For each scene in your `scenes.md`, write a screenplay block that carries the
+scene's action through dialogue, narration, and sound. Remember:
+
+- If an event is important, make it audible.
+- If a relationship matters, put it in dialogue.
+- If the learning outcome needs restating, use closing narration.
+- If a sound marks a technical event, use the sound vocabulary.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — write one or two scenes of your screenplay.
+- [Summary](summary.qmd) — key takeaways.
+- [Quiz](quiz.qmd) — knowledge check.
+- Continue to [Module 7](../07-produce-with-generative-ai/index.qmd) —
+  produce with generative AI.

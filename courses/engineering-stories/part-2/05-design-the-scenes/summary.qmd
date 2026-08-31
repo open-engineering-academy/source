@@ -1,0 +1,33 @@
+---
+title: "Summary — Design the Scenes"
+description: "Key takeaways from Module 5."
+order: 5
+---
+
+## Key takeaways
+
+- **Scenes are the unit of experience.** The listener encounters the story one
+  scene at a time; the producer renders one scene at a time.
+
+- **Use a narrative arc.** Technical storytelling is not documentation read
+  aloud. The eight-beat arc (Introduction, Question, Discovery, Increasing
+  complexity, Challenge, Climax, Resolution, Technical takeaway) gives your
+  story structure.
+
+- **Every scene needs a learning outcome.** If you cannot answer *what did the
+  learner learn from this scene?*, tighten or cut it.
+
+- **Every scene specifies eight fields:** Goal, Technical concept, Location,
+  Characters, Action, Sound, Transition, Learning outcome.
+
+- **The climax is the abstraction payoff.** This is where the design decision
+  proves its worth — the moment the listener understands *why* the system is
+  built this way.
+
+- **Check by reading outcomes alone.** If the learner outcomes cover the
+  technical model, the scenes are complete.
+
+## Producing scenes.md
+
+Your output from this module is `scenes.md`. It will be the direct input for
+the next module, where you transform it into an audio screenplay.

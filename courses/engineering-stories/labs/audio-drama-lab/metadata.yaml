@@ -1,0 +1,46 @@
+id: oe.lab.technical-audio-story
+title: Technical Audio Story
+level: intermediate
+duration: 4h
+prerequisites:
+  - oe.course.engineering-stories
+teaches:
+  - Technical storytelling
+  - Metaphor design
+  - Character casting from responsibilities
+  - Scene-oriented narrative design
+  - Audio-first screenplay
+  - Semantic sound design
+  - Generative AI audio production
+  - Evaluation with weighted technical accuracy
+produces:
+  - audio-drama
+referenced_by:
+  - oe.course.engineering-stories
+constructive_role: explanation
+lifecycle_state: operational
+learning:
+  convention:
+    id: open-engineering-lab-method
+    version: "1"
+  type: lab
+  phases:
+    - observe
+    - investigate
+    - design
+    - compose
+    - execute
+    - evaluate
+    - reflect
+visualization:
+  methodology: likec4
+  source: diagrams/audio-drama-lab.c4
+  views:
+    - technical-system
+    - concept-model
+    - metaphor
+    - characters
+    - scenes
+    - screenplay
+    - audio-generator
+    - evaluation

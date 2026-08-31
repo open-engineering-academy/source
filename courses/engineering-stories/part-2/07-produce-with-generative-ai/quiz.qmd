@@ -1,0 +1,50 @@
+---
+title: "Quiz — Produce with Generative AI"
+description: "Knowledge check for Module 7."
+order: 7
+---
+
+## Questions
+
+1. **What is the first step in choosing a production provider?**
+
+   a) Pick the cheapest product.
+   b) Declare the required capabilities as a neutral list.
+   c) Pick the most popular product.
+   d) Read the pricing page.
+
+2. **Which of the following is a required production capability?**
+
+   a) multi_voice
+   b) watermark_removal
+   c) subscription_tier
+   d) voice_cloning
+
+3. **Why should the course avoid hard-coding provider-specific UI steps?**
+
+   a) UI steps are hard to copy.
+   b) They may quickly become obsolete.
+   c) They are import-protected.
+   d) They vary by voice.
+
+4. **Health of an evaluation: Wondercraft is documented as...**
+
+   a) the only provider allowed.
+   b) the initially validated provider.
+   c) the cheapest option.
+   d) the provider with the best voices.
+
+5. **What may a renderer "fix"?**
+
+   a) The architecture.
+   b) The metaphor.
+   c) Pronunciation and pacing.
+   d) The story.
+
+## Answers
+
+1. b) Declare the required capabilities as a neutral list
+2. a) multi_voice
+3. b) They may quickly become obsolete
+4. b) the initially validated provider
+5. c) Pronunciation and pacing

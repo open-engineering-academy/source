@@ -1,0 +1,24 @@
+---
+title: "Summary · Design the Metaphor"
+---
+
+## Key takeaways
+
+- A **metaphor** translates the technical model into a familiar world.
+- The mapping table in `metaphor.md` is the **contract** between the technical
+  model and every other file in the pipeline.
+- A defensible metaphor is **complete, isomorphic, navigable, and honest**.
+- **Game the map**: walk through every key fact and verify the metaphor respects
+  it.
+- If the metaphor and the model disagree, **the metaphor changes**.
+- Common worlds: restaurant, theatre, airport, hotel, factory, postal service,
+  detective agency, orchestra.
+
+## What comes next
+
+- [Lesson 4](../04-cast-the-system/index.qmd) — turn responsibilities into
+  characters with voice and relationship.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

@@ -1,0 +1,51 @@
+---
+title: "Quiz — Listen Like an Engineer"
+description: "Knowledge check for Module 8."
+order: 8
+---
+
+## Questions
+
+1. **Why is generation not completion?**
+
+   a) Renders take time to finish.
+   b) Producing audio creates a draft that needs engineering review.
+   c) Audio files must be compressed.
+   d) The renderer decides the final story.
+
+2. **Which dimension of the rubric carries the most weight?**
+
+   a) Metaphor quality
+   b) Narrative clarity
+   c) Audio communication
+   d) Technical accuracy
+
+3. **A story teaches the wrong architecture but is entertaining. It should...**
+
+   a) pass because it is enjoyable.
+   b) not pass — the wrong architecture must not pass.
+   c) pass if the audio quality is high.
+   d) pass if the metaphor is fun.
+
+4. **The listener says "the service-bell sound is too quiet." Which origin stage
+   does this trace to?**
+
+   a) The model (concept.md)
+   b) The metaphor (metaphor.md)
+   c) The renderer / production (production.md)
+   d) The scenes (scenes.md)
+
+5. **Narrative clarity means the listener can tell...**
+
+   a) who is speaking, where the scene occurs, what happened, and why it matters.
+   b) which provider was used.
+   c) how long the recording is.
+   d) the file format of the audio.
+
+## Answers
+
+1. b) Producing audio creates a draft that needs engineering review
+2. d) Technical accuracy
+3. b) not pass — the wrong architecture must not pass
+4. c) The renderer / production (production.md)
+5. a) who is speaking, where the scene occurs, what happened, and why it matters

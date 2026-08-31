@@ -1,0 +1,52 @@
+---
+title: "Exercise — Write the Audio Screenplay"
+description: "Write one or two scenes of your screenplay.md."
+order: 6
+---
+
+## Task
+
+Transform one or two scenes from your `scenes.md` into audio screenplay blocks,
+following the format from the lesson.
+
+## Steps
+
+1. **Pick your strongest scene** — the one with the clearest learning outcome.
+
+2. **Define your sound vocabulary (optional but encouraged).** For at least two
+   events in your technical model, choose a sound that represents them.
+
+3. **Write the scene block.** Use this skeleton:
+
+   ```
+   ## SCENE NN — [TITLE]
+
+   **LOCATION:** [where]
+   **AMBIENCE:** [background]
+
+   **NARRATOR:** [context setting]
+
+   **CHARACTER:** [dialogue]
+   **CHARACTER:** [dialogue]
+
+   **SFX:** [sound marking an event]
+
+   **NARRATOR:** [learning-outcome closing]
+   ```
+
+4. **Check the constraint.** Read the scene as a listener with eyes closed.
+   Put a check next to every important action and confirm it reaches the ear
+   through dialogue, narration, SFX, ambience, or music. If any important action
+   is missing, add it.
+
+5. **Repeat for a second scene** if you want practice with a transition
+   between scenes.
+
+## Checklist
+
+- [ ] Each scene is a `## SCENE` block.
+- [ ] AMBIENCE is specified before dialogue.
+- [ ] Every important action is audible through at least one channel.
+- [ ] The closing narration states the learning outcome.
+- [ ] Sound effects, if used, represent technical events (semantic).
+- [ ] The block could be rendered by any audio producer unchanged.

@@ -1,0 +1,140 @@
+---
+title: "1. Engineering Through Stories"
+description: "Introduction to technical storytelling, metaphor, narrative learning, and audio drama. Experience the finished Crossplane story before seeing how it was made."
+order: 1
+---
+
+## Overview
+
+This course teaches a single discipline: how to turn a real technical system into
+a short, educational **audio drama** — without ever abandoning the engineering
+model underneath it.
+
+You will begin by *experiencing* a finished audio story. Only after hearing the
+result will you learn how it was constructed. This is the reverse-engineering
+approach: experience first, deconstruct second, construct third.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Define technical storytelling and explain why audio drama is a useful medium for
+  engineering education.
+- Name the stages of the architectural principle pipeline and what each stage
+  produces.
+- Identify which stage of the pipeline is responsible for a given feature of a
+  finished audio story.
+- Recognize the foundational principle of this course.
+
+## What is technical storytelling?
+
+Technical storytelling is the disciplined practice of explaining a real technical
+system through a narrative, without abandoning the engineering model underneath it.
+
+It is not documentation read aloud. It is not a tutorial with characters added for
+fun. It is a deliberate transformation of an engineering model into a form that a
+listener can experience through the ear — dialogue, narration, sound effects, and
+ambience.
+
+## Why audio drama?
+
+Audio is one of the most constrained media to write for. If the listener cannot
+hear it, it does not exist. There is no screen to show a diagram, no cursor to
+point at a component, no text to scroll past. Every important action must reach
+the ear through at least one of: dialogue, narration, sound effect, ambience, or
+music.
+
+This constraint is a feature, not a limitation. It forces you to be precise about
+what your system does and how it works. If you cannot explain it in sound, you
+probably do not understand it well enough.
+
+## The foundational principle
+
+Every module in this course returns to one rule:
+
+> *We do not simplify technology by abandoning its engineering model. We
+> understand the model first, transform it deliberately, and use story to make
+> that understanding accessible.*
+
+Fiction is allowed. The facts underneath it are not.
+
+## The architectural principle
+
+The course follows a pipeline of distinct, inspectable stages:
+
+```
+Technical Model  ──▶  Metaphor  ──▶  Story  ──▶  Screenplay  ──▶  Audio Producer  ──▶  Audio Artifact
+(WHAT IS TRUE)      (HOW EXPLAIN)  (HOW EXPERIENCE)  (HOW REPRESENT)  (HOW RENDER)       (RESULT)
+```
+
+Each stage has a clear job:
+
+| Stage | Question it answers | Output |
+| --- | --- | --- |
+| Technical Model | WHAT IS TRUE? | `concept.md` |
+| Metaphor | HOW CAN WE EXPLAIN IT? | `metaphor.md` |
+| Story | HOW CAN WE EXPERIENCE IT? | `scenes.md` |
+| Screenplay | HOW DO WE REPRESENT IT? | `screenplay.md` |
+| Audio Producer | HOW DO WE RENDER IT? | Audio artifact |
+
+Each stage stays inspectable. This matters because errors can be traced back to
+their origin: a technical error belongs in the model, a misleading analogy
+belongs in the metaphor, confusing dialogue belongs in the story, and a bad
+pronunciation belongs in rendering.
+
+## The reverse-engineering approach
+
+You will follow this learning loop:
+
+```
+EXPERIENCE    Hear the finished story
+     ↓
+DECONSTRUCT   Understand how it was built
+     ↓
+CONSTRUCT     Create your own
+     ↓
+REFLECT       Evaluate the transformation
+```
+
+First, you will hear the finished Crossplane restaurant audio story. Then you
+will ask: *how did an architecture model become this?* Each subsequent module
+reveals one more layer of the construction — from technical model, to metaphor,
+to characters, to scenes, to screenplay.
+
+## Listen to the reference example
+
+Before reading any further, listen to the Crossplane restaurant audio story. You
+will find the audio artifact linked from the [reference example](../../reference-example/concept.md).
+
+Listen for:
+
+- Which characters speak and what they say.
+- Which sound effects you hear and when.
+- What you learn about the technical system from the story.
+
+You do not need to understand Crossplane to listen. The story is designed to be
+followable without prior knowledge. You will reverse-engineer it in the modules
+that follow.
+
+## Benefits and risks
+
+Storytelling can make technical content memorable and accessible. But it also
+carries risks:
+
+- **Metaphor drift** — the story becomes so entertaining that the listener
+  forgets the technical model it represents.
+- **Misconception injection** — the metaphor introduces ideas that contradict the
+  real system.
+- **Oversimplification** — the story drops important details to stay short or
+  entertaining.
+
+The course mitigates these risks through the architectural principle: every
+transformation is documented and inspectable, and the technical model always
+comes first.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — listen to a story and guess which pipeline stage
+  produced each feature.
+- [Summary](summary.qmd) — key takeaways from this lesson.
+- [Quiz](quiz.qmd) — check your understanding.

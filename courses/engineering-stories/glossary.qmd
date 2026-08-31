@@ -1,0 +1,110 @@
+---
+title: "Glossary"
+---
+
+## Technical storytelling
+
+The disciplined practice of explaining a real technical system through a
+narrative, without abandoning the engineering model underneath it.
+
+## Audio drama
+
+A story told entirely in sound — through dialogue, narration, sound effects,
+ambience, and music. Also called a radio play or *hoorspel*.
+
+## Reverse engineering (of a story)
+
+Reading a finished artifact backwards to understand how it was constructed:
+`audio → screenplay → scenes → characters → metaphor → technical model`.
+
+## Architectural principle
+
+The course's core separation, from `memo: Engineering Stories`:
+
+```
+WHAT IS TRUE?          Technical Model
+HOW CAN WE EXPLAIN?    Metaphor
+HOW CAN WE EXPERIENCE? Story
+HOW DO WE REPRESENT?   Screenplay
+HOW DO WE RENDER?      Audio Producer
+                       → Audio Artifact
+```
+
+Each stage stays inspectable so errors trace to their origin.
+
+## Technical truth / technical model
+
+The factual description of a system — its actors, resources, responsibilities,
+relationships, events, and state transitions — captured *before* any metaphor.
+See `concept.md`.
+
+## Metaphor
+
+A translation of the technical model into a familiar world, documented as an
+explicit technical-to-narrative mapping. See `metaphor.md`.
+
+## Isomorphic metaphor
+
+A metaphor that maps important facts one-to-one onto the model and introduces
+no serious misconception.
+
+## Breaking the fourth wall
+
+An optional technique where a character briefly acknowledges its technical
+counterpart (e.g. "Hello Developer—ahum, I mean Customer") to re-anchor the
+listener to the architecture without abandoning the narrative.
+
+## Semantic sound design
+
+The practice of making each sound effect represent an event or state in the
+technical model (e.g. a service bell for successful reconciliation), rather than
+merely decorating the story.
+
+## Screenplay as intermediate representation
+
+The `screenplay.md` that sits between technical knowledge and the rendered audio.
+It must remain useful independently of the renderer, so it can be turned into
+audio by AI, human actors, or conventional production.
+
+## Audio-first screenplay
+
+A screenplay written for the ear: every important action must reach the
+listener through at least one of dialogue, narration, sound effect, ambience,
+or music.
+
+## Scene-oriented screenplay
+
+A screenplay explicitly divided into scenes, each with a purpose, location,
+participating characters, ambience, narration, dialogue, actions, sound
+effects, transition, and an educational outcome.
+
+## Capabilities (production)
+
+A neutral, provider-independent list of requirements a producer must satisfy
+(e.g. `multi_voice`, `narration`, `sound_effects`, `ambience`,
+`scene_control`, `audio_export`). Providers are evaluated against these,
+preventing accidental dependency on one commercial service.
+
+## Provider (production)
+
+A concrete audio-production service that renders a screenplay into an audio
+artifact. **Wondercraft** is the initially validated provider used by the
+reference implementation.
+
+## Educational outcome
+
+What a learner should understand after experiencing a given scene or artifact.
+Every scene must be able to answer: *what did I learn about the technical model
+from this?*
+
+## Evaluation rubric
+
+The five-dimension scoring used for learner projects:
+
+- **Technical accuracy** — does the story correctly represent the engineering concept?
+- **Metaphor quality** — does the metaphor improve understanding without serious misconceptions?
+- **Narrative clarity** — can the listener follow without visual assistance?
+- **Audio communication** — do voice, narration, and sound communicate actions and context?
+- **Learning outcome** — can the listener explain the underlying model afterward?
+
+Technical accuracy carries the most weight.

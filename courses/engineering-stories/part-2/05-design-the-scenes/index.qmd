@@ -1,0 +1,122 @@
+---
+title: "1. Design the Scenes"
+description: "Break the explanation into scenes with purpose, location, characters, and learning outcome. Produce scenes.md."
+order: 5
+---
+
+## Overview
+
+With characters cast and a metaphor mapped, you need a plan for *how the story
+unfolds*. A scene is the unit the listener experiences and the unit the producer
+renders. Each scene must have a purpose, a location, participating characters,
+and — most importantly — an **educational outcome**: what should the learner
+understand after hearing it?
+
+This lesson teaches scene design through a narrative arc, then shows you how to
+write a `scenes.md` file.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why technical storytelling needs a narrative arc, not documentation
+  read aloud.
+- Describe the eight-beat arc structure: Introduction, Question, Discovery,
+  Increasing complexity, Challenge, Climax, Resolution, Technical takeaway.
+- Write a `scenes.md` file where every scene specifies: Goal, Technical concept,
+  Location, Characters, Action, Sound, Transition, Learning outcome.
+- Ensure every scene answers: *What did I learn about the technical model from
+  this scene?*
+
+## The narrative arc
+
+Technical storytelling is not documentation read aloud. It needs a lightweight
+dramatic structure that guides the listener from curiosity to understanding:
+
+```
+Introduction         A seemingly simple request.
+       |
+Question / Problem   How does that request become a working system?
+       |
+Discovery            The first components of the system appear.
+       |
+Increasing complexity The system grows: more parts, more relationships.
+       |
+Challenge            Something must be verified, checked, or reconciled.
+       |
+Climax               The abstraction proves its value — why it all works.
+       |
+Resolution           The metaphor reconnects to the real technology.
+       |
+Technical takeaway   The one thing the listener should remember.
+```
+
+Each beat in the arc becomes one or more scenes. You do not need to hit every
+beat in every story, but the arc gives you a skeleton to hang your scenes on.
+
+::: {.callout-tip}
+The climax is where the *abstraction pays off*. For Crossplane, the climax is
+the realization that one request becomes many components without the developer
+ever talking to providers. For your own system, ask: *what is the moment where
+the design decision proves its worth?*
+:::
+
+## What goes into a scene
+
+Every scene in `scenes.md` must specify:
+
+| Field | Purpose |
+| --- | --- |
+| Goal | What the scene accomplishes in the story. |
+| Technical concept | Which part of the technical model it explains. |
+| Location | Where the scene takes place in the metaphor world. |
+| Characters | Who participates. |
+| Action | What happens — the dramatic event. |
+| Sound | Key sound effects or ambience that mark events. |
+| Transition | How the scene ends and leads into the next. |
+| Learning outcome | What the learner should understand afterward. |
+
+## Modeling on the reference example
+
+The Crossplane restaurant traces the arc like this:
+
+| Beat | Scene | What it covers |
+| --- | --- | --- |
+| Introduction | 01 — The Front of House | Customer arrives, makes a request. |
+| Question | 02 — Order Placed | How does a request become a concrete order? |
+| Discovery | 03 — The Kitchen | The recipe (Composition) is matched to the order. |
+| Increasing complexity | 04 — Preparing the Components | Many managed resources are composed. |
+| Increasing complexity | 05 — The Kitchen Capability | Providers realize components in the real world. |
+| Challenge | 06 — Perfecting the Dish | Reconciliation checks and corrects. |
+| Climax / Resolution | 07 — Served and Connected | The abstraction lands; metaphor reconnects to Crossplane. |
+
+Read the full scene plan at
+[`reference-example/scenes.md`](../../reference-example/scenes.md).
+
+## Writing your scenes.md
+
+For each scene, write a short block like:
+
+```
+### SCENE 01 — [TITLE]
+- **Goal:** [what this scene accomplishes]
+- **Technical concept:** [which concept from concept.md]
+- **Location:** [metaphor-world setting]
+- **Characters:** [who participates]
+- **Action:** [dramatic event]
+- **Sound:** [key SFX / ambience]
+- **Transition:** [how it ends]
+- **Learning outcome:** [what the learner takes away]
+```
+
+After writing all scenes, read through them and ask: *can the learner explain
+the technical model just from these outcomes?* If a concept is missing, add a
+scene or adjust an existing one.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — write a scene plan for your own concept.
+- [Summary](summary.qmd) — key takeaways.
+- [Quiz](quiz.qmd) — knowledge check.
+- Continue to [Module 6](../06-write-the-audio-screenplay/index.qmd) — write
+  the audio screenplay.

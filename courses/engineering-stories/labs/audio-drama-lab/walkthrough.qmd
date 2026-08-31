@@ -1,0 +1,128 @@
+---
+title: "Walkthrough"
+description: "The seven-phase Lab Method, applied to a technical audio drama."
+---
+
+{{< include ../../../../shared/includes/tryit.qmd >}}
+
+The Lab Method is visualized with the Open Engineering LikeC4 approach. Each
+phase below corresponds to a view in the LikeC4 source under `diagrams/`
+([`audio-drama-lab.c4`](diagrams/audio-drama-lab.c4)), showing both the workflow
+and its resulting artifacts.
+
+## Phase 1 — Observe: understand the technical system
+
+Choose your concept. Read its real documentation and architecture, not just
+tutorials. In your own words, describe:
+
+- What problem the system solves.
+- The main entities and how they relate.
+- The boundary: what the user interacts with, versus what happens internally.
+
+Record this understanding at the top of `concept.md`. Do not invent story
+imagery yet.
+
+## Phase 2 — Investigate: actors, responsibilities, relationships
+
+From your observation, extract the model's skeleton into `concept.md`:
+
+- **Actors** — who/what initiates an action.
+- **Resources** — what exists or is produced.
+- **Responsibilities** — what each entity is responsible for.
+- **Relationships** — how responsibilities hand off to one another.
+- **Events** — moments that could produce a sound.
+- **State transitions** — how the system moves from one state to another.
+
+This is your **technical truth**. Everything later must trace back to it.
+
+## Phase 3 — Design: the metaphor and mapping
+
+Pick a familiar world (restaurant, theatre, airport, hotel, factory, postal
+service, detective agency, orchestra) that fits the model well.
+
+Create `metaphor.md` with an **explicit technical-to-narrative mapping table**
+(one row per entity/relationship). Aim for an **isomorphism**: the metaphor
+should cover the model without adding serious misconceptions. If the metaphor
+and the model ever disagree, fix the metaphor.
+
+## Phase 4 — Compose: characters, scenes, screenplay
+
+- Create `characters.md` — one character per responsibility, each with
+  technical counterpart, responsibility, personality, voice, and relationships.
+  Keep the cast small enough for the listener to track.
+- Create `scenes.md` — break the explanation into scenes, each with a goal,
+  technical concept, location, characters, action, sound, transition, and
+  learning outcome. Shape them with the narrative arc: introduction → question
+  → discovery → increasing complexity → challenge → climax → resolution →
+  technical takeaway.
+- Create `screenplay.md` — transform the scenes into an **audio-first**
+  screenplay. Remember: *if the listener cannot hear it, it does not exist.*
+  Represent every important action via dialogue, narration, sound effect,
+  ambience, or music. Use the SCENE block format.
+
+## Phase 5 — Execute: generate the audio production
+
+Create `production.md` documenting the required **capabilities** (a neutral
+list: multi-voice, narration, sound effects, ambience, scene control, audio
+export) and your chosen provider's workflow. Then render the screenplay to
+audio:
+
+1. Import the screenplay into the production platform.
+2. Assign distinct voices to each character and the narrator.
+3. Set ambience per scene.
+4. Place sound effects where the screenplay calls for them.
+5. Export your `output/audio-play.mp3`.
+
+Keep your `production.md` provider-neutral so it survives provider changes.
+
+## Phase 6 — Evaluate: technical, educational, audio quality
+
+Generation is not completion. Score your audio with the five-dimension rubric
+in `evaluation.md`, weighting **technical accuracy** highest:
+
+| Dimension | Question |
+| --- | --- |
+| Technical accuracy | Does the story correctly represent the engineering concept? |
+| Metaphor quality | Does the metaphor improve understanding without serious misconceptions? |
+| Narrative clarity | Can the listener follow without visual assistance? |
+| Audio communication | Do voice, narration, and sound communicate actions and context effectively? |
+| Learning outcome | Can the listener explain the underlying model afterward? |
+
+Record specific findings, not just scores. Trace each defect to its origin
+stage (model, metaphor, story, screenplay, or rendering) and fix it there.
+
+## Phase 7 — Reflect: what it clarified, what it obscured
+
+Create `reflection.md`. Answer honestly:
+
+- What did the metaphor make *clearer*?
+- What did it *obscure* or risk mis-teaching?
+- Where did you have to change the story to protect the model — or change the
+  model because you finally understood it?
+- What would you do differently on the next project?
+
+Reflection is part of the deliverable, not optional.
+
+## Troubleshooting
+
+::: {.callout-warning}
+**The story drifts from the architecture.** Go back to `concept.md` and
+`metaphor.md`. Fix the mapping, then re-derive characters, scenes, and
+screenplay from it — do not patch the screenplay in isolation.
+:::
+
+::: {.callout-warning}
+**The audio is unclear.** Check whether the problem is in the screenplay
+(an action only visible, not audible) or in the rendering (pronunciation,
+pacing, levels). Fix it at the right stage.
+:::
+
+::: {.callout-warning}
+**Too many characters.** The listener cannot track a large audio-only cast.
+Merge responsibilities or cut scenes rather than adding voices.
+:::
+
+## Next
+
+Continue to the [solution](solution.qmd) to compare your result against the
+reference.

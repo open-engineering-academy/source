@@ -1,0 +1,47 @@
+---
+title: "Quiz · Find the Technical Truth"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. Why must the technical model come before the metaphor?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Starting with a metaphor risks smuggling in assumptions that may not be true and
+leaving out facts that matter. The technical model ensures the story is grounded
+in reality before any creative transformation begins.
+:::
+
+## 2. Name the six categories to extract from a technical system.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Actors, resources, responsibilities, relationships, events, and state
+transitions.
+:::
+
+## 3. What is the purpose of the "key facts" section in concept.md?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+It lists hard constraints that any metaphor must never violate. This is the safety
+net against metaphor drift and misconception injection.
+:::
+
+## 4. Should concept.md contain any narrative or metaphorical language?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. The concept must be plain-language engineering truth with no restaurant
+imagery, character names, dialogue, or scenes. Metaphor is added in a separate
+stage.
+:::
+
+## 5. What happens if a metaphor contradicts a fact in the concept?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The metaphor changes, not the model. The technical truth is always authoritative.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Lesson 3](../03-design-the-metaphor/index.qmd).

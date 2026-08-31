@@ -1,0 +1,49 @@
+---
+title: "Quiz · Engineering Through Stories"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What is the foundational principle of this course?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+We do not simplify technology by abandoning its engineering model. We understand
+the model first, transform it deliberately, and use story to make that
+understanding accessible.
+:::
+
+## 2. Name the five stages of the architectural principle pipeline.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Technical Model, Metaphor, Story, Screenplay, Audio Producer (producing the
+Audio Artifact).
+:::
+
+## 3. Which stage answers "WHAT IS TRUE?"
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **Technical Model** stage. Its output is `concept.md`.
+:::
+
+## 4. Why does the course begin by having you listen to the finished story?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The course uses a reverse-engineering approach. You experience the result first,
+then progressively learn how it was constructed. This mirrors the learning loop:
+experience, deconstruct, construct, reflect.
+:::
+
+## 5. What happens if an error is found in the finished audio?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+You trace it back to its origin stage. A technical error belongs in the model, a
+misleading analogy in the metaphor, confusing dialogue in the story, and a bad
+pronunciation in rendering. Because every stage is inspectable, you fix the error
+where it was introduced.
+:::
+
+## Next
+
+Return to [Part 1](../index.qmd) or continue to
+[Lesson 2](../02-find-the-technical-truth/index.qmd).

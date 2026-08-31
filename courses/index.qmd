@@ -42,6 +42,14 @@ The three core courses map one-to-one onto the academy's three-layer story —
 - **[Durable Picos CellD](durable-picos-celld)** - Pico is the Open 
   Engineering abstraction. celld is one possible durable runtime 
   implementation.
+- **[Engineering Stories](engineering-stories/)** — From architecture to
+  audio drama. Teaches how to turn a real technical system into a short,
+  educational audio story independently of any vendor: model the technical
+  truth first, design an isomorphic metaphor, cast responsibilities as
+  characters, write an audio-first scene-oriented screenplay, render it with
+  generative AI, and evaluate with technical accuracy weighted highest. Ships
+  the complete **Crossplane restaurant** reference implementation and a lab
+  that produces a 2–5 minute educational audio drama.
 
 ## Additional courses
 

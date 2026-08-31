@@ -1,0 +1,48 @@
+---
+title: "Exercise · Find the Technical Truth"
+---
+
+A short, guided task. Complete it before moving on to the next lesson.
+
+## System description
+
+Consider a simple **ticketing system** for a support desk:
+
+> Customers submit support tickets through a web form. Each ticket is assigned a
+> unique ID and placed in a queue. A dispatcher reads the queue and assigns each
+> ticket to an available agent based on the ticket's category (billing, technical,
+> or general). The agent works the ticket, updates its status (open, in-progress,
+> resolved), and resolves it. If the agent does not respond within a time limit,
+> the dispatcher reassigns the ticket. Customers receive a notification when their
+> ticket is resolved.
+
+## Task
+
+Write a `concept.md` for this ticketing system. Your file should contain:
+
+1. **Plain-language model** — a step-by-step description of how the system works,
+   in natural language, with no narrative or metaphor.
+2. **Entities and responsibilities** — a table with columns: Entity,
+   Responsibility.
+3. **Relationships** — a tree or diagram showing how entities connect.
+4. **Events and state transitions** — a list of key moments and what changes.
+5. **Key facts the story must never contradict** — at least three hard constraints.
+
+## Constraints
+
+- No narrative imagery. No restaurant, no detective, no theatre. Keep it plain.
+- Every entity in your table must appear in the relationships diagram.
+- Every event must correspond to a state transition or a hand-off between
+  entities.
+
+## Success criteria
+
+- [ ] Your concept has all five sections.
+- [ ] The entities table has at least five rows.
+- [ ] The key-facts section has at least three constraints.
+- [ ] No metaphor or narrative language appears anywhere in the file.
+
+## Next
+
+Continue to [Lesson 3](../03-design-the-metaphor/index.qmd) or review the
+[Summary](summary.qmd).

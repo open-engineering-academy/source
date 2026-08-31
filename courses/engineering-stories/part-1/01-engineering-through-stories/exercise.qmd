@@ -1,0 +1,55 @@
+---
+title: "Exercise · Engineering Through Stories"
+---
+
+A short, guided task. Complete it before moving on to the next lesson.
+
+## Task
+
+Listen to or read the Crossplane restaurant audio story (the reference example
+under `reference-example/`). Then answer the following questions for each feature
+you identify.
+
+Pick any five features from the story — a line of dialogue, a sound effect, a
+narration line, a character's voice, or a scene transition — and identify which
+**stage of the architectural principle pipeline** produced it.
+
+## Format
+
+For each feature, write:
+
+1. **Feature:** what you noticed (e.g. "the ticket printer sound when an order is
+   placed").
+2. **Pipeline stage:** which stage is responsible (Technical Model, Metaphor,
+   Story/Scenes, Screenplay, or Audio Producer).
+3. **Why:** a one-sentence justification.
+
+::: {.callout-tip}
+Use the mapping from the [lesson](index.qmd) to guide your identification. The
+glossary also defines each stage.
+:::
+
+## Example
+
+| Feature | Pipeline stage | Why |
+| --- | --- | --- |
+| "One application environment, please." | Screenplay | This is dialogue written for the ear. |
+| Customer = Developer | Metaphor | This is a mapping from the technical model to a familiar role. |
+| The developer asks for a composite environment | Technical Model | This is a fact about how Crossplane works. |
+
+## Success criteria
+
+- [ ] You identified five features.
+- [ ] Each feature is assigned to a pipeline stage.
+- [ ] Each assignment has a one-sentence justification.
+
+## Reflect
+
+- Which stage was easiest to identify? Why?
+- Which was hardest? What would help you tell them apart?
+- Did anything in the story seem to belong to two stages at once?
+
+## Next
+
+Continue to [Lesson 2](../02-find-the-technical-truth/index.qmd) or review the
+[Summary](summary.qmd).

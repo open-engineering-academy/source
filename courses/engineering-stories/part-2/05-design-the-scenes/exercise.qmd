@@ -1,0 +1,43 @@
+---
+title: "Exercise — Design the Scenes"
+description: "Create a scenes.md file for your own technical concept."
+order: 5
+---
+
+## Task
+
+Write a `scenes.md` file for the system you chose in Part 1. Follow the
+scene-plan format from the lesson.
+
+## Steps
+
+1. **Review your artifacts.** Re-read your `concept.md`, `metaphor.md`, and
+   `characters.md`. Make sure you know the entities, the mapping, and the cast.
+
+2. **Trace the narrative arc.** For your system, sketch the eight beats:
+
+   - Introduction: What is the simple starting point?
+   - Question: What problem does the developer or user face?
+   - Discovery: What part of the system first appears?
+   - Increasing complexity: How do the parts relate?
+   - Challenge: What must be checked, verified, or reconciled?
+   - Climax: Why does the abstraction matter?
+   - Resolution: How does the metaphor reconnect to the real system?
+   - Technical takeaway: What is the one sentence the listener should remember?
+
+3. **Write each scene.** For every beat, write a scene block with: Goal,
+   Technical concept, Location, Characters, Action, Sound, Transition, Learning
+   outcome.
+
+4. **Check the learning outcomes.** Read only the Learning outcome lines. Could
+   someone reconstruct the technical model from them? If a concept is missing,
+   add or adjust a scene.
+
+## Checklist
+
+- [ ] Every scene has all eight fields (Goal, Technical concept, Location,
+      Characters, Action, Sound, Transition, Learning outcome).
+- [ ] Every scene answers: *What did I learn about the technical model?*
+- [ ] The narrative arc is traced (at least Introduction through Resolution).
+- [ ] The cast from `characters.md` appears across scenes.
+- [ ] No scene contradicts the facts in `concept.md`.

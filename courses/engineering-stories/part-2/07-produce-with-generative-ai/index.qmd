@@ -1,0 +1,150 @@
+---
+title: "3. Produce with Generative AI"
+description: "Render the screenplay to audio through an AI production platform. Produce production.md and audio-play.mp3."
+order: 7
+---
+
+## Overview
+
+The screenplay is an **intermediate representation**. This lesson introduces
+the audio production platform that turns it into a finished audio artifact. The
+emphasis is on **capabilities, not products**: you declare what the producer
+must be able to do, then evaluate a provider against those requirements — so the
+course never depends on any single vendor.
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Trace the pipeline from screenplay to audio artifact.
+- Distinguish capabilities from products when choosing a production provider.
+- Declare required production capabilities as a neutral list.
+- Document a production workflow and capability requirements in `production.md`.
+- Explain why current pricing and free-tier conditions are not stable course
+  content.
+
+## The production pipeline
+
+The screenplay becomes audio through a production platform:
+
+```
+screenplay.md
+      |
+      v
+audio production platform
+      |
+      |---- voices
+      |---- narration
+      |---- ambience
+      |---- sound effects
+      |---- music
+      |
+      v
+audio-play.mp3
+```
+
+The platform takes the screenplay's dialogue and narration, assigns distinct
+voices, adds per-scene ambience and sound effects, and exports a finished audio
+file.
+
+## Capabilities, not products
+
+The key idea is **provider abstraction**: distinguish what we require (the
+capabilities) from any specific service (the product).
+
+Declare required production capabilities as a neutral list:
+
+```yaml
+capabilities:
+  multi_voice: true      # distinct character voices
+  narration: true        # a separate narrator voice
+  sound_effects: true    # scripted SFX events
+  ambience: true         # background environment beds per scene
+  scene_control: true    # place voices/SFX/ambience per scene
+  audio_export: true     # export a finished audio file
+```
+
+A provider is then **evaluated against these requirements** rather than assumed.
+This prevents accidental dependency on one commercial service.
+
+::: {.callout-tip}
+If a provider meets the capability list, it is a candidate. If it does not, it
+cannot render the screenplay faithfully — no matter how good it looks. Decide
+capabilities first, then compare products.
+:::
+
+## Known-good provider: Wondercraft
+
+**Wondercraft** is the initially **validated provider** used by the reference
+implementation. It satisfies the capability list and offers a script-based,
+scene-oriented workflow that matches our screenplay format.
+
+Document nothing provider-specific in course material that will quickly become
+obsolete. Instead, document a **workflow** that any capable provider should
+support:
+
+1. **Import the screenplay** — copy each scene's dialogue and narration into the
+   producer's script, one speaker per line.
+2. **Assign voices** — bind each character to a distinct AI voice; keep each
+   character's voice consistent across scenes.
+3. **Add ambience per scene** — set an environment bed per scene (restaurant,
+   kitchen, front of house).
+4. **Insert sound effects** — place SFX events where the screenplay calls for
+   them.
+5. **Preview and adjust pacing** — extend pauses before each scene's closing
+   narration so the listener absorbs the outcome.
+6. **Export** — produce the final audio artifact (e.g. `audio-play.mp3`).
+
+Alternative tools may be documented when their capabilities satisfy the lab
+requirements. Document the workflow, not the UI steps.
+
+## Renderers are one of many
+
+The screenplay should remain usable by other renderers without modification:
+
+- another AI audio system,
+- human voice actors,
+- a conventional studio production,
+- (future) an automated Open Engineering Composer that generates a first
+  screenplay draft from structured engineering knowledge.
+
+## Licensing and free-tier caveats
+
+- Share the audio artifact where repository policy and licensing permit;
+  otherwise link to the published artifact.
+- Free tiers of commercial services may introduce **watermarks,
+  advertisements, generation limits, or restricted exports** — and these
+  conditions can change over time.
+- Do **not** treat current pricing as stable course content. Requirements and
+  capabilities are what the course documents, not today's prices.
+
+## What the renderer may and may not "fix"
+
+- The renderer may fix **pronunciation and pacing** (a rendering concern).
+- The renderer may **not** fix the architecture, the metaphor, or the story.
+  Those are decided upstream, in the model. A bad pronunciation belongs in
+  rendering; a wrong explanation does not.
+
+Read the full production notes at
+[`reference-example/production.md`](../../reference-example/production.md).
+
+## Writing your production.md
+
+For your own concept, document:
+
+1. The required capabilities (the YAML list above, modified if your project
+   needs something different).
+2. The production workflow you will follow.
+3. The provider(s) you evaluated and why they qualify.
+4. Any licensing or free-tier caveats.
+
+Then render your `screenplay.md` into `audio-play.mp3`.
+
+## Next steps
+
+- [Exercise](exercise.qmd) — document your production workflow and capability
+  requirements.
+- [Summary](summary.qmd) — key takeaways.
+- [Quiz](quiz.qmd) — knowledge check.
+- Continue to [Module 8](../08-listen-like-an-engineer/index.qmd) — listen like
+  an engineer.

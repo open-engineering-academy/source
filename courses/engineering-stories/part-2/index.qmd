@@ -1,0 +1,26 @@
+---
+title: "Part 2 — The Production"
+---
+
+Part 2 completes the forward construction: from scenes, to an audio-first
+screenplay, to a rendered audio artifact, and finally to engineering-style
+review.
+
+Having reverse-engineered the Crossplane restaurant in Part 1, you now apply the
+process in the **forward** direction and prepare your own project for the
+culminating lab.
+
+## Lessons
+
+- [1. Design the Scenes](05-design-the-scenes/index.qmd) — break the
+  explanation into scenes with purpose and learning outcome. Produce `scenes.md`.
+- [2. Write the Audio Screenplay](06-write-the-audio-screenplay/index.qmd) —
+  the audio-first, scene-oriented intermediate representation. Produce
+  `screenplay.md`.
+- [3. Produce with Generative AI](07-produce-with-generative-ai/index.qmd) —
+  render the screenplay to audio. Produce `production.md` and `audio-play.mp3`.
+- [4. Listen Like an Engineer](08-listen-like-an-engineer/index.qmd) —
+  review, evaluate, and iterate. Produce `evaluation.md`.
+
+Each lesson in this course follows the same page layout — see the
+[course overview](../index.qmd) for the full pattern.

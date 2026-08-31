@@ -1,0 +1,53 @@
+---
+title: "Quiz — Design the Scenes"
+description: "Knowledge check for Module 5."
+order: 5
+---
+
+## Questions
+
+1. **What is the most important field in a scene definition?**
+
+   a) Location
+   b) Characters
+   c) Learning outcome
+   d) Sound
+
+2. **Which beat in the narrative arc is where the abstraction proves its
+   worth?**
+
+   a) Introduction
+   b) Discovery
+   c) Climax
+   d) Resolution
+
+3. **A scene cannot answer "What did I learn about the technical model from this
+   scene?" What should you do?**
+
+   a) Add more sound effects
+   b) Add more characters
+   c) Tighten the scene or cut it
+   d) Move it later in the arc
+
+4. **Why should technical storytelling use a narrative arc instead of
+   documentation read aloud?**
+
+   a) It makes the story longer.
+   b) It guides the listener from curiosity to understanding.
+   c) It allows more characters.
+   d) It reduces the number of scenes needed.
+
+5. **Where does the technical takeaway fall in the eight-beat arc?**
+
+   a) After the Introduction
+   b) Before the Discovery
+   c) After the Resolution
+   d) Between Challenge and Climax
+
+## Answers
+
+1. c) Learning outcome
+2. c) Climax
+3. c) Tighten the scene or cut it
+4. b) It guides the listener from curiosity to understanding
+5. c) After the Resolution
