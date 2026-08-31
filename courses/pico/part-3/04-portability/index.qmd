@@ -1,0 +1,158 @@
+---
+title: "4. Portability"
+subtitle: "Moving a Pico without losing who it is."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain what Pico Engine 1.6 does and does **not** complete with respect
+  to portability.
+- Identify the remaining work: full identity portability, verifiable
+  credentials, key management, and identity-aware authorization.
+- Separate an Open Engineering identifier from a cryptographic runtime
+  identity.
+- Author a complete portable Pico definition that separates identity,
+  relationships, messaging, and authorization.
+
+## Prerequisites
+
+- [Pico Identity](../01-pico-identity/index.qmd).
+- [Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd).
+- [Trust and Authorization](../03-trust-and-authorization/index.qmd).
+
+## What portability means
+
+Pico Engine 1.6 should not be interpreted as completing Pico portability. It
+provides an essential prerequisite. Currently, the Pico Engine's base URL
+remains part of the Pico's did:webvh, so moving a Pico from Engine A to
+Engine B does not yet mean its identity can automatically move unchanged.
+
+Nevertheless, the difficult architectural foundation now exists:
+
+```
+Portable Pico
+     │
+     ├── cryptographic identity       ✓
+     ├── pairwise relationships       ✓
+     ├── encrypted communication      ✓
+     │
+     ├── fully portable did:webvh     future
+     ├── portable key management      future
+     └── credential portability       future
+```
+
+This is a significant step toward meshes that are owned independently of the
+engines on which they happen to run.
+
+## Remaining work
+
+**Full identity portability.** The did:webvh currently contains an
+engine-dependent URL. A future architecture needs to allow Pico migration
+without breaking identity resolution.
+
+**Verifiable credentials.** Picos can now cryptographically establish *who
+they are*. They cannot yet provide signed claims describing *what they are*
+or *what authority they possess*. Verifiable Credentials are a natural next
+layer.
+
+**Key management.** DID private keys currently reside in the Pico Engine's
+own storage. Longer term these should move toward operating-system key
+vaults, hardware-backed key storage, secure enclaves, or external
+key-management systems. Key rotation and recovery also need development. A
+particularly important objective:
+
+> Losing a cryptographic key should not mean losing the Pico.
+
+**Identity-aware authorization.** Authorization currently remains primarily
+channel based. A future authorization system could make decisions based on
+the authenticated identity behind the channel.
+
+## Open Engineering identifier vs runtime identity
+
+An Open Engineering Identifier and a cryptographic runtime identity should
+not be collapsed into the same identifier:
+
+```
+Open Engineering Identity
+OE Identifier
+    │
+    │ semantic / catalog identity
+    ▼
+oep.pico.example.01
+        +
+Pico Runtime Identity
+    │
+    │ cryptographic identity
+    ▼
+did:webvh:...
+        +
+Relationship Identity
+    │
+    │ private pairwise identity
+    ▼
+did:peer:...
+```
+
+These answer different questions:
+
+| Identifier | Question |
+|---|---|
+| Open Engineering Identifier | What Open Engineering element is this? |
+| did:webvh | Which cryptographic Pico is this? |
+| did:peer | Which private relationship is this? |
+| ECI | Through which Pico channel may communication occur? |
+
+This separation should be preserved.
+
+## Strategic direction
+
+Pico Engine 1.6 moves Picos closer to a model in which they are genuine
+autonomous actors rather than objects hosted by a particular server:
+
+```
+Addressable Pico
+      │
+      ▼
+Identifiable Pico
+      │
+      ▼
+Cryptographically identifiable Pico
+      │
+      ▼
+Relationship-aware Pico
+      │
+      ▼
+Portable Pico
+      │
+      ▼
+Credential-bearing Pico
+      │
+      ▼
+Identity-aware autonomous actor
+```
+
+Pico Engine 1.6 reaches the point of cryptographic identity plus private
+cryptographic relationships.
+
+## The architectural principle
+
+```
+Identity says who the Pico is.
+Relationships say who it knows.
+DIDComm protects how they communicate.
+Channels define where interaction occurs.
+Policy determines what the relationship may do.
+```
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — author a complete portable Pico definition.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

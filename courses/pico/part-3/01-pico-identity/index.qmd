@@ -1,0 +1,135 @@
+---
+title: "1. Pico Identity"
+subtitle: "did:webvh as a passport, did:peer as a relationship address."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why a Pico needs a cryptographic identity rather than only an
+  address or channel.
+- Distinguish a Pico's **did:webvh** (public identity) from its
+  **did:peer** (relationship-specific identity).
+- Describe what "a Pico should not expose one universal identifier for every
+  relationship" means in practice.
+- Author a YAML identity declaration for a Pico.
+
+## Prerequisites
+
+- [Part 1 — Foundations](../../part-1/index.qmd).
+- Comfort reading and writing YAML.
+
+## Identity, not just address
+
+Before Pico Engine 1.6, a channel identifier could answer one question:
+
+> How do I communicate with this Pico on this engine?
+
+It could not answer a more durable one:
+
+> Which Pico is this?
+
+Version 1.6 gives every Pico its own cryptographic identity. That identity
+is intended to travel with the Pico rather than merely identify where it
+currently happens to execute.
+
+::: {.callout-tip}
+Think of a channel (an **ECI**) as a mailbox and a **DID** as the person who
+owns the mailbox. Mailboxes move and change; the person is who they are.
+:::
+
+## Two DIDs, two responsibilities
+
+Every Pico uses two kinds of Decentralized Identifiers:
+
+```
+Pico
+│
+├── did:webvh
+│   └── Public / portable Pico identity
+│
+└── did:peer
+    ├── Relationship A
+    ├── Relationship B
+    └── Relationship C
+```
+
+The distinction is deliberate. A Pico should not expose one universal
+identifier for every relationship it participates in. The architecture
+separates **identity** from **relationship identity**.
+
+## did:webvh — the Pico passport
+
+Every Pico receives a **did:webvh** when it is created. The Pico Engine
+publishes the corresponding DID document at a stable URL so another
+participant can resolve the identity.
+
+Conceptually the did:webvh is the Pico's **passport**: the identity a Pico
+presents when introducing itself to another Pico that does not yet know it.
+
+Its responsibilities include:
+
+- public identification;
+- DID resolution;
+- cryptographic introduction;
+- establishing new relationships;
+- forming the basis for Pico portability.
+
+The did:webvh is primarily an **introduction** identity. It is not the
+identifier that should be reused for every subsequent interaction.
+
+## did:peer — the relationship identity
+
+Once two Picos decide to establish a relationship, they create pairwise
+**did:peer** identities. A new pair is created for each relationship.
+
+```
+Pico A          Pico B
+did:webvh:A     did:webvh:B
+      │
+      └── introduction ──▶ subscription
+                              │
+                          A → did:peer:A-B
+                          B → did:peer:B-A
+```
+
+These peer DIDs are private to that relationship. A useful analogy:
+
+```
+did:webvh = passport
+did:peer  = private address given to one relationship
+```
+
+This provides significant isolation. If a relationship is compromised, its
+peer DID can be rotated, removed, or recreated without changing the Pico's
+other relationships.
+
+```
+Pico
+ ├── Relationship A → did:peer:...
+ ├── Relationship B → did:peer:...
+ └── Relationship C → did:peer:...
+```
+
+Relationship B can be replaced without affecting A or C.
+
+## Why not one universal DID?
+
+A single identifier used everywhere would let any party correlate every
+relationship a Pico participates in. Pairwise did:peer identities keep
+relationships separate so that no single relationship can reveal the others.
+
+This is the same isolation principle you will see again in
+[Trust and Authorization](03-trust-and-authorization/index.qmd).
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — author and validate identity declarations.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

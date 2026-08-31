@@ -2,16 +2,29 @@
 title: "Part 3 — Extending"
 ---
 
-Part 3 covers extending a Pico: adding rules, composing multiple Picos, and
-connecting a Pico to other Open Engineering artifacts.
+Part 3 covers extending a Pico beyond a single, isolated artifact. You will
+give a Pico a cryptographic identity, connect Picos across meshes, separate
+who a Pico is from what it may do, and prepare a Pico for portability
+between execution environments.
+
+These lessons are based on the Pico-to-Pico identity architecture introduced
+in Pico Engine 1.6 and are designed to be completed in order after
+[Part 1 — Foundations](../part-1/index.qmd) and
+[Part 2 — Building](../part-2/index.qmd).
 
 ## Lessons
 
-Lesson content for Part 3 is authored following the lesson layout established
-in [Part 1, lesson 1](../part-1/01-introduction/index.qmd).
+- [1. Pico Identity](01-pico-identity/index.qmd) — did:webvh as a Pico's
+  public cryptographic identity and did:peer as relationship-specific
+  identity.
+- [2. Cross-Mesh Communication](02-cross-mesh-communication/index.qmd) —
+  DIDComm, subscriptions as cryptographic relationships, and how parent/
+  child communication differs from external relationships.
+- [3. Trust and Authorization](03-trust-and-authorization/index.qmd) —
+  keeping identity and authorization separate, channel policy, and the
+  implications for Open Engineering rules and parsers.
+- [4. Portability](04-portability/index.qmd) — what it takes to move a Pico
+  between engines without losing who it is.
 
-::: {.callout-warning title="Scaffold — not yet runnable"}
-Part 3 is intentionally scaffolded. It is included so the reference
-course demonstrates a multi-part structure that other course websites
-can mirror, but it does **not** yet carry runnable learner content.
-:::
+Each lesson follows the same page layout as the rest of the course — see the
+[course overview](../index.qmd) for the full pattern.

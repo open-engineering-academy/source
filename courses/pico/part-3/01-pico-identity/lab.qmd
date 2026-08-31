@@ -1,0 +1,75 @@
+---
+title: "Lab · Pico Identity Declaration"
+---
+
+In this lab you will author full identity declarations for two Picos that
+will later form a relationship, and validate them with the `pico` CLI.
+
+## Setup
+
+Create a scratch working directory and export the `pico` CLI per the
+[Hello Pico one-time setup](../../../../labs/hello-pico/objectives.html#one-time-setup):
+
+```bash
+mkdir -p scratch/identity
+```
+
+## Step 1 — Author Pico A's identity
+
+Create `scratch/identity/pico-a.yaml`:
+
+```yaml
+# scratch/identity/pico-a.yaml
+id: oep.pico.alice
+identity:
+  type: did
+  public:
+    method: webvh
+    url: https://engine-a.example.com/picos/alice/did.json
+relationships:
+  - did:peer:rel-alice-bob
+```
+
+## Step 2 — Author Pico B's identity
+
+Create `scratch/identity/pico-b.yaml`:
+
+```yaml
+# scratch/identity/pico-b.yaml
+id: oep.pico.bob
+identity:
+  type: did
+  public:
+    method: webvh
+    url: https://engine-b.example.com/picos/bob/did.json
+relationships:
+  - did:peer:rel-bob-alice
+```
+
+## Step 3 — Validate both declarations
+
+```bash
+pico parse scratch/identity/pico-a.yaml --out /tmp/pico-a.json \
+  && echo "OK: Pico A parses"
+pico parse scratch/identity/pico-b.yaml --out /tmp/pico-b.json \
+  && echo "OK: Pico B parses"
+```
+
+## Step 4 — Extend Pico A with a second relationship
+
+Add a second relationship to `pico-a.yaml` representing a new relationship
+with Pico C, then re-run the parse:
+
+```bash
+pico parse scratch/identity/pico-a.yaml --out /tmp/pico-a.json \
+  && echo "OK: Pico A with two relationships parses"
+```
+
+## What you will produce
+
+Two valid YAML identity declarations plus a demonstration that a Pico can
+carry multiple `did:peer` relationships under a single `did:webvh`.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

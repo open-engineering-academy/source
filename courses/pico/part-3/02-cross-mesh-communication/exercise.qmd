@@ -1,0 +1,71 @@
+---
+title: "Exercise · Cross-Mesh Communication"
+---
+
+A short, guided task. Complete it before moving on to the lab.
+
+## Task
+
+For two Picos, one in each of your own meshes, write the subscription
+configuration that establishes a relationship using the recipient's
+did:webvh:
+
+```yaml
+# subscription-a-b.yaml
+subscription:
+  initiator: did:webvh:https://engine-a.example.com/picos/alice
+  recipient: did:webvh:https://engine-b.example.com/picos/bob
+  peer:
+    initiator: did:peer:rel-alice-bob
+    recipient: did:peer:rel-bob-alice
+```
+
+Then write a DIDComm message envelope that would be sent after the
+subscription is established:
+
+```yaml
+# didcomm-message.yaml
+message:
+  from: did:peer:rel-alice-bob
+  to: did:peer:rel-bob-alice
+  type: pico/event
+  body:
+    event: temperature-reading
+    value: 21.5
+```
+
+::: {.callout-note}
+The exact field names are illustrative. The goal is to internalize the flow
+from the [lesson](index.qmd): resolve → introduce → create peer DIDs →
+establish subscription → encrypted relationship.
+:::
+
+## Success criteria
+
+- [ ] Your subscription initiates using the recipient's did:webvh.
+- [ ] Your subscription creates a distinct did:peer on each side.
+- [ ] Your DIDComm envelope addresses the message by peer DID, not by
+      did:webvh.
+
+## Automatable check
+
+Validate both snippets parse:
+
+```bash
+pico parse subscription-a-b.yaml --out /tmp/sub.json \
+  && echo "OK: subscription parses"
+pico parse didcomm-message.yaml --out /tmp/msg.json \
+  && echo "OK: message envelope parses"
+```
+
+Both commands exit `0` and print the `OK:` line when well-formed.
+
+## Reflect
+
+- Why does the message envelope use did:peer rather than did:webvh after the
+  relationship is established?
+- What would change if Pico A and Pico B were in the *same* mesh?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

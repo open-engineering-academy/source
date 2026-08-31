@@ -1,0 +1,27 @@
+---
+title: "Summary · Cross-Mesh Communication"
+---
+
+## Key takeaways
+
+- A **subscription** is a pairwise relationship represented on both sides.
+  One side initiates using the recipient's did:webvh; the handshake
+  resolves the identity and creates peer DIDs.
+- Once established, events and queries use the **did:peer** relationship —
+  not the public did:webvh.
+- **DIDComm** provides encrypted cross-mesh and cross-engine communication
+  using the peer relationship. Within the same mesh, traffic can stay local.
+- Two relationship classes exist: **family** (parent/child, ECI-based, no
+  DID needed) and **external** (subscriptions, did:webvh → introduction,
+  did:peer → established relationship).
+- DID-based introduction would be unnecessary overhead for relationships
+  already established structurally within a Pico family.
+
+## What comes next
+
+- [Trust and Authorization](../03-trust-and-authorization/index.qmd) — how
+  identity determines *who* but channel policy determines *what*.
+
+## Next
+
+Take the [Quiz](quiz.qmd) before continuing.

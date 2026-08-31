@@ -1,0 +1,79 @@
+---
+title: "Exercise · Pico Identity"
+---
+
+A short, guided task. Complete it before moving on to the lab.
+
+## Task
+
+For a Pico you care about, write the YAML identity declaration that separates
+its public identity from its relationship identities.
+
+Start with the public identity:
+
+```yaml
+# identity-public.yaml
+identity:
+  type: did
+  public:
+    method: webvh
+    url: https://engine.example.com/picos/alice/did.json
+```
+
+Then add two placeholder relationships:
+
+```yaml
+# identity-relationships.yaml
+relationships:
+  - did:peer:rel-alice-bob
+  - did:peer:rel-alice-carol
+```
+
+Answer the questions below for your chosen Pico.
+
+::: {.callout-note}
+There is no single correct answer. The goal is to internalize the
+two-DID model from the [lesson](index.qmd): a stable public identity for
+introduction plus isolated per-relationship identities.
+:::
+
+## Success criteria
+
+- [ ] Your public identity uses the `did:webvh` method with a resolvable
+      URL.
+- [ ] You list at least **two** distinct `did:peer` relationships.
+- [ ] You can explain why the public identity and the relationship
+      identities are deliberately different.
+
+## Automatable check
+
+Save both snippets under a scratch working directory and confirm they parse:
+
+```bash
+mkdir -p scratch-part3-01
+cat > scratch-part3-01/identity.yaml <<'EOF'
+identity:
+  type: did
+  public:
+    method: webvh
+    url: https://engine.example.com/picos/alice/did.json
+relationships:
+  - did:peer:rel-alice-bob
+  - did:peer:rel-alice-carol
+EOF
+pico parse scratch-part3-01/identity.yaml --out /tmp/identity.json \
+  && echo "OK: identity declaration parses"
+```
+
+The command exits with status `0` and prints an `OK:` line when the
+declaration is well-formed.
+
+## Reflect
+
+- Which of your relationships would you most want to isolate if it were
+  compromised, and why?
+- How would your declaration change if you added a third relationship?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

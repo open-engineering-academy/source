@@ -1,0 +1,28 @@
+---
+title: "Summary · Pico Identity"
+---
+
+## Key takeaways
+
+- A Pico needs a cryptographic **identity** in addition to an **address**.
+  An ECI answers "how do I reach this Pico here?"; a DID answers "which
+  Pico is this?"
+- Every Pico has a **did:webvh** — its public, resolvable passport — used
+  for introduction and portability.
+- Every relationship has its own pairwise **did:peer** — a private address
+  used only for that relationship.
+- Keeping relationship identities separate means one compromised
+  relationship can be rotated or removed without affecting the others.
+- The analogy to remember: **did:webvh = passport**, **did:peer = private
+  address for one relationship**.
+
+## What comes next
+
+- [Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd) —
+  how these identities are used to communicate across meshes via DIDComm.
+- [Trust and Authorization](../03-trust-and-authorization/index.qmd) —
+  how identity stays separate from what a Pico may do.
+
+## Next
+
+Take the [Quiz](quiz.qmd) before continuing.

@@ -1,0 +1,100 @@
+---
+title: "Lab · Channel Policy with Identity"
+---
+
+In this lab you will author channel policies that reference a peer DID,
+compare channel-only policy with identity-aware policy, and validate the
+YAML with the `pico` CLI.
+
+## Setup
+
+```bash
+mkdir -p scratch/policy
+```
+
+## Step 1 — Channel policy
+
+Create `scratch/policy/policy-trust.yaml`:
+
+```yaml
+# scratch/policy/policy-trust.yaml
+policy:
+  subject: did:peer:rel-alice-bob
+  channel: subscription
+  allow:
+    - event: temperature-reading
+      action: observe
+    - event: status
+      action: read
+  deny:
+    - event: control
+      action: write
+```
+
+## Step 2 — Compare with a family channel
+
+Create `scratch/policy/policy-family.yaml`:
+
+```yaml
+# scratch/policy/policy-family.yaml
+policy:
+  subject:
+    relationship: parent
+    eci: eci:root-family
+  channel: family
+  allow:
+    - event: deploy
+      action: write
+```
+
+## Step 3 — Identity-aware policy (future form)
+
+Create `scratch/policy/policy-identity-aware.yaml`:
+
+```yaml
+# scratch/policy/policy-identity-aware.yaml
+authorization:
+  subject:
+    did: did:peer:rel-alice-bob
+    credentials:
+      - type: membership
+        issuer: engine-a.example.com
+    relationship: subscription
+    requested-action:
+      event: temperature-reading
+      action: observe
+    resource: temperature-sensor
+    context:
+      mesh: engine-b.example.com
+  decision: permit
+```
+
+## Step 4 — Validate all three
+
+```bash
+pico parse scratch/policy/policy-trust.yaml --out /tmp/a1.json \
+  && echo "OK: channel policy parses"
+pico parse scratch/policy/policy-family.yaml --out /tmp/a2.json \
+  && echo "OK: family policy parses"
+pico parse scratch/policy/policy-identity-aware.yaml --out /tmp/a3.json \
+  && echo "OK: identity-aware policy parses"
+```
+
+## Step 5 — Compare
+
+Answer, using your files:
+
+- What does the channel policy authorize based on?
+- What extra inputs does the identity-aware policy consider?
+- Why does keeping these separate matter for Open Engineering rules and
+  parsers?
+
+## What you will produce
+
+Three policy files demonstrating (1) channel-only policy on a subscription,
+(2) channel policy on a family relationship, and (3) a future identity-aware
+authorization decision.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

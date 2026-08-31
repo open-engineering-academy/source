@@ -1,0 +1,28 @@
+---
+title: "Summary · Trust and Authorization"
+---
+
+## Key takeaways
+
+- The DID infrastructure does **not** replace channel authorization; the two
+  concerns stay separate. **Identity establishes who; policy establishes
+  what.**
+- A subscription's peer DID acts as its channel identity; existing channel
+  policy determines what that relationship may do.
+- Picos across different meshes can establish trust without a central
+  federation: **the relationship is the unit of trust**.
+- Pico rules can increasingly express **trust relationships**, not merely
+  event-processing behavior — reasoning about identity, subscriptions,
+  introductions, relationship lifecycle, key rotation, and eventually
+  credentials.
+- Pico parsers must preserve the distinction between identity, relationship,
+  address, authorization, and messaging. A DID is not another form of ECI.
+
+## What comes next
+
+- [Portability](../04-portability/index.qmd) — what it takes to move a Pico
+  between engines without losing who it is.
+
+## Next
+
+Take the [Quiz](quiz.qmd) before continuing.

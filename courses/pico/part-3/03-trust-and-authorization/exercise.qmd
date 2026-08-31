@@ -1,0 +1,79 @@
+---
+title: "Exercise · Trust and Authorization"
+---
+
+A short, guided task. Complete it before moving on to the lab.
+
+## Task
+
+For the relationship you established in the
+[Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd) lesson,
+write a channel policy that keeps identity and authorization separate.
+
+Start with a policy that grants a peer relationship read-only access:
+
+```yaml
+# policy-trust.yaml
+policy:
+  subject: did:peer:rel-alice-bob
+  channel: subscription
+  allow:
+    - event: temperature-reading
+      action: observe
+```
+
+Then sketch what an **identity-aware** authorization decision would look like
+in the future — where the authenticated identity behind the channel (not just
+the channel) participates in the decision:
+
+```yaml
+# policy-identity-aware.yaml
+authorization:
+  subject:
+    did: did:peer:rel-alice-bob
+    credentials: []
+    relationship: subscription
+  resource: temperature-sensor
+  action: observe
+  context:
+    mesh: engine-b.example.com
+  decision: permit
+```
+
+::: {.callout-note}
+The identity-aware form is illustrative of a future layer, not a current
+format. The goal is to feel the difference between channel-only policy and
+identity-aware policy.
+:::
+
+## Success criteria
+
+- [ ] Your channel policy authorizes based on a peer DID and a channel.
+- [ ] Your identity-aware sketch includes the authenticated identity,
+      credentials, relationship, and requested action.
+- [ ] You can state the principle "identity establishes who; policy
+      establishes what" in your own words.
+
+## Automatable check
+
+Validate both snippets parse:
+
+```bash
+pico parse policy-trust.yaml --out /tmp/p1.json \
+  && echo "OK: channel policy parses"
+pico parse policy-identity-aware.yaml --out /tmp/p2.json \
+  && echo "OK: identity-aware policy parses"
+```
+
+Both commands exit `0` and print the `OK:` line when well-formed.
+
+## Reflect
+
+- Why is it valuable that adding identity does not force rewriting the
+  authorization model?
+- What new capability does identity-aware authorization give you that
+  channel-only policy does not?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

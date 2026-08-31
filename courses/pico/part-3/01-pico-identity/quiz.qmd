@@ -1,0 +1,40 @@
+---
+title: "Quiz · Pico Identity"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What question does a DID answer that an ECI cannot?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+An ECI answers "how do I communicate with this Pico on this engine?" A DID
+answers "which Pico is this?" — the durable identity of the Pico itself.
+:::
+
+## 2. What is the analogy for did:webvh and did:peer?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+A did:webvh is the Pico's **passport** (public identity for introduction);
+a did:peer is a **private address given to one relationship**.
+:::
+
+## 3. Why does a Pico use a different did:peer for each relationship?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Isolation. If one relationship is compromised, its peer DID can be rotated,
+removed, or recreated without changing the Pico's other relationships, and
+no single relationship can reveal the others.
+:::
+
+## 4. Which DID is primarily an introduction identity?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **did:webvh**. It is used for public identification, resolution, and
+cryptographic introduction, not for every subsequent interaction.
+:::
+
+## Next
+
+Return to [Part 3](../index.qmd) or continue to
+[Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd).

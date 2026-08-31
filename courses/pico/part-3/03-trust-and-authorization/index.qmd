@@ -1,0 +1,106 @@
+---
+title: "3. Trust and Authorization"
+subtitle: "Identity determines who; policy determines what."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why the DID infrastructure does not replace channel authorization.
+- State the principle "identity establishes who; policy establishes what."
+- Author a channel policy that references a peer DID.
+- Explain the implications for Open Engineering rules and parsers.
+
+## Prerequisites
+
+- [Pico Identity](../01-pico-identity/index.qmd).
+- [Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd).
+
+## Identity does not replace authorization
+
+A particularly useful design decision is that the new DID infrastructure
+does **not** replace the existing Pico channel authorization model. The
+responsibilities remain separate.
+
+```
+DID
+ │
+ └── Who is the other party?
+Channel / ECI policy
+ │
+ └── What may that party do?
+```
+
+A subscription's peer DID acts as its channel identity, while existing
+channel policy determines what that relationship may do.
+
+This gives Open Engineering an important architectural principle:
+
+> Identity establishes who; policy establishes what.
+
+The Pico Engine therefore gains cryptographic identity without requiring its
+authorization model to be rewritten at the same time.
+
+## Trust between previously unrelated Picos
+
+Picos belonging to different meshes can establish relationships without
+requiring a central federation. Neither mesh needs:
+
+- a shared identity provider;
+- a central broker;
+- a preconfigured federation agreement;
+- a shared Pico Engine.
+
+The parties can resolve identities, agree to establish a relationship, and
+create pairwise identities. This supports the Pico principle:
+
+> The relationship is the unit of trust.
+
+Pico Engine 1.6 makes that relationship cryptographic and increasingly
+portable.
+
+## Implications for rules
+
+Rules and rulesets should be able to reason about:
+
+- the identity of another Pico;
+- establishment of subscriptions;
+- acceptance or rejection of introductions;
+- relationship lifecycle;
+- relationship-specific authorization;
+- key rotation;
+- relationship termination;
+- credentials when those become available.
+
+This means Pico rules can increasingly express trust relationships, not
+merely event-processing behavior.
+
+## Implications for parsers
+
+Open Engineering Pico parsers should preserve the distinction between:
+
+```
+Identity
+Relationship
+Address
+Authorization
+Messaging
+```
+
+A parser should not treat a DID merely as another form of ECI. They serve
+different semantic purposes. An ECI primarily identifies a communication
+channel; a DID identifies a cryptographic actor or relationship. That
+distinction should survive translation between Open Engineering definitions
+and Pico Engine/Manifold representations.
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — author channel policies with identity.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

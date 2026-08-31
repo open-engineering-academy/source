@@ -48,3 +48,48 @@ A single declarative statement that shapes the behavior or content of a Pico.
 An executable or observable check that tests an Element against its
 Constraints (for example, a lab's `verify.sh` or a course quiz). See
 [Constructive realization](constructive-realization.qmd).
+
+## Channel Policy
+The authorization rules governing what a Pico relationship may do.
+Channel policy determines permitted actions; identity determines who
+the other party is. These remain separate concerns.
+
+## DIDComm
+A protocol for encrypted peer-to-peer communication between Picos.
+DIDComm uses pairwise did:peer identities to protect cross-mesh and
+cross-engine messaging.
+
+## did:peer
+A pairwise Decentralized Identifier used for private, relationship-
+specific identity. Each Pico-to-Pico relationship creates its own
+did:peer pair, providing isolation between relationships.
+
+## did:webvh
+A web-resolvable Decentralized Identifier that serves as a Pico's
+public cryptographic identity. The Pico Engine publishes the
+corresponding DID document at a stable URL. Conceptually the Pico's
+"passport."
+
+## ECI
+An Event Channel Identifier. The legacy addressing mechanism for
+Pico communication. Parent and child Picos continue using ECIs for
+family channel communication.
+
+## Identity-Aware Authorization
+A future authorization model where decisions are based on the
+authenticated cryptographic identity behind a channel, rather than
+channel policy alone.
+
+## Portability
+The ability of a Pico to move between execution environments without
+losing its cryptographic identity, relationships, or trust state.
+
+## Subscription
+A pairwise relationship between two Picos that are not in a parent/
+child hierarchy. In Pico Engine 1.6, subscriptions are backed by
+cryptographic peer DIDs and encrypted with DIDComm.
+
+## Verifiable Credential
+A signed claim about a Pico's attributes or authority. A future
+layer on top of the identity architecture that will allow Picos to
+prove what they are and what authority they hold.
