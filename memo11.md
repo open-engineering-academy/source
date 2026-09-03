@@ -1,20 +1,18 @@
-memo.md
+# Memo 11: Course Proposal: Pico Agents with AgentConnect
 
-Course Proposal: Pico Agents with AgentConnect
-
-Status
+## Status
 
 Proposed
 
-Target Repository
+## Target Repository
 
 Open Engineering Academy
 
-Course
+## Course
 
 Pico Agents — Connecting Physical Picos to AI Agents with AgentConnect
 
-Objective
+## Objective
 
 Create a new Open Engineering Academy course that extends the existing Pico course by introducing AI agents and AgentConnect.
 
@@ -37,10 +35,10 @@ The new course should introduce AgentConnect as the orchestration layer for AI a
 
 ⸻
 
-1. Core Idea
+## 1. Core Idea
 
 The fundamental architecture taught by the course is:
-
+```
                          OPEN ENGINEERING
                                 │
                                 ▼
@@ -57,7 +55,7 @@ The fundamental architecture taught by the course is:
                  Pico A                  Pico B
                     │                       │
               Sensors / LEDs          Sensors / Motors
-
+```
 The Pico is the physical Engineering Element.
 
 AgentConnect provides the agent execution and orchestration environment.
