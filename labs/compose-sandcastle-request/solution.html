@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Reference solution for the Compose a Sandcastle request lab.">
+
+<title>Solution – Open Engineering Academy</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../shared/images/open-engineering-mark.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3e9b1289f5f353c49b617ce48ad2bc38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Open Engineering Academy</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../curriculum/index.html"> 
+<span class="menu-text">Curriculum</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../courses/index.html"> 
+<span class="menu-text">Courses</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../exercises/index.html"> 
+<span class="menu-text">Exercises</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resources.html"> 
+<span class="menu-text">Resources</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#reference-solution" id="toc-reference-solution" class="nav-link active" data-scroll-target="#reference-solution">Reference solution</a>
+  <ul class="collapse">
+  <li><a href="#engineering-task.yaml-compose-side-output" id="toc-engineering-task.yaml-compose-side-output" class="nav-link" data-scroll-target="#engineering-task.yaml-compose-side-output"><code>engineering-task.yaml</code> (compose-side output)</a></li>
+  <li><a href="#ruleshello.yaml-on-sandcastlehello-world-pico-greetings-de" id="toc-ruleshello.yaml-on-sandcastlehello-world-pico-greetings-de" class="nav-link" data-scroll-target="#ruleshello.yaml-on-sandcastlehello-world-pico-greetings-de"><code>rules/hello.yaml</code> (on <code>sandcastle/hello-world-pico-greetings-de</code>)</a></li>
+  <li><a href="#commands" id="toc-commands" class="nav-link" data-scroll-target="#commands">Commands</a></li>
+  <li><a href="#expected-verify.sh-output-final-line" id="toc-expected-verify.sh-output-final-line" class="nav-link" data-scroll-target="#expected-verify.sh-output-final-line">Expected <code>verify.sh</code> output (final line)</a></li>
+  </ul></li>
+  <li><a href="#why-this-satisfies-the-objectives" id="toc-why-this-satisfies-the-objectives" class="nav-link" data-scroll-target="#why-this-satisfies-the-objectives">Why this satisfies the objectives</a></li>
+  <li><a href="#verification" id="toc-verification" class="nav-link" data-scroll-target="#verification">Verification</a></li>
+  <li><a href="#variations" id="toc-variations" class="nav-link" data-scroll-target="#variations">Variations</a></li>
+  <li><a href="#not-covered-by-this-lab-intentional" id="toc-not-covered-by-this-lab-intentional" class="nav-link" data-scroll-target="#not-covered-by-this-lab-intentional">Not covered by this lab (intentional)</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Solution</h1>
+</div>
+
+<div>
+  <div class="description">
+    Reference solution for the Compose a Sandcastle request lab.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="reference-solution" class="level2">
+<h2 class="anchored" data-anchor-id="reference-solution">Reference solution</h2>
+<p>A working solution consists of:</p>
+<ol type="1">
+<li>The lab’s shipped <a href="downloads/xr-request.yaml"><code>xr-request.yaml</code></a> used as input.</li>
+<li>An emitted <code>work/compose-sandcastle-request/task/engineering-task.yaml</code> whose fields match <a href="downloads/expected-task.yaml"><code>expected-task.yaml</code></a> on <code>kind</code>, <code>metadata.name</code>, <code>spec.requestedBy.{apiVersion,kind,name}</code>, <code>spec.artifact.kind</code>, <code>spec.inputs.greeting</code>, and <code>spec.target.branch</code>.</li>
+<li>A durable branch (<code>sandcastle/hello-world-pico-greetings-de</code>) on the local target repo at <code>work/compose-sandcastle-request/target-repo</code>, containing exactly one committed file (<code>rules/hello.yaml</code>).</li>
+<li>A <code>results/pico-output.txt</code> capturing <code>Hallo, Pico!</code> printed by the recomposed Pico artifact.</li>
+<li>A disposed sandbox (<code>work/compose-sandcastle-request/sandbox/</code> no longer exists).</li>
+</ol>
+<section id="engineering-task.yaml-compose-side-output" class="level3">
+<h3 class="anchored" data-anchor-id="engineering-task.yaml-compose-side-output"><code>engineering-task.yaml</code> (compose-side output)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> EngineeringTask</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> greetings-de</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">requestedBy</span><span class="kw">:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> oe.academy/v1alpha1</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> XHelloWorldPico</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> greetings-de</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">artifact</span><span class="kw">:</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">kind</span><span class="kw">:</span><span class="at"> hello-world-pico</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">producesFiles</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> rules/hello.yaml</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">inputs</span><span class="kw">:</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">greeting</span><span class="kw">:</span><span class="at"> </span><span class="st">"Hallo, Pico!"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">target</span><span class="kw">:</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">repo</span><span class="kw">:</span><span class="at"> file://./work/compose-sandcastle-request/target-repo</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branch</span><span class="kw">:</span><span class="at"> sandcastle/hello-world-pico-greetings-de</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">workspace</span><span class="kw">:</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">sandboxProvider</span><span class="kw">:</span><span class="at"> local-scratch-dir</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tools</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">pico</span><span class="kw">,</span><span class="at"> git</span><span class="kw">,</span><span class="at"> python3</span><span class="kw">]</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">permissions</span><span class="kw">:</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> git.read:file:./target-repo</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> git.write:branch:sandcastle/hello-world-pico-greetings-de</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> fs.write:workspace-only</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">artifactBoundary</span><span class="kw">:</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">survives</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">branch</span><span class="kw">]</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">disposed</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">workspace</span><span class="kw">,</span><span class="at"> tools</span><span class="kw">,</span><span class="at"> scratch_state</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="ruleshello.yaml-on-sandcastlehello-world-pico-greetings-de" class="level3">
+<h3 class="anchored" data-anchor-id="ruleshello.yaml-on-sandcastlehello-world-pico-greetings-de"><code>rules/hello.yaml</code> (on <code>sandcastle/hello-world-pico-greetings-de</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">id</span><span class="kw">:</span><span class="at"> rule.hello</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> greeting</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">value</span><span class="kw">:</span><span class="at"> </span><span class="st">"Hallo, Pico!"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="commands" class="level3">
+<h3 class="anchored" data-anchor-id="commands">Commands</h3>
+<p>Run from the root of your local clone of the academy repository, with the <a href="../../labs/compose-sandcastle-request/objectives.html#one-time-setup">one-time setup</a> applied so <code>pico</code> resolves to this repository’s <code>bin/pico</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> labs/compose-sandcastle-request/downloads/compose.sh <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     labs/compose-sandcastle-request/downloads/xr-request.yaml <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>     work/compose-sandcastle-request</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> labs/compose-sandcastle-request/downloads/sandcastle-run.sh <span class="dt">\</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>     work/compose-sandcastle-request/task/engineering-task.yaml <span class="dt">\</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     work/compose-sandcastle-request</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> labs/compose-sandcastle-request/downloads/verify.sh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="expected-verify.sh-output-final-line" class="level3">
+<h3 class="anchored" data-anchor-id="expected-verify.sh-output-final-line">Expected <code>verify.sh</code> output (final line)</h3>
+<pre><code>verify: OK — branch=sandcastle/hello-world-pico-greetings-de commit=&lt;sha&gt; greeting=Hallo\,\ Pico\! task=…/engineering-task.yaml sandbox=disposed</code></pre>
+<p><code>&lt;sha&gt;</code> is the commit hash of the single agent commit on the branch.</p>
+</section>
+</section>
+<section id="why-this-satisfies-the-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-satisfies-the-objectives">Why this satisfies the objectives</h2>
+<ul>
+<li><strong>Compose → construct boundary preserved</strong>: <code>compose.sh</code> only reads the XR and writes YAML; it neither touches the repo nor generates a Pico rule. The Sandcastle only reads the EngineeringTask; the XR is never copied into the sandbox.</li>
+<li><strong>Parametric construction</strong>: the greeting comes from <code>spec.inputs.greeting</code> in the task, which came from <code>spec.value</code> in the XR. Change <code>spec.value</code> in the XR and both the task and the branch’s rule change with no other edits.</li>
+<li><strong>Artifact boundary intact</strong> (from <a href="../../courses/sandcastle/part-1/01-inside-a-sandcastle/index.html">Sandcastle · Part 1 · Lesson 1</a>): only <code>rules/hello.yaml</code> was <code>git add</code>ed and committed; the <code>.engineering-task.yaml</code>, the sandbox’s <code>build/</code>, its <code>bin-allowlist/</code>, and everything else were disposed with the workspace.</li>
+<li><strong>Provenance retained</strong>: <code>spec.requestedBy</code> in the task lets a reviewer trace the branch back to the exact XR that requested it, without the Sandcastle needing to reason about the XR shape.</li>
+</ul>
+</section>
+<section id="verification" class="level2">
+<h2 class="anchored" data-anchor-id="verification">Verification</h2>
+<p>You can verify the solution matches this reference by:</p>
+<ol type="1">
+<li>Running <code>bash labs/compose-sandcastle-request/downloads/verify.sh</code> and checking the final <code>verify: OK</code> line and exit status <code>0</code>.</li>
+<li>Diffing the emitted task against the reference: <code>diff -u labs/compose-sandcastle-request/downloads/expected-task.yaml work/compose-sandcastle-request/task/engineering-task.yaml</code>. Comments and the provenance header line will differ; the fields above should match.</li>
+<li>Confirming <code>test ! -d work/compose-sandcastle-request/sandbox</code>.</li>
+<li>Confirming <code>grep -Fqx 'Hallo, Pico!' work/compose-sandcastle-request/results/pico-output.txt</code>.</li>
+</ol>
+</section>
+<section id="variations" class="level2">
+<h2 class="anchored" data-anchor-id="variations">Variations</h2>
+<ul>
+<li><strong>Different greeting</strong>: change <code>spec.value</code> in <a href="downloads/xr-request.yaml"><code>xr-request.yaml</code></a> and re-run the three commands above. Update <code>EXPECTED_VALUE</code> in <code>verify.sh</code> invocations only if you also change the reference <code>expected-task.yaml</code>.</li>
+<li><strong>Different request name</strong>: change <code>metadata.name</code> in the XR. The target branch becomes <code>sandcastle/hello-world-pico-&lt;new-name&gt;</code> automatically. Update <code>expected-task.yaml</code> to match if you want assertion 1 to keep passing.</li>
+<li><strong>Wire into the Kubernetes lab</strong>: the branch this lab produces has the same <code>rules/hello.yaml</code> shape as the <a href="../hello-world-pico-sandcastle/">Hello World Pico Sandcastle lab</a>. Set <code>BRANCH=sandcastle/hello-world-pico-greetings-de</code> and <code>SANDCASTLE_WORK=work/compose-sandcastle-request</code> when calling <a href="../handoff-sandcastle-to-kubernetes/downloads/handoff.sh"><code>labs/handoff-sandcastle-to-kubernetes/downloads/handoff.sh</code></a> to promote the greeting into an <code>XHelloWorldPico</code> XR for the <a href="../hello-pico-on-kubernetes/">Hello Pico on Kubernetes lab</a>.</li>
+</ul>
+</section>
+<section id="not-covered-by-this-lab-intentional" class="level2">
+<h2 class="anchored" data-anchor-id="not-covered-by-this-lab-intentional">Not covered by this lab (intentional)</h2>
+<ul>
+<li>A container-backed <strong>sandbox provider</strong> — this lab uses <code>local-scratch-dir</code> for the same reasons the <a href="../hello-world-pico-sandcastle/">Hello World Pico Sandcastle lab</a> does. Only the <code>workspace.sandboxProvider</code> field in the emitted EngineeringTask needs to change when a container-backed provider lands.</li>
+<li>A <strong>real Crossplane cluster</strong> running a real Composition emitting a real EngineeringTask CR — that is scoped to a later Part 2 lesson. <code>compose.sh</code> is deliberately a local simulation of the Composition step so the boundary can be studied end-to-end without a cluster.</li>
+<li><strong>Multi-artifact requests</strong> — one XR could ask for more than one file, or for multiple related artifacts. Multi-artifact requests are a natural extension but are out of scope for the first runnable compose → construct lab.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/academy\.open-engineering\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Open Engineering Academy</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

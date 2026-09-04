@@ -1,0 +1,18 @@
+id: oe.lab.outer-delivery-loop
+title: Outer delivery loop (PR → merge → GitOps → reconcile)
+level: intermediate
+duration: 45m
+prerequisites:
+  - oe.lab.handoff-sandcastle-to-kubernetes
+  - oe.lab.hello-pico-on-kubernetes
+teaches:
+  - Outer delivery loop (branch → PR → merge → GitOps → reconcile)
+  - Environment repo as source of truth
+  - Review / verification / policy guardrails outside the Sandcastle boundary
+  - GitOps reconciler as the first cluster-touching stage
+produces:
+  - hello-world-pico-merged-xr-commit
+  - hello-world-pico-gitops-source
+referenced_by:
+  - oe.course.sandcastle
+  - oe.lesson.sandcastle.02-outer-delivery-loop

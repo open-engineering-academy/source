@@ -1,0 +1,805 @@
+[
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "Labs referenced by the Crossplane course. Course-scoped labs live under courses/crossplane/labs/; reusable labs shared with other courses live under the repository-root labs/ directory.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#referenced-labs",
+    "href": "labs/index.html#referenced-labs",
+    "title": "Labs",
+    "section": "Referenced labs",
+    "text": "Referenced labs\n\nHello Pico — the introductory Pico lab from the Pico course. Produces the hello-world-pico greeting on a laptop. Descriptor: labs/hello-pico/metadata.yaml.\nHello Pico on Kubernetes — the first runnable Crossplane lab. Installs Crossplane on a local minikube cluster, declares an XHelloWorldPico XRD, registers a pipeline-mode Composition, and creates one Composite Resource that reconciles into a Kubernetes Job printing Hello, Pico! from inside the cluster. Descriptor: labs/hello-pico-on-kubernetes/metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#related-reusable-labs",
+    "href": "labs/index.html#related-reusable-labs",
+    "title": "Labs",
+    "section": "Related reusable labs",
+    "text": "Related reusable labs\n\nSandcastle → Kubernetes hand-off — produces the XHelloWorldPico XR consumed by the Hello Pico on Kubernetes lab above, from the durable branch that the Hello World Pico Sandcastle lab produced. Owned by the Sandcastle course; the two courses meet at this file-level contract.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#authoring-course-scoped-labs",
+    "href": "labs/index.html#authoring-course-scoped-labs",
+    "title": "Labs",
+    "section": "Authoring course-scoped labs",
+    "text": "Authoring course-scoped labs\nCourse-scoped labs live in this directory and follow the shared lab template. Reuse a repository-root lab when the same lab is useful for more than one course.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "part-2/index.html",
+    "href": "part-2/index.html",
+    "title": "Part 2 — Composing Hello Pico",
+    "section": "",
+    "text": "Part 2 walks through composing hello-world-pico into a runnable Kubernetes workload with Crossplane: authoring a Composition, applying the Composite Resource, and letting the Crossplane control plane reconcile the Managed Resources that back the deployment.",
+    "crumbs": [
+      "Home",
+      "Part 2 — Composing Hello Pico"
+    ]
+  },
+  {
+    "objectID": "part-2/index.html#lessons",
+    "href": "part-2/index.html#lessons",
+    "title": "Part 2 — Composing Hello Pico",
+    "section": "Lessons",
+    "text": "Lessons\nLesson content for Part 2 follows the same lesson layout as Part 1 and the Pico Introduction lesson.\n\n\n\n\n\n\nWarningScaffold — Part 2 not yet runnable\n\n\n\nPart 2 is intentionally scaffolded so the Crossplane course demonstrates the multi-part structure. It does not yet carry runnable learner content. Use the Hello Pico lab to produce the input artifact, then track Part 1 for the first runnable Crossplane lesson.",
+    "crumbs": [
+      "Home",
+      "Part 2 — Composing Hello Pico"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/summary.html",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/summary.html",
+    "title": "Summary · Composing Hello Pico on Kubernetes",
+    "section": "",
+    "text": "Crossplane extends a Kubernetes control plane with the ability to author your own higher-level, composable APIs and have the cluster produce the concrete resources they imply.\nThe Crossplane primitives introduced in this lesson are Provider, XRD, Composition, Composite Resource (XR), and Managed Resource — all defined in the Glossary.\nThe Crossplane path maps cleanly onto the Pico pipeline: Rules ↔︎ XR, Parser ↔︎ XRD, Composer ↔︎ Composition, Pico artifact ↔︎ Managed Resources on the cluster.\nThe reference target environment for the follow-on runnable lab is local minikube — small enough for a laptop, full enough to host a real Kubernetes control plane.\nThe Crossplane Lab for this lesson is the reusable Hello Pico on Kubernetes lab. It installs Crossplane on a local minikube cluster, declares an XHelloWorldPico XRD and its Composition, and reconciles a single Composite Resource into a Kubernetes Job that prints Hello, Pico! — a full end-to-end runnable exercise of the Rules ↔︎ XR / Parser ↔︎ XRD / Composer ↔︎ Composition / Pico ↔︎ Managed Resources mapping.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/summary.html#key-takeaways",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/summary.html#key-takeaways",
+    "title": "Summary · Composing Hello Pico on Kubernetes",
+    "section": "",
+    "text": "Crossplane extends a Kubernetes control plane with the ability to author your own higher-level, composable APIs and have the cluster produce the concrete resources they imply.\nThe Crossplane primitives introduced in this lesson are Provider, XRD, Composition, Composite Resource (XR), and Managed Resource — all defined in the Glossary.\nThe Crossplane path maps cleanly onto the Pico pipeline: Rules ↔︎ XR, Parser ↔︎ XRD, Composer ↔︎ Composition, Pico artifact ↔︎ Managed Resources on the cluster.\nThe reference target environment for the follow-on runnable lab is local minikube — small enough for a laptop, full enough to host a real Kubernetes control plane.\nThe Crossplane Lab for this lesson is the reusable Hello Pico on Kubernetes lab. It installs Crossplane on a local minikube cluster, declares an XHelloWorldPico XRD and its Composition, and reconciles a single Composite Resource into a Kubernetes Job that prints Hello, Pico! — a full end-to-end runnable exercise of the Rules ↔︎ XR / Parser ↔︎ XRD / Composer ↔︎ Composition / Pico ↔︎ Managed Resources mapping.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/summary.html#what-comes-next",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/summary.html#what-comes-next",
+    "title": "Summary · Composing Hello Pico on Kubernetes",
+    "section": "What comes next",
+    "text": "What comes next\n\nPart 2 — Composing Hello Pico will develop the Composition side of the story once Part 1 is fully in place. See Part 2.\nPart 3 — Extending the composition will layer additional Managed Resources on top of the base composition. See Part 3.\nThe reusable Hello Pico on Kubernetes lab is now runnable end to end on local minikube. See the lab’s Objectives page for the exact tool version pins used to verify it.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/summary.html#next",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/summary.html#next",
+    "title": "Summary · Composing Hello Pico on Kubernetes",
+    "section": "Next",
+    "text": "Next\nTake the Quiz.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html",
+    "title": "Exercise · Mapping Pico onto Crossplane",
+    "section": "",
+    "text": "A short, pen-and-paper task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#task",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#task",
+    "title": "Exercise · Mapping Pico onto Crossplane",
+    "section": "Task",
+    "text": "Task\nTake the same rules/hello.yaml you authored in the Hello Pico lab — the flat id / kind / value shape — and sketch, in a scratch file, what each Crossplane counterpart would look like conceptually.\nYou do not need a cluster for this exercise. The goal is to lock in the mapping from the lesson before touching Kubernetes in the lab.\nSketch four things:\n\nXR (Composite Resource) — a YAML block that declares a HelloWorldPico instance carrying the same value as your Rule.\nXRD (CompositeResourceDefinition) — one or two bullet points describing which fields the XRD would need to accept for the XR above to validate.\nComposition — one or two bullet points describing what the Composition would produce on the cluster (for example, a single Kubernetes ConfigMap or a Job that prints the value).\nProvider — one line naming which Provider is doing the work. For the reference lab, this is the Crossplane Kubernetes Provider.\n\n\n\n\n\n\n\nNote\n\n\n\nThere is no single correct answer — several shapes are valid. The goal is to internalize the mapping.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#success-criteria",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#success-criteria",
+    "title": "Exercise · Mapping Pico onto Crossplane",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour XR sketch declares a HelloWorldPico object (any group/version) with a field carrying your greeting value.\nYour XRD notes at least one field the XRD must accept.\nYour Composition notes at least one concrete Kubernetes resource the Composition would produce.\nYou can name the Provider that provides that Kubernetes resource type.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#automatable-check",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#automatable-check",
+    "title": "Exercise · Mapping Pico onto Crossplane",
+    "section": "Automatable check",
+    "text": "Automatable check\nThe exercise is conceptual, so its automatable check is deliberately lightweight — it only confirms your XR sketch is well-formed YAML with the required fields. Save your sketch as work/crossplane-mapping/xr.yaml under a scratch working directory, and run one of:\n# Option 1 — if you already have yq installed\nyq eval '.kind == \"HelloWorldPico\" and .spec.value != null' \\\n  work/crossplane-mapping/xr.yaml\n# Option 2 — no extra tools, using Python 3 which most learners already have\npython3 - &lt;&lt;'PY'\nimport sys, yaml\ndoc = yaml.safe_load(open(\"work/crossplane-mapping/xr.yaml\"))\nok = doc.get(\"kind\") == \"HelloWorldPico\" and doc.get(\"spec\", {}).get(\"value\")\nprint(\"OK\" if ok else \"FAIL\")\nsys.exit(0 if ok else 1)\nPY\nEither command exits 0 and prints OK (or true) when the sketch is well-formed. This is an optional accompaniment — the main goal of the exercise remains the mapping.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#reflect",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#reflect",
+    "title": "Exercise · Mapping Pico onto Crossplane",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhich Crossplane primitive plays the role of the Pico Parser, and what happens if the XR does not match the XRD?\nWhich Crossplane primitive plays the role of the Pico Composer, and where does its output land?\nIf the hello-world-pico artifact from the Pico lab is a single script on disk, what is the equivalent “single thing on the cluster” the Composition should produce?",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#next",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/exercise.html#next",
+    "title": "Exercise · Mapping Pico onto Crossplane",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html",
+    "href": "part-1/index.html",
+    "title": "Part 1 — Crossplane on Kubernetes",
+    "section": "",
+    "text": "Part 1 introduces Crossplane on top of Kubernetes and sets up the mental model the rest of the course builds on: Rules → Parser → Composer → Pico (from the Pico course) mapped onto Composition → Composite Resource → Managed Resource on a Kubernetes control plane.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html#lessons",
+    "href": "part-1/index.html#lessons",
+    "title": "Part 1 — Crossplane on Kubernetes",
+    "section": "Lessons",
+    "text": "Lessons\nLessons for Part 1 are authored in the same lesson layout as the Pico reference course. See the Pico Introduction lesson for the canonical page structure (index, exercise, lab, summary, quiz).\n\n1. Composing Hello Pico on Kubernetes — introduces the Crossplane primitives (Provider, XRD, Composition, XR, Managed Resource) and maps them onto the Pico Rules → Parser → Composer → Pico pipeline. The lesson is conceptual; its accompanying Lab points at the reusable, runnable Hello Pico on Kubernetes lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html#where-the-runnable-lab-lives",
+    "href": "part-1/index.html#where-the-runnable-lab-lives",
+    "title": "Part 1 — Crossplane on Kubernetes",
+    "section": "Where the runnable lab lives",
+    "text": "Where the runnable lab lives\nThe lab for Part 1 composes and runs hello-world-pico on Kubernetes with Crossplane. It is the reusable Hello Pico on Kubernetes lab under the repository-root labs/ directory, so other courses can point at the same runnable content. Learners who have not yet completed the introductory Hello Pico lab should complete it first — the greeting value used by this lab is the same one produced there.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "glossary.html",
+    "href": "glossary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "Terms used across the Crossplane course. Course-specific vocabulary lives here so lessons can link to a single definition instead of redefining terms. For Pico-side vocabulary (Rule, Parser, Composer, Pico), see the Pico course glossary.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#composition",
+    "href": "glossary.html#composition",
+    "title": "Glossary",
+    "section": "Composition",
+    "text": "Composition\nA Crossplane resource that declares how one or more Managed Resources are created from a higher-level Composite Resource. Compositions are how a Pico becomes a runnable object on Kubernetes in this course.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#composite-resource-xr",
+    "href": "glossary.html#composite-resource-xr",
+    "title": "Glossary",
+    "section": "Composite Resource (XR)",
+    "text": "Composite Resource (XR)\nA user-defined Kubernetes resource whose contents are produced by a Composition. In this course, hello-world-pico is expressed as a Composite Resource that a Composition resolves to concrete Kubernetes objects.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#control-plane",
+    "href": "glossary.html#control-plane",
+    "title": "Glossary",
+    "section": "Control plane",
+    "text": "Control plane\nThe set of Kubernetes controllers that reconcile declared state against the actual state of the cluster. Crossplane extends this control plane with its own controllers for cloud- and platform-managed resources.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#crossplane",
+    "href": "glossary.html#crossplane",
+    "title": "Glossary",
+    "section": "Crossplane",
+    "text": "Crossplane\nAn open-source Kubernetes add-on that lets you declaratively manage infrastructure and platform APIs using the same Kubernetes control plane that runs workloads. Crossplane is the layer through which this course runs Hello Pico on Kubernetes.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#managed-resource",
+    "href": "glossary.html#managed-resource",
+    "title": "Glossary",
+    "section": "Managed Resource",
+    "text": "Managed Resource\nA Kubernetes representation of an external resource managed by Crossplane. Compositions turn Composite Resources into Managed Resources.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#minikube",
+    "href": "glossary.html#minikube",
+    "title": "Glossary",
+    "section": "minikube",
+    "text": "minikube\nThe local single-node Kubernetes environment used as the reference target for the Crossplane lab. It is small enough to run on a laptop and matches the runnable-contract expectations for local verification.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#provider",
+    "href": "glossary.html#provider",
+    "title": "Glossary",
+    "section": "Provider",
+    "text": "Provider\nA Crossplane package that adds support for a specific set of Managed Resources (for example, the Kubernetes Provider used in this course to compose in-cluster resources).",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Crossplane",
+    "section": "",
+    "text": "Welcome to Crossplane, the second course of the Open Engineering Academy. This course teaches how to compose the reusable Hello Pico artifact from the Pico course so it can run on a local Kubernetes cluster, using Crossplane as the control-plane building block.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#where-this-course-fits",
+    "href": "index.html#where-this-course-fits",
+    "title": "Crossplane",
+    "section": "Where this course fits",
+    "text": "Where this course fits\nCrossplane is the academy’s composition layer. The three-layer story is:\n\nCrossplane composes, Sandcastle constructs, Picos behave.\n\nThis course teaches how Crossplane declares and composes what should exist — turning a request for a hello-world-pico into the concrete Kubernetes resources needed to run it. Its sibling courses teach the other two layers:\n\nPico course — the runtime/behaviour layer: what the resulting Pico artifact actually does.\nSandcastle course — the construction layer: how the durable artifacts a Crossplane composition needs are safely built inside a bounded engineering environment.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-learn",
+    "href": "index.html#what-you-will-learn",
+    "title": "Crossplane",
+    "section": "What you will learn",
+    "text": "What you will learn\nBy the end of the course you will be able to:\n\nDescribe what Crossplane provides on top of Kubernetes.\nExplain how a Pico maps to Crossplane compositions and managed resources.\nCompose a hello-world-pico deployment for a local Kubernetes cluster (minikube) and verify it end-to-end in the Crossplane lab.\n\nSee the course descriptor in metadata.yaml for the machine-readable summary (id, level, duration, prerequisites, teaches, produces).",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#prerequisites",
+    "href": "index.html#prerequisites",
+    "title": "Crossplane",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nCompletion of the Pico course, or equivalent familiarity with Rules, the Parser, and the Composer.\nWorking shell (bash or zsh), a text editor, and Docker.\nA local Kubernetes environment. Local minikube is the reference environment used by the accompanying lab; see the Kubernetes course setup foundation for the canonical install, PATH checks, and first cluster bring-up.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#how-this-course-is-structured",
+    "href": "index.html#how-this-course-is-structured",
+    "title": "Crossplane",
+    "section": "How this course is structured",
+    "text": "How this course is structured\nThe course follows the shared academy course structure — parts, lessons, and per-lesson index / exercise / lab / summary / quiz pages:\ncourses/crossplane/\n  _quarto.yml          # this course website\n  index.qmd            # you are here\n  metadata.yaml        # machine-readable course descriptor\n  glossary.qmd         # course glossary\n  part-1/              # section\n    index.qmd\n    &lt;lesson&gt;/          # lesson (authored by the learner-path task)\n  part-2/\n  part-3/\n  labs/                # course-scoped labs",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#start-here",
+    "href": "index.html#start-here",
+    "title": "Crossplane",
+    "section": "Start here",
+    "text": "Start here\n\nPart 1 — Crossplane on Kubernetes\nPart 2 — Composing Hello Pico\nPart 3 — Extending the composition\nLabs — including the reusable Hello Pico lab that this course builds on.\nHello Pico on Kubernetes as a constructive exemplar — the same Hello Pico Definition realized as a Kubernetes Element, pointing Definition, Realization, Element, Dependency, Composition, Constraint, Validation, and Feedback at concrete lab material.\nGlossary\n\n\n\n\n\n\n\nNoteCourse status\n\n\n\nThis course is the initial Crossplane milestone. Part 1 is complete — its lesson and the accompanying runnable Hello Pico on Kubernetes lab are both published. Parts 2 and 3 are intentionally scaffolded and are clearly labelled where learner-visible.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html",
+    "href": "hello-pico-on-kubernetes-exemplar.html",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "",
+    "text": "This page is the Crossplane course’s cross-course constructive exemplar. It takes the same Hello Pico Definition introduced in Hello Pico as a constructive exemplar in the Pico course and follows it across courses: from a laptop executable produced by the Pico pipeline into a system-level Element running on a Kubernetes cluster, composed by Crossplane.\nThe vocabulary — Definition, Realization, Element, Dependency, Composition, Constraint, Validation, Feedback — is defined in the Pico course’s constructive-realization reference. This page reuses that vocabulary and points each term at concrete learner-visible material in this course and the reusable Hello Pico on Kubernetes lab.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#the-definition-stays-the-same",
+    "href": "hello-pico-on-kubernetes-exemplar.html#the-definition-stays-the-same",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "The Definition stays the same",
+    "text": "The Definition stays the same\nThe Hello Pico Definition — “a minimal Pico that, given a single greeting Rule, produces a runnable artifact that emits the greeting Hello, Pico!” — is the same Definition the Pico course introduces. What changes across courses is not the Definition; it is the Realization.\nWhere the Definition lives in this course:\n\nThe course descriptor names the produced artifact as hello-world-pico-on-kubernetes, whose behaviour reuses the Pico Definition’s expected output.\nThe Part 1 lesson restates the Definition in the Crossplane vocabulary (Rules ↔︎ XR, Parser ↔︎ XRD, Composer ↔︎ Composition, Pico ↔︎ Managed Resources).",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#the-system-level-realization",
+    "href": "hello-pico-on-kubernetes-exemplar.html#the-system-level-realization",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "The system-level Realization",
+    "text": "The system-level Realization\nWhere the Pico course realized the Definition via Rules → Parser → Composer → Pico on a laptop, this course realizes the same Definition via a Crossplane control plane:\nXR (05-xr.yaml)  ──▶  XRD (03-xrd.yaml)  ──▶  Composition (04-composition.yaml)  ──▶  Job on minikube\n   (Definition)         (validate shape)         (produce Managed Resources)          (Element)\nThe Realization is documented step by step in the Hello Pico on Kubernetes walkthrough and summarised, with the exact commands and manifests, in the Solution. Its realization pattern is composition from sub-elements: the same pattern named in the constructive-realization reference.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#the-kubernetes-element",
+    "href": "hello-pico-on-kubernetes-exemplar.html#the-kubernetes-element",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "The Kubernetes Element",
+    "text": "The Kubernetes Element\nThe Element is the reconciled Job in the default namespace of the local minikube cluster, together with the pinned Managed Resources that back it. Its identity — hello-world-pico-on-kubernetes — matches the produces entry in the course metadata and the lab metadata. The lab’s verify.sh captures the Element’s observable output (Hello, Pico!) as greeting.txt under the produced artifact directory.\nThe Element is a Pico (its observable behaviour matches the Pico Definition) and a Kubernetes workload (its runtime form is a Job). Both roles hold at the same time — this dual identity is what makes it the cross-course exemplar.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#dependencies",
+    "href": "hello-pico-on-kubernetes-exemplar.html#dependencies",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "Dependencies",
+    "text": "Dependencies\nThe Kubernetes Realization is not self-contained. It uses three named Dependencies, each pointed at by the lab objectives page:\n\nRuntime environment — a local minikube cluster (profile crossplane-lab, Kubernetes v1.31.0).\nControl-plane package — Crossplane v2.3.4, installed by Step 3 of the walkthrough.\nProvider and function — provider-kubernetes v0.18.0 and function-patch-and-transform v0.9.0, both pinned in downloads/01-provider.yaml.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#composition",
+    "href": "hello-pico-on-kubernetes-exemplar.html#composition",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "Composition",
+    "text": "Composition\nComposition is the primitive that turns the validated XR into concrete Managed Resources — the Crossplane analogue of the Pico Composer.\nIn this exemplar the Composition is the pipeline-mode Composition in downloads/04-composition.yaml. Given one XHelloWorldPico XR (downloads/05-xr.yaml), the Composition produces one cluster-scoped Object Managed Resource that in turn creates the Job in the default namespace. This is the composition-from-sub-elements realization pattern named in the Pico course’s constructive-realization reference, realized against a Kubernetes control plane.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#constraints-on-a-valid-element",
+    "href": "hello-pico-on-kubernetes-exemplar.html#constraints-on-a-valid-element",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "Constraints on a valid Element",
+    "text": "Constraints on a valid Element\nA valid Hello Pico on Kubernetes Element must satisfy all of the following, each of which is present in the lab material:\n\nShape constraint — the XR conforms to the XHelloWorldPico XRD registered in downloads/03-xrd.yaml.\nRuntime form — the Element takes the form of a Kubernetes Job (not a Pod, Deployment, or arbitrary shell command).\nSuccessful reconciliation — the XR reaches Ready=True and the composed Job reaches Complete=True.\nObservable behaviour — the Job’s container logs contain exactly Hello, Pico! on standard output.\nTraceable identity — the produced artifact directory is named hello-world-pico-on-kubernetes, matching the produces entry in the course and lab metadata.\n\nThese are the Constraints in the constructive-realization sense: conditions any valid Element must satisfy. They are natural-language and directly checkable by the lab’s automation.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#validations-that-check-the-element",
+    "href": "hello-pico-on-kubernetes-exemplar.html#validations-that-check-the-element",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "Validations that check the Element",
+    "text": "Validations that check the Element\nEach Constraint above is checked by something the lab already runs.\n\n\n\nConstraint\nValidation (what the lab runs)\n\n\n\n\nShape\nWalkthrough Step 6 — kubectl apply -f 05-xr.yaml is accepted by the XRD.\n\n\nRuntime form\nWalkthrough Step 7 — kubectl get job shows the composed Job.\n\n\nSuccessful reconciliation\nWalkthrough Step 7 — kubectl wait --for=condition=Ready on the XR.\n\n\nObservable behaviour\ndownloads/verify.sh — asserts Hello, Pico! in the Job’s logs.\n\n\nTraceable identity\nSolution — Reference solution — names the produced artifact directory.\n\n\n\nThe verify.sh exit status is the single automatable check that the Runnable Academy Contract requires for this lab, and it is the same shape the Pico course uses for its verify.sh on a laptop.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#feedback-back-into-the-definition",
+    "href": "hello-pico-on-kubernetes-exemplar.html#feedback-back-into-the-definition",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "Feedback back into the Definition",
+    "text": "Feedback back into the Definition\nThe Kubernetes Realization exposes information the laptop Realization cannot. Two concrete Feedback surfaces already exist in this lab and flow back into how the Definition is authored:\n\nVersion pins in objectives.qmd (Crossplane, Provider, Function, Kubernetes) record the exact versions under which the Element was observed to conform. Newer versions that break the Realization become Feedback candidates for tightening the Definition’s supported-runtime clause.\nScreenshot targets under labs/hello-pico-on-kubernetes/screenshots/ record the concrete cluster states worth capturing when a Realization succeeds. When learners hit a state the screenshots do not describe, that gap is Feedback for either the walkthrough or the Definition.\n\nFeedback does not change the Definition on this page — it names where learning from realized Elements flows back into the academy material.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#where-compose-construct-behave-fit",
+    "href": "hello-pico-on-kubernetes-exemplar.html#where-compose-construct-behave-fit",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "Where compose / construct / behave fit",
+    "text": "Where compose / construct / behave fit\nThis exemplar sits at the intersection of the academy’s three layers:\n\nCompose — this course. Crossplane composes the Hello Pico Element from a control-plane XR.\nConstruct — the durable artifact that feeds this composition comes from the Sandcastle → Kubernetes hand-off lab when learners choose the cross-course path.\nBehave — the observable behaviour of the resulting Job (Hello, Pico! on standard output) is the same Pico behaviour the Pico course teaches.\n\nThe same Definition threads through all three layers; each layer records a different Realization.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-on-kubernetes-exemplar.html#what-this-page-does-not-add",
+    "href": "hello-pico-on-kubernetes-exemplar.html#what-this-page-does-not-add",
+    "title": "Hello Pico on Kubernetes as a constructive exemplar",
+    "section": "What this page does not add",
+    "text": "What this page does not add\n\nNo new Crossplane primitive, XRD field, Composition function, or lab step. Everything the exemplar names already exists in the referenced Crossplane lesson, Hello Pico on Kubernetes lab, or Sandcastle hand-off lab.\nNo formal schema, ontology, or conformance checker on top of the Crossplane primitives.\nNo retrofit of the Pico exemplar; that page remains the laptop-level reference.\n\nSee the Glossary for Crossplane-side vocabulary, the constructive-realization reference for the underlying model, and Hello Pico as a constructive exemplar for the laptop-level Realization this page builds on. For the full staged chain that adds Sandcastle construction between the laptop and the cluster, see The Hello Pico realization chain in the Sandcastle course. For the same path read through the Phase 4 hello-pico-v1 checkable profile — shape rules mapped to concrete metadata.yaml and evidence — see Hello Pico as a checkable realization. For the opt-in Phase 5 workflow that verifies a hello-pico-v1 claim against those shape rules, and the shape of the resulting validation report, see Hello Pico profile validation. For the Phase 6 aggregate view over those reports — the report index across current hello-pico-v1 claimants, the historical-snapshot convention, and the narrow feedback loop back into the governing Definition — see Hello Pico validation history and feedback.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nDescribe what Crossplane adds on top of a Kubernetes cluster.\nName the Crossplane primitives — Provider, XRD, Composition, Composite Resource (XR), Managed Resource — and their role in a composition.\nMap each stage of the Pico pipeline (Rules → Parser → Composer → Pico) onto its Crossplane counterpart.\nIdentify local minikube as the target Kubernetes environment the follow-on lab will run on.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#learning-objectives",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#learning-objectives",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nDescribe what Crossplane adds on top of a Kubernetes cluster.\nName the Crossplane primitives — Provider, XRD, Composition, Composite Resource (XR), Managed Resource — and their role in a composition.\nMap each stage of the Pico pipeline (Rules → Parser → Composer → Pico) onto its Crossplane counterpart.\nIdentify local minikube as the target Kubernetes environment the follow-on lab will run on.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#prerequisites",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#prerequisites",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nCompletion of the Pico · Part 1 · Introduction lesson (or equivalent familiarity with Rules, the Parser, and the Composer).\nWorking shell (bash or zsh) and a text editor.\nNo cluster is required for this lesson — the lesson is conceptual. The follow-on Lab will target a local Kubernetes cluster.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#why-crossplane",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#why-crossplane",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "Why Crossplane?",
+    "text": "Why Crossplane?\nThe Pico course taught you how to describe a system declaratively (Rules) and produce a runnable artifact from it (Composer). Crossplane extends the same declarative idea to a full Kubernetes control plane: instead of producing a single artifact on your laptop, you declare what should exist and a controller reconciles the cluster toward that state.\n\n\n\n\n\n\nTipOne-sentence definition\n\n\n\nCrossplane is a Kubernetes add-on that lets you author higher-level, composable APIs and have the cluster produce the concrete resources they imply — exactly the same shape as the Rules → Composer → Pico pipeline, but running continuously on a Kubernetes control plane instead of once on your shell.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#the-crossplane-primitives",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#the-crossplane-primitives",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "The Crossplane primitives",
+    "text": "The Crossplane primitives\nThe lesson uses five primitives. See the Glossary for the full definitions.\n\nProvider — a Crossplane package that teaches the control plane about a set of Managed Resources (for example, the Kubernetes Provider adds in-cluster resources such as Object).\nXRD (CompositeResourceDefinition) — defines the shape of a new, higher-level API. For Hello Pico on Kubernetes, the XRD defines an XHelloWorldPico API (Crossplane XR kinds conventionally start with X) with the same fields your Pico Rules already used.\nComposition — declares how an instance of that new API is turned into concrete Managed Resources. This is the moving part that plays the role of the Pico Composer.\nComposite Resource (XR) — a concrete instance of the XRD; the learner authors one YAML file to ask the cluster for a hello-world-pico.\nManaged Resource — the low-level Kubernetes object(s) the Composition actually creates (for example, a ConfigMap or a Job that prints Hello, Pico!).",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#mapping-pico-onto-crossplane",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#mapping-pico-onto-crossplane",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "Mapping Pico onto Crossplane",
+    "text": "Mapping Pico onto Crossplane\nThe two pipelines line up on purpose:\nPico course:      Rules   ──▶  Parser  ──▶  Composer     ──▶  Pico\n                  (YAML)       (validate)  (produce)          (hello-world-pico)\n\nCrossplane path:  XR      ──▶  XRD     ──▶  Composition  ──▶  Managed Resources\n                  (YAML)       (validate)  (produce)          (on the cluster)\n\nRules ↔︎ XR — both are the declarative input the learner writes by hand in YAML.\nParser ↔︎ XRD — both validate the shape of that input before anything else runs. If the XR does not match the XRD, the control plane rejects it, just as an ill-formed Rule fails the Parser.\nComposer ↔︎ Composition — both take the validated input and produce the concrete output. The Composer wrote a file called hello-world-pico; the Composition writes Managed Resources into the cluster that together are hello-world-pico running on Kubernetes.\nPico artifact ↔︎ Managed Resources on the cluster — the same end-user-visible result, but continuously reconciled by Kubernetes instead of built once on your laptop.\n\n\n\n\n\n\n\nNoteWhy the mapping matters\n\n\n\nOnce you see the mapping, most of what makes Crossplane feel unfamiliar (XRDs, Compositions, providers) becomes “the Pico pipeline, on a control plane”. You already know how to reason about it.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#where-this-lesson-leads",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#where-this-lesson-leads",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "Where this lesson leads",
+    "text": "Where this lesson leads\nThis lesson is the conceptual half of Part 1. It is deliberately Kubernetes-cluster-free so learners can build the mental model before touching a cluster.\nThe runnable half is the accompanying Lab, which composes hello-world-pico on a real Kubernetes cluster using Crossplane. Local minikube is the reference environment for that lab — the smallest cluster that reproduces the full control-plane behavior on a laptop.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#lesson-pages",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#lesson-pages",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "Lesson pages",
+    "text": "Lesson pages\nEvery lesson in this course follows the same layout as the Pico reference lesson:\n\nExercise — map the Pico pipeline onto Crossplane primitives on paper.\nLab — pointer to the runnable Crossplane lab (local minikube).\nSummary — key takeaways.\nQuiz — short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/index.html#next",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/index.html#next",
+    "title": "1. Composing Hello Pico on Kubernetes",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/lab.html",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/lab.html",
+    "title": "Lab · Hello Pico on Kubernetes with Crossplane",
+    "section": "",
+    "text": "The lab for this lesson is the reusable Hello Pico on Kubernetes lab. It lives at the repository root so it can be reused from other courses that need a first runnable Kubernetes composition.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#where-to-go",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#where-to-go",
+    "title": "Lab · Hello Pico on Kubernetes with Crossplane",
+    "section": "Where to go",
+    "text": "Where to go\nOpen the Hello Pico on Kubernetes lab and follow the walkthrough. It uses the shared lab template with these pages:\n\nObjectives\nWalkthrough\nSolution",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#target-environment",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#target-environment",
+    "title": "Lab · Hello Pico on Kubernetes with Crossplane",
+    "section": "Target environment",
+    "text": "Target environment\nThe lab targets local minikube as its reference Kubernetes environment — small enough to run on a laptop, but a full Kubernetes control plane, which is what Crossplane extends. Canonical local minikube install, PATH checks, and first cluster bring-up live in the Kubernetes course setup foundation; the lab-specific version pins for minikube, the Kubernetes control plane, Crossplane, and the provider-kubernetes package are declared on the lab’s Objectives page.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#what-you-will-produce",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#what-you-will-produce",
+    "title": "Lab · Hello Pico on Kubernetes with Crossplane",
+    "section": "What you will produce",
+    "text": "What you will produce\nBy the end of the lab you will have the artifact hello-world-pico-on-kubernetes — matching the produces entry in courses/crossplane/metadata.yaml. The artifact is a directory containing the exact YAML manifests you applied to the cluster plus the captured greeting the composed Kubernetes Job printed.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#related-content",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#related-content",
+    "title": "Lab · Hello Pico on Kubernetes with Crossplane",
+    "section": "Related content",
+    "text": "Related content\n\nWork through the reusable Hello Pico lab first if you have not already — this lab reuses the same greeting value.\nComplete the Exercise on this lesson to lock in the mapping from the Pico pipeline onto Crossplane primitives before running the cluster steps.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#next",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/lab.html#next",
+    "title": "Lab · Hello Pico on Kubernetes with Crossplane",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#what-does-crossplane-add-on-top-of-a-kubernetes-cluster",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#what-does-crossplane-add-on-top-of-a-kubernetes-cluster",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "1. What does Crossplane add on top of a Kubernetes cluster?",
+    "text": "1. What does Crossplane add on top of a Kubernetes cluster?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nCrossplane extends the Kubernetes control plane with the ability to author your own higher-level, composable APIs, and to declare how each API instance should be turned into concrete Managed Resources on the cluster.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#which-crossplane-primitive-plays-the-role-of-the-pico-composer",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#which-crossplane-primitive-plays-the-role-of-the-pico-composer",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "2. Which Crossplane primitive plays the role of the Pico Composer?",
+    "text": "2. Which Crossplane primitive plays the role of the Pico Composer?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe Composition. Just as the Pico Composer turns validated Rules into a hello-world-pico artifact on disk, a Crossplane Composition turns a validated Composite Resource (XR) into concrete Managed Resources on the cluster.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#which-crossplane-primitive-plays-the-role-of-the-pico-parser",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#which-crossplane-primitive-plays-the-role-of-the-pico-parser",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "3. Which Crossplane primitive plays the role of the Pico Parser?",
+    "text": "3. Which Crossplane primitive plays the role of the Pico Parser?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe CompositeResourceDefinition (XRD). The XRD defines the shape that a Composite Resource must match; the control plane rejects an XR that does not match its XRD, in the same way the Pico Parser rejects ill-formed Rules.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#which-local-kubernetes-environment-is-the-reference-target-for-the-follow-on-crossplane-lab",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#which-local-kubernetes-environment-is-the-reference-target-for-the-follow-on-crossplane-lab",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "4. Which local Kubernetes environment is the reference target for the follow-on Crossplane lab?",
+    "text": "4. Which local Kubernetes environment is the reference target for the follow-on Crossplane lab?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nLocal minikube. It is small enough to run on a laptop and provides a full Kubernetes control plane, which is what Crossplane requires in order to install a Provider and reconcile Managed Resources.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#where-does-the-reusable-hello-pico-on-kubernetes-lab-live-in-the-repository-and-why-is-it-not-under-coursescrossplanelabs",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#where-does-the-reusable-hello-pico-on-kubernetes-lab-live-in-the-repository-and-why-is-it-not-under-coursescrossplanelabs",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "5. Where does the reusable Hello Pico on Kubernetes lab live in the repository, and why is it not under courses/crossplane/labs/?",
+    "text": "5. Where does the reusable Hello Pico on Kubernetes lab live in the repository, and why is it not under courses/crossplane/labs/?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nIt lives at the repository root under labs/hello-pico-on-kubernetes/. Placing it at the root — instead of under courses/crossplane/labs/ — lets other courses reference the same runnable lab. Course-scoped labs go under a course’s own labs/ directory only when they are specific to that one course.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#next",
+    "href": "part-1/01-composing-hello-pico-on-kubernetes/quiz.html#next",
+    "title": "Quiz · Composing Hello Pico on Kubernetes",
+    "section": "Next",
+    "text": "Next\nReturn to Part 1 or continue to Part 2.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Crossplane on Kubernetes",
+      "01 Composing Hello Pico on Kubernetes",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/index.html",
+    "href": "part-3/index.html",
+    "title": "Part 3 — Extending the composition",
+    "section": "",
+    "text": "Part 3 extends the Crossplane composition of hello-world-pico: additional Managed Resources, multiple Composite Resources, and connecting the composition to other Open Engineering artifacts (for example, wrapping a follow-on Pico).",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending the composition"
+    ]
+  },
+  {
+    "objectID": "part-3/index.html#lessons",
+    "href": "part-3/index.html#lessons",
+    "title": "Part 3 — Extending the composition",
+    "section": "Lessons",
+    "text": "Lessons\nLesson content for Part 3 follows the same lesson layout established in Part 1 and the Pico Introduction lesson.\n\n\n\n\n\n\nWarningScaffold — Part 3 not yet runnable\n\n\n\nPart 3 is intentionally scaffolded. It is included so the Crossplane course demonstrates a multi-part structure that other course websites can mirror, but it does not yet carry runnable learner content.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending the composition"
+    ]
+  }
+]

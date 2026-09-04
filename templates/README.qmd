@@ -1,0 +1,1224 @@
+---
+title: "Academy templates and conventions"
+---
+
+Starter templates for the academy's educational artifacts and the shared
+authoring conventions they follow.
+
+## Template catalog
+
+| Type   | Location             | Purpose                                    |
+| ------ | -------------------- | ------------------------------------------ |
+| Course | `templates/course/`  | Root of a self-contained course website    |
+| Lesson | `templates/lesson/`  | One lesson inside a course part            |
+| Lab    | `templates/lab/`     | A reusable, cross-course hands-on lab      |
+| Quiz   | `templates/quiz/`    | A standalone knowledge check               |
+
+Each template directory ships with a `README.qmd` describing its files and
+placement. The reference implementation for a course website is
+[`courses/pico/`](../courses/pico/).
+
+## Authoring conventions
+
+1. **Self-contained course websites.** Each course under `courses/<slug>/`
+   has its own `_quarto.yml` and renders independently of the root academy
+   site.
+2. **Lesson directories are ordered.** Use a two-digit prefix
+   (`01-<slug>`, `02-<slug>`, ...) so filesystem order matches reading order.
+3. **Lessons follow a fixed file set.** `index.qmd`, `exercise.qmd`,
+   `lab.qmd`, `quiz.qmd`, `summary.qmd`, plus optional `assets/`.
+4. **Labs are reusable.** Labs live under the repository-level `labs/`
+   directory and are referenced from lessons via `lab.qmd`.
+5. **Shared includes go through `shared/includes/`.** Do not copy include
+   snippets into individual courses; reference them with Quarto's
+   `include` shortcode.
+6. **Cross-course styling lives in `shared/css/academy.css`.** Course-level
+   CSS extends but does not duplicate it.
+7. **Front-matter is required.** Every `.qmd` page begins with a YAML block
+   containing at least `title`, and where useful `description` and `order`.
+
+## Metadata conventions
+
+Machine-readable metadata lives in `metadata.yaml` files next to the artifact
+it describes. The initial schema below is intentionally minimal; it is
+sufficient for the academy-wide curriculum map, dependency graphs, and future
+automation.
+
+### Common fields
+
+| Field           | Type            | Required | Notes                                       |
+| --------------- | --------------- | -------- | ------------------------------------------- |
+| `id`            | string          | yes      | Stable, namespaced identifier (see below)   |
+| `title`         | string          | yes      | Human-readable title                        |
+| `level`         | enum            | no       | `beginner` \| `intermediate` \| `advanced`  |
+| `duration`      | string          | no       | Approximate time, e.g. `30m`, `2h`, `12h`   |
+| `prerequisites` | list of `id`s   | no       | Other artifacts required first              |
+| `teaches`       | list of strings | no       | Concepts, tools, or skills covered          |
+| `produces`      | list of strings | no       | Artifacts the learner produces              |
+
+### `id` namespacing
+
+Ids use dot-separated segments, always prefixed with `oe.` (Open
+Engineering), then the artifact kind, then a stable slug:
+
+```
+oe.course.<slug>
+oe.lesson.<course-slug>.<lesson-slug>
+oe.lab.<slug>
+oe.quiz.<slug>
+```
+
+Ids MUST NOT be reused across artifacts.
+
+### Type-specific fields
+
+- **Course** (`oe.course.<slug>`) — see `templates/course/metadata.yaml`.
+- **Lesson** (`oe.lesson.<course>.<slug>`) — adds `course`, `order`,
+  `references_labs`.
+- **Lab** (`oe.lab.<slug>`) — adds `referenced_by` (course/lesson ids that
+  point at this lab).
+- **Quiz** (`oe.quiz.<slug>`) — adds `scope` (`course` \| `lesson`),
+  `course`, `lesson`, `question_count`.
+
+### Example
+
+```yaml
+id: oe.course.pico
+title: Building Your First Pico
+level: beginner
+duration: 12h
+prerequisites:
+  - oe.course.kubernetes
+  - oe.course.crossplane
+teaches: [Pico, Rules, Parser, Composer]
+produces: [hello-world-pico]
+```
+
+## Using a template
+
+1. Copy the relevant template directory to its destination
+   (`courses/<slug>/`, `courses/<course>/part-<n>/<NN>-<slug>/`,
+   `labs/<slug>/`, or into an existing course).
+2. Replace placeholder titles, descriptions, and metadata ids.
+3. Wire the new pages into the surrounding `_quarto.yml` navbar or sidebar.
+4. Render locally with `quarto render` (root site) or
+   `quarto render courses/<slug>` (course site) to verify.
+
+
+## Constructive realization (Phase 1)
+
+Course material in this academy uses a small **constructive-realization**
+vocabulary derived from `memo3.md`. Phase 1 is a documentation and
+metadata contract only: it names the concepts course authors should reach
+for and adds a few optional `metadata.yaml` fields. No tooling reads or
+enforces them yet.
+
+### Vocabulary
+
+- **Definition** — what an artifact is supposed to be. In course content,
+  a course, lesson, or exercise typically states a Definition (purpose,
+  intent, and expected outcome).
+- **Element** — the concrete realized thing (a produced artifact, a
+  running Job, a rendered page).
+- **Realization** — the constructive path from Definition to Element.
+  In course content, a lab or walkthrough typically records a
+  Realization.
+- **Constraint** — a condition that a valid Element must satisfy.
+- **Validation** — an executable or observable check that tests an
+  Element against its Constraints.
+
+### Minimal supporting relationships
+
+Phase 1 uses only these relations. Most of them piggy-back on fields that
+already exist in `metadata.yaml`; only the two marked *(new)* are added
+by this phase.
+
+| Relation                        | Where it lives in `metadata.yaml`             |
+| ------------------------------- | --------------------------------------------- |
+| `Definition defines Element`    | course/lesson `produces`                      |
+| `Element realizes Definition`   | lab/lesson `realizes` *(new, optional)*       |
+| `Realization produces Element`  | lab `produces`                                |
+| `Definition has Constraint`     | course/lesson `constraints` *(new, optional)* |
+| `Validation checks Element`     | lab `validated_by` *(new, optional)*          |
+| `Realization uses Dependency`   | existing `prerequisites`                      |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, lab, or exercise. They are optional and descriptive in
+Phase 1; missing fields do not fail any render or validation.
+
+| Field                 | Type            | Applies to     | Notes                                                                                        |
+| --------------------- | --------------- | -------------- | -------------------------------------------------------------------------------------------- |
+| `constructive_role`   | enum            | any            | `definition` \| `realization` \| `element` \| `constraint` \| `validation`                   |
+| `realizes`            | list of `id`s   | lab, lesson    | Definition(s) that this artifact realizes                                                    |
+| `constraints`         | list of strings | course, lesson | Human-readable conditions a valid Element must satisfy                                       |
+| `validated_by`        | list of strings | lab, lesson    | Names or paths of executable/observable validation checks (e.g. `downloads/verify.sh`)       |
+| `realization_pattern` | string          | lab            | Short label for the construction pattern (e.g. `instantiate-from-template`, `compose-from-sub-elements`) |
+
+### Course-authoring guidance
+
+- Prefer natural-language constraints and named validations over formal
+  schemas in Phase 1.
+- When a lab already ships a `verify.sh` (or equivalent), list it in
+  `validated_by` so the Realization → Validation link is discoverable.
+- When a lesson or course `produces` a named artifact, treat that
+  artifact name as the Element identity. A downstream lab realizes the
+  same Definition when it lists it under `realizes`.
+- Existing metadata (`prerequisites`, `references_labs`, `referenced_by`,
+  `produces`) is preserved unchanged; the Phase 1 fields sit alongside
+  them.
+
+### Out of scope for Phase 1
+
+Phase 1 intentionally does **not** implement:
+
+- OWL, SHACL, or any other formal ontology or schema enforcement.
+- Automated conformance checking of `metadata.yaml` against the model.
+- Repo-wide retrofit of existing courses, lessons, labs, or exercises
+  to the new fields.
+- New `.qmd` page files, sidebars, or navigation surfaces for the model.
+- Feedback loops that refine `Definition`s from operational evidence.
+- Cross-course automated graph or ontology extraction.
+
+These are candidates for later phases.
+
+## Constructive realization (Phase 2)
+
+Phase 2 extends the Phase 1 contract with the smallest additional
+vocabulary needed to describe **cross-course** realization paths (for
+example, `hello-pico` realized on Kubernetes via Sandcastle and
+Crossplane). It stays a documentation and metadata contract only: no
+tooling reads or enforces the new fields yet.
+
+### Additional vocabulary
+
+- **Dependency** — a named thing a Realization requires in order to
+  produce a valid Element. In course material, Dependencies typically
+  correspond to reusable labs, runtime environments, or other Elements
+  that must already exist. Distinct from learning **prerequisites**,
+  which describe what a learner must know first.
+- **Composition** — the way an Element is assembled from sub-Elements
+  through defined interfaces. In course material, a Composition names
+  the parts and the assembly pattern (for example, "a `hello-pico`
+  Element composed into a Kubernetes Job via a Crossplane XR").
+- **Feedback** — an observation from a realized Element that could
+  refine the governing Definition. In course material, Feedback is
+  usually recorded in prose (a lesson summary, a lab retrospective) and
+  named for reference; automated feedback capture is out of scope.
+
+### Conformance and validation results
+
+Phase 2 clarifies what it means for a realized Element to **conform** to
+its Definition:
+
+- An Element is **conformant** when its Validations satisfy every
+  Constraint declared by its governing Definition. Partial or evolving
+  Realizations may satisfy only some Constraints; this is expected
+  during authoring and should be recorded honestly rather than glossed
+  over.
+- Each Validation SHOULD have a recorded **result** with one of the
+  values `passed`, `failed`, or `not-run`. Results are prose-only in
+  Phase 2; no schema enforces them.
+- A Realization MAY declare a `conformance_status` summary. Suggested
+  values: `conformant` (all Constraints validated `passed`), `partial`
+  (some Validations `not-run` or `failed` in a documented, learner-safe
+  way), and `divergent` (Element intentionally departs from the
+  Definition, with a recorded rationale).
+
+### Additional relationships
+
+Phase 2 adds only these relations on top of Phase 1. As before, most
+piggy-back on fields that already exist; the ones marked *(new)* are
+added by this phase.
+
+| Relation                            | Where it lives in `metadata.yaml`                        |
+| ----------------------------------- | -------------------------------------------------------- |
+| `Realization depends on Element`    | lab/lesson `depends_on` *(new, optional)*                |
+| `Element composes sub-Elements`     | lab/lesson `composes` *(new, optional)*                  |
+| `Realization has Composition`       | lab `composition_pattern` *(new, optional)*              |
+| `Feedback about Element`            | course/lesson/lab `feedback[].about` *(new, optional)*   |
+| `Feedback refines Definition`       | course/lesson/lab `feedback[].refines` *(new, optional)* |
+| `Validation has result`             | lab `validation_results` *(new, optional)*               |
+| `Realization has conformance`       | lab `conformance_status` *(new, optional)*               |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, or lab. They are optional and descriptive in Phase 2;
+missing fields do not fail any render or validation. Phase 1 fields
+remain unchanged and continue to sit alongside these.
+
+| Field                 | Type              | Applies to          | Notes                                                                                                                                                                                  |
+| --------------------- | ----------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `depends_on`          | list of `id`s     | lab, lesson         | Elements or reusable labs that must already be realized for this Realization to succeed; distinct from learning `prerequisites`                                                       |
+| `composes`            | list of strings   | lab, lesson         | Named sub-Elements assembled into the produced Element                                                                                                                                |
+| `composition_pattern` | string            | lab                 | Short label for the assembly pattern (e.g. `wrap-in-kubernetes-job`, `crossplane-xr-of-existing-element`)                                                                              |
+| `conformance_status`  | enum              | lab                 | `conformant` \| `partial` \| `divergent`                                                                                                                                              |
+| `validation_results`  | list of mappings  | lab                 | Optional per-entry results for items already listed under `validated_by`; each mapping has `check` (matching a `validated_by` string) and `result` (`passed` \| `failed` \| `not-run`) |
+| `feedback`            | list of mappings  | course, lesson, lab | Each entry MAY carry `observation` (prose), `about` (Element name), and `refines` (Definition `id`)                                                                                   |
+
+### Course-authoring guidance
+
+- Prefer natural-language Feedback captured in a lesson summary or lab
+  retrospective over any new automated capture.
+- Use `depends_on` only for realization-level dependencies (things that
+  must already be realized); keep learning prerequisites in
+  `prerequisites` as before.
+- Use `composes` when an Element visibly wraps or aggregates other
+  Elements (for example, a Kubernetes Job composing a `hello-pico`
+  executable).
+- Record `conformance_status: partial` honestly when a lab's
+  `validated_by` intentionally omits or skips a Constraint check;
+  learners benefit from explicit gaps.
+- Existing metadata (`prerequisites`, `references_labs`, `referenced_by`,
+  `produces`, and the Phase 1 fields) is preserved unchanged; the Phase 2
+  fields sit alongside them.
+
+### Out of scope for Phase 2
+
+Phase 2 intentionally does **not** implement:
+
+- OWL, SHACL, or any other formal ontology or schema enforcement.
+- Automated conformance checking of `metadata.yaml` against the
+  extended model.
+- Repo-wide retrofit of existing courses, lessons, labs, or exercises
+  to the new fields.
+- Automated feedback capture from runtime or CI evidence.
+- Cross-course automated graph or ontology extraction.
+- Programmatic linkage between `validated_by` items and the `verify.sh`
+  scripts they name.
+
+These remain candidates for later phases.
+
+
+## Constructive realization (Phase 3)
+
+Phase 3 extends the Phase 1 and Phase 2 contract with the smallest
+additional vocabulary needed to talk about **how far along** a
+Realization is and **what evidence** a learner can look at to see that a
+Validation actually ran. It stays a documentation and metadata contract
+only: no tooling reads or enforces the new fields yet.
+
+### Additional vocabulary
+
+- **Lifecycle state** — where an Element or Realization sits on the
+  staged path from idea to retired. Phase 3 uses five canonical states:
+  `conceptual`, `planned`, `partial`, `operational`, and `deprecated`.
+  Finer per-artifact stages (for example, a Hello-Pico Realization's
+  internal `Defined → Packaged → Provisioned → Deployed → Executed →
+  Validated` progression) MAY be described in prose inside the artifact
+  itself, but the metadata field only carries one of the five canonical
+  values.
+- **Evidence** — a learner-visible artifact that shows a Validation
+  actually ran and what it observed. Typical Evidence includes a
+  captured `verify.sh` output line, a screenshot, an excerpt in a
+  lesson summary, or a rendered Quarto page section. Evidence is
+  prose/path-only in Phase 3; automated evidence capture from CI or
+  runtime remains out of scope.
+
+### Lifecycle states
+
+| State         | Meaning in course material                                                                 |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| `conceptual`  | The Definition exists; no Realization has been attempted yet.                              |
+| `planned`     | A Realization path is described (for example in a scaffold lesson), but not yet exercised. |
+| `partial`     | A Realization exists and satisfies some Constraints, but not all Validations pass or run.  |
+| `operational` | A Realization exists and every declared Validation passes against a concrete Element.      |
+| `deprecated`  | A previously operational Realization is retained for context but should no longer be used. |
+
+`lifecycle_state` and Phase 2's `conformance_status` are related but
+distinct: `lifecycle_state` describes how mature the Realization is,
+while `conformance_status` describes how well the current Element
+matches its Definition. An `operational` Realization SHOULD be
+`conformant`; a `partial` Realization is typically `partial` or
+`divergent`; a `planned` or `conceptual` Realization has no meaningful
+`conformance_status` yet.
+
+### Partial-realization guidance
+
+When a lab or lesson is honestly partway to a full Realization, Phase 3
+asks authors to make the gap visible using the fields we already have
+plus the new lifecycle field:
+
+- Set `lifecycle_state: partial` (or `planned` / `conceptual` when even
+  less exists).
+- Keep `conformance_status: partial` from Phase 2 so the summary matches.
+- List the Constraints that are not yet Validated as
+  `validation_results` entries with `result: not-run`, rather than
+  omitting them.
+- Keep the learner-facing page's scaffold callout in sync — a Phase 3
+  `lifecycle_state: partial` in metadata SHOULD correspond to a
+  scaffold-style callout on the rendered page, matching the existing
+  runnable-vs-scaffold labelling convention in this academy.
+
+### Runtime-validation evidence
+
+Phase 3 lets a lab point at learner-visible Evidence for each
+Validation it declares:
+
+- Each `evidence` entry SHOULD reference a `validated_by` item by name,
+  so the Element → Validation → Evidence chain is traceable.
+- Evidence targets are paths or URLs, not embedded blobs. Preferred
+  targets are files already published with the lab (for example
+  `downloads/verify.sh`, a captured output line inside the lab summary,
+  or a screenshot under `screenshots/`).
+- Evidence is optional. A lab MAY still declare Validations without
+  Evidence entries; Evidence just makes the successful realization more
+  concrete for learners who cannot re-run the lab.
+
+### Additional relationships
+
+Phase 3 adds only these relations on top of Phase 1 and Phase 2. As
+before, the ones marked *(new)* are added by this phase; the others
+piggy-back on existing fields.
+
+| Relation                                | Where it lives in `metadata.yaml`                          |
+| --------------------------------------- | ---------------------------------------------------------- |
+| `Element has Lifecycle state`           | course/lesson/lab `lifecycle_state` *(new, optional)*      |
+| `Realization has Lifecycle state`       | lab `lifecycle_state` *(new, optional)*                    |
+| `Validation has Evidence`               | lab `evidence[].check` *(new, optional)*                   |
+| `Evidence points at learner artifact`   | lab `evidence[].path` / `evidence[].url` *(new, optional)* |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, or lab. They are optional and descriptive in Phase 3;
+missing fields do not fail any render or validation. Phase 1 and Phase
+2 fields remain unchanged and continue to sit alongside these.
+
+| Field             | Type             | Applies to          | Notes                                                                                                                                                                                             |
+| ----------------- | ---------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lifecycle_state` | enum             | course, lesson, lab | `conceptual` \| `planned` \| `partial` \| `operational` \| `deprecated`                                                                                                                           |
+| `evidence`        | list of mappings | lab                 | Each entry SHOULD carry `check` (matching a `validated_by` string) and one of `path` (repo-relative) or `url` (external); MAY carry `captured_at` (ISO date) and `description` (short prose note) |
+
+### Course-authoring guidance
+
+- Pick the smallest honest `lifecycle_state`. If any Constraint is not
+  yet Validated, prefer `partial` over `operational`.
+- Keep `lifecycle_state`, `conformance_status`, and the page's
+  scaffold/runnable callout consistent. Learners rely on the rendered
+  callout; metadata should not silently disagree with it.
+- Point `evidence` at artifacts learners can already see (a shipped
+  `downloads/verify.sh`, a captured output line in a lesson summary, a
+  screenshot). Do not invent new hidden files just to satisfy the
+  field.
+- Do not use `deprecated` for material that is simply scaffolded;
+  scaffolded material is `planned` or `conceptual`. `deprecated` is for
+  a Realization that used to work and is intentionally retained for
+  historical context.
+- Existing metadata (`prerequisites`, `references_labs`, `referenced_by`,
+  `produces`, and the Phase 1 / Phase 2 fields) is preserved unchanged;
+  the Phase 3 fields sit alongside them.
+
+### Out of scope for Phase 3
+
+Phase 3 intentionally does **not** implement:
+
+- OWL, SHACL, or any other formal ontology or schema enforcement.
+- Automated conformance or lifecycle checking of `metadata.yaml`
+  against the extended model.
+- A generic repo-wide state machine that transitions artifacts between
+  lifecycle states.
+- Repo-wide retrofit of existing courses, lessons, labs, or exercises
+  to the new fields.
+- Automated evidence capture from CI, terminal output, or runtime.
+- Programmatic linkage between `evidence` entries and the Validations
+  or scripts they name.
+- Cross-course automated graph or ontology extraction.
+
+These remain candidates for later phases.
+
+
+## Constructive realization (Phase 4)
+
+Phase 4 extends the Phase 1–3 contract with the smallest additional
+vocabulary needed to make the Hello Pico model **checkable in a narrow
+way**: it names the shape rules an artifact must satisfy for a reader
+(or, in some later phase, a script) to confirm that the
+`Definition` → `Realization` → `Element` → `Validation` chain is
+internally coherent from `metadata.yaml` alone. It stays a
+documentation and metadata contract only: no tooling reads or enforces
+the profile yet.
+
+### Additional vocabulary
+
+- **Checkable profile** — a named, opt-in shape contract that says
+  "this artifact carries every field required to make its
+  Definition → Realization → Element → Validation chain
+  self-checkable from `metadata.yaml` alone." Phase 4 defines exactly
+  one profile: `hello-pico-v1`. It is deliberately scoped to the Hello
+  Pico example surface, not the whole academy.
+- **Profile conformance** — whether an artifact's `metadata.yaml`
+  satisfies the shape rules of the profile it claims. Profile
+  conformance is stricter than Phase 2's `conformance_status`: the
+  latter is about the runtime Element vs its Definition, while profile
+  conformance is about the metadata record being complete enough to
+  reason over.
+- **Profile role** — which of the five core concepts a
+  profile-conforming artifact stands in for. Phase 1 already
+  introduced `constructive_role` with the values `definition` /
+  `realization` / `element` / `constraint` / `validation`; Phase 4
+  reuses those values as the artifact's role under the profile.
+
+### The `hello-pico-v1` checkable profile
+
+The `hello-pico-v1` profile enumerates the minimum fields each of the
+five core concepts must carry in `metadata.yaml` for the Hello Pico
+model to be self-checkable. It applies only to artifacts that opt in
+by declaring `checkable_profile: hello-pico-v1`.
+
+#### Definition shape
+
+An artifact playing the role of a Definition under the profile MUST:
+
+- declare `constructive_role: definition`
+- carry a non-empty `id`, `title`, and `produces` (naming the Element
+  it defines)
+- declare at least one entry under `constraints` (Phase 1)
+- name at least one allowed `realization_pattern`, either directly on
+  the Definition or reachable via a Realization that lists this
+  Definition under `realizes`
+
+#### Realization shape
+
+An artifact playing the role of a Realization under the profile MUST:
+
+- declare `constructive_role: realization`
+- name exactly one Definition under `realizes` (Phase 1)
+- name at least one Dependency under `depends_on` (Phase 2)
+- carry a non-empty `produces` (naming the Element it materializes)
+- declare `realization_pattern` (Phase 1); when the produced Element
+  visibly wraps sub-Elements, also declare `composition_pattern`
+  (Phase 2)
+- declare a `lifecycle_state` (Phase 3) and a matching
+  `conformance_status` (Phase 2)
+
+#### Element shape
+
+An artifact record playing the role of an Element under the profile
+MUST:
+
+- declare `constructive_role: element`
+- point at exactly one Definition it conforms to, reusing the Phase 1
+  `realizes` field with a single-item list (Element → Definition)
+- name exactly one Realization that produced it via `produced_by`
+  *(new, optional in general, required under the profile)*
+- carry a `lifecycle_state` (Phase 3)
+- declare at least one `validated_by` entry (Phase 1) with a matching
+  `validation_results` entry (Phase 2)
+
+#### Constraint shape
+
+Every Constraint referenced from a profile-conforming Definition MUST:
+
+- be a stable, quoted, human-readable rule (already the Phase 1 form
+  under `constraints`)
+- be reachable from at least one Validation. The Validation →
+  Constraint link is expressed by matching a
+  `validation_results[].check` entry to a `validated_by` name and then
+  either quoting the Constraint text in
+  `validation_results[].validates_constraint` *(new, optional)* or in
+  a short prose note adjacent to that `validated_by` entry.
+
+Phase 4 does not require Constraints to become their own
+`metadata.yaml` records; the existing inline list form is preserved.
+
+#### Validation shape
+
+Every Validation named in `validated_by` under the profile MUST:
+
+- appear in `validation_results` with a `result` value from
+  `{passed, failed, not-run}` (Phase 2)
+- either name at least one Constraint via
+  `validation_results[].validates_constraint` *(new, optional)*, or be
+  described in prose adjacent to the `validated_by` entry so the
+  Validation → Constraint link is at least traceable by a reader
+- when Phase 3 `evidence` is used, keep `evidence[].check` matching a
+  `validated_by` name so the Element → Validation → Evidence chain
+  stays intact
+
+### Additional relationships
+
+Phase 4 adds only these relations on top of Phases 1–3. As before,
+the ones marked *(new)* are added by this phase; the others reuse
+existing fields with a slightly tighter meaning under the profile.
+
+| Relation                             | Where it lives in `metadata.yaml`                                 |
+| ------------------------------------ | ----------------------------------------------------------------- |
+| `Artifact claims Checkable profile`  | any `checkable_profile` *(new, optional)*                         |
+| `Element produced by Realization`    | any `produced_by` *(new, optional)*                               |
+| `Validation validates Constraint`    | lab `validation_results[].validates_constraint` *(new, optional)* |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to
+a course, lesson, or lab. They are optional and descriptive in Phase
+4; missing fields do not fail any render or validation. Phase 1–3
+fields remain unchanged and continue to sit alongside these.
+
+| Field                                        | Type   | Applies to          | Notes                                                                                                                                                             |
+| -------------------------------------------- | ------ | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `checkable_profile`                          | string | course, lesson, lab | Currently the only defined value is `hello-pico-v1`. Missing means the artifact does not claim any checkable profile.                                             |
+| `produced_by`                                | `id`   | lesson, lab         | Realization `id` (or lab `id` playing the Realization role) that produced this Element. Only meaningful when the artifact plays the Element role under a profile. |
+| `validation_results[].validates_constraint`  | string | lab                 | The Constraint (by rule text or short label) that this validation result asserts. Extends the Phase 2 `validation_results` entry shape.                           |
+
+### Hello Pico exemplar mapping
+
+The Hello Pico model already implemented in this academy provides the
+reference instance of the `hello-pico-v1` profile. The mapping below
+is informative; opting an artifact into `checkable_profile:
+hello-pico-v1` is not required in this phase.
+
+- **Definition** — the `hello-pico` course/lesson artifacts that name
+  purpose, intent, and expected output.
+- **Realizations** — `labs/hello-world-pico-sandcastle/`,
+  `labs/handoff-sandcastle-to-kubernetes/`, and
+  `labs/hello-pico-on-kubernetes/` each play a Realization role, with
+  Sandcastle, Crossplane, and MiniKube as `depends_on` targets.
+- **Element** — the concrete Kubernetes Job whose observed output
+  equals `Hello, Pico!`, described by the Hello Pico on Kubernetes
+  lab.
+- **Constraints** — output equals `Hello, Pico!`; the Element takes
+  the form of a Kubernetes Job; the Job terminates successfully.
+- **Validations** — the `verify.sh` scripts already shipped with the
+  Hello Pico labs, together with any lab-level Automatable checks.
+
+### Course-authoring guidance
+
+- Only opt into `checkable_profile: hello-pico-v1` when the artifact
+  really carries the fields the profile requires. A missing profile
+  claim is more informative than a falsely-claimed one.
+- Keep `checkable_profile`, `lifecycle_state`, and
+  `conformance_status` consistent. A profile-conforming Realization
+  that is not yet `operational` should still be honest about its
+  `lifecycle_state`.
+- Use `produced_by` only when the artifact actually records an
+  Element (a Job description, a rendered walkthrough that captured
+  runtime evidence). Do not fabricate a Realization pointer for a
+  purely planned artifact.
+- Use `validation_results[].validates_constraint` when the Constraint
+  it asserts is one of the entries already listed under `constraints`
+  on the governing Definition, so the Validation → Constraint link is
+  unambiguous.
+- Existing metadata (Phase 1–3 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 4 fields sit alongside them.
+
+### Out of scope for Phase 4
+
+Phase 4 intentionally does **not** implement:
+
+- OWL, SHACL, JSON Schema, or any other formal schema enforcement of
+  the `hello-pico-v1` profile.
+- Automated checking of `metadata.yaml` against the profile in CI or
+  at render time.
+- A repo-wide retrofit of existing courses, lessons, labs, or
+  exercises to opt into any checkable profile.
+- Additional checkable profiles beyond `hello-pico-v1`.
+- Promoting Constraints, Validations, or Feedback into their own
+  first-class `metadata.yaml` records.
+- Cross-course automated graph, ontology, or SHACL-style report
+  generation, and any triple-store or graph-database layer.
+- Automated capture of runtime evidence for profile-declared
+  Validations.
+
+These remain candidates for later phases.
+
+
+## Constructive realization (Phase 5)
+
+Phase 5 extends the Phase 1–4 contract with the smallest additional
+vocabulary needed to make the `hello-pico-v1` checkable profile
+**executable as an opt-in workflow**: it names the check that verifies
+a profile claim, and the report shape that carries the verdict back to
+the author or learner. It stays a documentation and metadata contract
+only: the workflow is described, not implemented, and no render or
+publish step is gated on it.
+
+### Additional vocabulary
+
+- **Profile check** — an opt-in workflow that verifies an artifact's
+  `checkable_profile` claim against the shape rules defined by that
+  profile in Phase 4. A profile check reads only `metadata.yaml` files
+  reachable from the claimant; it does not execute Validations, run
+  labs, or mutate any file.
+- **Validation report** — the structured, human-readable output of a
+  profile check. One report describes one claimant against one
+  profile.
+
+### The `hello-pico-v1` profile-check workflow
+
+The profile check for `hello-pico-v1` is defined by these steps.
+Anything not listed here is out of scope for the check.
+
+1. **Discover claimants.** Find every artifact whose `metadata.yaml`
+   declares `checkable_profile: hello-pico-v1`. Artifacts that do not
+   opt in are ignored.
+2. **Resolve the chain.** From each claimant, follow the Phase 1–4
+   pointers (`realizes`, `produced_by`, `depends_on`, `validated_by`,
+   `validation_results[].check`, `evidence[].check`) to the
+   `metadata.yaml` records they reference. Only artifacts explicitly
+   reached from the claimant are inspected.
+3. **Apply the Phase 4 shape rules.** For each role the claimant
+   plays (its `constructive_role`), check the fields required by the
+   Definition / Realization / Element / Constraint / Validation
+   shapes of the `hello-pico-v1` profile. No new shape rules are
+   introduced here.
+4. **Emit a validation report.** Produce exactly one report per
+   claimant, using the shape below.
+5. **Stay non-blocking.** The workflow is opt-in and its report is
+   informational only. Renders, publishes, and existing runnable-lab
+   verification (`verify.sh`, etc.) continue regardless of the
+   report's verdict.
+
+The check is always applied to a single claimant at a time. Running
+the check across multiple claimants MAY be done by invoking it once
+per claimant and collecting the resulting reports.
+
+### Validation report shape
+
+A validation report is a small structured record — a fenced YAML or
+JSON block in a rendered page, or a stand-alone file next to the
+claimant's `metadata.yaml`. Phase 5 does not pick a single file
+format; either representation is acceptable as long as the fields
+below are present.
+
+| Field               | Type             | Notes                                                                                                            |
+| ------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `profile`           | string           | The profile checked. Currently always `hello-pico-v1`.                                                           |
+| `subject`           | `id`             | The claimant's `id`.                                                                                             |
+| `subject_role`      | enum             | The claimant's `constructive_role` under the profile.                                                            |
+| `checked_at`        | string           | ISO 8601 date or datetime when the check was run.                                                                |
+| `overall`           | enum             | `conformant` \| `non-conformant` \| `inconclusive`.                                                              |
+| `findings`          | list of mappings | One entry per shape rule the check evaluated. See below.                                                         |
+| `evidence_reviewed` | list of strings  | Names of `validated_by` items whose Phase 3 `evidence` entries the check consulted. MAY be empty.                |
+
+Each `findings` entry carries:
+
+- `rule` — a short label naming the Phase 4 shape rule (for example,
+  `realization.names-exactly-one-definition`,
+  `element.has-produced-by`, `validation.has-result`).
+- `status` — one of `satisfied`, `violated`, `not-applicable`.
+- `details` — a short human-readable note explaining the outcome.
+- `path` — optional, points at the specific `metadata.yaml` field or
+  artifact `id` the finding refers to.
+
+The `overall` verdict follows from `findings`:
+
+- `conformant` — every applicable finding is `satisfied`.
+- `non-conformant` — at least one finding is `violated`.
+- `inconclusive` — no finding is `violated`, but at least one required
+  chain link could not be resolved (for example, a `realizes` target
+  whose `metadata.yaml` is missing). Reports SHOULD prefer
+  `inconclusive` over `non-conformant` when the shape rule itself
+  cannot be evaluated.
+
+### Additional relationships
+
+Phase 5 adds only these relations on top of Phases 1–4. As before,
+the ones marked *(new)* are added by this phase; the others reuse
+existing fields with a slightly tighter meaning under the workflow.
+
+| Relation                                | Where it lives in `metadata.yaml` or adjacent files              |
+| --------------------------------------- | ---------------------------------------------------------------- |
+| `Profile check produces Validation report` | claimant `validation_report` *(new, optional)*                |
+| `Validation report references Evidence` | report `evidence_reviewed[]` entries matching `validated_by`     |
+| `Finding refers to Shape rule`          | report `findings[].rule`                                         |
+
+### New optional metadata fields
+
+The following field MAY be added to any `metadata.yaml` file that
+also declares `checkable_profile: hello-pico-v1`. It is optional and
+descriptive in Phase 5; missing fields do not fail any render or
+validation. Phase 1–4 fields remain unchanged and continue to sit
+alongside it.
+
+| Field                 | Type            | Applies to          | Notes                                                                                                                                                             |
+| --------------------- | --------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `validation_report`   | string          | course, lesson, lab | Repo-relative path or URL of the most recent validation report for this artifact's `checkable_profile` claim. Only meaningful when `checkable_profile` is set.    |
+
+### Course-authoring guidance
+
+- Treat the profile check as **opt-in**: run it (or embed a report)
+  only when an artifact actually declares `checkable_profile`.
+  Missing reports on non-claimant artifacts are expected.
+- When an artifact both claims a profile and ships a report, keep
+  `validation_report` pointing at the current report so readers can
+  see the verdict without re-running the check.
+- Prefer `inconclusive` over `non-conformant` when a shape rule
+  cannot be evaluated because a linked `metadata.yaml` is missing or
+  unreachable. This mirrors the Phase 2 preference for honest
+  `partial` conformance over silent gaps.
+- Do not use a validation report to *change* metadata. Reports are
+  observations of the metadata as it stands; corrections belong in
+  the `metadata.yaml` file the finding points at.
+- Existing metadata (Phase 1–4 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 5 field sits alongside them.
+
+### Out of scope for Phase 5
+
+Phase 5 intentionally does **not** implement:
+
+- Repo-wide CI gating on profile checks, or any render/publish gate
+  driven by a validation report's verdict.
+- A required retrofit of existing courses, lessons, labs, or
+  exercises to declare `checkable_profile` or ship a
+  `validation_report`.
+- Additional checkable profiles beyond `hello-pico-v1`, or workflow
+  variants for other profiles.
+- Formal schema enforcement (OWL, SHACL, JSON Schema, ...) of either
+  the `hello-pico-v1` profile or the validation-report shape.
+- Automated execution of the Validations themselves (running
+  `verify.sh`, driving Kubernetes, capturing new runtime evidence).
+  The workflow only reads `metadata.yaml` and files it references.
+- Cross-course automated graph, ontology, or SHACL-style report
+  generation, and any triple-store, graph, or database persistence
+  of reports.
+- Multi-claimant aggregate reports, dashboards, or historical
+  report tracking.
+
+These remain candidates for later phases.
+
+
+## Constructive realization (Phase 6)
+
+Phase 6 extends the Phase 1–5 contract with the smallest additional
+vocabulary needed to **aggregate opt-in profile checks over time**: a
+report-index shape that catalogs the per-claimant reports produced by a
+profile check, a minimal historical-snapshot convention for retaining
+prior reports, and a clearer feedback-to-definition loop for claimants
+whose most recent report is `conformant`. It stays a documentation and
+metadata contract only: no dashboards, services, CI gates, or
+repository-wide analytics are introduced, and the Phase 5 profile-check
+workflow itself is unchanged.
+
+### Additional vocabulary
+
+- **Report index** — an aggregate, human-readable catalog of the
+  validation reports currently on disk for one profile. One index
+  describes one profile and lists one entry per known claimant report.
+  It exists so a reader can scan the current verdicts without walking
+  the filesystem; it does not run the profile check and does not
+  replace the per-claimant reports.
+- **Historical snapshot** — a prior validation report retained
+  alongside the current one for the same claimant. Snapshots are
+  read-only observations of what the profile check said at an earlier
+  point in time; they never override the current report referenced by
+  `validation_report`.
+- **Approved claimant** — a claimant whose most recent validation
+  report has `overall: conformant`. Only approved claimants are
+  expected to feed the Phase 2 `feedback[]` loop under this phase;
+  non-conformant or inconclusive reports are corrected first, per the
+  Phase 5 authoring guidance.
+
+### The `hello-pico-v1` report-index shape
+
+The report index for `hello-pico-v1` is a small YAML or JSON file that
+lists the validation reports currently on disk for that profile. It is
+authored (or regenerated) by the same author who runs the Phase 5
+profile check; Phase 6 does not require any new tooling to produce it.
+
+| Field          | Type             | Notes                                                                                                       |
+| -------------- | ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| `profile`      | string           | The profile the index describes. Currently always `hello-pico-v1`.                                          |
+| `generated_at` | string           | ISO 8601 date or datetime when the index was last refreshed.                                                |
+| `entries`      | list of mappings | One entry per known per-claimant validation report. See below.                                              |
+
+Each `entries` item carries:
+
+- `subject` — the claimant's `id` (matches the report's `subject`).
+- `subject_role` — the claimant's `constructive_role` under the profile.
+- `report` — repo-relative path or URL of the current per-claimant
+  report file.
+- `overall` — the current report's `overall` verdict
+  (`conformant` | `non-conformant` | `inconclusive`).
+- `checked_at` — the current report's `checked_at` value.
+- `history` — optional list of repo-relative paths or URLs of
+  historical snapshots for the same claimant, most recent first.
+
+The index MUST NOT restate `findings[]` from the underlying reports;
+those remain the authoritative record. The index is a directory, not a
+summary.
+
+### Historical-snapshot convention
+
+Phase 6 defines a minimal convention for keeping earlier reports
+alongside the current one, without introducing any versioning tooling:
+
+- The current per-claimant report keeps its stable path (the one
+  referenced by `validation_report`). Overwriting it with a new run is
+  the default.
+- To retain a prior report, copy it next to the current one either
+  under a `history/` subdirectory (for example,
+  `templates/examples/hello-pico-v1/reports/history/oe-course-crossplane.2026-08-01.yaml`)
+  or with an ISO-date suffix on the filename (for example,
+  `oe-course-crossplane.2026-08-01.yaml`). Both forms are acceptable;
+  authors SHOULD pick one and use it consistently within a profile.
+- Snapshots are read-only observations. Do not edit a snapshot to
+  reflect a later state of the metadata; edit the `metadata.yaml` and
+  regenerate the current report instead (see Phase 5's guidance on
+  reports as observations, not corrections).
+- Snapshot retention is deliberately unbounded and manual. Phase 6
+  does not define a rotation, pruning, or diffing policy; that remains
+  a candidate for later phases.
+
+### Feedback-to-definition loop for approved claimants
+
+Phase 2 already introduced `feedback[]` entries whose `refines` points
+at a governing `Definition`. Phase 6 clarifies how that loop is fed by
+an opt-in profile check without changing the Phase 2 field shape:
+
+- The loop applies to **approved claimants** only. A report with
+  `overall: non-conformant` or `inconclusive` is a correction signal
+  aimed at `metadata.yaml`, not a feedback signal aimed at the
+  Definition; fix the metadata (per Phase 5) before recording
+  `feedback[]` entries from it.
+- When an approved claimant's report surfaces an observation worth
+  refining the Definition (for example, a Constraint that turned out
+  to be trivially satisfied, or a `realization_pattern` label that is
+  no longer accurate), the author MAY add a Phase 2 `feedback[]` entry
+  to the relevant `metadata.yaml`. That entry SHOULD carry the
+  existing Phase 2 `observation`, `about`, and `refines` fields and
+  MAY additionally carry `from_report`, a repo-relative path or URL of
+  the validation report the observation was drawn from.
+- Refinement of the Definition itself (editing `constraints`,
+  `realization_pattern`, `purpose`, or similar) is always a normal
+  metadata edit by the Definition's author, reviewed on its own
+  merits. Phase 6 does not automate the refinement, and a `feedback[]`
+  entry alone does not change any field on the Definition.
+
+### Additional relationships
+
+Phase 6 adds only these relations on top of Phases 1–5. As before,
+the ones marked *(new)* are added by this phase; the others reuse
+existing fields with a slightly tighter meaning under the aggregate
+loop.
+
+| Relation                                     | Where it lives in `metadata.yaml` or adjacent files                     |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `Report index catalogs Validation report`    | index `entries[].report` referencing a per-claimant report path         |
+| `Historical snapshot preserves prior report` | snapshot file adjacent to the current report *(new, optional)*          |
+| `Feedback drawn from Validation report`      | claimant `feedback[].from_report` *(new, optional)*                     |
+| `Approved claimant refines Definition`       | claimant `feedback[].refines` (Phase 2), gated by an approved report    |
+
+### New optional metadata fields
+
+The following field MAY be added to any `metadata.yaml` file that also
+declares `checkable_profile: hello-pico-v1` and carries `feedback[]`.
+It is optional and descriptive in Phase 6; missing fields do not fail
+any render or validation. Phase 1–5 fields and the Phase 2 `feedback[]`
+entry shape remain unchanged and continue to sit alongside it.
+
+| Field                    | Type   | Applies to          | Notes                                                                                                                                                              |
+| ------------------------ | ------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `feedback[].from_report` | string | course, lesson, lab | Repo-relative path or URL of the validation report from which this feedback observation was drawn. Only meaningful when the claimant also declares a profile.      |
+
+The report-index file and any historical-snapshot files live next to
+the per-claimant reports (for `hello-pico-v1`, under
+`templates/examples/hello-pico-v1/reports/`). They are profile-tooling
+artefacts, not `metadata.yaml` fields, and so are not surfaced as new
+fields on courses, lessons, or labs.
+
+### Course-authoring guidance
+
+- Treat the report index as a **catalog**, not a summary: keep the
+  authoritative verdict and findings in the per-claimant reports and
+  refresh `generated_at` when the index is regenerated.
+- Regenerate the current per-claimant report by overwriting; move the
+  prior file into `history/` (or rename it with an ISO-date suffix)
+  only when the earlier state is worth keeping. Retention is a
+  deliberate authoring choice, not a default.
+- Record `feedback[].from_report` only on approved claimants and only
+  when the observation genuinely came from a validation report. Notes
+  captured from a lesson summary or a lab retrospective continue to
+  use the Phase 2 `feedback[]` shape without a `from_report` pointer.
+- Do not edit a historical snapshot to reflect newer metadata. Fix
+  `metadata.yaml`, regenerate the current report, and (if the change
+  merits it) copy the outgoing report into `history/` first.
+- Existing metadata (Phase 1–5 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 6 additions sit alongside them.
+
+### Out of scope for Phase 6
+
+Phase 6 intentionally does **not** implement:
+
+- Repo-wide CI gating on the report index, the historical snapshots,
+  or the feedback loop, and any render/publish gate driven by
+  aggregate verdicts.
+- A required retrofit of existing courses, lessons, labs, or
+  exercises to opt into `checkable_profile`, to ship a report index,
+  or to record `feedback[].from_report`.
+- Additional checkable profiles beyond `hello-pico-v1`, and any
+  cross-profile aggregation.
+- Dashboards, services, portals, or notification pipelines fed by the
+  report index or the historical snapshots.
+- Automated diffing, pruning, rotation, or retention policies for
+  historical snapshots.
+- Automated propagation of `feedback[]` entries into edits on the
+  governing `Definition`; Definitions are still refined by their
+  authors as ordinary metadata edits.
+- Formal schema enforcement (OWL, SHACL, JSON Schema, ...) of the
+  report-index shape or the `feedback[].from_report` field.
+- Any triple-store, graph, or database persistence of reports,
+  snapshots, or feedback entries.
+
+These remain candidates for later phases.
+
+
+## Constructive realization (Phase 7)
+
+Phase 7 extends the Phase 1–6 contract with the smallest additional
+vocabulary needed to describe **running Pico systems** rather than only
+single realized Elements. It names the runtime, messaging, topology,
+control-surface, and runtime-feedback concepts that course authors need
+in order to talk about a multi-Pico system honestly, and it fixes the
+role of Manifold, Wrangler, a Python CLI, and Home Assistant relative to
+the existing Sandcastle → Crossplane → Kubernetes constructive chain. It
+stays a documentation and metadata contract only: no new runtime
+implementation, orchestration platform, control-surface product, or
+schema enforcement is introduced, and the Phase 1–6 fields and workflows
+are unchanged.
+
+### Substrate and role separation
+
+Phase 7 keeps runtime, orchestration, and control clearly separated so
+they do not collapse into one layer:
+
+- **RuntimeSubstrate** — the underlying execution layer that hosts every
+  runtime Element in this academy. For the Hello Pico roadmap the
+  RuntimeSubstrate is always **Kubernetes**; the Phase 2 Sandcastle →
+  Crossplane → Kubernetes composition path continues to describe how
+  Elements arrive on that substrate.
+- **RuntimeEnvironment** — a concrete environment hosted on the
+  RuntimeSubstrate in which Pico Elements execute and interact
+  (for example, a Kubernetes-hosted Manifold deployment). A
+  RuntimeEnvironment does not replace the RuntimeSubstrate; it runs on
+  it.
+- **InteractionTopology** — a declarative description of which Elements
+  interact through which Channels within a RuntimeEnvironment.
+  Orchestration tooling (for example, Wrangler) authors and applies
+  InteractionTopologies over the runtime; it does not itself become the
+  runtime.
+- **ControlSurface** — an operator- or learner-facing interface that
+  expresses OperatorIntent against the declared runtime state.
+  ControlSurfaces (for example, a Python CLI or a Home Assistant
+  integration) sit above the runtime and never bypass Crossplane, the
+  RuntimeSubstrate, or the declared InteractionTopology.
+
+Course material MUST NOT frame Manifold as replacing Kubernetes, Wrangler
+as replacing Crossplane, or a ControlSurface (CLI, Home Assistant, ...)
+as replacing either the constructive chain or the runtime.
+
+### Additional vocabulary
+
+- **RuntimeSubstrate** — see above. In Phase 7 the only defined value is
+  `kubernetes`; a course MAY name a concrete flavor in prose (for
+  example, `minikube`, `k3s`) but the substrate role remains
+  `kubernetes`.
+- **RuntimeEnvironment** — see above. Named runtime hosts such as a
+  Kubernetes-deployed Manifold instance are RuntimeEnvironments and
+  are themselves Elements produced by a Realization on the substrate.
+- **InteractionTopology** — a named, declarative description of a set of
+  Pico Elements and the Channels that connect them. Authored as
+  ordinary course material (a lesson section, a lab manifest, or a
+  small YAML file adjacent to a lab) rather than a new platform
+  format.
+- **Channel** (a.k.a. **EventStream**) — a named runtime pathway that
+  carries typed values between Elements inside an InteractionTopology.
+  A Channel is not the payload; it is the wire.
+- **EventType** — the typed contract for values that flow through a
+  Channel. In Phase 7 an EventType is described in prose or a small
+  inline schema fragment (name, purpose, expected shape); no formal
+  schema enforcement is introduced.
+- **ControlSurface** — see above. Concrete Phase 7 ControlSurfaces named
+  by the roadmap are the Python CLI and the Home Assistant integration.
+- **OperatorIntent** — a declaration of desired runtime state (for
+  example, "run two Picos wired through channel `hello`") expressed
+  through a ControlSurface. OperatorIntent is a request against the
+  declared runtime, not a bypass of the Realization path.
+- **Policy** — a declarative rule that constrains an InteractionTopology,
+  a Channel, a ControlSurface, or the acceptance of an OperatorIntent
+  (for example, "the CLI MAY start Picos but MUST NOT edit Definitions").
+  A Policy is a Phase 1 Constraint applied to a Phase 7 concept; it is
+  not a new enforcement layer.
+- **Observation** — a runtime-captured fact about an Element's behavior
+  inside a RuntimeEnvironment (for example, "the two-Pico topology
+  produced the expected exchange on channel `hello`"). Observation is
+  the Phase 7 name for the runtime side of the Phase 2 `feedback[]`
+  loop; it feeds Feedback that MAY refine a Definition per Phases 2
+  and 6.
+
+### Tool-role assignments for the Hello Pico roadmap
+
+Phase 7 fixes the following role assignments so course material stays
+coherent across the roadmap:
+
+| Tool                | Phase 7 role                                                                 |
+| ------------------- | ---------------------------------------------------------------------------- |
+| Kubernetes          | `RuntimeSubstrate` (unchanged from Phase 2)                                  |
+| Sandcastle          | Realization step: constructs the executable form of a Pico (unchanged)       |
+| Crossplane          | Realization step: composes runtime resources onto the RuntimeSubstrate       |
+| Manifold            | `RuntimeEnvironment` hosted on Kubernetes; hosts Pico Elements and Channels  |
+| Wrangler            | `InteractionTopology` authoring and orchestration over the runtime           |
+| Python CLI          | `ControlSurface` for scriptable, testable OperatorIntent                     |
+| Home Assistant      | `ControlSurface` for graphical OperatorIntent                                |
+
+Manifold, Wrangler, the Python CLI, and Home Assistant are additive
+under this contract: none of them replaces or bypasses Sandcastle,
+Crossplane, or Kubernetes.
+
+### Additional relationships
+
+Phase 7 adds only these relations on top of Phases 1–6. As before, the
+ones marked *(new)* are added by this phase; the others reuse existing
+fields with a slightly tighter meaning under the runtime frame.
+
+| Relation                                              | Where it lives in `metadata.yaml` or adjacent files                     |
+| ----------------------------------------------------- | ----------------------------------------------------------------------- |
+| `Element runs on RuntimeEnvironment`                  | lab/lesson `runs_on` *(new, optional)*                                  |
+| `RuntimeEnvironment hosted on RuntimeSubstrate`       | lab/lesson `runtime_substrate` *(new, optional)*                        |
+| `InteractionTopology composes Elements via Channels`  | lab `interaction_topology` *(new, optional)*                            |
+| `Channel carries EventType`                           | prose inside the referenced `interaction_topology` description          |
+| `ControlSurface asserts OperatorIntent`               | lab/lesson `control_surfaces[]` *(new, optional)*                       |
+| `Policy constrains ControlSurface or Topology`        | course/lesson `constraints` (Phase 1), scoped in prose to the concept   |
+| `Observation refines Definition`                      | course/lesson/lab `feedback[]` (Phase 2), with `observation` from runtime |
+
+### New optional metadata fields
+
+The following fields MAY be added to any `metadata.yaml` file next to a
+course, lesson, or lab. They are optional and descriptive in Phase 7;
+missing fields do not fail any render or validation. Phase 1–6 fields
+remain unchanged and continue to sit alongside these.
+
+| Field                   | Type            | Applies to     | Notes                                                                                                                        |
+| ----------------------- | --------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `runtime_substrate`     | enum            | lab, lesson    | Currently the only defined value is `kubernetes`. Missing means the artifact does not declare a substrate role.              |
+| `runs_on`               | string          | lab, lesson    | Short label of the RuntimeEnvironment the produced Element runs on (e.g. `manifold-on-kubernetes`).                          |
+| `interaction_topology`  | string          | lab            | Repo-relative path or short label naming the topology description authored for this lab (prose or small YAML fragment).      |
+| `control_surfaces`      | list of strings | lab, lesson    | Named ControlSurfaces this artifact expects (e.g. `python-cli`, `home-assistant`). Each name is a stable, low-cardinality label. |
+| `feedback[].observation_source` | string  | course, lesson, lab | *(new, optional)* When a Phase 2 `feedback[]` entry originates from a runtime Observation, this field carries a short label naming the RuntimeEnvironment or ControlSurface it came from. |
+
+### Course-authoring guidance
+
+- Introduce Manifold as a Kubernetes-hosted RuntimeEnvironment for Pico
+  Elements, never as a replacement for the Kubernetes RuntimeSubstrate
+  or for the Sandcastle → Crossplane realization path.
+- Teach Wrangler as declarative InteractionTopology and fleet
+  orchestration authored *over* the runtime. Wrangler outputs are
+  additional declarative inputs to the same Realization chain, not a
+  parallel runtime.
+- Teach the Python CLI before the Home Assistant path: keep the first
+  ControlSurface scriptable and testable, and reuse it as the
+  reference OperatorIntent surface for the graphical path.
+- Frame Home Assistant as a graphical ControlSurface that reads and
+  asserts OperatorIntent against the same declared runtime truth the
+  Python CLI operates on; do not model it as an alternative runtime.
+- When a course or lab records a Phase 2 `feedback[]` entry that came
+  from a runtime Observation rather than an authoring session, name the
+  source in the new `observation_source` field so the Observation →
+  Feedback → Definition link is discoverable.
+- Existing metadata (Phase 1–6 fields plus `prerequisites`,
+  `references_labs`, `referenced_by`, `produces`, ...) is preserved
+  unchanged; the Phase 7 fields sit alongside them.
+
+### Out of scope for Phase 7
+
+Phase 7 intentionally does **not** implement:
+
+- A new runtime, orchestration, CLI, or graphical-UI product; Phase 7
+  is a course-material contract that names roles for tools discussed in
+  the roadmap.
+- Any replacement of the Crossplane → Kubernetes execution story with a
+  non-Kubernetes runtime path.
+- Formal schema enforcement (OWL, SHACL, JSON Schema, ...) of the new
+  vocabulary, EventTypes, InteractionTopology descriptions, or Policy
+  statements.
+- A required retrofit of existing courses, lessons, labs, or exercises
+  to declare `runtime_substrate`, `runs_on`, `interaction_topology`, or
+  `control_surfaces`.
+- Additional checkable profiles beyond `hello-pico-v1`, and any
+  extension of the Phase 4 profile-shape rules to cover the Phase 7
+  fields.
+- Automated capture of runtime Observations into `feedback[]` entries;
+  Observations are still recorded as ordinary metadata edits by the
+  artifact's author.
+- Any dashboard, service, portal, or database persistence of
+  RuntimeEnvironments, InteractionTopologies, Channels, EventTypes,
+  ControlSurfaces, OperatorIntents, Policies, or Observations.
+- Cross-course automated graph or ontology extraction over the new
+  vocabulary.
+
+These remain candidates for later phases.
+
+## Constructive realization (Phase 8)
+
+Phase 8 adds a **formal, opt-in reference encoding** of the constructive
+realization vocabulary using the reference files in
+[`templates/constructive-realization/`](constructive-realization/). Where
+Phases 1–7 expressed the same shape rules with natural-language Constraints
+and `metadata.yaml` fields, Phase 8 **re-states** them as Turtle triples — an
+OWL-style class/property vocabulary, a SHACL quality gate, and a concrete
+`Hello, Pico!` instance record — so course authors who want a machine-checkable
+form have one source of truth in-repo.
+
+Phase 8 is strictly additive. It does **not** change the Phase 1–7 contract,
+does **not** require any artifact to validate against the files, and keeps the
+natural-language authoring guidance from earlier phases in force.
+
+### Reference files
+
+| File | Purpose |
+| ---- | ------- |
+| `templates/constructive-realization/ontology.ttl` | OWL-style schema: the classes and relations that define constructive realization. |
+| `templates/constructive-realization/quality-gate.schema.ttl` | SHACL shapes: the operational quality gate for a conformant realized Element. |
+| `templates/constructive-realization/hello-pico-instances.ttl` | Concrete `Hello, Pico!` instance data mirroring the Phase 4 `hello-pico-v1` checkable profile. |
+
+### Vocabulary mapping (informal -> formal)
+
+The Phase 1–7 fields map onto the formal vocabulary as follows. The formal
+names restate what the metadata fields already express; they do not extend the
+contract.
+
+| Phase 1–7 concept | `metadata.yaml` | Formal (Phase 8) |
+| ----------------- | --------------- | ---------------- |
+| Definition | `constructive_role: definition`, `constraints`, `produces` | `oee:Definition`, `oee:hasConstraint` |
+| Realization | `constructive_role: realization`, `realizes`, `realization_pattern`, `depends_on` | `oee:Realization`, `oee:realizes`, `oee:usesDependency` |
+| Element | `constructive_role: element`, `produced_by`, `conforms_to` | `oee:Element`, `oee:conformsTo` |
+| Constraint | inline `constraints` entries | `oee:Constraint`, `oee:rule` |
+| Validation | `validated_by`, `validation_results[]` | `oee:Validation`, `oee:checks`, `oee:validatesConstraint` |
+| Feedback | `feedback[]` (Phase 2) | `oee:Feedback`, `oee:refines` |
+
+Note: `conforms_to` is a new optional field introduced by Phase 8 so an
+Element record can name the Definition it conforms to in a way the formal
+`oee:conformsTo` triple mirrors. It is optional and descriptive; missing it
+does not fail any render or validation.
+
+### Course-authoring guidance
+
+- Treat Phase 8 files as a **reference**, not an authoring format. In Phase
+  1–7 material, keep authoring Constraints in natural language as the earlier
+  phases require.
+- When a page needs to show the formal vocabulary or the quality gate, link
+  to the corresponding reference file rather than duplicating Turtle inline.
+- Reach for the formal encoding only when a machine-checkable statement of a
+  shape rule is genuinely useful (for example, a dedicated reference page);
+  do not scatter Turtle across lessons or labs.
+- Existing metadata (Phase 1–7 fields) is preserved unchanged; the Phase 8
+  files and the optional `conforms_to` field sit alongside them.
+
+### Out of scope for Phase 8
+
+Phase 8 intentionally does **not** implement:
+
+- Any retrofit of existing courses, lessons, labs, or exercises to author
+  Turtle or to validate against the reference files.
+- Automated conformance checking, triple-store persistence, a graph database,
+  or CI gating driven by the reference schema. The files are reference
+  encodings only; running them against data is a reader's choice.
+- Extending the Phase 4 `hello-pico-v1` profile shape rules to require the
+  formal files, or adding new checkable profiles.
+- Changing the Phase 1–7 `metadata.yaml` contract; where this phase adds the
+  optional `conforms_to` field, it does so additively only.

@@ -1,0 +1,3196 @@
+[
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "Labs referenced by the Pico course. Course-scoped labs live under courses/pico/labs/; reusable labs shared with other courses live under the repository-root labs/ directory.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#referenced-labs",
+    "href": "labs/index.html#referenced-labs",
+    "title": "Labs",
+    "section": "Referenced labs",
+    "text": "Referenced labs\n\nHello Pico — the introductory lab used from Part 1 · Introduction. Descriptor: labs/hello-pico/metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#authoring-course-scoped-labs",
+    "href": "labs/index.html#authoring-course-scoped-labs",
+    "title": "Labs",
+    "section": "Authoring course-scoped labs",
+    "text": "Authoring course-scoped labs\nCourse-scoped labs live in this directory and follow the shared lab template. Reuse a repository-root lab when the same lab is useful for more than one course.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/summary.html",
+    "href": "part-3/05-hands/summary.html",
+    "title": "Summary · Hands",
+    "section": "",
+    "text": "Hands are the controllable mechanism through which a Pico acts on the world — the boundary between understanding and changing.\nMind decides should I do this?; Hands determine how do I do this?.\nHands are provider-neutral: the Pico depends on capabilities (email.send, github.issue.create), not provider tool names (GMAIL_SEND_EMAIL). Composio is one provider among many.\nIdentity before action: no Hand acts without identity and authorization context. A valid credential does not imply authorization.\nHands are governed execution: rules decide which capabilities are allowed, with constraints and optional human approvals.\nHands ≠ MCP. Hands are the Pico capability abstraction; MCP is an integration mechanism; Composio is a provider/platform.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/summary.html#key-takeaways",
+    "href": "part-3/05-hands/summary.html#key-takeaways",
+    "title": "Summary · Hands",
+    "section": "",
+    "text": "Hands are the controllable mechanism through which a Pico acts on the world — the boundary between understanding and changing.\nMind decides should I do this?; Hands determine how do I do this?.\nHands are provider-neutral: the Pico depends on capabilities (email.send, github.issue.create), not provider tool names (GMAIL_SEND_EMAIL). Composio is one provider among many.\nIdentity before action: no Hand acts without identity and authorization context. A valid credential does not imply authorization.\nHands are governed execution: rules decide which capabilities are allowed, with constraints and optional human approvals.\nHands ≠ MCP. Hands are the Pico capability abstraction; MCP is an integration mechanism; Composio is a provider/platform.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/summary.html#the-governing-principle",
+    "href": "part-3/05-hands/summary.html#the-governing-principle",
+    "title": "Summary · Hands",
+    "section": "The governing principle",
+    "text": "The governing principle\nThe Composer equips.\nThe Pico decides.\nThe Hands act.\nOpen Engineering governs.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/summary.html#what-comes-next",
+    "href": "part-3/05-hands/summary.html#what-comes-next",
+    "title": "Summary · Hands",
+    "section": "What comes next",
+    "text": "What comes next\n\nReturn to the Part 3 overview to review all lessons, or revisit any lesson in this course: Course home.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/summary.html#next",
+    "href": "part-3/05-hands/summary.html#next",
+    "title": "Summary · Hands",
+    "section": "Next",
+    "text": "Next\nTake the Quiz to finish the lesson.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/exercise.html",
+    "href": "part-3/05-hands/exercise.html",
+    "title": "Exercise · Hands",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/exercise.html#task",
+    "href": "part-3/05-hands/exercise.html#task",
+    "title": "Exercise · Hands",
+    "section": "Task",
+    "text": "Task\nFor a Pico you have been modeling across Part 3, write a capability-based Hands declaration that is provider-neutral:\n# hands-capabilities.yaml\nhands:\n  - name: external\n    capabilities:\n      - github.issue.read\n      - github.issue.create\n  - name: cluster\n    capabilities:\n      - kubernetes.resource.read\nThen write rules that govern one capability:\n# hands-rules.yaml\nrules:\n  - capability: github.issue.create\n    effect: allow\n  - capability: kubernetes.resource.delete\n    effect: deny\nAnswer the questions below.\n\n\n\n\n\n\nNote\n\n\n\nThere is no single correct answer. The goal is to internalize the capability-over-provider model: rules name capabilities, not provider tool names, so the provider can be swapped without changing Pico behaviour.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/exercise.html#success-criteria",
+    "href": "part-3/05-hands/exercise.html#success-criteria",
+    "title": "Exercise · Hands",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour Hands declaration is provider-neutral (no provider tool names such as GMAIL_SEND_EMAIL).\nYou declare at least two capabilities across at least one hand/provider.\nYour rules name capabilities, not provider-specific tools.\nAt least one rule uses effect: deny.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/exercise.html#automatable-check",
+    "href": "part-3/05-hands/exercise.html#automatable-check",
+    "title": "Exercise · Hands",
+    "section": "Automatable check",
+    "text": "Automatable check\nSave both snippets under a scratch working directory and confirm they parse:\nmkdir -p scratch-hands\ncat &gt; scratch-hands/hands.yaml &lt;&lt;'EOF'\nhands:\n  - name: external\n    capabilities:\n      - github.issue.read\n      - github.issue.create\nrules:\n  - capability: github.issue.create\n    effect: allow\n  - capability: kubernetes.resource.delete\n    effect: deny\nEOF\npico parse scratch-hands/hands.yaml --out /tmp/hands.json \\\n  && echo \"OK: Hands declaration parses\"\nThe command exits with status 0 and prints an OK: line when the declaration is well-formed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/exercise.html#reflect",
+    "href": "part-3/05-hands/exercise.html#reflect",
+    "title": "Exercise · Hands",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhy would a rule say email.send rather than GMAIL_SEND_EMAIL?\nWhat does “a valid credential must not imply authorization” mean for a Pico with a connected account?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/exercise.html#next",
+    "href": "part-3/05-hands/exercise.html#next",
+    "title": "Exercise · Hands",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/quiz.html",
+    "href": "part-3/04-portability/quiz.html",
+    "title": "Quiz · Portability",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/quiz.html#does-pico-engine-1.6-complete-pico-portability",
+    "href": "part-3/04-portability/quiz.html#does-pico-engine-1.6-complete-pico-portability",
+    "title": "Quiz · Portability",
+    "section": "1. Does Pico Engine 1.6 complete Pico portability?",
+    "text": "1. Does Pico Engine 1.6 complete Pico portability?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nNo. It provides an essential prerequisite (cryptographic identity, pairwise relationships, encrypted communication). The engine’s base URL still remains part of the did:webvh, so identity cannot yet move unchanged between engines.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/quiz.html#name-two-of-the-four-remaining-work-areas.",
+    "href": "part-3/04-portability/quiz.html#name-two-of-the-four-remaining-work-areas.",
+    "title": "Quiz · Portability",
+    "section": "2. Name two of the four remaining-work areas.",
+    "text": "2. Name two of the four remaining-work areas.\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nFull identity portability, verifiable credentials, key management, and identity-aware authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/quiz.html#what-is-the-design-objective-for-key-management",
+    "href": "part-3/04-portability/quiz.html#what-is-the-design-objective-for-key-management",
+    "title": "Quiz · Portability",
+    "section": "3. What is the design objective for key management?",
+    "text": "3. What is the design objective for key management?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nLosing a cryptographic key should not mean losing the Pico. Keys should move toward OS key vaults, hardware-backed storage, secure enclaves, or external KMS, with key rotation and recovery developed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/quiz.html#why-must-the-open-engineering-identifier-stay-distinct-from-the-runtime-did",
+    "href": "part-3/04-portability/quiz.html#why-must-the-open-engineering-identifier-stay-distinct-from-the-runtime-did",
+    "title": "Quiz · Portability",
+    "section": "4. Why must the Open Engineering identifier stay distinct from the runtime DID?",
+    "text": "4. Why must the Open Engineering identifier stay distinct from the runtime DID?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThey answer different questions: the OE identifier says “what Open Engineering element is this?” while the did:webvh says “which cryptographic Pico is this?” and the did:peer says “which private relationship is this?” Keeping them separate supports portability — the semantic identity should survive an engine move even when the runtime DID changes.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/quiz.html#next",
+    "href": "part-3/04-portability/quiz.html#next",
+    "title": "Quiz · Portability",
+    "section": "Next",
+    "text": "Next\nReturn to the Part 3 overview or the course home.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html",
+    "href": "part-3/04-portability/lab.html",
+    "title": "Lab · Portable Pico Definition",
+    "section": "",
+    "text": "In this lab you will author a complete portable Pico definition, a migration checklist, and a validation script that checks the definition for completeness.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#setup",
+    "href": "part-3/04-portability/lab.html#setup",
+    "title": "Lab · Portable Pico Definition",
+    "section": "Setup",
+    "text": "Setup\nmkdir -p scratch/portable",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#step-1-portable-pico-definition",
+    "href": "part-3/04-portability/lab.html#step-1-portable-pico-definition",
+    "title": "Lab · Portable Pico Definition",
+    "section": "Step 1 — Portable Pico definition",
+    "text": "Step 1 — Portable Pico definition\nCreate scratch/portable/pico-alice.yaml:\n# scratch/portable/pico-alice.yaml\noepid: oep.pico.alice.v1\nidentity:\n  type: did\n  public:\n    method: webvh\n    url: https://engine-a.example.com/picos/alice/did.json\nrelationships:\n  identity:\n    method: peer\n  existing:\n    - did:peer:rel-alice-bob\nmessaging:\n  protocol: didcomm\nauthorization:\n  mechanism: channel-policy\nfuture:\n  verifiable-credentials: false\n  portable-key-management: false\n  identity-aware-authorization: false",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#step-2-migration-checklist",
+    "href": "part-3/04-portability/lab.html#step-2-migration-checklist",
+    "title": "Lab · Portable Pico Definition",
+    "section": "Step 2 — Migration checklist",
+    "text": "Step 2 — Migration checklist\nCreate scratch/portable/migration-checklist.yaml:\n# scratch/portable/migration-checklist.yaml\nmigration:\n  source: engine-a.example.com\n  target: engine-b.example.com\n  checks:\n    - did-webvh-resolvable-after-move\n    - keys-exportable-from-secure-storage\n    - peer-relationships-reestablished\n    - credentials-verifiable-after-move\n    - authorization-policy-carried-over",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#step-3-validation-script",
+    "href": "part-3/04-portability/lab.html#step-3-validation-script",
+    "title": "Lab · Portable Pico Definition",
+    "section": "Step 3 — Validation script",
+    "text": "Step 3 — Validation script\nCreate scratch/portable/verify.sh:\n#!/usr/bin/env bash\nset -euo pipefail\n\nDIR=\"${1:-.}\"\nFILES=(pico-alice.yaml migration-checklist.yaml)\n\nfor f in \"${FILES[@]}\"; do\n  if [[ ! -f \"$DIR/$f\" ]]; then\n    echo \"missing: $f\" &gt;&2\n    exit 1\n  fi\ndone\n\nfor f in \"${FILES[@]}\"; do\n  pico parse \"$DIR/$f\" --out \"/tmp/$(basename \"$f\").json\"\n  echo \"OK: $f parses\"\ndone\n\necho \"All portable Pico files present and well-formed.\"\nMake it executable and run it:\nchmod +x scratch/portable/verify.sh\nscratch/portable/verify.sh scratch/portable",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#step-4-reflect",
+    "href": "part-3/04-portability/lab.html#step-4-reflect",
+    "title": "Lab · Portable Pico Definition",
+    "section": "Step 4 — Reflect",
+    "text": "Step 4 — Reflect\nAnswer, using your files:\n\nWhich section of your definition would change if you moved the Pico to a different engine?\nWhich future flags remain false, and what would flip them to true?\nWhy does keeping oepid separate from did:webvh support portability?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#what-you-will-produce",
+    "href": "part-3/04-portability/lab.html#what-you-will-produce",
+    "title": "Lab · Portable Pico Definition",
+    "section": "What you will produce",
+    "text": "What you will produce\nA portable Pico definition, a migration checklist, and an executable validation script that mechanically confirms all files are present and well-formed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/lab.html#next",
+    "href": "part-3/04-portability/lab.html#next",
+    "title": "Lab · Portable Pico Definition",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html",
+    "href": "part-3/04-portability/index.html",
+    "title": "4. Portability",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain what Pico Engine 1.6 does and does not complete with respect to portability.\nIdentify the remaining work: full identity portability, verifiable credentials, key management, and identity-aware authorization.\nSeparate an Open Engineering identifier from a cryptographic runtime identity.\nAuthor a complete portable Pico definition that separates identity, relationships, messaging, and authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#learning-objectives",
+    "href": "part-3/04-portability/index.html#learning-objectives",
+    "title": "4. Portability",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain what Pico Engine 1.6 does and does not complete with respect to portability.\nIdentify the remaining work: full identity portability, verifiable credentials, key management, and identity-aware authorization.\nSeparate an Open Engineering identifier from a cryptographic runtime identity.\nAuthor a complete portable Pico definition that separates identity, relationships, messaging, and authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#prerequisites",
+    "href": "part-3/04-portability/index.html#prerequisites",
+    "title": "4. Portability",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nPico Identity.\nCross-Mesh Communication.\nTrust and Authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#what-portability-means",
+    "href": "part-3/04-portability/index.html#what-portability-means",
+    "title": "4. Portability",
+    "section": "What portability means",
+    "text": "What portability means\nPico Engine 1.6 should not be interpreted as completing Pico portability. It provides an essential prerequisite. Currently, the Pico Engine’s base URL remains part of the Pico’s did:webvh, so moving a Pico from Engine A to Engine B does not yet mean its identity can automatically move unchanged.\nNevertheless, the difficult architectural foundation now exists:\nPortable Pico\n     │\n     ├── cryptographic identity       ✓\n     ├── pairwise relationships       ✓\n     ├── encrypted communication      ✓\n     │\n     ├── fully portable did:webvh     future\n     ├── portable key management      future\n     └── credential portability       future\nThis is a significant step toward meshes that are owned independently of the engines on which they happen to run.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#remaining-work",
+    "href": "part-3/04-portability/index.html#remaining-work",
+    "title": "4. Portability",
+    "section": "Remaining work",
+    "text": "Remaining work\nFull identity portability. The did:webvh currently contains an engine-dependent URL. A future architecture needs to allow Pico migration without breaking identity resolution.\nVerifiable credentials. Picos can now cryptographically establish who they are. They cannot yet provide signed claims describing what they are or what authority they possess. Verifiable Credentials are a natural next layer.\nKey management. DID private keys currently reside in the Pico Engine’s own storage. Longer term these should move toward operating-system key vaults, hardware-backed key storage, secure enclaves, or external key-management systems. Key rotation and recovery also need development. A particularly important objective:\n\nLosing a cryptographic key should not mean losing the Pico.\n\nIdentity-aware authorization. Authorization currently remains primarily channel based. A future authorization system could make decisions based on the authenticated identity behind the channel.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#open-engineering-identifier-vs-runtime-identity",
+    "href": "part-3/04-portability/index.html#open-engineering-identifier-vs-runtime-identity",
+    "title": "4. Portability",
+    "section": "Open Engineering identifier vs runtime identity",
+    "text": "Open Engineering identifier vs runtime identity\nAn Open Engineering Identifier and a cryptographic runtime identity should not be collapsed into the same identifier:\nOpen Engineering Identity\nOE Identifier\n    │\n    │ semantic / catalog identity\n    ▼\noep.pico.example.01\n        +\nPico Runtime Identity\n    │\n    │ cryptographic identity\n    ▼\ndid:webvh:...\n        +\nRelationship Identity\n    │\n    │ private pairwise identity\n    ▼\ndid:peer:...\nThese answer different questions:\n\n\n\nIdentifier\nQuestion\n\n\n\n\nOpen Engineering Identifier\nWhat Open Engineering element is this?\n\n\ndid:webvh\nWhich cryptographic Pico is this?\n\n\ndid:peer\nWhich private relationship is this?\n\n\nECI\nThrough which Pico channel may communication occur?\n\n\n\nThis separation should be preserved.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#strategic-direction",
+    "href": "part-3/04-portability/index.html#strategic-direction",
+    "title": "4. Portability",
+    "section": "Strategic direction",
+    "text": "Strategic direction\nPico Engine 1.6 moves Picos closer to a model in which they are genuine autonomous actors rather than objects hosted by a particular server:\nAddressable Pico\n      │\n      ▼\nIdentifiable Pico\n      │\n      ▼\nCryptographically identifiable Pico\n      │\n      ▼\nRelationship-aware Pico\n      │\n      ▼\nPortable Pico\n      │\n      ▼\nCredential-bearing Pico\n      │\n      ▼\nIdentity-aware autonomous actor\nPico Engine 1.6 reaches the point of cryptographic identity plus private cryptographic relationships.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#the-architectural-principle",
+    "href": "part-3/04-portability/index.html#the-architectural-principle",
+    "title": "4. Portability",
+    "section": "The architectural principle",
+    "text": "The architectural principle\nIdentity says who the Pico is.\nRelationships say who it knows.\nDIDComm protects how they communicate.\nChannels define where interaction occurs.\nPolicy determines what the relationship may do.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#lesson-pages",
+    "href": "part-3/04-portability/index.html#lesson-pages",
+    "title": "4. Portability",
+    "section": "Lesson pages",
+    "text": "Lesson pages\n\nExercise — a short, guided task you complete inline.\nLab — author a complete portable Pico definition.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/index.html#next",
+    "href": "part-3/04-portability/index.html#next",
+    "title": "4. Portability",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/summary.html",
+    "href": "part-3/03-trust-and-authorization/summary.html",
+    "title": "Summary · Trust and Authorization",
+    "section": "",
+    "text": "The DID infrastructure does not replace channel authorization; the two concerns stay separate. Identity establishes who; policy establishes what.\nA subscription’s peer DID acts as its channel identity; existing channel policy determines what that relationship may do.\nPicos across different meshes can establish trust without a central federation: the relationship is the unit of trust.\nPico rules can increasingly express trust relationships, not merely event-processing behavior — reasoning about identity, subscriptions, introductions, relationship lifecycle, key rotation, and eventually credentials.\nPico parsers must preserve the distinction between identity, relationship, address, authorization, and messaging. A DID is not another form of ECI.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/summary.html#key-takeaways",
+    "href": "part-3/03-trust-and-authorization/summary.html#key-takeaways",
+    "title": "Summary · Trust and Authorization",
+    "section": "",
+    "text": "The DID infrastructure does not replace channel authorization; the two concerns stay separate. Identity establishes who; policy establishes what.\nA subscription’s peer DID acts as its channel identity; existing channel policy determines what that relationship may do.\nPicos across different meshes can establish trust without a central federation: the relationship is the unit of trust.\nPico rules can increasingly express trust relationships, not merely event-processing behavior — reasoning about identity, subscriptions, introductions, relationship lifecycle, key rotation, and eventually credentials.\nPico parsers must preserve the distinction between identity, relationship, address, authorization, and messaging. A DID is not another form of ECI.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/summary.html#what-comes-next",
+    "href": "part-3/03-trust-and-authorization/summary.html#what-comes-next",
+    "title": "Summary · Trust and Authorization",
+    "section": "What comes next",
+    "text": "What comes next\n\nPortability — what it takes to move a Pico between engines without losing who it is.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/summary.html#next",
+    "href": "part-3/03-trust-and-authorization/summary.html#next",
+    "title": "Summary · Trust and Authorization",
+    "section": "Next",
+    "text": "Next\nTake the Quiz before continuing.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/exercise.html",
+    "href": "part-3/03-trust-and-authorization/exercise.html",
+    "title": "Exercise · Trust and Authorization",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/exercise.html#task",
+    "href": "part-3/03-trust-and-authorization/exercise.html#task",
+    "title": "Exercise · Trust and Authorization",
+    "section": "Task",
+    "text": "Task\nFor the relationship you established in the Cross-Mesh Communication lesson, write a channel policy that keeps identity and authorization separate.\nStart with a policy that grants a peer relationship read-only access:\n# policy-trust.yaml\npolicy:\n  subject: did:peer:rel-alice-bob\n  channel: subscription\n  allow:\n    - event: temperature-reading\n      action: observe\nThen sketch what an identity-aware authorization decision would look like in the future — where the authenticated identity behind the channel (not just the channel) participates in the decision:\n# policy-identity-aware.yaml\nauthorization:\n  subject:\n    did: did:peer:rel-alice-bob\n    credentials: []\n    relationship: subscription\n  resource: temperature-sensor\n  action: observe\n  context:\n    mesh: engine-b.example.com\n  decision: permit\n\n\n\n\n\n\nNote\n\n\n\nThe identity-aware form is illustrative of a future layer, not a current format. The goal is to feel the difference between channel-only policy and identity-aware policy.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/exercise.html#success-criteria",
+    "href": "part-3/03-trust-and-authorization/exercise.html#success-criteria",
+    "title": "Exercise · Trust and Authorization",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour channel policy authorizes based on a peer DID and a channel.\nYour identity-aware sketch includes the authenticated identity, credentials, relationship, and requested action.\nYou can state the principle “identity establishes who; policy establishes what” in your own words.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/exercise.html#automatable-check",
+    "href": "part-3/03-trust-and-authorization/exercise.html#automatable-check",
+    "title": "Exercise · Trust and Authorization",
+    "section": "Automatable check",
+    "text": "Automatable check\nValidate both snippets parse:\npico parse policy-trust.yaml --out /tmp/p1.json \\\n  && echo \"OK: channel policy parses\"\npico parse policy-identity-aware.yaml --out /tmp/p2.json \\\n  && echo \"OK: identity-aware policy parses\"\nBoth commands exit 0 and print the OK: line when well-formed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/exercise.html#reflect",
+    "href": "part-3/03-trust-and-authorization/exercise.html#reflect",
+    "title": "Exercise · Trust and Authorization",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhy is it valuable that adding identity does not force rewriting the authorization model?\nWhat new capability does identity-aware authorization give you that channel-only policy does not?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/exercise.html#next",
+    "href": "part-3/03-trust-and-authorization/exercise.html#next",
+    "title": "Exercise · Trust and Authorization",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/quiz.html",
+    "href": "part-3/02-cross-mesh-communication/quiz.html",
+    "title": "Quiz · Cross-Mesh Communication",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/quiz.html#what-does-a-pico-use-to-initiate-a-subscription-with-an-unknown-pico",
+    "href": "part-3/02-cross-mesh-communication/quiz.html#what-does-a-pico-use-to-initiate-a-subscription-with-an-unknown-pico",
+    "title": "Quiz · Cross-Mesh Communication",
+    "section": "1. What does a Pico use to initiate a subscription with an unknown Pico?",
+    "text": "1. What does a Pico use to initiate a subscription with an unknown Pico?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe recipient’s did:webvh. The initiator resolves the identity, performs an introduction handshake, and creates peer DIDs.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/quiz.html#when-a-relationship-is-established-what-identifier-do-events-and-queries-use",
+    "href": "part-3/02-cross-mesh-communication/quiz.html#when-a-relationship-is-established-what-identifier-do-events-and-queries-use",
+    "title": "Quiz · Cross-Mesh Communication",
+    "section": "2. When a relationship is established, what identifier do events and queries use?",
+    "text": "2. When a relationship is established, what identifier do events and queries use?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe pairwise did:peer relationship, not the public did:webvh.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/quiz.html#what-protocol-provides-encrypted-communication-across-meshes",
+    "href": "part-3/02-cross-mesh-communication/quiz.html#what-protocol-provides-encrypted-communication-across-meshes",
+    "title": "Quiz · Cross-Mesh Communication",
+    "section": "3. What protocol provides encrypted communication across meshes?",
+    "text": "3. What protocol provides encrypted communication across meshes?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nDIDComm, using the peer relationship.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/quiz.html#when-does-a-pico-relationship-use-an-eci-rather-than-a-did",
+    "href": "part-3/02-cross-mesh-communication/quiz.html#when-does-a-pico-relationship-use-an-eci-rather-than-a-did",
+    "title": "Quiz · Cross-Mesh Communication",
+    "section": "4. When does a Pico relationship use an ECI rather than a DID?",
+    "text": "4. When does a Pico relationship use an ECI rather than a DID?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nFor family relationships — parent and child Picos communicating over their family channels. A DID-based introduction would be unnecessary overhead for relationships already established structurally within a Pico family.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/quiz.html#next",
+    "href": "part-3/02-cross-mesh-communication/quiz.html#next",
+    "title": "Quiz · Cross-Mesh Communication",
+    "section": "Next",
+    "text": "Next\nReturn to Part 3 or continue to Trust and Authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html",
+    "href": "part-3/02-cross-mesh-communication/lab.html",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "",
+    "text": "In this lab you will author a complete cross-mesh subscription, a DIDComm message envelope, and a family-channel comparison — then validate the YAML with the pico CLI.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#setup",
+    "href": "part-3/02-cross-mesh-communication/lab.html#setup",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Setup",
+    "text": "Setup\nmkdir -p scratch/mesh",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#step-1-subscription-configuration",
+    "href": "part-3/02-cross-mesh-communication/lab.html#step-1-subscription-configuration",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Step 1 — Subscription configuration",
+    "text": "Step 1 — Subscription configuration\nCreate scratch/mesh/subscription-a-b.yaml:\n# scratch/mesh/subscription-a-b.yaml\nsubscription:\n  initiator:\n    id: oep.pico.alice\n    did: did:webvh:https://engine-a.example.com/picos/alice\n    peer: did:peer:rel-alice-bob\n  recipient:\n    id: oep.pico.bob\n    did: did:webvh:https://engine-b.example.com/picos/bob\n    peer: did:peer:rel-bob-alice\n  handshake: didcomm-introduction-v1",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#step-2-didcomm-message-envelope",
+    "href": "part-3/02-cross-mesh-communication/lab.html#step-2-didcomm-message-envelope",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Step 2 — DIDComm message envelope",
+    "text": "Step 2 — DIDComm message envelope\nCreate scratch/mesh/message-a-to-b.yaml:\n# scratch/mesh/message-a-to-b.yaml\nmessage:\n  from: did:peer:rel-alice-bob\n  to: did:peer:rel-bob-alice\n  type: pico/query\n  body:\n    query: get-status\n    request-id: req-001",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#step-3-family-channel-comparison",
+    "href": "part-3/02-cross-mesh-communication/lab.html#step-3-family-channel-comparison",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Step 3 — Family channel comparison",
+    "text": "Step 3 — Family channel comparison\nCreate scratch/mesh/family-channel.yaml:\n# scratch/mesh/family-channel.yaml\nfamily:\n  parent:\n    id: oep.pico.root\n    eci: eci:root-family\n  child:\n    id: oep.pico.alice\n    eci: eci:alice-family\n  transport: local",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#step-4-validate-all-three",
+    "href": "part-3/02-cross-mesh-communication/lab.html#step-4-validate-all-three",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Step 4 — Validate all three",
+    "text": "Step 4 — Validate all three\npico parse scratch/mesh/subscription-a-b.yaml --out /tmp/s1.json \\\n  && echo \"OK: subscription parses\"\npico parse scratch/mesh/message-a-to-b.yaml --out /tmp/s2.json \\\n  && echo \"OK: DIDComm envelope parses\"\npico parse scratch/mesh/family-channel.yaml --out /tmp/s3.json \\\n  && echo \"OK: family channel parses\"",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#step-5-compare",
+    "href": "part-3/02-cross-mesh-communication/lab.html#step-5-compare",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Step 5 — Compare",
+    "text": "Step 5 — Compare\nAnswer, using your files:\n\nWhich file uses a did:webvh, and for what purpose?\nWhich file uses did:peer, and why?\nWhich file uses an ECI, and what kind of relationship does it model?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#what-you-will-produce",
+    "href": "part-3/02-cross-mesh-communication/lab.html#what-you-will-produce",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "What you will produce",
+    "text": "What you will produce\nA subscription config, a DIDComm envelope, and a family-channel config that together demonstrate the three identity/addressing mechanisms and the two relationship classes.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/lab.html#next",
+    "href": "part-3/02-cross-mesh-communication/lab.html#next",
+    "title": "Lab · Cross-Mesh Subscription",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html",
+    "href": "part-3/02-cross-mesh-communication/index.html",
+    "title": "2. Cross-Mesh Communication",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain how a subscription becomes a cryptographic relationship.\nDescribe when DIDComm is used versus when local engine traffic is kept local.\nDistinguish family relationships (parent/child via ECI) from external relationships (subscriptions via did:peer).\nAuthor a subscription configuration and a DIDComm message envelope in YAML.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#learning-objectives",
+    "href": "part-3/02-cross-mesh-communication/index.html#learning-objectives",
+    "title": "2. Cross-Mesh Communication",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain how a subscription becomes a cryptographic relationship.\nDescribe when DIDComm is used versus when local engine traffic is kept local.\nDistinguish family relationships (parent/child via ECI) from external relationships (subscriptions via did:peer).\nAuthor a subscription configuration and a DIDComm message envelope in YAML.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#prerequisites",
+    "href": "part-3/02-cross-mesh-communication/index.html#prerequisites",
+    "title": "2. Cross-Mesh Communication",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nPico Identity.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#subscriptions-become-cryptographic-relationships",
+    "href": "part-3/02-cross-mesh-communication/index.html#subscriptions-become-cryptographic-relationships",
+    "title": "2. Cross-Mesh Communication",
+    "section": "Subscriptions become cryptographic relationships",
+    "text": "Subscriptions become cryptographic relationships\nPicos that are not related through the parent/child hierarchy communicate using subscriptions. A subscription is a pairwise relationship represented on both sides.\nIn Pico Engine 1.6, a Pico can initiate a subscription using the recipient’s did:webvh:\nPico A\n   │\n   │ recipient did:webvh\n   ▼\nResolve Pico B identity\n   │\n   ▼\nIntroduction handshake\n   │\n   ▼\nCreate peer DIDs\n   │\n   ▼\nEstablish subscription\n   │\n   ▼\nEncrypted relationship\nOnce the relationship exists, events and queries use that peer relationship rather than repeatedly relying on the public identity.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#didcomm",
+    "href": "part-3/02-cross-mesh-communication/index.html#didcomm",
+    "title": "2. Cross-Mesh Communication",
+    "section": "DIDComm",
+    "text": "DIDComm\nCross-mesh and cross-engine Pico communication now uses DIDComm:\nMesh A                          Mesh B\n┌──────────────────┐          ┌──────────────────┐\n│ Pico Engine A    │          │ Pico Engine B    │\n│                  │          │                  │\n│   Pico A         │ DIDComm  │   Pico B         │\n│   did:peer:A ───────────────►│   did:peer:B    │\n│                  │ encrypted│                  │\n└──────────────────┘          └──────────────────┘\nWhen communication occurs within the same mesh, the engine can keep the traffic local. When it crosses meshes or engines, DIDComm provides encrypted communication using the peer relationship.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#two-relationship-classes",
+    "href": "part-3/02-cross-mesh-communication/index.html#two-relationship-classes",
+    "title": "2. Cross-Mesh Communication",
+    "section": "Two relationship classes",
+    "text": "Two relationship classes\nNot every Pico relationship requires a DID. Legacy ECIs remain relevant. Parent and child Picos continue communicating over their family channels using ECIs.\nPico relationships\n├── Family relationship\n│   ├── parent\n│   └── child\n│\n│   Identity/addressing:\n│   ECI\n│\n└── External relationship\n    └── subscription\n    Identity:\n    did:webvh → introduction\n    did:peer  → established relationship\nA full DID-based introduction would be unnecessary overhead for relationships already established structurally within a Pico family.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#lesson-pages",
+    "href": "part-3/02-cross-mesh-communication/index.html#lesson-pages",
+    "title": "2. Cross-Mesh Communication",
+    "section": "Lesson pages",
+    "text": "Lesson pages\n\nExercise — a short, guided task you complete inline.\nLab — author a subscription and a DIDComm envelope.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/index.html#next",
+    "href": "part-3/02-cross-mesh-communication/index.html#next",
+    "title": "2. Cross-Mesh Communication",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/summary.html",
+    "href": "part-3/01-pico-identity/summary.html",
+    "title": "Summary · Pico Identity",
+    "section": "",
+    "text": "A Pico needs a cryptographic identity in addition to an address. An ECI answers “how do I reach this Pico here?”; a DID answers “which Pico is this?”\nEvery Pico has a did:webvh — its public, resolvable passport — used for introduction and portability.\nEvery relationship has its own pairwise did:peer — a private address used only for that relationship.\nKeeping relationship identities separate means one compromised relationship can be rotated or removed without affecting the others.\nThe analogy to remember: did:webvh = passport, did:peer = private address for one relationship.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/summary.html#key-takeaways",
+    "href": "part-3/01-pico-identity/summary.html#key-takeaways",
+    "title": "Summary · Pico Identity",
+    "section": "",
+    "text": "A Pico needs a cryptographic identity in addition to an address. An ECI answers “how do I reach this Pico here?”; a DID answers “which Pico is this?”\nEvery Pico has a did:webvh — its public, resolvable passport — used for introduction and portability.\nEvery relationship has its own pairwise did:peer — a private address used only for that relationship.\nKeeping relationship identities separate means one compromised relationship can be rotated or removed without affecting the others.\nThe analogy to remember: did:webvh = passport, did:peer = private address for one relationship.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/summary.html#what-comes-next",
+    "href": "part-3/01-pico-identity/summary.html#what-comes-next",
+    "title": "Summary · Pico Identity",
+    "section": "What comes next",
+    "text": "What comes next\n\nCross-Mesh Communication — how these identities are used to communicate across meshes via DIDComm.\nTrust and Authorization — how identity stays separate from what a Pico may do.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/summary.html#next",
+    "href": "part-3/01-pico-identity/summary.html#next",
+    "title": "Summary · Pico Identity",
+    "section": "Next",
+    "text": "Next\nTake the Quiz before continuing.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/exercise.html",
+    "href": "part-3/01-pico-identity/exercise.html",
+    "title": "Exercise · Pico Identity",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/exercise.html#task",
+    "href": "part-3/01-pico-identity/exercise.html#task",
+    "title": "Exercise · Pico Identity",
+    "section": "Task",
+    "text": "Task\nFor a Pico you care about, write the YAML identity declaration that separates its public identity from its relationship identities.\nStart with the public identity:\n# identity-public.yaml\nidentity:\n  type: did\n  public:\n    method: webvh\n    url: https://engine.example.com/picos/alice/did.json\nThen add two placeholder relationships:\n# identity-relationships.yaml\nrelationships:\n  - did:peer:rel-alice-bob\n  - did:peer:rel-alice-carol\nAnswer the questions below for your chosen Pico.\n\n\n\n\n\n\nNote\n\n\n\nThere is no single correct answer. The goal is to internalize the two-DID model from the lesson: a stable public identity for introduction plus isolated per-relationship identities.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/exercise.html#success-criteria",
+    "href": "part-3/01-pico-identity/exercise.html#success-criteria",
+    "title": "Exercise · Pico Identity",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour public identity uses the did:webvh method with a resolvable URL.\nYou list at least two distinct did:peer relationships.\nYou can explain why the public identity and the relationship identities are deliberately different.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/exercise.html#automatable-check",
+    "href": "part-3/01-pico-identity/exercise.html#automatable-check",
+    "title": "Exercise · Pico Identity",
+    "section": "Automatable check",
+    "text": "Automatable check\nSave both snippets under a scratch working directory and confirm they parse:\nmkdir -p scratch-part3-01\ncat &gt; scratch-part3-01/identity.yaml &lt;&lt;'EOF'\nidentity:\n  type: did\n  public:\n    method: webvh\n    url: https://engine.example.com/picos/alice/did.json\nrelationships:\n  - did:peer:rel-alice-bob\n  - did:peer:rel-alice-carol\nEOF\npico parse scratch-part3-01/identity.yaml --out /tmp/identity.json \\\n  && echo \"OK: identity declaration parses\"\nThe command exits with status 0 and prints an OK: line when the declaration is well-formed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/exercise.html#reflect",
+    "href": "part-3/01-pico-identity/exercise.html#reflect",
+    "title": "Exercise · Pico Identity",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhich of your relationships would you most want to isolate if it were compromised, and why?\nHow would your declaration change if you added a third relationship?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/exercise.html#next",
+    "href": "part-3/01-pico-identity/exercise.html#next",
+    "title": "Exercise · Pico Identity",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/index.html",
+    "href": "part-3/index.html",
+    "title": "Part 3 — Extending",
+    "section": "",
+    "text": "Part 3 covers extending a Pico beyond a single, isolated artifact. You will give a Pico a cryptographic identity, connect Picos across meshes, separate who a Pico is from what it may do, and prepare a Pico for portability between execution environments.\nThese lessons are based on the Pico-to-Pico identity architecture introduced in Pico Engine 1.6 and are designed to be completed in order after Part 1 — Foundations and Part 2 — Building.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending"
+    ]
+  },
+  {
+    "objectID": "part-3/index.html#lessons",
+    "href": "part-3/index.html#lessons",
+    "title": "Part 3 — Extending",
+    "section": "Lessons",
+    "text": "Lessons\n\n1. Pico Identity — did:webvh as a Pico’s public cryptographic identity and did:peer as relationship-specific identity.\n2. Cross-Mesh Communication — DIDComm, subscriptions as cryptographic relationships, and how parent/ child communication differs from external relationships.\n3. Trust and Authorization — keeping identity and authorization separate, channel policy, and the implications for Open Engineering rules and parsers.\n4. Portability — what it takes to move a Pico between engines without losing who it is.\n5. Hands — giving a Pico the ability to act on the world, with provider-neutral capabilities and governed execution.\n\nEach lesson follows the same page layout as the rest of the course — see the course overview for the full pattern.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html",
+    "href": "part-1/01-introduction/quiz.html",
+    "title": "Quiz · Introduction",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#what-is-a-pico",
+    "href": "part-1/01-introduction/quiz.html#what-is-a-pico",
+    "title": "Quiz · Introduction",
+    "section": "1. What is a Pico?",
+    "text": "1. What is a Pico?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nA small, declarative, composable Open Engineering artifact described by Rules and produced by a Parser and a Composer.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#name-the-three-main-components-of-the-pico-pipeline.",
+    "href": "part-1/01-introduction/quiz.html#name-the-three-main-components-of-the-pico-pipeline.",
+    "title": "Quiz · Introduction",
+    "section": "2. Name the three main components of the Pico pipeline.",
+    "text": "2. Name the three main components of the Pico pipeline.\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nRules, Parser, and Composer.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#which-file-describes-the-course-in-a-machine-readable-form",
+    "href": "part-1/01-introduction/quiz.html#which-file-describes-the-course-in-a-machine-readable-form",
+    "title": "Quiz · Introduction",
+    "section": "3. Which file describes the course in a machine-readable form?",
+    "text": "3. Which file describes the course in a machine-readable form?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nmetadata.yaml at the root of the course.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#where-does-the-reusable-hello-pico-lab-live",
+    "href": "part-1/01-introduction/quiz.html#where-does-the-reusable-hello-pico-lab-live",
+    "title": "Quiz · Introduction",
+    "section": "4. Where does the reusable “Hello Pico” lab live?",
+    "text": "4. Where does the reusable “Hello Pico” lab live?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nUnder the repository-root labs/hello-pico/ directory, so it can be referenced from more than one course.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/quiz.html#next",
+    "href": "part-1/01-introduction/quiz.html#next",
+    "title": "Quiz · Introduction",
+    "section": "Next",
+    "text": "Next\nReturn to Part 1 or continue to Part 2.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html",
+    "href": "part-1/01-introduction/lab.html",
+    "title": "Lab · Hello Pico",
+    "section": "",
+    "text": "The lab for this lesson is the shared Hello Pico lab. It lives at the repository root so it can be reused from other courses.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html#where-to-go",
+    "href": "part-1/01-introduction/lab.html#where-to-go",
+    "title": "Lab · Hello Pico",
+    "section": "Where to go",
+    "text": "Where to go\nOpen the Hello Pico lab and follow the walkthrough. It uses the shared lab template with these pages:\n\nObjectives\nWalkthrough\nSolution",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html#what-you-will-produce",
+    "href": "part-1/01-introduction/lab.html#what-you-will-produce",
+    "title": "Lab · Hello Pico",
+    "section": "What you will produce",
+    "text": "What you will produce\nBy the end of the lab you will have a working hello-world-pico — the produces entry from the course metadata.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/lab.html#next",
+    "href": "part-1/01-introduction/lab.html#next",
+    "title": "Lab · Hello Pico",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html",
+    "href": "part-1/01-introduction/index.html",
+    "title": "1. Introduction",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nDescribe what a Pico is in one sentence.\nName the three main components (Rules, Parser, Composer) and their role.\nIdentify where a Pico sits in the Open Engineering ecosystem.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#learning-objectives",
+    "href": "part-1/01-introduction/index.html#learning-objectives",
+    "title": "1. Introduction",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nDescribe what a Pico is in one sentence.\nName the three main components (Rules, Parser, Composer) and their role.\nIdentify where a Pico sits in the Open Engineering ecosystem.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#prerequisites",
+    "href": "part-1/01-introduction/index.html#prerequisites",
+    "title": "1. Introduction",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nA working shell and text editor.\nComfort reading YAML.\nNo prior Pico experience is required.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#what-is-a-pico",
+    "href": "part-1/01-introduction/index.html#what-is-a-pico",
+    "title": "1. Introduction",
+    "section": "What is a Pico?",
+    "text": "What is a Pico?\nA Pico is the smallest useful Open Engineering artifact: a declarative, composable unit described by Rules and produced by a Parser and a Composer. See the Glossary for full definitions of each term.\n\n\n\n\n\n\nTip\n\n\n\nIf you can describe a thing with a handful of Rules and produce it from those Rules, you can model it as a Pico.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#the-rules-parser-composer-pipeline",
+    "href": "part-1/01-introduction/index.html#the-rules-parser-composer-pipeline",
+    "title": "1. Introduction",
+    "section": "The Rules → Parser → Composer pipeline",
+    "text": "The Rules → Parser → Composer pipeline\nRules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico\n(YAML)         (reads Rules)   (produces output)  (hello-world-pico)\nPart 2 walks through this pipeline in detail. This lesson focuses on vocabulary and the mental model.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#lesson-pages",
+    "href": "part-1/01-introduction/index.html#lesson-pages",
+    "title": "1. Introduction",
+    "section": "Lesson pages",
+    "text": "Lesson pages\nEvery lesson in this course has the same page layout. Use it as the reference when authoring lessons in other courses.\n\nExercise — a short, guided task you complete inline.\nLab — a longer, hands-on activity, often linking to a reusable lab under labs/.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/index.html#next",
+    "href": "part-1/01-introduction/index.html#next",
+    "title": "1. Introduction",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction"
+    ]
+  },
+  {
+    "objectID": "formal-realization-schema.html",
+    "href": "formal-realization-schema.html",
+    "title": "Formal realization schema",
+    "section": "",
+    "text": "This page is the course-facing reference for the academy’s formal constructive-realization schema (Phase 8). Where Constructive realization names the five terms in natural language and maps them onto the Pico pipeline, this page points at the machine-readable Turtle encoding of the same vocabulary and quality gate.\nPhase 8 is reference-only and opt-in. Nothing here changes how a Pico is built, and no artifact validates against these files unless it opts in. If you are writing a lesson or lab, keep authoring Constraints in natural language as the Phase 1 vocabulary requires; treat the files on this page as a formal restatement you can link to, not an authoring format.\nThe reference files live in templates/constructive-realization/:",
+    "crumbs": [
+      "Home",
+      "Formal schema"
+    ]
+  },
+  {
+    "objectID": "formal-realization-schema.html#what-the-formal-schema-adds",
+    "href": "formal-realization-schema.html#what-the-formal-schema-adds",
+    "title": "Formal realization schema",
+    "section": "What the formal schema adds",
+    "text": "What the formal schema adds\nThe informal terms and the formal names describe the same thing. The formal schema gives each concept a stable identifier you can reference and, on a small size, a way to state the quality gate precisely.\n\n\n\nInformal (Phase 1)\nFormal (Phase 8)\n\n\n\n\nDefinition\noee:Definition\n\n\nRealization\noee:Realization\n\n\nElement\noee:Element\n\n\nConstraint\noee:Constraint\n\n\nValidation\noee:Validation\n\n\n(a Definition’s conditions)\noee:hasConstraint\n\n\n(an Element’s link to its Definition)\noee:conformsTo\n\n\n(a Validation’s check of an Element)\noee:checks",
+    "crumbs": [
+      "Home",
+      "Formal schema"
+    ]
+  },
+  {
+    "objectID": "formal-realization-schema.html#the-hello-pico-record",
+    "href": "formal-realization-schema.html#the-hello-pico-record",
+    "title": "Formal realization schema",
+    "section": "The Hello Pico record",
+    "text": "The Hello Pico record\nThe reference instance data expresses, in formal form, the same path the course already teaches:\nDefinition -&gt; Realization -&gt; Element -&gt; Validation\n\nDefinition — hello-pico-definition names three Constraints: exact output, Kubernetes Job form, and successful completion.\nRealization — hello-pico-realization-v1 realizes the Definition and uses the Sandcastle, Crossplane, and MiniKube Dependencies.\nElement — hello-pico-job-001 conforms to the Definition and carries the observed output Hello, Pico!.\nValidations — three checks, one per Constraint, each recorded as passed.",
+    "crumbs": [
+      "Home",
+      "Formal schema"
+    ]
+  },
+  {
+    "objectID": "formal-realization-schema.html#relationship-to-the-phases",
+    "href": "formal-realization-schema.html#relationship-to-the-phases",
+    "title": "Formal realization schema",
+    "section": "Relationship to the phases",
+    "text": "Relationship to the phases\n\nPhases 1–7 keep formal OWL/SHACL out of scope and express shape rules with metadata.yaml fields and natural-language Constraints.\nPhase 8 re-states those same shape rules as reference triples. The formal schema mirrors the Phase 4 hello-pico-v1 checkable profile and the Phase 1–6 vocabulary; it never replaces them.\n\nSee Constructive realization for the Phase 1 vocabulary, Hello Pico as a constructive exemplar for the first concrete exemplar, the Glossary for one-line definitions, and templates/README.qmd (in-repo scaffold, not published as a learner page) for the Phase 8 contract.",
+    "crumbs": [
+      "Home",
+      "Formal schema"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html",
+    "href": "constructive-realization.html",
+    "title": "Constructive realization",
+    "section": "",
+    "text": "This page is the course-facing reference for the academy’s small constructive-realization vocabulary. It is written for learners and course authors working in the Pico course; the underlying contract lives in templates/README.qmd (in-repo scaffold, not published as a learner page; Phase 1).\nPhase 1 is documentation and metadata only. Nothing here changes how a Pico is built; it names the concepts you are already using so lessons, labs, and metadata can point at them consistently.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#the-five-terms",
+    "href": "constructive-realization.html#the-five-terms",
+    "title": "Constructive realization",
+    "section": "The five terms",
+    "text": "The five terms\n\nDefinition — what an artifact is supposed to be: its purpose, intent, and expected outcome. In this course, a Pico’s Rules together with the surrounding lesson framing state a Definition.\nElement — the concrete realized thing. In this course, a running hello-world-pico produced by the pipeline is an Element.\nRealization — the constructive path from Definition to Element. In this course, the Rules → Parser → Composer → Pico pipeline is the Realization, and the Hello Pico lab records it step by step.\nConstraint — a condition a valid Element must satisfy (for example: “the Pico responds to the hello event”, “the Rules parse without error”).\nValidation — an executable or observable check that tests an Element against its Constraints (for example: a lab’s verify.sh, a course quiz, or an end-to-end lab walkthrough).",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#mapping-onto-the-pico-pipeline",
+    "href": "constructive-realization.html#mapping-onto-the-pico-pipeline",
+    "title": "Constructive realization",
+    "section": "Mapping onto the Pico pipeline",
+    "text": "Mapping onto the Pico pipeline\nThe pipeline you already know maps cleanly onto the vocabulary:\nRules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico\n(Definition)   (Realization)   (Realization)     (Element)\n\nRules carry the Definition of the Pico you intend to build.\nParser + Composer are the Realization: the constructive path that turns a Definition into an Element.\nPico (for example hello-world-pico) is the Element.\nConstraints are the conditions the produced Pico must meet.\nValidations are the checks — lab verifications, quizzes, observable behavior — that confirm the Element satisfies its Constraints.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#mapping-onto-compose-construct-behave",
+    "href": "constructive-realization.html#mapping-onto-compose-construct-behave",
+    "title": "Constructive realization",
+    "section": "Mapping onto compose → construct → behave",
+    "text": "Mapping onto compose → construct → behave\nThe academy’s three-layer story — Crossplane composes, Sandcastle constructs, Picos behave — is a story about Realization at three different scales:\n\n\n\n\n\n\n\nLayer\nConstructive-realization view\n\n\n\n\nCrossplane composes\nRealization by composition from sub-elements; a composed resource is the Element.\n\n\nSandcastle constructs\nThe bounded engineering environment inside which Realizations safely run and produce Elements.\n\n\nPicos behave\nThe Elements themselves at runtime; their behavior is the observable evidence of Realization.\n\n\n\nConcretely, in this course:\n\nThe Pico course teaches how a single Pico Element behaves.\nThe Crossplane course teaches how such Elements are composed on a control plane.\nThe Sandcastle course teaches the construction environment inside which Realization happens safely.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#where-the-terms-show-up-in-course-material",
+    "href": "constructive-realization.html#where-the-terms-show-up-in-course-material",
+    "title": "Constructive realization",
+    "section": "Where the terms show up in course material",
+    "text": "Where the terms show up in course material\nYou will most often encounter these concepts in the places you already work:\n\nCourse and lesson index.qmd — typically states a Definition (learning objectives, what the produced artifact is).\nlab.qmd and the shared labs/ — typically records a Realization and the Element it produces.\nmetadata.yaml — the machine-readable side of the same story. The Phase 1 fields (constructive_role, realizes, constraints, validated_by, realization_pattern) are optional and additive; see templates/README.qmd (in-repo scaffold, not published as a learner page) for the full contract.\nquiz.qmd and lab verifications — natural places for Validations that check an Element against its Constraints.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#authoring-guidance-for-this-course",
+    "href": "constructive-realization.html#authoring-guidance-for-this-course",
+    "title": "Constructive realization",
+    "section": "Authoring guidance for this course",
+    "text": "Authoring guidance for this course\n\nPrefer natural-language Constraints in prose and named Validations (a verify.sh, a quiz question, an observable behavior) over formal schemas.\nWhen a lesson produces a named artifact, treat that artifact name as the Element identity; a downstream lab realizes the same Definition when it lists it under realizes in its metadata.\nDo not retrofit existing pico lessons or labs to the new metadata fields as part of this reference — the Phase 1 fields are optional and sit alongside existing metadata.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "constructive-realization.html#out-of-scope-on-this-page",
+    "href": "constructive-realization.html#out-of-scope-on-this-page",
+    "title": "Constructive realization",
+    "section": "Out of scope on this page",
+    "text": "Out of scope on this page\nThis page intentionally does not:\n\nIntroduce a formal ontology, schema, or conformance checker.\nChange the Pico pipeline, lesson layout, or lab format.\nRetrofit existing courses, lessons, or labs to the Phase 1 fields.\n\nSee the Glossary for one-line definitions of these terms and the course overview for how the pieces fit together. For a fully worked example that points each term at concrete Hello Pico material, see Hello Pico as a constructive exemplar.",
+    "crumbs": [
+      "Home",
+      "Model"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Pico",
+    "section": "",
+    "text": "Welcome to Pico, the reference course of the Open Engineering Academy. This course teaches how to design and build your first Pico — a small, declarative, composable engineering artifact — and doubles as the canonical example for how every academy course website is structured.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#where-this-course-fits",
+    "href": "index.html#where-this-course-fits",
+    "title": "Pico",
+    "section": "Where this course fits",
+    "text": "Where this course fits\nPico is the academy’s behaviour layer. The three-layer story is:\n\nCrossplane composes, Sandcastle constructs, Picos behave.\n\nThis course teaches what a Pico does at runtime — how a hello-world-pico receives events, evaluates rules, and produces actions. Its sibling courses teach the other two layers:\n\nCrossplane course — declares and composes what should exist on a control plane.\nSandcastle course — the bounded engineering environment inside which artifacts like Picos are safely built.\n\nPico is the foundation for the other two: complete this course first so you know what a durable Pico artifact looks like before you compose it with Crossplane or construct it inside a Sandcastle.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-learn",
+    "href": "index.html#what-you-will-learn",
+    "title": "Pico",
+    "section": "What you will learn",
+    "text": "What you will learn\nBy the end of the course you will be able to:\n\nExplain what a Pico is and how it fits into Open Engineering.\nAuthor Rules, a Parser, and a Composer for a minimal Pico.\nProduce a working hello-world-pico and describe it with metadata.\n\nSee the course descriptor in metadata.yaml for the machine-readable summary (id, level, duration, prerequisites, teaches, produces).",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#how-this-course-is-structured",
+    "href": "index.html#how-this-course-is-structured",
+    "title": "Pico",
+    "section": "How this course is structured",
+    "text": "How this course is structured\nThe course is organized into parts, each part into lessons, and each lesson into a consistent set of pages:\ncourses/pico/\n  _quarto.yml          # this course website\n  index.qmd            # you are here\n  metadata.yaml        # machine-readable course descriptor\n  glossary.qmd         # course glossary\n  part-1/              # section\n    index.qmd\n    01-introduction/   # lesson\n      index.qmd\n      exercise.qmd\n      lab.qmd\n      summary.qmd\n      quiz.qmd\n      assets/\n  part-2/\n  part-3/\n  labs/                # course-scoped labs\n  assets/              # course-scoped assets",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#start-here",
+    "href": "index.html#start-here",
+    "title": "Pico",
+    "section": "Start here",
+    "text": "Start here\n\nPart 1 — Foundations\nPart 2 — Building\nPart 3 — Extending\nLabs and the shared Hello Pico lab.\nConstructive realization — how Definition, Element, Realization, Constraint, and Validation map onto the Rules → Parser → Composer → Pico pipeline.\nHello Pico as a constructive exemplar — the first worked example, pointing each of those terms at concrete Hello Pico material.\nGlossary",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#reference-course-notice",
+    "href": "index.html#reference-course-notice",
+    "title": "Pico",
+    "section": "Reference course notice",
+    "text": "Reference course notice\nThis course is the reference implementation for all other academy course websites. When authoring a new course under courses/&lt;name&gt;/, mirror the files, navigation, and lesson structure used here.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "glossary.html",
+    "href": "glossary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "Terms used across the Pico course. Course-specific vocabulary lives here so lessons can link to a single definition instead of redefining terms.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#composer",
+    "href": "glossary.html#composer",
+    "title": "Glossary",
+    "section": "Composer",
+    "text": "Composer\nA component that takes parsed Rules and produces a Pico output artifact.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#constraint",
+    "href": "glossary.html#constraint",
+    "title": "Glossary",
+    "section": "Constraint",
+    "text": "Constraint\nA condition a valid Element must satisfy (for example, “the Pico responds to the hello event”). See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#definition",
+    "href": "glossary.html#definition",
+    "title": "Glossary",
+    "section": "Definition",
+    "text": "Definition\nWhat an artifact is supposed to be: purpose, intent, and expected outcome. In this course, a Pico’s Rules together with the surrounding lesson framing state a Definition. See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#element",
+    "href": "glossary.html#element",
+    "title": "Glossary",
+    "section": "Element",
+    "text": "Element\nThe concrete realized thing. In this course, a running hello-world-pico produced by the Rules → Parser → Composer pipeline is an Element. See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#open-engineering",
+    "href": "glossary.html#open-engineering",
+    "title": "Glossary",
+    "section": "Open Engineering",
+    "text": "Open Engineering\nThe overarching approach of treating engineering artifacts as declarative, composable, versioned, and machine-readable definitions.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#parser",
+    "href": "glossary.html#parser",
+    "title": "Glossary",
+    "section": "Parser",
+    "text": "Parser\nA component that reads Rule definitions and turns them into an internal representation the Composer can operate on.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#pico",
+    "href": "glossary.html#pico",
+    "title": "Glossary",
+    "section": "Pico",
+    "text": "Pico\nThe small, declarative engineering artifact this course teaches you to build. A Pico is defined by Rules and produced by a Parser + Composer pipeline.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#realization",
+    "href": "glossary.html#realization",
+    "title": "Glossary",
+    "section": "Realization",
+    "text": "Realization\nThe constructive path from a Definition to an Element. In this course, the Rules → Parser → Composer → Pico pipeline is the Realization. See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#rule",
+    "href": "glossary.html#rule",
+    "title": "Glossary",
+    "section": "Rule",
+    "text": "Rule\nA single declarative statement that shapes the behavior or content of a Pico.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#validation",
+    "href": "glossary.html#validation",
+    "title": "Glossary",
+    "section": "Validation",
+    "text": "Validation\nAn executable or observable check that tests an Element against its Constraints (for example, a lab’s verify.sh or a course quiz). See Constructive realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#channel-policy",
+    "href": "glossary.html#channel-policy",
+    "title": "Glossary",
+    "section": "Channel Policy",
+    "text": "Channel Policy\nThe authorization rules governing what a Pico relationship may do. Channel policy determines permitted actions; identity determines who the other party is. These remain separate concerns.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#didcomm",
+    "href": "glossary.html#didcomm",
+    "title": "Glossary",
+    "section": "DIDComm",
+    "text": "DIDComm\nA protocol for encrypted peer-to-peer communication between Picos. DIDComm uses pairwise did:peer identities to protect cross-mesh and cross-engine messaging.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#didpeer",
+    "href": "glossary.html#didpeer",
+    "title": "Glossary",
+    "section": "did:peer",
+    "text": "did:peer\nA pairwise Decentralized Identifier used for private, relationship- specific identity. Each Pico-to-Pico relationship creates its own did:peer pair, providing isolation between relationships.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#didwebvh",
+    "href": "glossary.html#didwebvh",
+    "title": "Glossary",
+    "section": "did:webvh",
+    "text": "did:webvh\nA web-resolvable Decentralized Identifier that serves as a Pico’s public cryptographic identity. The Pico Engine publishes the corresponding DID document at a stable URL. Conceptually the Pico’s “passport.”",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#eci",
+    "href": "glossary.html#eci",
+    "title": "Glossary",
+    "section": "ECI",
+    "text": "ECI\nAn Event Channel Identifier. The legacy addressing mechanism for Pico communication. Parent and child Picos continue using ECIs for family channel communication.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#identity-aware-authorization",
+    "href": "glossary.html#identity-aware-authorization",
+    "title": "Glossary",
+    "section": "Identity-Aware Authorization",
+    "text": "Identity-Aware Authorization\nA future authorization model where decisions are based on the authenticated cryptographic identity behind a channel, rather than channel policy alone.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#portability",
+    "href": "glossary.html#portability",
+    "title": "Glossary",
+    "section": "Portability",
+    "text": "Portability\nThe ability of a Pico to move between execution environments without losing its cryptographic identity, relationships, or trust state.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#subscription",
+    "href": "glossary.html#subscription",
+    "title": "Glossary",
+    "section": "Subscription",
+    "text": "Subscription\nA pairwise relationship between two Picos that are not in a parent/ child hierarchy. In Pico Engine 1.6, subscriptions are backed by cryptographic peer DIDs and encrypted with DIDComm.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#verifiable-credential",
+    "href": "glossary.html#verifiable-credential",
+    "title": "Glossary",
+    "section": "Verifiable Credential",
+    "text": "Verifiable Credential\nA signed claim about a Pico’s attributes or authority. A future layer on top of the identity architecture that will allow Picos to prove what they are and what authority they hold.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#capability",
+    "href": "glossary.html#capability",
+    "title": "Glossary",
+    "section": "Capability",
+    "text": "Capability\nA provider-neutral action a Pico may perform, such as email.send or github.issue.create. Pico rules name capabilities rather than provider-specific tool names, keeping the Pico independent of any particular tool provider.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#composio",
+    "href": "glossary.html#composio",
+    "title": "Glossary",
+    "section": "Composio",
+    "text": "Composio\nA provider/platform that supplies tools to Picos. In this course it is the primary external Hands provider, but the Pico Hands abstraction must remain independent of Composio or any other provider.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#hands",
+    "href": "glossary.html#hands",
+    "title": "Glossary",
+    "section": "Hands",
+    "text": "Hands\nThe controlled mechanism through which a Pico acts on the world. A Composer equips a Pico with Hands; the Pico decides when to use them; the Hands perform the action. Hands are governed by identity, rules, policy, and authorization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#hands-provider",
+    "href": "glossary.html#hands-provider",
+    "title": "Glossary",
+    "section": "Hands Provider",
+    "text": "Hands Provider\nAn implementation of the Pico Hands capability, such as ComposioHands, KubernetesHands, LocalHands, or PhysicalHands. Providers map Pico capabilities onto implementation-specific operations.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html",
+    "href": "hello-pico-exemplar.html",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "",
+    "text": "This page is the course’s first explicit constructive exemplar. It takes the constructive-realization vocabulary (Definition, Element, Realization, Constraint, Validation) and points each term at a concrete piece of the existing Hello Pico material — the same Rule, pipeline, and executable you build in Part 1 · Introduction and the Hello Pico lab.\nPhase 1 is documentation and metadata only. Nothing here changes how you build a Pico; it names, for one worked example, the things you are already doing so lessons, labs, and metadata can point at them consistently.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#the-hello-pico-definition",
+    "href": "hello-pico-exemplar.html#the-hello-pico-definition",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "The Hello Pico Definition",
+    "text": "The Hello Pico Definition\nThe Hello Pico Definition is: “a minimal Pico that, given a single greeting Rule, produces an executable artifact named hello-world-pico that prints a greeting to standard output.”\nWhere this Definition already lives in the course:\n\nThe course descriptor names the artifact in courses/pico/metadata.yaml under produces: [hello-world-pico].\nPart 1 · Introduction states the learning objectives that frame the Definition.\nThe Hello Pico lab objectives restate the Definition from the learner’s perspective.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#the-hello-pico-realization",
+    "href": "hello-pico-exemplar.html#the-hello-pico-realization",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "The Hello Pico Realization",
+    "text": "The Hello Pico Realization\nThe Realization is the constructive path from that Definition to a running Element. In Hello Pico it is the familiar Rules → Parser → Composer → Pico pipeline, driven by the reference pico CLI shipped at bin/pico.\nrules/hello.yaml  ─▶  pico parse  ─▶  build/parsed.json  ─▶  pico compose  ─▶  build/hello-world-pico\n   (Definition)          (Realization step 1)                    (Realization step 2)         (Element)\nThe concrete Rule that seeds the Realization is the one Rule you author in the lab walkthrough:\n# rules/hello.yaml\nid: rule.hello\nkind: greeting\nvalue: \"Hello, Pico!\"\nThe two Realization commands are the ones documented in the Hello Pico walkthrough:\npico parse rules/hello.yaml --out build/parsed.json\npico compose build/parsed.json --out build/hello-world-pico\nThis maps onto the Phase 1 metadata field realization_pattern, for which the label used here is rules-parser-composer-pipeline.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#the-hello-pico-element",
+    "href": "hello-pico-exemplar.html#the-hello-pico-element",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "The Hello Pico Element",
+    "text": "The Hello Pico Element\nThe Element is the concrete build/hello-world-pico executable produced by pico compose. Its identity — the name hello-world-pico — is the same name the pico course metadata lists under produces, and the same name the Hello Pico lab metadata lists under produces. That shared name is what makes the lab a Realization of the course-level Definition.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#constraints-on-a-valid-hello-pico-element",
+    "href": "hello-pico-exemplar.html#constraints-on-a-valid-hello-pico-element",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "Constraints on a valid Hello Pico Element",
+    "text": "Constraints on a valid Hello Pico Element\nA valid Hello Pico Element must satisfy all of the following, each directly implied by the existing lab material:\n\nWell-formed Rule — rules/hello.yaml uses the flat id / kind / value shape the reference Parser accepts.\nSupported kind — the Rule’s kind is greeting, the only kind the reference Composer handles.\nSuccessful pipeline — both pico parse and pico compose exit with status 0.\nProduced artifact exists — build/hello-world-pico is created by the Composer and is executable.\nObservable behavior — running ./build/hello-world-pico prints exactly Hello, Pico! on standard output.\n\nThese are the Constraints named in the sense of constructive realization: conditions a valid Element must satisfy. They are natural-language on purpose — Phase 1 does not introduce formal schemas.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#validations-that-check-the-element",
+    "href": "hello-pico-exemplar.html#validations-that-check-the-element",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "Validations that check the Element",
+    "text": "Validations that check the Element\nEach Constraint above is checked by something a learner already runs. Validations are pointed at by the Phase 1 validated_by field on the Hello Pico lab metadata.\n\n\n\nConstraint\nValidation (what the learner runs)\n\n\n\n\nWell-formed Rule\nWalkthrough Step 3 — pico parse succeeds.\n\n\nSupported kind\nWalkthrough Step 4 — pico compose succeeds.\n\n\nSuccessful pipeline\nNon-zero exit codes surfaced in Troubleshooting.\n\n\nProduced artifact exists\nWalkthrough Step 4 — build/hello-world-pico is written.\n\n\nObservable behavior\nWalkthrough Step 5 and the Solution — ./build/hello-world-pico prints Hello, Pico!.\n\n\nRule shape (learner-authored)\nThe Introduction lesson exercise — pico parse on the learner’s own YAML.\n\n\nTerminology understanding\nThe Introduction lesson quiz.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#where-compose-construct-behave-fit",
+    "href": "hello-pico-exemplar.html#where-compose-construct-behave-fit",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "Where compose / construct / behave fit",
+    "text": "Where compose / construct / behave fit\nHello Pico teaches the behave layer of Crossplane composes, Sandcastle constructs, Picos behave:\n\nThe Element (hello-world-pico) is the behaviour — a runnable Pico that prints its greeting.\nSibling courses reuse the same Hello Pico Element as an input to their own Realizations: the Crossplane course composes it onto a control plane, and the Sandcastle course shows how it is constructed inside a sandboxed engineering environment.\n\nThe Definition stays the same across all three layers; only the Realization changes.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "hello-pico-exemplar.html#what-phase-1-does-not-add-here",
+    "href": "hello-pico-exemplar.html#what-phase-1-does-not-add-here",
+    "title": "Hello Pico as a constructive exemplar",
+    "section": "What Phase 1 does not add here",
+    "text": "What Phase 1 does not add here\n\nNo new Pico pipeline stages, CLI flags, or lab steps.\nNo formal schema validation of metadata.yaml.\nNo retrofit of other courses, lessons, or labs to the Phase 1 vocabulary.\n\nSee the constructive-realization reference for the full Phase 1 scope, and templates/README.qmd (in-repo scaffold, not published as a learner page) for the underlying metadata contract. For the full staged Pico → Sandcastle → Crossplane → Kubernetes chain, see The Hello Pico realization chain in the Sandcastle course. For the same path read through the Phase 4 hello-pico-v1 checkable profile — shape rules mapped to concrete metadata.yaml and evidence — see Hello Pico as a checkable realization. For the opt-in Phase 5 workflow that verifies a hello-pico-v1 claim against those shape rules, and the shape of the resulting validation report, see Hello Pico profile validation. For the Phase 6 aggregate view over those reports — the report index across current hello-pico-v1 claimants, the historical-snapshot convention, and the narrow feedback loop back into the governing Definition — see Hello Pico validation history and feedback.",
+    "crumbs": [
+      "Home",
+      "Exemplar"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html",
+    "href": "part-1/index.html",
+    "title": "Part 1 — Foundations",
+    "section": "",
+    "text": "Part 1 introduces the vocabulary and mental model for Picos. It is designed to be completed before Parts 2 and 3.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations"
+    ]
+  },
+  {
+    "objectID": "part-1/index.html#lessons",
+    "href": "part-1/index.html#lessons",
+    "title": "Part 1 — Foundations",
+    "section": "Lessons",
+    "text": "Lessons\n\n1. Introduction — what a Pico is, why it exists, and how the pieces fit together.\n\nEach lesson in this course follows the same page layout — see the course overview for the full pattern.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html",
+    "href": "part-1/01-introduction/exercise.html",
+    "title": "Exercise · Introduction",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#task",
+    "href": "part-1/01-introduction/exercise.html#task",
+    "title": "Exercise · Introduction",
+    "section": "Task",
+    "text": "Task\nWrite a one-sentence description of a Pico in your own words, and list three examples of things in your day-to-day work that could plausibly be modeled as Picos.\n\n\n\n\n\n\nNote\n\n\n\nThere is no single correct answer. The goal is to internalize the “Rules → Parser → Composer → Pico” mental model from the lesson.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#success-criteria",
+    "href": "part-1/01-introduction/exercise.html#success-criteria",
+    "title": "Exercise · Introduction",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour description mentions that a Pico is declarative and composable.\nYou can name at least three candidate Picos.\nFor at least one candidate, you can sketch what the Rules might look like in YAML.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#automatable-check",
+    "href": "part-1/01-introduction/exercise.html#automatable-check",
+    "title": "Exercise · Introduction",
+    "section": "Automatable check",
+    "text": "Automatable check\nIf you sketched at least one Rule in YAML, save it as rules/&lt;your-slug&gt;.yaml under a scratch working directory and confirm it matches the reference Parser’s flat id / kind / value shape using the pico CLI shipped in this repository (see the Hello Pico one-time setup for the PATH export):\npico parse rules/&lt;your-slug&gt;.yaml --out /tmp/parsed.json \\\n  && echo \"OK: parsed rules/&lt;your-slug&gt;.yaml\"\nThe command exits with status 0 and prints an OK: line when the sketch is well-formed. This is an optional accompaniment to the reflection questions — the exercise’s primary goal remains internalizing the mental model, but any YAML you draft can now be mechanically validated.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#reflect",
+    "href": "part-1/01-introduction/exercise.html#reflect",
+    "title": "Exercise · Introduction",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhich of your three examples is the simplest to model?\nWhich one would be the hardest, and why?",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/exercise.html#next",
+    "href": "part-1/01-introduction/exercise.html#next",
+    "title": "Exercise · Introduction",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html",
+    "href": "part-1/01-introduction/summary.html",
+    "title": "Summary · Introduction",
+    "section": "",
+    "text": "A Pico is a small declarative, composable Open Engineering artifact.\nA Pico is produced by a pipeline: Rules → Parser → Composer → Pico.\nRules are authored in YAML; the Parser and Composer do the mechanical work of turning Rules into a Pico.\nThe Pico course website itself is the reference structure for every academy course: parts, lessons, exercises, labs, summaries, quizzes, glossary, and a machine-readable metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html#key-takeaways",
+    "href": "part-1/01-introduction/summary.html#key-takeaways",
+    "title": "Summary · Introduction",
+    "section": "",
+    "text": "A Pico is a small declarative, composable Open Engineering artifact.\nA Pico is produced by a pipeline: Rules → Parser → Composer → Pico.\nRules are authored in YAML; the Parser and Composer do the mechanical work of turning Rules into a Pico.\nThe Pico course website itself is the reference structure for every academy course: parts, lessons, exercises, labs, summaries, quizzes, glossary, and a machine-readable metadata.yaml.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html#what-comes-next",
+    "href": "part-1/01-introduction/summary.html#what-comes-next",
+    "title": "Summary · Introduction",
+    "section": "What comes next",
+    "text": "What comes next\n\nPart 2 — Building walks through the pipeline end-to-end.\nPart 3 — Extending covers composing multiple Picos and connecting them to other artifacts.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-1/01-introduction/summary.html#next",
+    "href": "part-1/01-introduction/summary.html#next",
+    "title": "Summary · Introduction",
+    "section": "Next",
+    "text": "Next\nTake the Quiz.",
+    "crumbs": [
+      "Home",
+      "Part 1 — Foundations",
+      "01 Introduction",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-2/index.html",
+    "href": "part-2/index.html",
+    "title": "Part 2 — Building",
+    "section": "",
+    "text": "Part 2 walks through building your first Pico end-to-end: authoring Rules, running the Parser, and using the Composer to produce hello-world-pico.",
+    "crumbs": [
+      "Home",
+      "Part 2 — Building"
+    ]
+  },
+  {
+    "objectID": "part-2/index.html#lessons",
+    "href": "part-2/index.html#lessons",
+    "title": "Part 2 — Building",
+    "section": "Lessons",
+    "text": "Lessons\nLesson content for Part 2 is authored following the same lesson layout as Part 1, lesson 1. This page will list lessons as they are added.\n\n\n\n\n\n\nWarningScaffold — not yet runnable\n\n\n\nPart 2 is intentionally scaffolded rather than written out in full. It is included so the reference course demonstrates a multi-part structure, but it does not yet carry runnable learner content. Use the Introduction lesson as the canonical example of the lesson structure to follow.",
+    "crumbs": [
+      "Home",
+      "Part 2 — Building"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html",
+    "href": "part-3/01-pico-identity/index.html",
+    "title": "1. Pico Identity",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain why a Pico needs a cryptographic identity rather than only an address or channel.\nDistinguish a Pico’s did:webvh (public identity) from its did:peer (relationship-specific identity).\nDescribe what “a Pico should not expose one universal identifier for every relationship” means in practice.\nAuthor a YAML identity declaration for a Pico.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#learning-objectives",
+    "href": "part-3/01-pico-identity/index.html#learning-objectives",
+    "title": "1. Pico Identity",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain why a Pico needs a cryptographic identity rather than only an address or channel.\nDistinguish a Pico’s did:webvh (public identity) from its did:peer (relationship-specific identity).\nDescribe what “a Pico should not expose one universal identifier for every relationship” means in practice.\nAuthor a YAML identity declaration for a Pico.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#prerequisites",
+    "href": "part-3/01-pico-identity/index.html#prerequisites",
+    "title": "1. Pico Identity",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nPart 1 — Foundations.\nComfort reading and writing YAML.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#identity-not-just-address",
+    "href": "part-3/01-pico-identity/index.html#identity-not-just-address",
+    "title": "1. Pico Identity",
+    "section": "Identity, not just address",
+    "text": "Identity, not just address\nBefore Pico Engine 1.6, a channel identifier could answer one question:\n\nHow do I communicate with this Pico on this engine?\n\nIt could not answer a more durable one:\n\nWhich Pico is this?\n\nVersion 1.6 gives every Pico its own cryptographic identity. That identity is intended to travel with the Pico rather than merely identify where it currently happens to execute.\n\n\n\n\n\n\nTip\n\n\n\nThink of a channel (an ECI) as a mailbox and a DID as the person who owns the mailbox. Mailboxes move and change; the person is who they are.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#two-dids-two-responsibilities",
+    "href": "part-3/01-pico-identity/index.html#two-dids-two-responsibilities",
+    "title": "1. Pico Identity",
+    "section": "Two DIDs, two responsibilities",
+    "text": "Two DIDs, two responsibilities\nEvery Pico uses two kinds of Decentralized Identifiers:\nPico\n│\n├── did:webvh\n│   └── Public / portable Pico identity\n│\n└── did:peer\n    ├── Relationship A\n    ├── Relationship B\n    └── Relationship C\nThe distinction is deliberate. A Pico should not expose one universal identifier for every relationship it participates in. The architecture separates identity from relationship identity.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#didwebvh-the-pico-passport",
+    "href": "part-3/01-pico-identity/index.html#didwebvh-the-pico-passport",
+    "title": "1. Pico Identity",
+    "section": "did:webvh — the Pico passport",
+    "text": "did:webvh — the Pico passport\nEvery Pico receives a did:webvh when it is created. The Pico Engine publishes the corresponding DID document at a stable URL so another participant can resolve the identity.\nConceptually the did:webvh is the Pico’s passport: the identity a Pico presents when introducing itself to another Pico that does not yet know it.\nIts responsibilities include:\n\npublic identification;\nDID resolution;\ncryptographic introduction;\nestablishing new relationships;\nforming the basis for Pico portability.\n\nThe did:webvh is primarily an introduction identity. It is not the identifier that should be reused for every subsequent interaction.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#didpeer-the-relationship-identity",
+    "href": "part-3/01-pico-identity/index.html#didpeer-the-relationship-identity",
+    "title": "1. Pico Identity",
+    "section": "did:peer — the relationship identity",
+    "text": "did:peer — the relationship identity\nOnce two Picos decide to establish a relationship, they create pairwise did:peer identities. A new pair is created for each relationship.\nPico A          Pico B\ndid:webvh:A     did:webvh:B\n      │\n      └── introduction ──▶ subscription\n                              │\n                          A → did:peer:A-B\n                          B → did:peer:B-A\nThese peer DIDs are private to that relationship. A useful analogy:\ndid:webvh = passport\ndid:peer  = private address given to one relationship\nThis provides significant isolation. If a relationship is compromised, its peer DID can be rotated, removed, or recreated without changing the Pico’s other relationships.\nPico\n ├── Relationship A → did:peer:...\n ├── Relationship B → did:peer:...\n └── Relationship C → did:peer:...\nRelationship B can be replaced without affecting A or C.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#why-not-one-universal-did",
+    "href": "part-3/01-pico-identity/index.html#why-not-one-universal-did",
+    "title": "1. Pico Identity",
+    "section": "Why not one universal DID?",
+    "text": "Why not one universal DID?\nA single identifier used everywhere would let any party correlate every relationship a Pico participates in. Pairwise did:peer identities keep relationships separate so that no single relationship can reveal the others.\nThis is the same isolation principle you will see again in Trust and Authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#lesson-pages",
+    "href": "part-3/01-pico-identity/index.html#lesson-pages",
+    "title": "1. Pico Identity",
+    "section": "Lesson pages",
+    "text": "Lesson pages\n\nExercise — a short, guided task you complete inline.\nLab — author and validate identity declarations.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/index.html#next",
+    "href": "part-3/01-pico-identity/index.html#next",
+    "title": "1. Pico Identity",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html",
+    "href": "part-3/01-pico-identity/lab.html",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "",
+    "text": "In this lab you will author full identity declarations for two Picos that will later form a relationship, and validate them with the pico CLI.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#setup",
+    "href": "part-3/01-pico-identity/lab.html#setup",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "Setup",
+    "text": "Setup\nCreate a scratch working directory and export the pico CLI per the Hello Pico one-time setup:\nmkdir -p scratch/identity",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#step-1-author-pico-as-identity",
+    "href": "part-3/01-pico-identity/lab.html#step-1-author-pico-as-identity",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "Step 1 — Author Pico A’s identity",
+    "text": "Step 1 — Author Pico A’s identity\nCreate scratch/identity/pico-a.yaml:\n# scratch/identity/pico-a.yaml\nid: oep.pico.alice\nidentity:\n  type: did\n  public:\n    method: webvh\n    url: https://engine-a.example.com/picos/alice/did.json\nrelationships:\n  - did:peer:rel-alice-bob",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#step-2-author-pico-bs-identity",
+    "href": "part-3/01-pico-identity/lab.html#step-2-author-pico-bs-identity",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "Step 2 — Author Pico B’s identity",
+    "text": "Step 2 — Author Pico B’s identity\nCreate scratch/identity/pico-b.yaml:\n# scratch/identity/pico-b.yaml\nid: oep.pico.bob\nidentity:\n  type: did\n  public:\n    method: webvh\n    url: https://engine-b.example.com/picos/bob/did.json\nrelationships:\n  - did:peer:rel-bob-alice",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#step-3-validate-both-declarations",
+    "href": "part-3/01-pico-identity/lab.html#step-3-validate-both-declarations",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "Step 3 — Validate both declarations",
+    "text": "Step 3 — Validate both declarations\npico parse scratch/identity/pico-a.yaml --out /tmp/pico-a.json \\\n  && echo \"OK: Pico A parses\"\npico parse scratch/identity/pico-b.yaml --out /tmp/pico-b.json \\\n  && echo \"OK: Pico B parses\"",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#step-4-extend-pico-a-with-a-second-relationship",
+    "href": "part-3/01-pico-identity/lab.html#step-4-extend-pico-a-with-a-second-relationship",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "Step 4 — Extend Pico A with a second relationship",
+    "text": "Step 4 — Extend Pico A with a second relationship\nAdd a second relationship to pico-a.yaml representing a new relationship with Pico C, then re-run the parse:\npico parse scratch/identity/pico-a.yaml --out /tmp/pico-a.json \\\n  && echo \"OK: Pico A with two relationships parses\"",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#what-you-will-produce",
+    "href": "part-3/01-pico-identity/lab.html#what-you-will-produce",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "What you will produce",
+    "text": "What you will produce\nTwo valid YAML identity declarations plus a demonstration that a Pico can carry multiple did:peer relationships under a single did:webvh.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/lab.html#next",
+    "href": "part-3/01-pico-identity/lab.html#next",
+    "title": "Lab · Pico Identity Declaration",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/quiz.html",
+    "href": "part-3/01-pico-identity/quiz.html",
+    "title": "Quiz · Pico Identity",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/quiz.html#what-question-does-a-did-answer-that-an-eci-cannot",
+    "href": "part-3/01-pico-identity/quiz.html#what-question-does-a-did-answer-that-an-eci-cannot",
+    "title": "Quiz · Pico Identity",
+    "section": "1. What question does a DID answer that an ECI cannot?",
+    "text": "1. What question does a DID answer that an ECI cannot?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nAn ECI answers “how do I communicate with this Pico on this engine?” A DID answers “which Pico is this?” — the durable identity of the Pico itself.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/quiz.html#what-is-the-analogy-for-didwebvh-and-didpeer",
+    "href": "part-3/01-pico-identity/quiz.html#what-is-the-analogy-for-didwebvh-and-didpeer",
+    "title": "Quiz · Pico Identity",
+    "section": "2. What is the analogy for did:webvh and did:peer?",
+    "text": "2. What is the analogy for did:webvh and did:peer?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nA did:webvh is the Pico’s passport (public identity for introduction); a did:peer is a private address given to one relationship.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/quiz.html#why-does-a-pico-use-a-different-didpeer-for-each-relationship",
+    "href": "part-3/01-pico-identity/quiz.html#why-does-a-pico-use-a-different-didpeer-for-each-relationship",
+    "title": "Quiz · Pico Identity",
+    "section": "3. Why does a Pico use a different did:peer for each relationship?",
+    "text": "3. Why does a Pico use a different did:peer for each relationship?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nIsolation. If one relationship is compromised, its peer DID can be rotated, removed, or recreated without changing the Pico’s other relationships, and no single relationship can reveal the others.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/quiz.html#which-did-is-primarily-an-introduction-identity",
+    "href": "part-3/01-pico-identity/quiz.html#which-did-is-primarily-an-introduction-identity",
+    "title": "Quiz · Pico Identity",
+    "section": "4. Which DID is primarily an introduction identity?",
+    "text": "4. Which DID is primarily an introduction identity?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe did:webvh. It is used for public identification, resolution, and cryptographic introduction, not for every subsequent interaction.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/01-pico-identity/quiz.html#next",
+    "href": "part-3/01-pico-identity/quiz.html#next",
+    "title": "Quiz · Pico Identity",
+    "section": "Next",
+    "text": "Next\nReturn to Part 3 or continue to Cross-Mesh Communication.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "01 Pico Identity",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/exercise.html",
+    "href": "part-3/02-cross-mesh-communication/exercise.html",
+    "title": "Exercise · Cross-Mesh Communication",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/exercise.html#task",
+    "href": "part-3/02-cross-mesh-communication/exercise.html#task",
+    "title": "Exercise · Cross-Mesh Communication",
+    "section": "Task",
+    "text": "Task\nFor two Picos, one in each of your own meshes, write the subscription configuration that establishes a relationship using the recipient’s did:webvh:\n# subscription-a-b.yaml\nsubscription:\n  initiator: did:webvh:https://engine-a.example.com/picos/alice\n  recipient: did:webvh:https://engine-b.example.com/picos/bob\n  peer:\n    initiator: did:peer:rel-alice-bob\n    recipient: did:peer:rel-bob-alice\nThen write a DIDComm message envelope that would be sent after the subscription is established:\n# didcomm-message.yaml\nmessage:\n  from: did:peer:rel-alice-bob\n  to: did:peer:rel-bob-alice\n  type: pico/event\n  body:\n    event: temperature-reading\n    value: 21.5\n\n\n\n\n\n\nNote\n\n\n\nThe exact field names are illustrative. The goal is to internalize the flow from the lesson: resolve → introduce → create peer DIDs → establish subscription → encrypted relationship.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/exercise.html#success-criteria",
+    "href": "part-3/02-cross-mesh-communication/exercise.html#success-criteria",
+    "title": "Exercise · Cross-Mesh Communication",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour subscription initiates using the recipient’s did:webvh.\nYour subscription creates a distinct did:peer on each side.\nYour DIDComm envelope addresses the message by peer DID, not by did:webvh.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/exercise.html#automatable-check",
+    "href": "part-3/02-cross-mesh-communication/exercise.html#automatable-check",
+    "title": "Exercise · Cross-Mesh Communication",
+    "section": "Automatable check",
+    "text": "Automatable check\nValidate both snippets parse:\npico parse subscription-a-b.yaml --out /tmp/sub.json \\\n  && echo \"OK: subscription parses\"\npico parse didcomm-message.yaml --out /tmp/msg.json \\\n  && echo \"OK: message envelope parses\"\nBoth commands exit 0 and print the OK: line when well-formed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/exercise.html#reflect",
+    "href": "part-3/02-cross-mesh-communication/exercise.html#reflect",
+    "title": "Exercise · Cross-Mesh Communication",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhy does the message envelope use did:peer rather than did:webvh after the relationship is established?\nWhat would change if Pico A and Pico B were in the same mesh?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/exercise.html#next",
+    "href": "part-3/02-cross-mesh-communication/exercise.html#next",
+    "title": "Exercise · Cross-Mesh Communication",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/summary.html",
+    "href": "part-3/02-cross-mesh-communication/summary.html",
+    "title": "Summary · Cross-Mesh Communication",
+    "section": "",
+    "text": "A subscription is a pairwise relationship represented on both sides. One side initiates using the recipient’s did:webvh; the handshake resolves the identity and creates peer DIDs.\nOnce established, events and queries use the did:peer relationship — not the public did:webvh.\nDIDComm provides encrypted cross-mesh and cross-engine communication using the peer relationship. Within the same mesh, traffic can stay local.\nTwo relationship classes exist: family (parent/child, ECI-based, no DID needed) and external (subscriptions, did:webvh → introduction, did:peer → established relationship).\nDID-based introduction would be unnecessary overhead for relationships already established structurally within a Pico family.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/summary.html#key-takeaways",
+    "href": "part-3/02-cross-mesh-communication/summary.html#key-takeaways",
+    "title": "Summary · Cross-Mesh Communication",
+    "section": "",
+    "text": "A subscription is a pairwise relationship represented on both sides. One side initiates using the recipient’s did:webvh; the handshake resolves the identity and creates peer DIDs.\nOnce established, events and queries use the did:peer relationship — not the public did:webvh.\nDIDComm provides encrypted cross-mesh and cross-engine communication using the peer relationship. Within the same mesh, traffic can stay local.\nTwo relationship classes exist: family (parent/child, ECI-based, no DID needed) and external (subscriptions, did:webvh → introduction, did:peer → established relationship).\nDID-based introduction would be unnecessary overhead for relationships already established structurally within a Pico family.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/summary.html#what-comes-next",
+    "href": "part-3/02-cross-mesh-communication/summary.html#what-comes-next",
+    "title": "Summary · Cross-Mesh Communication",
+    "section": "What comes next",
+    "text": "What comes next\n\nTrust and Authorization — how identity determines who but channel policy determines what.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/02-cross-mesh-communication/summary.html#next",
+    "href": "part-3/02-cross-mesh-communication/summary.html#next",
+    "title": "Summary · Cross-Mesh Communication",
+    "section": "Next",
+    "text": "Next\nTake the Quiz before continuing.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "02 Cross-Mesh Communication",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html",
+    "href": "part-3/03-trust-and-authorization/index.html",
+    "title": "3. Trust and Authorization",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain why the DID infrastructure does not replace channel authorization.\nState the principle “identity establishes who; policy establishes what.”\nAuthor a channel policy that references a peer DID.\nExplain the implications for Open Engineering rules and parsers.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#learning-objectives",
+    "href": "part-3/03-trust-and-authorization/index.html#learning-objectives",
+    "title": "3. Trust and Authorization",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain why the DID infrastructure does not replace channel authorization.\nState the principle “identity establishes who; policy establishes what.”\nAuthor a channel policy that references a peer DID.\nExplain the implications for Open Engineering rules and parsers.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#prerequisites",
+    "href": "part-3/03-trust-and-authorization/index.html#prerequisites",
+    "title": "3. Trust and Authorization",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nPico Identity.\nCross-Mesh Communication.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#identity-does-not-replace-authorization",
+    "href": "part-3/03-trust-and-authorization/index.html#identity-does-not-replace-authorization",
+    "title": "3. Trust and Authorization",
+    "section": "Identity does not replace authorization",
+    "text": "Identity does not replace authorization\nA particularly useful design decision is that the new DID infrastructure does not replace the existing Pico channel authorization model. The responsibilities remain separate.\nDID\n │\n └── Who is the other party?\nChannel / ECI policy\n │\n └── What may that party do?\nA subscription’s peer DID acts as its channel identity, while existing channel policy determines what that relationship may do.\nThis gives Open Engineering an important architectural principle:\n\nIdentity establishes who; policy establishes what.\n\nThe Pico Engine therefore gains cryptographic identity without requiring its authorization model to be rewritten at the same time.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#trust-between-previously-unrelated-picos",
+    "href": "part-3/03-trust-and-authorization/index.html#trust-between-previously-unrelated-picos",
+    "title": "3. Trust and Authorization",
+    "section": "Trust between previously unrelated Picos",
+    "text": "Trust between previously unrelated Picos\nPicos belonging to different meshes can establish relationships without requiring a central federation. Neither mesh needs:\n\na shared identity provider;\na central broker;\na preconfigured federation agreement;\na shared Pico Engine.\n\nThe parties can resolve identities, agree to establish a relationship, and create pairwise identities. This supports the Pico principle:\n\nThe relationship is the unit of trust.\n\nPico Engine 1.6 makes that relationship cryptographic and increasingly portable.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#implications-for-rules",
+    "href": "part-3/03-trust-and-authorization/index.html#implications-for-rules",
+    "title": "3. Trust and Authorization",
+    "section": "Implications for rules",
+    "text": "Implications for rules\nRules and rulesets should be able to reason about:\n\nthe identity of another Pico;\nestablishment of subscriptions;\nacceptance or rejection of introductions;\nrelationship lifecycle;\nrelationship-specific authorization;\nkey rotation;\nrelationship termination;\ncredentials when those become available.\n\nThis means Pico rules can increasingly express trust relationships, not merely event-processing behavior.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#implications-for-parsers",
+    "href": "part-3/03-trust-and-authorization/index.html#implications-for-parsers",
+    "title": "3. Trust and Authorization",
+    "section": "Implications for parsers",
+    "text": "Implications for parsers\nOpen Engineering Pico parsers should preserve the distinction between:\nIdentity\nRelationship\nAddress\nAuthorization\nMessaging\nA parser should not treat a DID merely as another form of ECI. They serve different semantic purposes. An ECI primarily identifies a communication channel; a DID identifies a cryptographic actor or relationship. That distinction should survive translation between Open Engineering definitions and Pico Engine/Manifold representations.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#lesson-pages",
+    "href": "part-3/03-trust-and-authorization/index.html#lesson-pages",
+    "title": "3. Trust and Authorization",
+    "section": "Lesson pages",
+    "text": "Lesson pages\n\nExercise — a short, guided task you complete inline.\nLab — author channel policies with identity.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/index.html#next",
+    "href": "part-3/03-trust-and-authorization/index.html#next",
+    "title": "3. Trust and Authorization",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html",
+    "href": "part-3/03-trust-and-authorization/lab.html",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "",
+    "text": "In this lab you will author channel policies that reference a peer DID, compare channel-only policy with identity-aware policy, and validate the YAML with the pico CLI.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#setup",
+    "href": "part-3/03-trust-and-authorization/lab.html#setup",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Setup",
+    "text": "Setup\nmkdir -p scratch/policy",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#step-1-channel-policy",
+    "href": "part-3/03-trust-and-authorization/lab.html#step-1-channel-policy",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Step 1 — Channel policy",
+    "text": "Step 1 — Channel policy\nCreate scratch/policy/policy-trust.yaml:\n# scratch/policy/policy-trust.yaml\npolicy:\n  subject: did:peer:rel-alice-bob\n  channel: subscription\n  allow:\n    - event: temperature-reading\n      action: observe\n    - event: status\n      action: read\n  deny:\n    - event: control\n      action: write",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#step-2-compare-with-a-family-channel",
+    "href": "part-3/03-trust-and-authorization/lab.html#step-2-compare-with-a-family-channel",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Step 2 — Compare with a family channel",
+    "text": "Step 2 — Compare with a family channel\nCreate scratch/policy/policy-family.yaml:\n# scratch/policy/policy-family.yaml\npolicy:\n  subject:\n    relationship: parent\n    eci: eci:root-family\n  channel: family\n  allow:\n    - event: deploy\n      action: write",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#step-3-identity-aware-policy-future-form",
+    "href": "part-3/03-trust-and-authorization/lab.html#step-3-identity-aware-policy-future-form",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Step 3 — Identity-aware policy (future form)",
+    "text": "Step 3 — Identity-aware policy (future form)\nCreate scratch/policy/policy-identity-aware.yaml:\n# scratch/policy/policy-identity-aware.yaml\nauthorization:\n  subject:\n    did: did:peer:rel-alice-bob\n    credentials:\n      - type: membership\n        issuer: engine-a.example.com\n    relationship: subscription\n    requested-action:\n      event: temperature-reading\n      action: observe\n    resource: temperature-sensor\n    context:\n      mesh: engine-b.example.com\n  decision: permit",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#step-4-validate-all-three",
+    "href": "part-3/03-trust-and-authorization/lab.html#step-4-validate-all-three",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Step 4 — Validate all three",
+    "text": "Step 4 — Validate all three\npico parse scratch/policy/policy-trust.yaml --out /tmp/a1.json \\\n  && echo \"OK: channel policy parses\"\npico parse scratch/policy/policy-family.yaml --out /tmp/a2.json \\\n  && echo \"OK: family policy parses\"\npico parse scratch/policy/policy-identity-aware.yaml --out /tmp/a3.json \\\n  && echo \"OK: identity-aware policy parses\"",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#step-5-compare",
+    "href": "part-3/03-trust-and-authorization/lab.html#step-5-compare",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Step 5 — Compare",
+    "text": "Step 5 — Compare\nAnswer, using your files:\n\nWhat does the channel policy authorize based on?\nWhat extra inputs does the identity-aware policy consider?\nWhy does keeping these separate matter for Open Engineering rules and parsers?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#what-you-will-produce",
+    "href": "part-3/03-trust-and-authorization/lab.html#what-you-will-produce",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "What you will produce",
+    "text": "What you will produce\nThree policy files demonstrating (1) channel-only policy on a subscription, (2) channel policy on a family relationship, and (3) a future identity-aware authorization decision.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/lab.html#next",
+    "href": "part-3/03-trust-and-authorization/lab.html#next",
+    "title": "Lab · Channel Policy with Identity",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/quiz.html",
+    "href": "part-3/03-trust-and-authorization/quiz.html",
+    "title": "Quiz · Trust and Authorization",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/quiz.html#what-is-the-open-engineering-principle-separating-identity-from-authorization",
+    "href": "part-3/03-trust-and-authorization/quiz.html#what-is-the-open-engineering-principle-separating-identity-from-authorization",
+    "title": "Quiz · Trust and Authorization",
+    "section": "1. What is the Open Engineering principle separating identity from authorization?",
+    "text": "1. What is the Open Engineering principle separating identity from authorization?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\n“Identity establishes who; policy establishes what.” The DID infrastructure does not replace channel authorization; the two concerns stay separate.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/quiz.html#what-does-a-pico-need-to-establish-trust-across-meshes-without-a-central-federation",
+    "href": "part-3/03-trust-and-authorization/quiz.html#what-does-a-pico-need-to-establish-trust-across-meshes-without-a-central-federation",
+    "title": "Quiz · Trust and Authorization",
+    "section": "2. What does a Pico need to establish trust across meshes without a central federation?",
+    "text": "2. What does a Pico need to establish trust across meshes without a central federation?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nNothing more than the ability to resolve identities, agree to establish a relationship, and create pairwise identities. No shared identity provider, central broker, federation agreement, or shared Pico Engine is required.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/quiz.html#why-should-a-parser-not-treat-a-did-as-another-form-of-eci",
+    "href": "part-3/03-trust-and-authorization/quiz.html#why-should-a-parser-not-treat-a-did-as-another-form-of-eci",
+    "title": "Quiz · Trust and Authorization",
+    "section": "3. Why should a parser not treat a DID as another form of ECI?",
+    "text": "3. Why should a parser not treat a DID as another form of ECI?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThey serve different semantic purposes: an ECI identifies a communication channel; a DID identifies a cryptographic actor or relationship. That distinction must survive translation between Open Engineering definitions and Pico Engine/Manifold representations.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/quiz.html#what-can-identity-aware-authorization-consider-that-channel-only-policy-cannot",
+    "href": "part-3/03-trust-and-authorization/quiz.html#what-can-identity-aware-authorization-consider-that-channel-only-policy-cannot",
+    "title": "Quiz · Trust and Authorization",
+    "section": "4. What can identity-aware authorization consider that channel-only policy cannot?",
+    "text": "4. What can identity-aware authorization consider that channel-only policy cannot?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe authenticated identity behind the channel — including credentials, relationship, requested action, resource, and context — rather than only the channel itself.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/03-trust-and-authorization/quiz.html#next",
+    "href": "part-3/03-trust-and-authorization/quiz.html#next",
+    "title": "Quiz · Trust and Authorization",
+    "section": "Next",
+    "text": "Next\nReturn to Part 3 or continue to Portability.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "03 Trust and Authorization",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/exercise.html",
+    "href": "part-3/04-portability/exercise.html",
+    "title": "Exercise · Portability",
+    "section": "",
+    "text": "A short, guided task. Complete it before moving on to the lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/exercise.html#task",
+    "href": "part-3/04-portability/exercise.html#task",
+    "title": "Exercise · Portability",
+    "section": "Task",
+    "text": "Task\nFor the Pico you have been modeling across Part 3, write the beginning of a portable Pico definition that keeps the Open Engineering identity separate from the runtime identity:\n# portable-pico.yaml\noepid: oep.pico.alice.v1\nidentity:\n  type: did\n  public:\n    method: webvh\n    url: https://engine-a.example.com/picos/alice/did.json\nrelationships:\n  identity:\n    method: peer\nmessaging:\n  protocol: didcomm\nauthorization:\n  mechanism: channel-policy\nAnswer the questions below.\n\n\n\n\n\n\nNote\n\n\n\nThis example follows the shape from the lesson. The important point is that identity should become a first-class property of a Pico rather than an implementation-specific extension.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/exercise.html#success-criteria",
+    "href": "part-3/04-portability/exercise.html#success-criteria",
+    "title": "Exercise · Portability",
+    "section": "Success criteria",
+    "text": "Success criteria\n\nYour definition keeps the Open Engineering identifier (oepid) separate from the runtime did:webvh.\nYou separate identity, relationships, messaging, and authorization into distinct sections.\nYou can name at least two of the four remaining-work areas that stand between this definition and a fully portable Pico.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/exercise.html#automatable-check",
+    "href": "part-3/04-portability/exercise.html#automatable-check",
+    "title": "Exercise · Portability",
+    "section": "Automatable check",
+    "text": "Automatable check\nValidate your definition parses:\npico parse portable-pico.yaml --out /tmp/pp.json \\\n  && echo \"OK: portable Pico definition parses\"\nThe command exits 0 and prints the OK: line when well-formed.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/exercise.html#reflect",
+    "href": "part-3/04-portability/exercise.html#reflect",
+    "title": "Exercise · Portability",
+    "section": "Reflect",
+    "text": "Reflect\n\nWhy must the Open Engineering identifier and the runtime DID remain distinct?\nWhat would “losing a cryptographic key should not mean losing the Pico” require of an implementation?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/exercise.html#next",
+    "href": "part-3/04-portability/exercise.html#next",
+    "title": "Exercise · Portability",
+    "section": "Next",
+    "text": "Next\nContinue with the Lab.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Exercise"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/summary.html",
+    "href": "part-3/04-portability/summary.html",
+    "title": "Summary · Portability",
+    "section": "",
+    "text": "Pico Engine 1.6 provides the prerequisite for portability, not its completion. The engine’s base URL still remains part of the did:webvh.\nThe foundation that exists: cryptographic identity, pairwise relationships, and encrypted communication.\nThe remaining work: fully portable did:webvh, durable key management, verifiable credentials, and identity-aware authorization.\nLosing a cryptographic key should not mean losing the Pico.\nAn Open Engineering identifier (semantic/catalog identity) must stay distinct from the runtime DID (cryptographic identity) and the did:peer (relationship identity).",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/summary.html#key-takeaways",
+    "href": "part-3/04-portability/summary.html#key-takeaways",
+    "title": "Summary · Portability",
+    "section": "",
+    "text": "Pico Engine 1.6 provides the prerequisite for portability, not its completion. The engine’s base URL still remains part of the did:webvh.\nThe foundation that exists: cryptographic identity, pairwise relationships, and encrypted communication.\nThe remaining work: fully portable did:webvh, durable key management, verifiable credentials, and identity-aware authorization.\nLosing a cryptographic key should not mean losing the Pico.\nAn Open Engineering identifier (semantic/catalog identity) must stay distinct from the runtime DID (cryptographic identity) and the did:peer (relationship identity).",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/summary.html#what-comes-next",
+    "href": "part-3/04-portability/summary.html#what-comes-next",
+    "title": "Summary · Portability",
+    "section": "What comes next",
+    "text": "What comes next\n\nReturn to the Part 3 overview to review all lessons, or revisit any lesson in this course: Course home.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/04-portability/summary.html#next",
+    "href": "part-3/04-portability/summary.html#next",
+    "title": "Summary · Portability",
+    "section": "Next",
+    "text": "Next\nTake the Quiz to finish the lesson.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "04 Portability",
+      "Summary"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html",
+    "href": "part-3/05-hands/index.html",
+    "title": "5. Hands",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain why a Pico needs a controlled mechanism for acting on the world.\nDistinguish Mind (should I do this?) from Hands (how do I do this?).\nDescribe the provider-neutral Hands capability model.\nAuthor a Pico definition and rule that express Hands capabilities.\nExplain why a valid credential does not imply authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#learning-objectives",
+    "href": "part-3/05-hands/index.html#learning-objectives",
+    "title": "5. Hands",
+    "section": "",
+    "text": "By the end of this lesson you will be able to:\n\nExplain why a Pico needs a controlled mechanism for acting on the world.\nDistinguish Mind (should I do this?) from Hands (how do I do this?).\nDescribe the provider-neutral Hands capability model.\nAuthor a Pico definition and rule that express Hands capabilities.\nExplain why a valid credential does not imply authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#prerequisites",
+    "href": "part-3/05-hands/index.html#prerequisites",
+    "title": "5. Hands",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nPico Identity.\nCross-Mesh Communication.\nTrust and Authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#a-pico-that-can-change-the-world",
+    "href": "part-3/05-hands/index.html#a-pico-that-can-change-the-world",
+    "title": "5. Hands",
+    "section": "A Pico that can change the world",
+    "text": "A Pico that can change the world\nA Pico can reason, observe, remember, communicate, and make decisions. To affect systems outside itself, however, it also needs a controlled mechanism for taking action. We call this capability Hands.\n\nA Pico without Hands can understand the world. A Pico with Hands can change it.\n\nThe resulting principle:\n\nA Composer equips a Pico with Hands. The Pico decides when to use them. The Hands perform the action.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#mind-versus-hands",
+    "href": "part-3/05-hands/index.html#mind-versus-hands",
+    "title": "5. Hands",
+    "section": "Mind versus Hands",
+    "text": "Mind versus Hands\nThe Pico character provides a useful vocabulary:\nPico\n│\n├── Identity\n│\n├── Mind      →  What should I do?\n│\n├── Senses    →  What is happening?\n│\n├── Voice     →  What should I communicate?\n│\n└── Hands     →  What should I change or execute?\nThe distinction between Mind and Hands is particularly important:\n\nThe Mind determines: Should I do this?\nThe Hands determine: How do I do this?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#provider-independence",
+    "href": "part-3/05-hands/index.html#provider-independence",
+    "title": "5. Hands",
+    "section": "Provider independence",
+    "text": "Provider independence\nPicos MUST NOT be architecturally dependent upon any particular tool provider. Open Engineering defines the abstract capability — Pico Hands — and Composio becomes one implementation of that capability:\nPico\n │\n ▼\nHands\n │\n ├── ComposioHands\n ├── LocalHands\n ├── KubernetesHands\n └── PhysicalHands\nThis follows the Open Engineering principle of separating Definition from Implementation.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#the-capability-model",
+    "href": "part-3/05-hands/index.html#the-capability-model",
+    "title": "5. Hands",
+    "section": "The capability model",
+    "text": "The capability model\nHands should expose capabilities, not merely provider-specific tool names. For example:\ngithub.issue.create\nemail.send\nmessaging.post\nkubernetes.resource.read\nmqtt.publish\nservo.position.set\nA provider maps these capabilities onto implementation-specific operations. For example, the capability email.send maps onto Composio’s GMAIL_SEND_EMAIL tool. This keeps Pico rules independent from any provider’s API vocabulary.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#identity-before-action",
+    "href": "part-3/05-hands/index.html#identity-before-action",
+    "title": "5. Hands",
+    "section": "Identity before action",
+    "text": "Identity before action\nHands MUST integrate with Pico identity. The fundamental security rule:\n\nNo Hand acts without identity and authorization context.\n\nThe Pico is not merely saying “send this email.” It is saying:\nI am Pico X.\nI am acting within this identity context.\nMy rules permit this capability.\nMy Hands provider can perform it.\nExecute the requested action.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#authorization-boundary",
+    "href": "part-3/05-hands/index.html#authorization-boundary",
+    "title": "5. Hands",
+    "section": "Authorization boundary",
+    "text": "Authorization boundary\nAuthentication and authorization MUST remain conceptually separate. A valid credential MUST NOT imply authorization. Composio may answer “can this connected account authenticate to Gmail?” Open Engineering must answer “is this Pico permitted to send this email?”\nOpen Engineering\n      │\n      ├── Identity\n      ├── Rules\n      ├── Policy\n      ├── Capability authorization\n      └── Evidence\n             │\n             ▼\n          Hands\n             │\n             ▼\n          Composio\n             │\n             ▼\n       External System",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#governed-execution",
+    "href": "part-3/05-hands/index.html#governed-execution",
+    "title": "5. Hands",
+    "section": "Governed execution",
+    "text": "Governed execution\nHands integrate with Pico rules. Rules declare which capabilities are allowed, and richer rules constrain destinations, namespaces, environments, time windows, and approvals. For example:\ncapability: kubernetes.resource.apply\nconstraints:\n  namespaces:\n    - pico-*\n  environments:\n    - development\n    - test\nThis turns Hands into governed execution rather than unrestricted tool calling. Some operations support human approval gates, so the architecture supports future human-in-the-loop execution.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#hands-versus-mcp",
+    "href": "part-3/05-hands/index.html#hands-versus-mcp",
+    "title": "5. Hands",
+    "section": "Hands versus MCP",
+    "text": "Hands versus MCP\nHands and MCP should not be treated as synonyms. MCP may be one mechanism through which tools become discoverable or executable.\nPico\n ↓\nHands\n ↓\nProvider / Protocol\n ├── Composio\n ├── MCP\n ├── REST\n ├── Kubernetes\n ├── MQTT\n └── local execution\nHands are the Pico capability abstraction. MCP is an integration mechanism. Composio is a provider/platform. These concerns remain separate.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#lesson-pages",
+    "href": "part-3/05-hands/index.html#lesson-pages",
+    "title": "5. Hands",
+    "section": "Lesson pages",
+    "text": "Lesson pages\n\nExercise — a short, guided task you complete inline.\nLab — author a Hands-equipped Pico definition and rules.\nSummary — the key takeaways of the lesson.\nQuiz — a short knowledge check.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/index.html#next",
+    "href": "part-3/05-hands/index.html#next",
+    "title": "5. Hands",
+    "section": "Next",
+    "text": "Next\nContinue with the Exercise.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html",
+    "href": "part-3/05-hands/lab.html",
+    "title": "Lab · Give a Pico Hands",
+    "section": "",
+    "text": "In this lab you will author a complete Hands-equipped Pico definition, a governed action request with identity context, and a ruleset — then validate the YAML with the pico CLI.\nThe scenario follows the memo progression: a Pico observes a condition, evaluates a rule, decides on an action, and uses its Hands to perform it (a low-risk, reversible action such as creating a GitHub issue).",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#setup",
+    "href": "part-3/05-hands/lab.html#setup",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Setup",
+    "text": "Setup\nmkdir -p scratch/hands",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#step-1-pico-definition-with-hands",
+    "href": "part-3/05-hands/lab.html#step-1-pico-definition-with-hands",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Step 1 — Pico definition with Hands",
+    "text": "Step 1 — Pico definition with Hands\nCreate scratch/hands/pico.yaml:\n# scratch/hands/pico.yaml\napiVersion: open-engineering.io/v1alpha1\nkind: Pico\nmetadata:\n  name: issue-reporter\nspec:\n  hands:\n    - name: external\n      provider: composio\n      capabilities:\n        - github.issue.read\n        - github.issue.create\n    - name: cluster\n      provider: kubernetes\n      capabilities:\n        - kubernetes.resource.read",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#step-2-governed-action-request",
+    "href": "part-3/05-hands/lab.html#step-2-governed-action-request",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Step 2 — Governed action request",
+    "text": "Step 2 — Governed action request\nCreate scratch/hands/action.yaml — the “identity before action” boundary:\n# scratch/hands/action.yaml\nactor:\n  pico: issue-reporter\nprincipal:\n  type: user\n  id: user.example\naction:\n  provider: composio\n  capability: github.issue.create\nauthorization:\n  capability: github.issue.create",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#step-3-rules-with-constraints",
+    "href": "part-3/05-hands/lab.html#step-3-rules-with-constraints",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Step 3 — Rules with constraints",
+    "text": "Step 3 — Rules with constraints\nCreate scratch/hands/rules.yaml:\n# scratch/hands/rules.yaml\nrules:\n  - capability: github.issue.create\n    effect: allow\n    constraints:\n      repositories:\n        - academy-test/*\n  - capability: kubernetes.resource.read\n    effect: allow\n  - capability: kubernetes.resource.delete\n    effect: deny\n  - capability: github.issue.create\n    effect: deny\n    constraints:\n      repositories:\n        - production/*",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#step-4-validate-all-three",
+    "href": "part-3/05-hands/lab.html#step-4-validate-all-three",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Step 4 — Validate all three",
+    "text": "Step 4 — Validate all three\npico parse scratch/hands/pico.yaml --out /tmp/h1.json \\\n  && echo \"OK: pico definition parses\"\npico parse scratch/hands/action.yaml --out /tmp/h2.json \\\n  && echo \"OK: action request parses\"\npico parse scratch/hands/rules.yaml --out /tmp/h3.json \\\n  && echo \"OK: rules parse\"",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#step-5-reflect",
+    "href": "part-3/05-hands/lab.html#step-5-reflect",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Step 5 — Reflect",
+    "text": "Step 5 — Reflect\nAnswer, using your files:\n\nWhich file expresses what the Pico can be equipped to do?\nWhich file expresses what the Pico is permitted to do in a given context?\nWhy is the action request tied to an actor and capability rather than only a provider tool?\nWhat extra constraint would you add to require human approval for a production github.issue.create?",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#what-you-will-produce",
+    "href": "part-3/05-hands/lab.html#what-you-will-produce",
+    "title": "Lab · Give a Pico Hands",
+    "section": "What you will produce",
+    "text": "What you will produce\nA Hands-equipped Pico definition, a governed action request, and a constraint-bearing ruleset that together show Hands as governed, governed execution.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/lab.html#next",
+    "href": "part-3/05-hands/lab.html#next",
+    "title": "Lab · Give a Pico Hands",
+    "section": "Next",
+    "text": "Next\nContinue with the Summary.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Lab"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/quiz.html",
+    "href": "part-3/05-hands/quiz.html",
+    "title": "Quiz · Hands",
+    "section": "",
+    "text": "A short knowledge check. Answers are hidden behind callouts so you can self-grade after answering.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/quiz.html#what-distinguishes-mind-from-hands",
+    "href": "part-3/05-hands/quiz.html#what-distinguishes-mind-from-hands",
+    "title": "Quiz · Hands",
+    "section": "1. What distinguishes Mind from Hands?",
+    "text": "1. What distinguishes Mind from Hands?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nThe Mind determines should I do this?; the Hands determine how do I do this?.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/quiz.html#why-are-hands-provider-neutral-capability-based",
+    "href": "part-3/05-hands/quiz.html#why-are-hands-provider-neutral-capability-based",
+    "title": "Quiz · Hands",
+    "section": "2. Why are Hands provider-neutral (capability-based)?",
+    "text": "2. Why are Hands provider-neutral (capability-based)?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nSo the Pico depends on capabilities like email.send rather than a provider’s tool names like GMAIL_SEND_EMAIL. The provider can then be swapped without changing Pico behaviour or rules.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/quiz.html#what-is-the-fundamental-security-rule-for-hands",
+    "href": "part-3/05-hands/quiz.html#what-is-the-fundamental-security-rule-for-hands",
+    "title": "Quiz · Hands",
+    "section": "3. What is the fundamental security rule for Hands?",
+    "text": "3. What is the fundamental security rule for Hands?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nNo Hand acts without identity and authorization context. A valid credential does not imply authorization.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/quiz.html#how-are-hands-different-from-mcp",
+    "href": "part-3/05-hands/quiz.html#how-are-hands-different-from-mcp",
+    "title": "Quiz · Hands",
+    "section": "4. How are Hands different from MCP?",
+    "text": "4. How are Hands different from MCP?\n\n\n\n\n\n\nTipShow answer\n\n\n\n\n\nHands are the Pico capability abstraction; MCP is an integration mechanism through which tools may be discovered or executed; Composio is a provider/platform. These concerns remain separate.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Quiz"
+    ]
+  },
+  {
+    "objectID": "part-3/05-hands/quiz.html#next",
+    "href": "part-3/05-hands/quiz.html#next",
+    "title": "Quiz · Hands",
+    "section": "Next",
+    "text": "Next\nReturn to the Part 3 overview or the course home.",
+    "crumbs": [
+      "Home",
+      "Part 3 — Extending",
+      "05 Hands",
+      "Quiz"
+    ]
+  }
+]

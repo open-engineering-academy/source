@@ -1,0 +1,27 @@
+# The runtime Channel "greeting" in the InteractionTopology, realized as a
+# Kubernetes Service that fronts the consumer Pico Pod on port 8080.
+#
+# Under Phase 7 the Service is the concrete pathway that carries the one
+# event (an EventType "hello.greeting" payload) from the producer Pico to
+# the consumer Pico. The topology fragment (topology.yaml, and the ConfigMap
+# in 04-topology-configmap.yaml) is the declarative truth; this Service is
+# how that Channel is realized on the Kubernetes substrate.
+#
+# The selector points at hello-consumer-pico only: the consumer is the
+# subscriber, so the Channel address MUST resolve to its Pod.
+apiVersion: v1
+kind: Service
+metadata:
+  name: greeting
+  namespace: manifold
+  labels:
+    oe.academy/channel: greeting
+    oe.academy/event-type: hello.greeting
+spec:
+  selector:
+    app: hello-consumer-pico
+  ports:
+    - name: greeting
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
