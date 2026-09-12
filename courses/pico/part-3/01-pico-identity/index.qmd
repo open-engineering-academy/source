@@ -121,7 +121,7 @@ relationship a Pico participates in. Pairwise did:peer identities keep
 relationships separate so that no single relationship can reveal the others.
 
 This is the same isolation principle you will see again in
-[Trust and Authorization](03-trust-and-authorization/index.qmd).
+[Trust and Authorization](../03-trust-and-authorization/index.qmd).
 
 ## Lesson pages
 
