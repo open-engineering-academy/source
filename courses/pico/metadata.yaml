@@ -21,6 +21,11 @@ teaches:
   - Trust
   - Portability
   - Channel Policy
+  - Hands
+  - Capability
+  - HandsProvider
+  - Policy
+  - Evidence
 produces:
   - hello-world-pico
 references_labs:

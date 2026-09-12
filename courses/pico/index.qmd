@@ -34,6 +34,10 @@ By the end of the course you will be able to:
 - Explain what a Pico is and how it fits into Open Engineering.
 - Author Rules, a Parser, and a Composer for a minimal Pico.
 - Produce a working `hello-world-pico` and describe it with metadata.
+- Distinguish a Pico's **Mind** (whether/why it should act) from its
+  **Hands** (how an action is executed), and explain why Hands stay
+  provider-neutral. See
+  [Part 3 · Hands](part-3/05-hands/index.qmd).
 
 See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
 machine-readable summary (id, level, duration, prerequisites, teaches,

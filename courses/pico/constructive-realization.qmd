@@ -98,6 +98,33 @@ work:
   fields as part of this reference — the Phase 1 fields are optional
   and sit alongside existing metadata.
 
+## Hands as a governed extension
+
+Part 3 introduces [Hands](part-3/05-hands/index.qmd) — the controlled
+mechanism through which a Pico acts on the world. Hands slot into the
+same constructive vocabulary rather than sitting outside it, and they
+line up with the Phase 7 runtime/control-surface contract in
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page).
+
+The mapping is:
+
+| Hands concept                                    | Constructive-realization view                                                                 |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| **Capability** (e.g. `github.issue.create`)      | A **Definition** of an action the Pico is meant to be able to perform, stated in a Rule.      |
+| **HandsProvider** (`ComposioHands`, ...)         | A **Realization** step: the constructive path from a Capability Definition to an executed act. |
+| **ActionRequest** + **ExecutionContext**         | The **Definition** of one specific attempt to act, carrying identity, authorization, and Policy. |
+| **Hand execution** on a HandsProvider            | The **Realization** producing the acted-upon **Element** (an issue created, a resource applied). |
+| **Policy**                                       | A **Constraint** on the ActionRequest — the same Phase 1 Constraint concept, scoped to a Capability. |
+| **Evidence** and **Action Events**               | **Validations** and **Observations**: they record whether the executed action satisfied its Constraints. |
+
+Hands stay provider-neutral: Pico rules name Capabilities, not
+provider tool names, so the HandsProvider Realization step can be
+swapped (Composio, Kubernetes, local, MQTT, physical) without changing
+the Capability Definitions the Pico depends on. This mirrors the
+Phase 7 rule that ControlSurfaces and runtime environments must not
+replace or bypass the constructive chain.
+
 ## Out of scope on this page
 
 This page intentionally does **not**:
@@ -105,6 +132,9 @@ This page intentionally does **not**:
 - Introduce a formal ontology, schema, or conformance checker.
 - Change the Pico pipeline, lesson layout, or lab format.
 - Retrofit existing courses, lessons, or labs to the Phase 1 fields.
+- Add HandsProvider SDKs, credentials, or external integrations; those
+  are out of scope for the course contract and belong to separate
+  provider-follow-up work.
 
 See the [Glossary](glossary.qmd) for one-line definitions of these terms
 and the [course overview](index.qmd) for how the pieces fit together.
