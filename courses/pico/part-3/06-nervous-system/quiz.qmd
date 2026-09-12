@@ -1,0 +1,97 @@
+---
+title: "Quiz · Nervous System"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. How is the Nervous System different from Hands?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+**Hands** change an external system: one capability, one target, one
+action. A **Nervous System** senses, communicates, and coordinates
+across many participants: many messages, event-driven, many-to-many.
+They share the same posture (provider-neutral, identity-bound,
+adapter-backed) but solve different problems.
+:::
+
+## 2. Name the semantic message types the transport carries and what each one means.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+- **observation** — something is observed (sensor data, telemetry).
+- **event** — something happened (a state transition others may react to).
+- **command** — a request to perform an action on a specific target.
+- **delegation** — a Pico asks another Pico to carry out a mission.
+- **result** — the outcome of a command, delegation, or mission.
+- **presence** — a Pico is reachable on the transport right now.
+:::
+
+## 3. Why is the Pico Agent Transport provider-neutral, and where does EMQX/MQTT fit?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+So that Picos depend on stable message semantics rather than a specific
+broker or protocol. EMQX/MQTT is a **candidate implementation / adapter**
+of the transport — one of several possible implementations (alongside
+A2A, in-process buses, and future transports). Replacing the transport
+means swapping the adapter, not rewriting Pico rules or messages.
+:::
+
+## 4. Why must Pico identity be independent of MQTT client IDs, broker sessions, and hostnames?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Infrastructure identifiers may change on every reconnect, scale
+operation, or Pod rescheduling. Pico identity must not. Binding
+authorization, evidence, or memory to an infrastructure identifier
+would break as soon as the infrastructure changed and would let two
+different Picos accidentally share an identity across reconnects.
+:::
+
+## 5. What does *"a valid broker session must not imply authorization"* mean?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Broker authentication answers *"is this client permitted to open this
+connection and publish to this topic?"* That is a **transport** concern.
+Open Engineering authorization answers *"is this Pico permitted to
+observe, command, or delegate this capability in this context?"* Being
+allowed to publish to a topic does not automatically permit the
+capability the topic represents.
+:::
+
+## 6. Why is **discovery** treated as a first-class Pico capability rather than a broker feature?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+A Pico should be able to determine which peers exist, which are
+currently available (presence), what capabilities they advertise, and
+under what constraints — without hard-coding a peer list and without
+depending on a specific broker's discovery extension. The transport
+carries discovery messages; Open Engineering owns the meaning of
+*"this Pico advertises capability X."*
+:::
+
+## 7. Why does an incoming message not automatically become long-term memory?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Delivery is a communication concern. Classification and retention are
+cognitive concerns owned by the Pico's rules and memory. The Pico
+decides whether each message is transient, an observation, an event, a
+mission input, or evidence. Collapsing delivery and memory would
+either flood the Pico with noise or lose evidence that must be
+retained.
+:::
+
+## 8. In this wave, is EMQX/MQTT a runnable dependency of the lesson?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. EMQX/MQTT is illustrative only in this wave. No exercise, lab step,
+or verification command provisions or connects to a broker, opens an
+MQTT connection, or requires any broker account, TLS certificate,
+username, password, or API token. Every runnable check operates on
+local YAML using the provider-neutral message vocabulary. The
+[optional follow-up](emqx-adapter.qmd) shows the adapter mapping
+without running it.
+:::
+
+## Next
+
+Return to the [Part 3 overview](../index.qmd) or the
+[course home](../../index.qmd).

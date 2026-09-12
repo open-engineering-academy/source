@@ -1,0 +1,149 @@
+---
+title: "Exercise · Nervous System"
+---
+
+A short, guided task. Complete it before moving on to the lab. All
+snippets use the **provider-neutral message vocabulary**; no broker,
+credentials, or network calls are required.
+
+## Task
+
+For a Pico you have been modeling across Part 3, write:
+
+1. a **discovery advertisement** for the Pico;
+2. one message of each semantic **type** (`observation`, `event`,
+   `command`, `delegation`, `result`, `presence`);
+3. a small **authorization decision** that treats broker authentication
+   and Open Engineering authorization as separate concerns.
+
+Example shapes (keep them provider-neutral — no MQTT topic strings, no
+broker client IDs, no credentials):
+
+```yaml
+# discovery.yaml
+pico:
+  identity:
+    id: pico-alice
+  kind: garden-detective
+  capabilities:
+    - garden.moisture.read
+    - garden.watering.request
+  protocols:
+    - pico-agent-transport
+  status:
+    state: online
+```
+
+```yaml
+# messages.yaml
+messages:
+  - type: observation
+    source: pico-alice
+    subject: garden/soil
+    payload: { moisture: 32 }
+  - type: event
+    source: pico-alice
+    subject: garden/soil/dry
+    payload: { threshold: 40 }
+  - type: command
+    source: pico-alice
+    target: pico-bob
+    subject: garden.watering.request
+    payload: { duration_s: 60 }
+  - type: delegation
+    source: pico-alice
+    target: pico-bob
+    subject: mission.investigate_dry_zone
+    correlation: corr-001
+  - type: result
+    source: pico-bob
+    subject: mission.investigate_dry_zone
+    correlation: corr-001
+    payload: { status: completed }
+  - type: presence
+    source: pico-bob
+    payload: { state: online }
+```
+
+```yaml
+# authorization.yaml
+transport_authentication:
+  broker_session_ok: true          # a Transport concern
+open_engineering_authorization:
+  actor: pico-alice
+  capability: garden.watering.request
+  target: pico-bob
+  decision: allow                  # an Open Engineering concern
+```
+
+Answer the reflection questions below.
+
+::: {.callout-note}
+There is no single correct answer. The goal is to internalize the
+semantic vocabulary and the transport-substitution posture: message
+types stay the same whether the underlying transport is MQTT, A2A, or
+an in-process bus.
+:::
+
+## Success criteria
+
+- [ ] Your discovery advertisement carries an identity, a set of
+      **capabilities**, and a **presence** state.
+- [ ] Your messages cover **all six** semantic types (`observation`,
+      `event`, `command`, `delegation`, `result`, `presence`).
+- [ ] Your `delegation` and its `result` share a `correlation` value.
+- [ ] Your files name **no** provider-specific concepts (MQTT topic
+      strings such as `sensors/#`, EMQX client IDs, TLS options, or
+      credential-shaped strings).
+- [ ] Your authorization decision keeps *transport authentication* and
+      *Open Engineering authorization* as separate keys.
+
+## Automatable check
+
+Save the snippet under a scratch working directory and confirm it is
+well-formed YAML with the expected shape. These are Nervous System
+governance and message artefacts, not Hello Pico Rules, so the check
+uses `python3` rather than `pico parse` (which only accepts the flat
+Rule shape taught in Part 1). No broker or external service is
+contacted.
+
+```bash
+mkdir -p scratch-nervous
+cat > scratch-nervous/messages.yaml <<'EOF'
+messages:
+  - { type: observation, source: pico-alice, subject: garden/soil, payload: { moisture: 32 } }
+  - { type: event,       source: pico-alice, subject: garden/soil/dry }
+  - { type: command,     source: pico-alice, target: pico-bob, subject: garden.watering.request }
+  - { type: delegation,  source: pico-alice, target: pico-bob, subject: mission.x, correlation: c1 }
+  - { type: result,      source: pico-bob,   subject: mission.x, correlation: c1, payload: { status: completed } }
+  - { type: presence,    source: pico-bob,   payload: { state: online } }
+EOF
+python3 - <<'PY'
+import sys, yaml
+doc = yaml.safe_load(open("scratch-nervous/messages.yaml"))
+msgs = doc.get("messages") or []
+required = {"observation","event","command","delegation","result","presence"}
+seen = {m.get("type") for m in msgs if isinstance(m, dict)}
+ok = required <= seen and all(m.get("source") for m in msgs)
+print("OK: message envelope covers all six semantic types" if ok else f"FAIL missing={required - seen}")
+sys.exit(0 if ok else 1)
+PY
+```
+
+The command exits with status `0` and prints an `OK:` line when the
+envelope covers all six semantic types.
+
+## Reflect
+
+- Why does a `command` name `garden.watering.request` rather than an
+  MQTT topic like `picos/bob/cmd`?
+- What does *"a valid broker session must not imply authorization"* mean
+  for a Pico that can technically publish to any topic?
+- Why must a `result` share a `correlation` value with the original
+  `delegation`, but an `observation` typically does not?
+- If EMQX/MQTT were replaced by a different transport tomorrow, which of
+  your files would need to change, and which would not?
+
+## Next
+
+Continue with the [Lab](lab.qmd).

@@ -43,6 +43,12 @@ project:
     - part-3/05-hands/summary.qmd
     - part-3/05-hands/quiz.qmd
     - part-3/05-hands/composio-followup.qmd
+    - part-3/06-nervous-system/index.qmd
+    - part-3/06-nervous-system/exercise.qmd
+    - part-3/06-nervous-system/lab.qmd
+    - part-3/06-nervous-system/summary.qmd
+    - part-3/06-nervous-system/quiz.qmd
+    - part-3/06-nervous-system/emqx-adapter.qmd
     - labs/index.qmd
 
 website:
@@ -154,6 +160,19 @@ website:
                 text: Quiz
               - href: part-3/05-hands/composio-followup.qmd
                 text: "Optional follow-up · Composio"
+          - section: "06 Nervous System"
+            href: part-3/06-nervous-system/index.qmd
+            contents:
+              - href: part-3/06-nervous-system/exercise.qmd
+                text: Exercise
+              - href: part-3/06-nervous-system/lab.qmd
+                text: Lab
+              - href: part-3/06-nervous-system/summary.qmd
+                text: Summary
+              - href: part-3/06-nervous-system/quiz.qmd
+                text: Quiz
+              - href: part-3/06-nervous-system/emqx-adapter.qmd
+                text: "Optional follow-up · EMQX/MQTT adapter"
       - href: labs/index.qmd
         text: Labs
       - href: constructive-realization.qmd

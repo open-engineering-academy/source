@@ -1,0 +1,280 @@
+---
+title: "Lab · Give a Pico a Nervous System"
+---
+
+In this lab you will author one artefact per semantic concern of the
+Nervous System — discovery, presence, observation, event, command,
+delegation, result, authorization, and memory classification — and
+validate every artefact as local YAML.
+
+The scenario is a small two-Pico interaction that mirrors the runtime
+[Hello Two Picos](../../../../labs/hello-two-picos/index.qmd) lab
+without requiring a running cluster:
+
+- `pico-alice` observes soil moisture and, when it drops, delegates an
+  investigation mission to `pico-bob`.
+- `pico-bob` accepts the delegation, produces a result, and both
+  Picos treat the underlying messages according to identity,
+  authorization, and memory rules.
+
+::: {.callout-important}
+## No broker, no credentials, no external calls
+
+Every step in this lab operates on **local YAML** only. No step
+provisions or connects to EMQX, MQTT, or any other broker. The
+transport mapping in Step 9 is a labeled, optional, non-runnable annex
+— nothing in it executes.
+:::
+
+## Setup
+
+```bash
+mkdir -p scratch/nervous
+```
+
+## Step 1 — Discovery advertisement
+
+Create `scratch/nervous/discovery.yaml`. This is what a Pico advertises
+about itself to the transport, provider-neutrally.
+
+```yaml
+# scratch/nervous/discovery.yaml
+pico:
+  identity:
+    id: pico-alice
+  kind: garden-detective
+  capabilities:
+    - garden.moisture.read
+    - garden.watering.request
+  protocols:
+    - pico-agent-transport      # provider-neutral
+  status:
+    state: online
+```
+
+## Step 2 — Presence
+
+Create `scratch/nervous/presence.yaml`. Presence is a distinct message
+type from discovery: discovery is *what a Pico offers*, presence is
+*whether it is reachable right now*.
+
+```yaml
+# scratch/nervous/presence.yaml
+message:
+  type: presence
+  source: pico-alice
+  timestamp: 2026-01-01T00:00:00Z
+  payload:
+    state: online
+```
+
+## Step 3 — Observation
+
+Create `scratch/nervous/observation.yaml`. Observations are sensor-shaped
+data; they are not events until a Pico interprets them.
+
+```yaml
+# scratch/nervous/observation.yaml
+message:
+  type: observation
+  source: pico-alice
+  subject: garden/soil
+  timestamp: 2026-01-01T00:00:01Z
+  payload:
+    moisture: 32
+    unit: percent
+```
+
+## Step 4 — Event
+
+Create `scratch/nervous/event.yaml`. An event is a *state transition*
+other participants may react to.
+
+```yaml
+# scratch/nervous/event.yaml
+message:
+  type: event
+  source: pico-alice
+  subject: garden/soil/dry
+  timestamp: 2026-01-01T00:00:02Z
+  payload:
+    threshold: 40
+    observed: 32
+```
+
+## Step 5 — Command
+
+Create `scratch/nervous/command.yaml`. A command names a **capability**
+on a target, never a broker topic.
+
+```yaml
+# scratch/nervous/command.yaml
+message:
+  type: command
+  source: pico-alice
+  target: pico-bob
+  subject: garden.watering.request     # provider-neutral capability
+  correlation: cmd-001
+  payload:
+    duration_s: 60
+```
+
+## Step 6 — Delegation and Result
+
+Create `scratch/nervous/delegation.yaml` and `scratch/nervous/result.yaml`.
+A delegation is a *mission* handed to another Pico; the result closes it
+via the same `correlation` value.
+
+```yaml
+# scratch/nervous/delegation.yaml
+message:
+  type: delegation
+  source: pico-alice
+  target: pico-bob
+  subject: mission.investigate_dry_zone
+  correlation: mission-001
+```
+
+```yaml
+# scratch/nervous/result.yaml
+message:
+  type: result
+  source: pico-bob
+  subject: mission.investigate_dry_zone
+  correlation: mission-001
+  payload:
+    status: completed
+    evidence-reference: memory/evidence.yaml
+```
+
+## Step 7 — Authorization decision (identity, not client ID)
+
+Create `scratch/nervous/authorization.yaml`. Keep transport
+authentication and Open Engineering authorization as *separate* keys.
+
+```yaml
+# scratch/nervous/authorization.yaml
+transport_authentication:
+  broker_session_ok: true            # Transport concern only
+  broker_client_id: "must-not-be-treated-as-identity"
+open_engineering_authorization:
+  actor: pico-alice                  # stable Pico identity
+  capability: garden.watering.request
+  target: pico-bob
+  decision: allow
+  bound_by:
+    - rule: rules/allow-watering.yaml#0
+```
+
+## Step 8 — Memory classification
+
+Create `scratch/nervous/memory.yaml`. Not every delivered message
+becomes long-term memory; the Pico classifies each one.
+
+```yaml
+# scratch/nervous/memory.yaml
+classifications:
+  - message: observation.yaml
+    classification: transient          # discarded after evaluation
+  - message: event.yaml
+    classification: observe            # short-lived working state
+  - message: delegation.yaml
+    classification: mission            # kept for the duration of the mission
+  - message: result.yaml
+    classification: evidence           # retained as verifiable memory
+```
+
+## Step 9 — Validate all nine artefacts
+
+Every file is local YAML. No broker is used. These are Nervous System
+governance and message artefacts, not Hello Pico Rules, so the check
+uses `python3` to confirm each file is well-formed YAML with the
+expected shape. `pico parse` only accepts the flat Rule shape
+(`id`/`kind`/`value`) taught in Part 1.
+
+```bash
+python3 - <<'PY'
+import sys, yaml, pathlib
+root = pathlib.Path("scratch/nervous")
+names = ("discovery","presence","observation","event","command",
+        "delegation","result","authorization","memory")
+required_types = {"presence","observation","event","command","delegation","result"}
+seen_types = set()
+failed = False
+for name in names:
+    path = root / f"{name}.yaml"
+    try:
+        doc = yaml.safe_load(path.read_text())
+    except yaml.YAMLError as exc:
+        print(f"FAIL: {path} — {exc}", file=sys.stderr); failed = True; continue
+    if not isinstance(doc, dict) or not doc:
+        print(f"FAIL: {path} — expected a non-empty YAML mapping", file=sys.stderr)
+        failed = True; continue
+    if "message" in doc and isinstance(doc["message"], dict):
+        seen_types.add(doc["message"].get("type"))
+    print(f"OK: {name}.yaml parses")
+missing = required_types - seen_types
+if missing:
+    print(f"FAIL: missing semantic message types: {sorted(missing)}", file=sys.stderr)
+    failed = True
+sys.exit(1 if failed else 0)
+PY
+```
+
+## Step 10 — Optional annex · MQTT/EMQX topic mapping (non-runnable)
+
+::: {.callout-warning}
+## Optional and non-runnable in this wave
+
+This annex illustrates how a semantic Nervous System message *could*
+be carried by MQTT/EMQX. It is not executed, no broker is contacted,
+and it is not a prerequisite for completing the lab. No credentials,
+tokens, or EMQX account are needed.
+:::
+
+```yaml
+# scratch/nervous/mqtt-mapping.yaml   (illustrative only — do not run)
+transport: mqtt
+mappings:
+  event:        picos/{source}/event/{subject}          # QoS 1, retained: false
+  observation:  picos/{source}/observation/{subject}    # QoS 0
+  command:      picos/{target}/command/{subject}        # QoS 1
+  delegation:   picos/{target}/mission/{subject}        # QoS 1, correlation required
+  result:       picos/{source}/result/{subject}         # QoS 1, correlation required
+  presence:     picos/{source}/presence                 # QoS 1, retained: true
+```
+
+Semantic messages in Steps 2–6 do not change. Swapping the transport
+means swapping this mapping file only. For a deeper walk-through of the
+adapter boundary — including a mock contract check that runs on local
+YAML — see the optional, non-runnable follow-up page:
+[EMQX/MQTT as a transport adapter](emqx-adapter.qmd).
+
+## Step 11 — Reflect
+
+Answer, using your files:
+
+- Which file expresses *what capabilities the Pico offers* (discovery)?
+- Which file expresses *whether the Pico is reachable right now*
+  (presence)?
+- Why do the `command`, `delegation`, and `result` files name a
+  capability or mission, and not an MQTT topic?
+- Why must the `correlation` on the `result` match the one on the
+  `delegation`?
+- Which file expresses *broker-side authentication* and which
+  expresses *Open Engineering authorization*, and why must they stay
+  separate?
+- Which message becomes long-term memory, and why does an
+  `observation` typically not?
+
+## What you will produce
+
+Nine local YAML artefacts — one per semantic concern of the Nervous
+System — plus an optional, non-runnable MQTT/EMQX mapping annex.
+Together they show event-driven communication as governed
+communication with clear separation between discovery, presence,
+message semantics, identity, authorization, and memory.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

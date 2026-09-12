@@ -27,6 +27,10 @@ in Pico Engine 1.6 and are designed to be completed in order after
   between engines without losing who it is.
 - [5. Hands](05-hands/index.qmd) — giving a Pico the ability to act on the
   world, with provider-neutral capabilities and governed execution.
+- [6. Nervous System](06-nervous-system/index.qmd) — giving a Pico an
+  event-driven way to sense, communicate, and coordinate through a
+  provider-neutral Pico Agent Transport, with EMQX/MQTT as a candidate
+  adapter.
 
 Each lesson follows the same page layout as the rest of the course — see the
 [course overview](../index.qmd) for the full pattern.
