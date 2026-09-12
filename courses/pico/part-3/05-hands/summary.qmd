@@ -4,27 +4,38 @@ title: "Summary · Hands"
 
 ## Key takeaways
 
-- **Hands** are the controllable mechanism through which a Pico acts on the
-  world — the boundary between understanding and changing.
+- **Hands** complete the Pico progression that Part 3 has been building:
+  Identity → Senses → Mind → Voice → **Hands**. Hands are the boundary
+  between understanding and changing the world.
 - **Mind** decides *should I do this?*; **Hands** determine *how do I do
   this?*.
 - Hands are **provider-neutral**: the Pico depends on capabilities
   (`email.send`, `github.issue.create`), not provider tool names
-  (`GMAIL_SEND_EMAIL`). Composio is one provider among many.
+  (`GMAIL_SEND_EMAIL`). Composio is one provider among many, and is
+  optional and non-runnable in this wave.
 - **Identity before action**: no Hand acts without identity and
   authorization context. A valid credential does not imply authorization.
-- Hands are **governed execution**: rules decide which capabilities are
-  allowed, with constraints and optional human approvals.
-- Hands ≠ MCP. Hands are the Pico capability abstraction; MCP is an
-  integration mechanism; Composio is a provider/platform.
+- A Hand invocation crosses **seven distinct concerns** — Composer
+  equipment, Pico decision, Policy authorization, Hand selection, Provider
+  execution, Evidence, and Action event — and each is owned by a different
+  actor. Collapsing any two weakens the architecture.
+- **Evidence** and **action events** are separate: evidence is what
+  happened, kept in Pico memory; the action event is what the Pico's Voice
+  broadcasts so others can react.
+- Hands ≠ MCP. Hands are the Pico capability abstraction; MCP is one
+  integration mechanism; Composio is one provider/platform.
 
 ## The governing principle
 
 ```
 The Composer equips.
 The Pico decides.
-The Hands act.
-Open Engineering governs.
+The Policy authorizes.
+A Hand is selected.
+The Provider executes.
+Evidence is recorded.
+The Voice publishes the event.
+Open Engineering governs the whole loop.
 ```
 
 ## What comes next

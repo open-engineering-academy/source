@@ -2,12 +2,14 @@
 title: "Exercise · Hands"
 ---
 
-A short, guided task. Complete it before moving on to the lab.
+A short, guided task. Complete it before moving on to the lab. All snippets
+use **provider-neutral capabilities**; no external accounts, tokens, or
+network calls are required.
 
 ## Task
 
 For a Pico you have been modeling across Part 3, write a capability-based
-Hands declaration that is provider-neutral:
+Hands declaration:
 
 ```yaml
 # hands-capabilities.yaml
@@ -21,10 +23,13 @@ hands:
       - kubernetes.resource.read
 ```
 
-Then write rules that govern one capability:
+Then write rules that govern the capabilities. Rules name capabilities, not
+provider tools, and include an actor so authorization is identity-aware:
 
 ```yaml
 # hands-rules.yaml
+actor:
+  pico: pico-alice
 rules:
   - capability: github.issue.create
     effect: allow
@@ -32,7 +37,21 @@ rules:
     effect: deny
 ```
 
-Answer the questions below.
+Finally, sketch the **evidence** a Pico would keep after a single
+`github.issue.create` invocation:
+
+```yaml
+# evidence-sample.yaml
+evidence:
+  actor: pico-alice
+  capability: github.issue.create
+  authorized-by: rule-1
+  hand: external
+  outcome: succeeded
+  timestamp: 2026-01-01T00:00:00Z
+```
+
+Answer the reflection questions below.
 
 ::: {.callout-note}
 There is no single correct answer. The goal is to internalize the
@@ -47,11 +66,15 @@ names, so the provider can be swapped without changing Pico behaviour.
 - [ ] You declare at least **two** capabilities across at least **one**
       hand/provider.
 - [ ] Your rules name capabilities, not provider-specific tools.
+- [ ] Your rules carry an `actor` — authorization is bound to an identity.
 - [ ] At least one rule uses `effect: deny`.
+- [ ] Your evidence sample records actor, capability, authorizing rule, hand,
+      outcome, and timestamp.
 
 ## Automatable check
 
-Save both snippets under a scratch working directory and confirm they parse:
+Save the three snippets under a scratch working directory and confirm they
+parse. No external service is contacted.
 
 ```bash
 mkdir -p scratch-hands
@@ -77,8 +100,9 @@ declaration is well-formed.
 ## Reflect
 
 - Why would a rule say `email.send` rather than `GMAIL_SEND_EMAIL`?
-- What does "a valid credential must not imply authorization" mean for a
-  Pico with a connected account?
+- What does "a valid credential must not imply authorization" mean when
+  Composer equipment and Open Engineering policy are separate concerns?
+- Why is the evidence record kept even when the outcome is `succeeded`?
 
 ## Next
 
