@@ -1,12 +1,6 @@
 # Memo 10 — EMQX as the Pico Nervous System
 
-**Project:** Open Engineering Picos  
-**Domain:** Pico Agent Architecture  
-**Status:** Proposal  
-**Version:** 1.0  
-**Date:** 2026-09-01
-
----
+**Project:** Open Engineering Picos**Domain:** Pico Agent Architecture**Status:** Proposal**Version:** 1.0**Date:** 2026-09-01
 
 ## Purpose
 
@@ -26,11 +20,9 @@ This proposal complements the existing Pico architecture rather than replacing i
 
 The key architectural principle is:
 
-> **Composio gives a Pico hands. EMQX gives a Pico a nervous system.**
+> Composio gives a Pico hands. EMQX gives a Pico a nervous system.
 
 A Pico remains the agent. EMQX/MQTT provides the communication fabric through which the Pico can sense, communicate, coordinate and act across distributed systems.
-
----
 
 # 1. The Pico Agent Model
 
@@ -82,8 +74,6 @@ The architecture can therefore be visualised as:
 
 This creates a useful separation of concerns.
 
----
-
 # 2. Composio: Pico's Hands
 
 The Pico architecture already proposes **Composio** as a mechanism for connecting an agent to external tools.
@@ -98,7 +88,7 @@ Composio can provide:
 
 Therefore:
 
-> **Composio is a candidate implementation of Pico's external hands.**
+> Composio is a candidate implementation of Pico's external hands.
 
 A Pico can reason about an action and use a Composio tool to perform it.
 
@@ -120,8 +110,6 @@ Pico
         ├── Cloud API
         └── Other SaaS
 ```
-
----
 
 # 3. EMQX: Pico's Nervous System
 
@@ -161,8 +149,6 @@ The conceptual model is:
 
 The broker becomes the communication fabric rather than the intelligence itself.
 
----
-
 # 4. Why MQTT Fits Picos
 
 MQTT has several properties that are particularly attractive for a distributed Pico ecosystem.
@@ -185,8 +171,6 @@ kubernetes/deployment/checkout/status
 
 could produce an event that wakes or informs an appropriate Pico.
 
----
-
 ## 4.2 Loose coupling
 
 A Pico does not need to know the implementation details of every other participant.
@@ -207,8 +191,6 @@ Pico B
 
 This supports a highly distributed architecture.
 
----
-
 ## 4.3 Many-to-many communication
 
 A single event can be consumed by multiple Picos.
@@ -228,8 +210,6 @@ repository/security/alert
 ```
 
 This makes MQTT particularly suitable for collaborative Pico ecosystems.
-
----
 
 # 5. Pico-to-Pico Communication
 
@@ -283,8 +263,6 @@ Evidence / Result
 
 This provides an infrastructure foundation for the Pico-to-Pico identity and collaboration model.
 
----
-
 # 6. Agent Discovery
 
 Agent discovery should be treated as a first-class Pico capability.
@@ -323,8 +301,6 @@ pico:
 
 The exact schema should be defined by Open Engineering rather than copied directly from an infrastructure provider.
 
----
-
 # 7. Device Agent Integration
 
 EMQ has introduced the concept of turning IoT devices into AI agents through a device specification describing device properties, commands and events.
@@ -355,7 +331,7 @@ The Pico can then reason over the device's state and capabilities.
 
 This enables an important extension of the Pico concept:
 
-> **A Pico does not have to exist only in software. A Pico can inhabit or control a physical device.**
+> A Pico does not have to exist only in software. A Pico can inhabit or control a physical device.
 
 Examples include:
 
@@ -366,8 +342,6 @@ Examples include:
 - industrial equipment;
 - smart-home devices;
 - autonomous machines.
-
----
 
 # 8. Open Engineering Element Definitions
 
@@ -402,15 +376,13 @@ An EMQX DeviceSpec can then be treated as an infrastructure-specific projection 
 
 This prevents vendor lock-in.
 
----
-
 # 9. Pico Transport Abstraction
 
 Picos should not be hard-coded to EMQX.
 
 The architecture should introduce an abstraction:
 
-> **Pico Agent Transport**
+> Pico Agent Transport
 
 MQTT/EMQX becomes the first implementation.
 
@@ -443,8 +415,6 @@ The Pico should understand concepts such as:
 - result.
 
 The underlying transport should remain replaceable.
-
----
 
 # 10. Event Model
 
@@ -507,8 +477,6 @@ status: completed
 
 These semantic concepts should ultimately become part of the Open Engineering Pico communication conventions.
 
----
-
 # 11. Identity
 
 Every Pico participating in the communication fabric must have a stable identity.
@@ -539,8 +507,6 @@ Pico Identity
 ```
 
 This is particularly important for mobile, ephemeral and dynamically scaled Picos.
-
----
 
 # 12. Security
 
@@ -581,8 +547,6 @@ Authorization
 
 This should be integrated with Pico Rulesets.
 
----
-
 # 13. Rulesets
 
 Rulesets determine what a Pico is allowed and expected to do.
@@ -608,9 +572,7 @@ Ruleset Evaluation
 
 This is an important distinction:
 
-> **MQTT delivers information; Pico Rulesets determine what the Pico should do with it.**
-
----
+> MQTT delivers information; Pico Rulesets determine what the Pico should do with it.
 
 # 14. Memory and Evidence
 
@@ -643,8 +605,6 @@ Pico
  ├── investigate
  └── act
 ```
-
----
 
 # 15. Physical Picos
 
@@ -682,8 +642,6 @@ This provides a natural architecture for projects such as:
 - environmental sensors;
 - interactive installations;
 - IoT engineering agents.
-
----
 
 # 16. Kubernetes
 
@@ -732,8 +690,6 @@ Application
 
 with communication flowing through the Pico Agent Transport.
 
----
-
 # 17. Relationship to MCP
 
 MCP and MQTT should not be treated as competitors.
@@ -772,14 +728,12 @@ Therefore:
 
 This separation should be preserved.
 
----
-
 # 18. Relationship to Composio
 
 The resulting Pico architecture has a particularly clean division:
 
 | Concern | Candidate technology |
-|---|---|
+| --- | --- |
 | Identity | Open Engineering Pico Identity |
 | Rules | Open Engineering Pico Rulesets |
 | Reasoning | AI model / Pico runtime |
@@ -795,9 +749,7 @@ The resulting Pico architecture has a particularly clean division:
 
 The resulting mental model is:
 
-> **Pico is the agent. Composio is the hands. EMQX is the nervous system.**
-
----
+> Pico is the agent. Composio is the hands. EMQX is the nervous system.
 
 # 19. Proposed Pico Architecture
 
@@ -833,8 +785,6 @@ The resulting reference architecture is:
                          ▼                            ▼              ▼
                        Picos                        Devices        Services
 ```
-
----
 
 # 20. Proposed Open Engineering Artifacts
 
@@ -911,8 +861,6 @@ Pico Agent Transport
 
 EMQX should therefore be an implementation, not the semantic owner of the Pico protocol.
 
----
-
 # 21. Open Engineering Academy — Pico Course
 
 This architecture should become part of the **Pico course** in Open Engineering Academy.
@@ -958,8 +906,6 @@ Community   → Pico-to-Pico
 ```
 
 This should become one of the central conceptual models of the Pico course.
-
----
 
 # 22. Suggested Academy Exercise
 
@@ -1037,17 +983,15 @@ The learner thereby experiences:
 - tools;
 - physical devices.
 
----
-
 # 23. Architectural Principle
 
 The central principle proposed by this memo is:
 
-> **Picos should communicate through a transport abstraction, with MQTT/EMQX as a first-class implementation for event-driven and distributed communication.**
+> Picos should communicate through a transport abstraction, with MQTT/EMQX as a first-class implementation for event-driven and distributed communication.
 
 And the complementary principle is:
 
-> **Open Engineering owns the semantics; infrastructure providers implement the transport.**
+> Open Engineering owns the semantics; infrastructure providers implement the transport.
 
 This means Open Engineering should define what a Pico means by:
 
@@ -1062,8 +1006,6 @@ This means Open Engineering should define what a Pico means by:
 - discovery.
 
 EMQX should provide the infrastructure to transport and route those concepts.
-
----
 
 # 24. Decision
 
@@ -1085,8 +1027,6 @@ Pico
 
 This creates a coherent architecture in which a Pico can reason, remember, obey rules, act on external systems, communicate with other Picos and interact with the physical world.
 
----
-
 # 25. Next Steps
 
 1. Define the **Pico Agent Transport** abstraction.
@@ -1101,8 +1041,6 @@ This creates a coherent architecture in which a Pico can reason, remember, obey 
 10. Build a minimal multi-Pico proof of concept.
 11. Add the EMQX/Nervous System chapter to the Open Engineering Academy Pico course.
 12. Connect the implementation to the existing **Composio / Hands** architecture.
-
----
 
 # Appendix A — The Pico Mental Model
 
@@ -1138,8 +1076,6 @@ The Pico architecture can now be explained with a human metaphor:
 
 This is intentionally simple enough to become a teaching model while remaining useful as an architectural guide.
 
----
-
 # Appendix B — One-Sentence Definition
 
-> **A Pico is an identifiable, rule-governed AI agent that can reason, remember, use hands to act on external systems, and communicate through a nervous system with other agents, services and the physical world.**
+> A Pico is an identifiable, rule-governed AI agent that can reason, remember, use hands to act on external systems, and communicate through a nervous system with other agents, services and the physical world.

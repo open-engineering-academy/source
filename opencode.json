@@ -1,0 +1,62 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "mlxlm//Users/willemvanheemstra/.mlx-serve/models/mlx-community/Qwen3-8B-4bit",
+  "enabled_providers": [
+    "mlxlm"
+  ],
+  "mcp": {
+    "augment-context-engine": {
+      "type": "local",
+      "command": [
+        "auggie",
+        "--mcp",
+        "--mcp-auto-workspace"
+      ],
+      "enabled": true
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 5000,
+    "preserve_recent_tokens": 4000
+  },
+  "tool_output": {
+    "max_lines": 200,
+    "max_bytes": 16384
+  },
+  "agent": {
+    "title": {
+      "disable": true
+    },
+    "summary": {
+      "disable": true
+    }
+  },
+  "provider": {
+    "mlxlm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local mlx-lm",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1",
+        "timeout": 300000
+      },
+      "models": {
+        "/Users/willemvanheemstra/.mlx-serve/models/mlx-community/gpt-oss-20b-MXFP4-Q8": {
+          "name": "gpt-oss 20B MXFP4-Q8 (primary)",
+          "limit": {
+            "context": 16384,
+            "output": 1536
+          }
+        },
+        "/Users/willemvanheemstra/.mlx-serve/models/mlx-community/Qwen3-8B-4bit": {
+          "name": "Qwen3 8B 4-bit (fallback)",
+          "limit": {
+            "context": 16384,
+            "output": 1536
+          }
+        }
+      }
+    }
+  }
+}

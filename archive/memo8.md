@@ -1,10 +1,6 @@
 # Memo 8 — Giving Picos Hands
 
-Project: Open Engineering Picos  
-Domain: Pico Architecture  
-Status: Proposal  
-Version: 1.0  
-Date: 2026-08-26  
+Project: Open Engineering PicosDomain: Pico ArchitectureStatus: ProposalVersion: 1.0Date: 2026-08-26
 
 ⸻
 
@@ -36,20 +32,20 @@ A Pico is a small autonomous engineering entity with identity, behaviour, rules,
 
 As Picos become increasingly agentic, they also need to interact with systems such as:
 
-* GitHub
-* Gmail
-* Slack
-* issue trackers
-* cloud services
-* APIs
-* Kubernetes
-* Crossplane
-* local filesystems
-* command-line tools
-* MQTT
-* Home Assistant
-* hardware
-* robotics
+- GitHub
+- Gmail
+- Slack
+- issue trackers
+- cloud services
+- APIs
+- Kubernetes
+- Crossplane
+- local filesystems
+- command-line tools
+- MQTT
+- Home Assistant
+- hardware
+- robotics
 
 These interactions should not be implemented as arbitrary integrations embedded throughout Pico business logic.
 
@@ -64,6 +60,7 @@ acting upon the world.
 The existing Pico character provides a useful way to communicate the architecture.
 
 A Pico can conceptually have:
+
 ```
 Pico
 │
@@ -91,14 +88,10 @@ Pico
     ├── authentication
     └── execution
 ```
+
 This gives the Pico character an architectural vocabulary:
 
-| Metaphor | Responsibility |  
-| Identity | Who am I? |  
-| Senses | What is happening? |  
-| Mind | What does this mean and what should I do? |  
-| Voice | What should I communicate? |  
-| Hands | What should I change or execute? |  
+| Metaphor | Responsibility || Identity | Who am I? || Senses | What is happening? || Mind | What does this mean and what should I do? || Voice | What should I communicate? || Hands | What should I change or execute? |
 
 The distinction between Mind and Hands is particularly important.
 
@@ -121,6 +114,7 @@ Instead, Open Engineering should define the abstract capability:
 Pico Hands
 
 Composio becomes one implementation of that capability:
+
 ```
 Pico
  │
@@ -132,6 +126,7 @@ Hands
  ├── KubernetesHands
  └── PhysicalHands
 ```
+
 This follows the Open Engineering principle of separating Definition from Implementation.
 
 ⸻
@@ -145,6 +140,7 @@ Composio Hands
 Composio should initially provide access to external SaaS and API-based systems.
 
 Examples include:
+
 ```
 ComposioHands
 ├── GitHub
@@ -155,21 +151,22 @@ ComposioHands
 ├── Google services
 └── other supported integrations
 ```
+
 Composio provides capabilities such as:
 
-* tool discovery
-* tool schemas
-* external account connections
-* OAuth handling
-* credential lifecycle management
-* tool execution
-* agent-oriented integrations
+- tool discovery
+- tool schemas
+- external account connections
+- OAuth handling
+- credential lifecycle management
+- tool execution
+- agent-oriented integrations
 
 Composio documentation:
 
-* https://docs.composio.dev/
-* https://docs.composio.dev/docs/authentication
-* https://docs.composio.dev/reference/api-reference/tools
+- [https://docs.composio.dev/](https://docs.composio.dev/)
+- [https://docs.composio.dev/docs/authentication](https://docs.composio.dev/docs/authentication)
+- [https://docs.composio.dev/reference/api-reference/tools](https://docs.composio.dev/reference/api-reference/tools)
 
 Composio should therefore be regarded as the initial external Hands provider for Picos.
 
@@ -180,6 +177,7 @@ Composio should therefore be regarded as the initial external Hands provider for
 Some Pico actions do not require an external SaaS integration.
 
 A local Hands provider could expose controlled operations such as:
+
 ```
 LocalHands
 ├── filesystem
@@ -189,6 +187,7 @@ LocalHands
 ├── SQL
 └── local APIs
 ```
+
 These capabilities require especially strong sandboxing and authorization.
 
 A Pico MUST NOT automatically gain unrestricted host access simply because it has Local Hands.
@@ -200,6 +199,7 @@ A Pico MUST NOT automatically gain unrestricted host access simply because it ha
 Picos operating within Open Engineering infrastructure may require Kubernetes-native capabilities.
 
 For example:
+
 ```
 KubernetesHands
 ├── Kubernetes API
@@ -208,7 +208,9 @@ KubernetesHands
 ├── Custom Resources
 └── Open Engineering runtime APIs
 ```
+
 This is particularly relevant to the existing Pico deployment model involving:
+
 ```
 Pico
   ↓
@@ -218,6 +220,7 @@ Kubernetes
   ↓
 Manifold / runtime environment
 ```
+
 Hands provide the action boundary through which the Pico requests changes to its runtime environment.
 
 ⸻
@@ -229,6 +232,7 @@ The abstraction should deliberately extend beyond software.
 A Pico may eventually operate physical systems.
 
 Examples include:
+
 ```
 PhysicalHands
 ├── MQTT
@@ -239,14 +243,15 @@ PhysicalHands
 ├── robotics
 └── Home Assistant
 ```
+
 A Pico could therefore use exactly the same conceptual architecture to:
 
-* create a GitHub issue;
-* send an email;
-* deploy a Kubernetes resource;
-* publish an MQTT message;
-* turn on a light;
-* move a servo.
+- create a GitHub issue;
+- send an email;
+- deploy a Kubernetes resource;
+- publish an MQTT message;
+- turn on a light;
+- move a servo.
 
 The action mechanism changes.
 
@@ -265,6 +270,7 @@ Instead:
 A Composer equips a Pico with capabilities.
 
 Conceptually:
+
 ```
 Composer
     │
@@ -281,14 +287,15 @@ Pico
      ├── KubernetesHands
      └── ...
 ```
+
 The Composer may determine:
 
-* which Hands providers are available;
-* which toolkits are enabled;
-* which capabilities are permitted;
-* which policies apply;
-* which credentials may be referenced;
-* which runtime configuration is required.
+- which Hands providers are available;
+- which toolkits are enabled;
+- which capabilities are permitted;
+- which policies apply;
+- which credentials may be referenced;
+- which runtime configuration is required.
 
 The resulting Pico then uses those capabilities during execution.
 
@@ -297,6 +304,7 @@ The resulting Pico then uses those capabilities during execution.
 ## Responsibility Separation
 
 The architecture should maintain the following separation:
+
 ```
 Composer
    │
@@ -320,7 +328,9 @@ Provider
    ▼
 External World
 ```
+
 For Composio:
+
 ```
 Pico
   │
@@ -339,6 +349,7 @@ Connected Account
   ▼
 External Service
 ```
+
 ⸻
 
 ## Identity Before Action
@@ -350,6 +361,7 @@ The fundamental security rule should be:
 No Hand acts without identity and authorization context.
 
 A conceptual action request might look like:
+
 ```
 actor:
   pico: pico.example
@@ -362,11 +374,13 @@ action:
 authorization:
   capability: gmail.send
 ```
+
 The Pico is therefore not merely saying:
 
 Send this email.
 
 It is saying:
+
 ```
 I am Pico X.
 I am acting within this identity context.
@@ -374,6 +388,7 @@ My rules permit this capability.
 My Hands provider can perform it.
 Execute the requested action.
 ```
+
 ⸻
 
 ## Authorization Boundary
@@ -389,6 +404,7 @@ Open Engineering must answer:
 Is this Pico permitted to send this email?
 
 Therefore:
+
 ```
 Open Engineering
       │
@@ -407,6 +423,7 @@ Open Engineering
              ▼
        External System
 ```
+
 A valid credential MUST NOT imply authorization.
 
 ⸻
@@ -416,6 +433,7 @@ A valid credential MUST NOT imply authorization.
 Hands should expose capabilities, not merely provider-specific tool names.
 
 For example:
+
 ```
 github.issue.create
 github.issue.read
@@ -427,9 +445,11 @@ kubernetes.resource.apply
 mqtt.publish
 servo.position.set
 ```
+
 A provider can map these capabilities onto implementation-specific operations.
 
 For example:
+
 ```
 email.send
      │
@@ -439,6 +459,7 @@ ComposioHands
      ▼
 GMAIL_SEND_EMAIL
 ```
+
 This keeps Pico rules independent from Composio’s API vocabulary.
 
 ⸻
@@ -448,6 +469,7 @@ This keeps Pico rules independent from Composio’s API vocabulary.
 The first implementation should remain deliberately small.
 
 Conceptually:
+
 ```
 class Hands:
     def capabilities(self) -> list[Capability]:
@@ -462,7 +484,9 @@ class Hands:
     ) -> Result:
         ...
 ```
+
 Provider implementations might include:
+
 ```
 class ComposioHands(Hands):
     ...
@@ -473,6 +497,7 @@ class LocalHands(Hands):
 class MQTTHands(Hands):
     ...
 ```
+
 The precise language-level API should be established separately from this architectural proposal.
 
 ⸻
@@ -480,6 +505,7 @@ The precise language-level API should be established separately from this archit
 ## Execution Lifecycle
 
 Every Hands operation should follow a standard lifecycle.
+
 ```
 Observe
    │
@@ -516,6 +542,7 @@ Record Evidence
    ▼
 Emit Event
 ```
+
 This aligns Hands with existing Open Engineering primitives rather than introducing a parallel agent framework.
 
 ⸻
@@ -525,6 +552,7 @@ This aligns Hands with existing Open Engineering primitives rather than introduc
 Every significant Hand action SHOULD generate evidence.
 
 For example:
+
 ```
 execution:
   id: 01K...
@@ -541,6 +569,7 @@ authorized_at: ...
 executed_at: ...
 status: succeeded
 ```
+
 Sensitive values, credentials, access tokens, message contents, and secrets MUST NOT automatically be included in evidence.
 
 Evidence should describe the execution sufficiently for auditing without becoming a credential or data leakage mechanism.
@@ -552,6 +581,7 @@ Evidence should describe the execution sufficiently for auditing without becomin
 Hands operations should produce events.
 
 Examples:
+
 ```
 pico.hand.requested
 pico.hand.authorized
@@ -560,6 +590,7 @@ pico.hand.executing
 pico.hand.succeeded
 pico.hand.failed
 ```
+
 These events allow other Open Engineering components to observe Pico behaviour without coupling themselves to Composio or another provider.
 
 ⸻
@@ -569,6 +600,7 @@ These events allow other Open Engineering components to observe Pico behaviour w
 Hands should integrate directly with Pico rulesets.
 
 Example:
+
 ```
 rules:
   - capability: email.send
@@ -578,19 +610,21 @@ rules:
   - capability: kubernetes.resource.delete
     effect: deny
 ```
+
 More sophisticated rules could later constrain:
 
-* destinations;
-* repositories;
-* namespaces;
-* time windows;
-* environments;
-* resource types;
-* monetary limits;
-* required approvals;
-* rate limits.
+- destinations;
+- repositories;
+- namespaces;
+- time windows;
+- environments;
+- resource types;
+- monetary limits;
+- required approvals;
+- rate limits.
 
 For example:
+
 ```
 capability: kubernetes.resource.apply
 constraints:
@@ -600,6 +634,7 @@ constraints:
     - development
     - test
 ```
+
 This turns Hands into governed execution, rather than unrestricted tool calling.
 
 ⸻
@@ -609,6 +644,7 @@ This turns Hands into governed execution, rather than unrestricted tool calling.
 Some Hands operations should support approval gates.
 
 For example:
+
 ```
 Pico decides action
        │
@@ -630,14 +666,15 @@ Approval required?
          ▼
       Execute
 ```
+
 Potential examples include:
 
-* sending external communications;
-* deleting resources;
-* production deployments;
-* financial actions;
-* destructive filesystem operations;
-* security changes.
+- sending external communications;
+- deleting resources;
+- production deployments;
+- financial actions;
+- destructive filesystem operations;
+- security changes.
 
 The Hands architecture should therefore support future human-in-the-loop execution without requiring providers themselves to implement the policy.
 
@@ -660,6 +697,7 @@ Its responsibilities should include:
 9. produce execution evidence.
 
 Conceptually:
+
 ```
 Pico
  │
@@ -684,6 +722,7 @@ Result
  ▼
 Pico Evidence + Event
 ```
+
 ⸻
 
 ## Provider Independence
@@ -697,6 +736,7 @@ Instead it should say:
 Perform email.send.
 
 The runtime can determine that:
+
 ```
 email.send
      │
@@ -706,13 +746,16 @@ ComposioHands
      ▼
 GMAIL_SEND_EMAIL
 ```
+
 A future implementation might instead resolve:
+
 ```
 email.send
      │
      ▼
 NativeGoogleHands
 ```
+
 without requiring Pico behaviour or rules to change.
 
 This abstraction is essential to keeping Open Engineering open.
@@ -726,6 +769,7 @@ Hands and MCP should not be treated as synonyms.
 MCP may be one mechanism through which tools become discoverable or executable.
 
 The hierarchy should remain:
+
 ```
 Pico
  ↓
@@ -739,6 +783,7 @@ Provider / Protocol
  ├── MQTT
  └── local execution
 ```
+
 Hands are the Pico capability abstraction.
 
 MCP is an integration mechanism.
@@ -754,6 +799,7 @@ These concerns should remain separate.
 The Pico definition should eventually be capable of expressing its Hands requirements.
 
 Conceptually:
+
 ```
 apiVersion: open-engineering.io/v1alpha1
 kind: Pico
@@ -771,6 +817,7 @@ spec:
       capabilities:
         - kubernetes.resource.read
 ```
+
 This example is illustrative.
 
 The definitive schema should be developed through the appropriate Open Engineering Definition and schema repositories.
@@ -780,6 +827,7 @@ The definitive schema should be developed through the appropriate Open Engineeri
 ## Composer Definition
 
 A Composer could equip a Pico with its Hands:
+
 ```
 pico:
   hands:
@@ -793,6 +841,7 @@ pico:
       capabilities:
         - kubernetes.resource.read
 ```
+
 This expresses:
 
 The Composer determines what the Pico is equipped to do.
@@ -814,6 +863,7 @@ A learner could first create:
 Hello, Pico!
 
 Then give the Pico:
+
 ```
 Identity
    +
@@ -825,6 +875,7 @@ Voice
    +
 Hands
 ```
+
 The Academy should explicitly teach:
 
 A Pico without Hands can understand the world.
@@ -845,10 +896,10 @@ Hello, Pico!
 
 Learn:
 
-* what a Pico is;
-* Pico identity;
-* Pico state;
-* Pico lifecycle.
+- what a Pico is;
+- Pico identity;
+- Pico state;
+- Pico lifecycle.
 
 ### Phase 2 — Give the Pico Senses
 
@@ -856,9 +907,9 @@ Allow it to observe an event.
 
 Learn:
 
-* observations;
-* events;
-* triggers.
+- observations;
+- events;
+- triggers.
 
 ### Phase 3 — Give the Pico a Mind
 
@@ -866,10 +917,10 @@ Allow it to evaluate what it observed.
 
 Learn:
 
-* rules;
-* investigation;
-* reasoning;
-* decisions.
+- rules;
+- investigation;
+- reasoning;
+- decisions.
 
 ### Phase 4 — Give the Pico a Voice
 
@@ -877,15 +928,16 @@ Allow it to communicate the decision.
 
 Learn:
 
-* messaging;
-* reporting;
-* events.
+- messaging;
+- reporting;
+- events.
 
 ### Phase 5 — Give the Pico Hands
 
 Allow it to perform an external action.
 
 For example:
+
 ```
 Pico observes condition
         ↓
@@ -901,6 +953,7 @@ GitHub
         ↓
 Create Issue
 ```
+
 The first Academy Hands exercise should preferably use a reversible, low-risk action such as creating a GitHub issue.
 
 Phase 6 — Give the Pico Different Hands
@@ -908,12 +961,14 @@ Phase 6 — Give the Pico Different Hands
 Demonstrate provider independence.
 
 For example:
+
 ```
 Pico
 ├── Composio Hand → GitHub
 ├── Kubernetes Hand → Crossplane
 └── MQTT Hand → Home Assistant
 ```
+
 This demonstrates that Hands are an architectural capability rather than a Composio feature.
 
 ⸻
@@ -923,6 +978,7 @@ This demonstrates that Hands are an architectural capability rather than a Compo
 A later Academy lab could make the metaphor literal.
 
 For example:
+
 ```
 Observation
      ↓
@@ -940,7 +996,9 @@ Home Assistant
      ↓
 Device
 ```
+
 Or:
+
 ```
 Pico
  ↓
@@ -952,6 +1010,7 @@ Servo
  ↓
 Movement
 ```
+
 This provides a bridge between software engineering, AI agents, IoT, robotics, and the physical Pico character.
 
 ⸻
@@ -989,6 +1048,7 @@ should therefore evolve toward:
 ### Phase 1 — Definition
 
 Define:
+
 ```
 Hands
 Capability
@@ -997,6 +1057,7 @@ ActionRequest
 ActionResult
 ExecutionContext
 ```
+
 Establish naming and schemas within the appropriate Open Engineering definition repositories.
 
 ⸻
@@ -1006,11 +1067,13 @@ Establish naming and schemas within the appropriate Open Engineering definition 
 Introduce the provider-neutral Hands interface.
 
 Implement:
+
 ```
 capabilities()
 can()
 execute()
 ```
+
 Add normalized execution results.
 
 ⸻
@@ -1023,12 +1086,12 @@ ComposioHands
 
 Support initially:
 
-* session creation;
-* connected accounts;
-* tool discovery;
-* capability mapping;
-* execution;
-* normalized results.
+- session creation;
+- connected accounts;
+- tool discovery;
+- capability mapping;
+- execution;
+- normalized results.
 
 Start with a deliberately small integration such as GitHub.
 
@@ -1038,12 +1101,12 @@ Start with a deliberately small integration such as GitHub.
 
 Integrate:
 
-* Pico identity;
-* Pico rules;
-* authorization;
-* evidence;
-* events;
-* approval gates.
+- Pico identity;
+- Pico rules;
+- authorization;
+- evidence;
+- events;
+- approval gates.
 
 No production-capable Hand should bypass this layer.
 
@@ -1052,11 +1115,13 @@ No production-capable Hand should bypass this layer.
 ### Phase 5 — Additional Providers
 
 Implement representative providers:
+
 ```
 KubernetesHands
 LocalHands
 MQTTHands
 ```
+
 This validates that the abstraction is genuinely provider-independent.
 
 ⸻
@@ -1065,10 +1130,10 @@ This validates that the abstraction is genuinely provider-independent.
 
 Allow Composers to equip Picos with:
 
-* Hands providers;
-* capabilities;
-* configuration;
-* policies.
+- Hands providers;
+- capabilities;
+- configuration;
+- policies.
 
 ⸻
 
@@ -1106,6 +1171,7 @@ The implementation SHOULD follow these rules:
 ## Architectural Outcome
 
 With Hands, the Pico model becomes substantially more complete.
+
 ```
                          PICO
                     ┌────────────┐
@@ -1132,6 +1198,7 @@ With Hands, the Pico model becomes substantially more complete.
               ▼           ▼           ▼
              SaaS       Runtime      World
 ```
+
 The Pico can now be explained simply:
 
 Its Senses let it observe.
@@ -1163,17 +1230,20 @@ Update the Open Engineering Academy Pico course to teach Hands alongside Identit
 ## Summary
 
 The distinction can be captured in four questions:
+
 ```
 Identity  → Who am I?
 Senses    → What is happening?
 Mind      → What should I do?
 Hands     → How do I do it?
 ```
+
 With the Composer above them:
 
 Composer → What should this Pico be equipped to do?
 
 And the governing principle:
+
 ```
 The Composer equips.
 The Pico decides.

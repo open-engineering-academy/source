@@ -1,9 +1,6 @@
 # Memo 9: Introduce Technical Storytelling with AI Audio in Open Engineering Academy
 
-Status: Proposed  
-Target: Open Engineering Academy  
-Artifact: New Academy course/lab  
-Working title: Engineering Stories — From Architecture to Audio Drama  
+Status: ProposedTarget: Open Engineering AcademyArtifact: New Academy course/labWorking title: Engineering Stories — From Architecture to Audio Drama
 
 ## 1. Purpose
 
@@ -15,40 +12,24 @@ The initial reference implementation should use the existing Crossplane restaura
 
 The intended transformation is:
 
-technical concept
-    ↓
-technical model
-    ↓
-metaphor
-    ↓
-characters and responsibilities
-    ↓
-scenes
-    ↓
-audio screenplay
-    ↓
-AI audio production
-    ↓
-review and iteration
-    ↓
-educational audio drama
+technical concept↓technical model↓metaphor↓characters and responsibilities↓scenes↓audio screenplay↓AI audio production↓review and iteration↓educational audio drama
 
 The course should demonstrate that technical storytelling is not merely presentation decoration. Constructing a good metaphor requires the learner to understand responsibilities, boundaries, interactions, abstractions, and cause-and-effect within the underlying technical system.
 
 ⸻
 
-2. Motivation
+1. Motivation
 
 Technical education frequently starts with terminology.
 
 A learner encounters definitions such as:
 
-* Composite Resource Definition
-* Composite Resource
-* Composition
-* Managed Resource
-* Provider
-* reconciliation
+- Composite Resource Definition
+- Composite Resource
+- Composition
+- Managed Resource
+- Provider
+- reconciliation
 
 Although technically correct, terminology alone may provide little intuition about how the pieces collaborate.
 
@@ -56,13 +37,7 @@ A story can provide that intuition.
 
 For example, Crossplane can be introduced through a restaurant:
 
-Crossplane concept	Restaurant metaphor
-XRD	Menu definition
-XR	Customer order
-Composition	Recipe
-Provider	Kitchen capability
-Managed Resource	Prepared component/resource
-Reconciliation	Kitchen continually ensuring the order is fulfilled
+Crossplane concept Restaurant metaphorXRD Menu definitionXR Customer orderComposition RecipeProvider Kitchen capabilityManaged Resource Prepared component/resourceReconciliation Kitchen continually ensuring the order is fulfilled
 
 The metaphor gives learners an existing mental model onto which unfamiliar concepts can be mapped.
 
@@ -74,7 +49,7 @@ The metaphor must explain the engineering model rather than replace it.
 
 ⸻
 
-3. Proven Reference Experiment
+1. Proven Reference Experiment
 
 This proposal is based on an actual Open Engineering experiment rather than a hypothetical workflow.
 
@@ -94,21 +69,13 @@ The resulting screenplay was processed using an AI audio-production platform and
 
 This validates the basic workflow:
 
-engineering knowledge
-        ↓
-educational metaphor
-        ↓
-audio screenplay
-        ↓
-generative audio production
-        ↓
-finished educational experience
+engineering knowledge↓educational metaphor↓audio screenplay↓generative audio production↓finished educational experience
 
 The Academy implementation should capture and generalize this workflow.
 
 ⸻
 
-4. Course Positioning
+1. Course Positioning
 
 Do not position the course as:
 
@@ -122,28 +89,13 @@ AI production tools are implementation choices.
 
 The Academy should therefore separate:
 
-METHOD
-Technical Storytelling
-        │
-        ├── metaphor design
-        ├── character design
-        ├── scene design
-        ├── screenplay
-        ├── narration
-        ├── sound design
-        └── evaluation
-TOOLS
-        │
-        ├── Wondercraft
-        ├── ElevenLabs
-        ├── other audio-generation systems
-        └── conventional recording/editing
+METHODTechnical Storytelling│├── metaphor design├── character design├── scene design├── screenplay├── narration├── sound design└── evaluationTOOLS│├── Wondercraft├── ElevenLabs├── other audio-generation systems└── conventional recording/editing
 
 The course remains useful when individual products, models, pricing plans, or capabilities change.
 
 ⸻
 
-5. Proposed Course
+1. Proposed Course
 
 Create a new course under Open Engineering Academy.
 
@@ -165,7 +117,7 @@ A learner should finish the course having produced an actual playable educationa
 
 ⸻
 
-6. Learning Objectives
+1. Learning Objectives
 
 After completing the course, learners should be able to:
 
@@ -185,7 +137,7 @@ After completing the course, learners should be able to:
 
 ⸻
 
-7. Core Principle: Technical Truth First
+1. Core Principle: Technical Truth First
 
 A significant risk of teaching through metaphor is creating a memorable but incorrect mental model.
 
@@ -197,27 +149,13 @@ Describe the real system.
 
 For example:
 
-XR
- │
- ▼
-Composition
- │
- ├── Managed Resource
- ├── Managed Resource
- └── Managed Resource
+XR│▼Composition│├── Managed Resource├── Managed Resource└── Managed Resource
 
 Model B — Narrative Model
 
 Translate that system into the story world.
 
-Order
- │
- ▼
-Recipe
- │
- ├── Meal component
- ├── Meal component
- └── Meal component
+Order│▼Recipe│├── Meal component├── Meal component└── Meal component
 
 The learner must maintain an explicit mapping between the two.
 
@@ -232,7 +170,7 @@ metaphor.md
 The document should record mappings such as:
 
 | Technical concept | Story concept | Explanation |
-|-------------------|---------------|-------------|
+| --- | --- | --- |
 | XRD | Menu | Defines what may be ordered |
 | XR | Order ticket | Requests an instance |
 | Composition | Recipe | Describes how the requested resource is built |
@@ -241,7 +179,7 @@ This provides a simple mechanism for reviewing whether the story remains technic
 
 ⸻
 
-8. Story as System Model
+1. Story as System Model
 
 The course should explicitly teach that characters are not arbitrary decoration.
 
@@ -249,15 +187,7 @@ Characters can represent responsibilities within a system.
 
 For example:
 
-Developer
-    ↓ places
-XR / Order
-Chef
-    ↓ follows
-Composition / Recipe
-Kitchen
-    ↓ operates
-Provider capabilities
+Developer↓ placesXR / OrderChef↓ followsComposition / RecipeKitchen↓ operatesProvider capabilities
 
 Dialogue then becomes a way of explaining system interactions.
 
@@ -277,7 +207,7 @@ This gives technical relationships conversational form.
 
 ⸻
 
-9. Breaking the Fourth Wall
+1. Breaking the Fourth Wall
 
 The Crossplane experiment demonstrated another useful storytelling technique.
 
@@ -295,7 +225,7 @@ It is particularly useful when a metaphor risks becoming so entertaining that th
 
 ⸻
 
-10. Writing for Audio
+1. Writing for Audio
 
 Audio storytelling has an important constraint:
 
@@ -309,67 +239,46 @@ In video, the audience sees this.
 
 In an audio drama, it must instead become something such as:
 
-NARRATOR:
-The chef tears the order ticket from the rail and places it beside the recipe.
+NARRATOR:The chef tears the order ticket from the rail and places it beside the recipe.
 
 possibly accompanied by:
 
-[SFX: paper tearing]
-[SFX: ticket placed on counter]
+[SFX: paper tearing][SFX: ticket placed on counter]
 
 The course should therefore distinguish:
 
-visual screenplay
-        versus
-audio screenplay
+visual screenplayversusaudio screenplay
 
 Every important action must be represented through at least one of:
 
-* dialogue,
-* narration,
-* sound effect,
-* ambience,
-* music.
+- dialogue,
+- narration,
+- sound effect,
+- ambience,
+- music.
 
 ⸻
 
-11. Scene-Oriented Screenplay
+1. Scene-Oriented Screenplay
 
 The screenplay should be explicitly divided into scenes.
 
 Example:
 
-SCENE 03 — THE KITCHEN
-AMBIENCE:
-Busy restaurant kitchen.
-NARRATOR:
-Meanwhile, behind the restaurant counter, our customer's
-order reaches the kitchen.
-SFX:
-Ticket printer.
-CHEF:
-Apprentice! New order!
-APPRENTICE:
-What did they ask for, Chef?
-CHEF:
-One application environment.
-APPRENTICE:
-And how do we know how to build it?
-CHEF:
-We follow the recipe.
+SCENE 03 — THE KITCHENAMBIENCE:Busy restaurant kitchen.NARRATOR:Meanwhile, behind the restaurant counter, our customer'sorder reaches the kitchen.SFX:Ticket printer.CHEF:Apprentice! New order!APPRENTICE:What did they ask for, Chef?CHEF:One application environment.APPRENTICE:And how do we know how to build it?CHEF:We follow the recipe.
 
 Each scene should have:
 
-* purpose,
-* location,
-* participating characters,
-* ambience,
-* narration,
-* dialogue,
-* actions,
-* sound effects,
-* transition,
-* educational outcome.
+- purpose,
+- location,
+- participating characters,
+- ambience,
+- narration,
+- dialogue,
+- actions,
+- sound effects,
+- transition,
+- educational outcome.
 
 The last item is important.
 
@@ -379,27 +288,13 @@ What should the learner understand after hearing this scene?
 
 ⸻
 
-12. Narrative Arc
+1. Narrative Arc
 
 Technical storytelling should not simply be documentation read aloud.
 
 The course should introduce a lightweight dramatic structure:
 
-Introduction
-     ↓
-Question / problem
-     ↓
-Discovery
-     ↓
-Increasing complexity
-     ↓
-Challenge
-     ↓
-Climax
-     ↓
-Resolution
-     ↓
-Technical takeaway
+Introduction↓Question / problem↓Discovery↓Increasing complexity↓Challenge↓Climax↓Resolution↓Technical takeaway
 
 For example, a Crossplane story could begin with the seemingly simple problem:
 
@@ -413,7 +308,7 @@ The resolution then reconnects the metaphor to Crossplane.
 
 ⸻
 
-13. Sound as Part of the Model
+1. Sound as Part of the Model
 
 Sound effects should not merely decorate the story.
 
@@ -421,18 +316,7 @@ Where possible they should reinforce the architecture.
 
 Examples:
 
-Order created
-→ ticket printer
-Composition selected
-→ recipe book opening
-Resource created
-→ kitchen preparation sounds
-Provider operation
-→ appliance / kitchen activity
-Successful reconciliation
-→ service bell
-Failure
-→ kitchen alarm or interruption
+Order created→ ticket printerComposition selected→ recipe book openingResource created→ kitchen preparation soundsProvider operation→ appliance / kitchen activitySuccessful reconciliation→ service bellFailure→ kitchen alarm or interruption
 
 This introduces the concept of semantic sound design:
 
@@ -442,17 +326,17 @@ This idea may later connect naturally with other Open Engineering work involving
 
 ⸻
 
-14. Proposed Course Structure
+1. Proposed Course Structure
 
 Module 1 — Engineering Through Stories
 
 Introduce:
 
-* technical storytelling,
-* metaphor,
-* narrative learning,
-* audio drama,
-* benefits and risks.
+- technical storytelling,
+- metaphor,
+- narrative learning,
+- audio drama,
+- benefits and risks.
 
 Demonstrate the finished Crossplane audio story early.
 
@@ -466,12 +350,12 @@ Start from architecture and documentation.
 
 Identify:
 
-* actors,
-* resources,
-* responsibilities,
-* relationships,
-* events,
-* state transitions.
+- actors,
+- resources,
+- responsibilities,
+- relationships,
+- events,
+- state transitions.
 
 Produce:
 
@@ -485,14 +369,14 @@ Translate the technical model into a familiar world.
 
 Possible worlds include:
 
-* restaurant,
-* theatre,
-* airport,
-* hotel,
-* factory,
-* postal service,
-* detective agency,
-* orchestra.
+- restaurant,
+- theatre,
+- airport,
+- hotel,
+- factory,
+- postal service,
+- detective agency,
+- orchestra.
 
 Produce:
 
@@ -512,12 +396,7 @@ characters.md
 
 For each character record:
 
-Character:
-Technical counterpart:
-Responsibility:
-Personality:
-Voice:
-Relationship to other characters:
+Character:Technical counterpart:Responsibility:Personality:Voice:Relationship to other characters:
 
 ⸻
 
@@ -531,14 +410,7 @@ scenes.md
 
 Each scene should specify:
 
-Goal
-Technical concept
-Location
-Characters
-Action
-Sound
-Transition
-Learning outcome
+GoalTechnical conceptLocationCharactersActionSoundTransitionLearning outcome
 
 ⸻
 
@@ -552,17 +424,17 @@ screenplay.md
 
 Teach:
 
-* narration,
-* dialogue,
-* explicit roles,
-* audible actions,
-* pacing,
-* scene transitions,
-* ambience,
-* sound effects,
-* music cues,
-* comedic timing,
-* controlled fourth-wall breaks.
+- narration,
+- dialogue,
+- explicit roles,
+- audible actions,
+- pacing,
+- scene transitions,
+- ambience,
+- sound effects,
+- music cues,
+- comedic timing,
+- controlled fourth-wall breaks.
 
 ⸻
 
@@ -574,21 +446,7 @@ The implementation should support more than one provider.
 
 For example:
 
-screenplay.md
-       ↓
-audio production platform
-       ↓
-voices
-       +
-narration
-       +
-ambience
-       +
-sound effects
-       +
-music
-       ↓
-audio-play.mp3
+screenplay.md↓audio production platform↓voices+narration+ambience+sound effects+music↓audio-play.mp3
 
 Document Wondercraft as the initially validated implementation.
 
@@ -616,29 +474,29 @@ Narrative clarity
 
 Can the listener tell:
 
-* who is speaking,
-* where the scene occurs,
-* what happened,
-* why it matters?
+- who is speaking,
+- where the scene occurs,
+- what happened,
+- why it matters?
 
 Audio quality
 
 Review:
 
-* voice distinction,
-* pronunciation,
-* pacing,
-* silence,
-* ambience,
-* sound levels,
-* effects,
-* scene transitions.
+- voice distinction,
+- pronunciation,
+- pacing,
+- silence,
+- ambience,
+- sound levels,
+- effects,
+- scene transitions.
 
 Record findings and iterate.
 
 ⸻
 
-15. Academy Lab
+1. Academy Lab
 
 The course should culminate in a practical lab.
 
@@ -650,140 +508,69 @@ Learners should preferably select their own concept.
 
 Suggested subjects include:
 
-* Kubernetes,
-* Crossplane,
-* GitOps,
-* PKI,
-* TLS,
-* OAuth,
-* DNS,
-* CI/CD,
-* event-driven architecture,
-* message queues,
-* API gateways,
-* containers,
-* dependency injection.
+- Kubernetes,
+- Crossplane,
+- GitOps,
+- PKI,
+- TLS,
+- OAuth,
+- DNS,
+- CI/CD,
+- event-driven architecture,
+- message queues,
+- API gateways,
+- containers,
+- dependency injection.
 
 The Crossplane restaurant should remain the reference implementation rather than the mandatory learner project.
 
 ⸻
 
-16. Apply the Open Engineering Lab Method
+1. Apply the Open Engineering Lab Method
 
 The lab should follow the standard Open Engineering learning methodology.
 
 A suitable mapping is:
 
-OBSERVE
-Understand the technical system.
-        ↓
-INVESTIGATE
-Identify actors, responsibilities and relationships.
-        ↓
-DESIGN
-Create the metaphor and narrative mapping.
-        ↓
-COMPOSE
-Create characters, scenes and screenplay.
-        ↓
-EXECUTE
-Generate the audio production.
-        ↓
-EVALUATE
-Review technical, educational and audio quality.
-        ↓
-REFLECT
-Document what the metaphor clarified and what it obscured.
+OBSERVEUnderstand the technical system.↓INVESTIGATEIdentify actors, responsibilities and relationships.↓DESIGNCreate the metaphor and narrative mapping.↓COMPOSECreate characters, scenes and screenplay.↓EXECUTEGenerate the audio production.↓EVALUATEReview technical, educational and audio quality.↓REFLECTDocument what the metaphor clarified and what it obscured.
 
 Where Academy conventions define canonical names for these phases, use those names consistently.
 
 ⸻
 
-17. Visualize the Lab
+1. Visualize the Lab
 
 Where supported by Open Engineering Academy conventions, visualize the lab process using the established LikeC4-oriented documentation approach.
 
 For example:
 
-Technical System
-       ↓
-Concept Model
-       ↓
-Metaphor
-       ↓
-Characters
-       ↓
-Scenes
-       ↓
-Screenplay
-       ↓
-Audio Generator
-       ↓
-MP3
-       ↓
-Evaluation
+Technical System↓Concept Model↓Metaphor↓Characters↓Scenes↓Screenplay↓Audio Generator↓MP3↓Evaluation
 
 The visualization should allow learners to understand both the workflow and its resulting artifacts.
 
 ⸻
 
-18. Suggested Lab Repository Structure
+1. Suggested Lab Repository Structure
 
 Use a structure similar to:
 
-technical-audio-story/
-├── README.md
-├── concept.md
-├── metaphor.md
-├── characters.md
-├── scenes.md
-├── screenplay.md
-├── production.md
-├── evaluation.md
-├── reflection.md
-└── output/
-    └── audio-play.mp3
+technical-audio-story/├── README.md├── concept.md├── metaphor.md├── characters.md├── scenes.md├── screenplay.md├── production.md├── evaluation.md├── reflection.md└── output/└── audio-play.mp3
 
 Optional:
 
-├── diagrams/
-├── prompts/
-├── assets/
-└── transcripts/
+├── diagrams/├── prompts/├── assets/└── transcripts/
 
 Generated binary audio does not necessarily need to be committed directly to Git when repository size or licensing makes that undesirable. The implementation should follow existing Open Engineering artifact conventions.
 
 ⸻
 
-19. Screenplay as Intermediate Representation
+1. Screenplay as Intermediate Representation
 
 The course should introduce an engineering interpretation of the screenplay.
 
 The screenplay can be considered an intermediate representation between technical knowledge and a rendered educational experience.
 
-SOURCE MODEL
-Architecture
-Documentation
-Schemas
-ADRs
-Definitions
-        ↓
-TRANSFORMATION
-Technical model
-Metaphor
-Narrative model
-        ↓
-INTERMEDIATE REPRESENTATION
-screenplay.md
-        ↓
-RENDERERS
-Wondercraft
-Other AI audio systems
-Human actors
-Conventional audio production
-        ↓
-ARTIFACT
-audio-play.mp3
+SOURCE MODELArchitectureDocumentationSchemasADRsDefinitions↓TRANSFORMATIONTechnical modelMetaphorNarrative model↓INTERMEDIATE REPRESENTATIONscreenplay.md↓RENDERERSWondercraftOther AI audio systemsHuman actorsConventional audio production↓ARTIFACTaudio-play.mp3
 
 This distinction is valuable.
 
@@ -793,7 +580,7 @@ This is conceptually compatible with Open Engineering’s broader Composer philo
 
 ⸻
 
-20. Future Composer Opportunity
+1. Future Composer Opportunity
 
 Do not make automation of screenplay generation a prerequisite for the initial course.
 
@@ -801,43 +588,19 @@ However, design the artifacts so that a future Open Engineering Composer could p
 
 A future pipeline could resemble:
 
-Open Engineering Definition
-          +
-architecture model
-          +
-documentation
-          ↓
-Technical Story Composer
-          ↓
-metaphor proposal
-          ↓
-character model
-          ↓
-scene model
-          ↓
-screenplay.md
-          ↓
-audio renderer
-          ↓
-audio artifact
+Open Engineering Definition+architecture model+documentation↓Technical Story Composer↓metaphor proposal↓character model↓scene model↓screenplay.md↓audio renderer↓audio artifact
 
 Human review should remain important, particularly for metaphor accuracy and narrative quality.
 
 ⸻
 
-21. Provider Abstraction
+1. Provider Abstraction
 
 The course should distinguish between capabilities and products.
 
 Required production capabilities might be described as:
 
-capabilities:
-  multi_voice: true
-  narration: true
-  sound_effects: true
-  ambience: true
-  scene_control: true
-  audio_export: true
+capabilities:multi_voice: truenarration: truesound_effects: trueambience: truescene_control: trueaudio_export: true
 
 A provider can then be evaluated against those requirements.
 
@@ -853,16 +616,11 @@ Do not hard-code current pricing into the course.
 
 ⸻
 
-22. Evaluation Rubric
+1. Evaluation Rubric
 
 Consider scoring learner projects across five dimensions.
 
-Dimension	Question
-Technical accuracy	Does the story correctly represent the engineering concept?
-Metaphor quality	Does the metaphor improve understanding without introducing serious misconceptions?
-Narrative clarity	Can the listener follow the story without visual assistance?
-Audio communication	Do voice, narration and sound communicate actions and context effectively?
-Learning outcome	Can the listener explain the underlying technical model afterward?
+Dimension QuestionTechnical accuracy Does the story correctly represent the engineering concept?Metaphor quality Does the metaphor improve understanding without introducing serious misconceptions?Narrative clarity Can the listener follow the story without visual assistance?Audio communication Do voice, narration and sound communicate actions and context effectively?Learning outcome Can the listener explain the underlying technical model afterward?
 
 Technical accuracy should carry significant weight.
 
@@ -870,38 +628,25 @@ A beautiful production that teaches the wrong architecture should not pass merel
 
 ⸻
 
-23. Reference Implementation
+1. Reference Implementation
 
 Create a canonical example based on the Crossplane restaurant audio drama.
 
 Suggested location:
 
-examples/
-└── crossplane-restaurant/
-    ├── README.md
-    ├── concept.md
-    ├── metaphor.md
-    ├── characters.md
-    ├── scenes.md
-    ├── screenplay.md
-    ├── production.md
-    └── evaluation.md
+examples/└── crossplane-restaurant/├── README.md├── concept.md├── metaphor.md├── characters.md├── scenes.md├── screenplay.md├── production.md└── evaluation.md
 
 Where licensing and repository policy permit, provide the resulting audio artifact or a link to the published artifact.
 
 The example should explain concepts such as:
 
-XRD → Menu
-XR → Order
-Composition → Recipe
-Managed Resources → Prepared components
-Provider → Kitchen capability
+XRD → MenuXR → OrderComposition → RecipeManaged Resources → Prepared componentsProvider → Kitchen capability
 
 The example should retain the playful character interactions, narration of actions, explicit role references, scene transitions, ambience, and sound effects that made the experimental production effective.
 
 ⸻
 
-24. Reverse-Engineering Teaching Approach
+1. Reverse-Engineering Teaching Approach
 
 An effective course opening would be to let the learner hear the finished Crossplane story first.
 
@@ -911,60 +656,40 @@ How did an architecture model become this?
 
 Subsequent modules progressively reveal:
 
-finished MP3
-      ↑
-screenplay
-      ↑
-scenes
-      ↑
-characters
-      ↑
-metaphor
-      ↑
-technical model
+finished MP3↑screenplay↑scenes↑characters↑metaphor↑technical model
 
 After reverse-engineering the reference example, learners perform the process in the forward direction for their own project.
 
 This creates a useful learning loop:
 
-EXPERIENCE
-Hear the result
-     ↓
-DECONSTRUCT
-Understand its construction
-     ↓
-CONSTRUCT
-Create another one
-     ↓
-REFLECT
-Evaluate the transformation
+EXPERIENCEHear the result↓DECONSTRUCTUnderstand its construction↓CONSTRUCTCreate another one↓REFLECTEvaluate the transformation
 
 ⸻
 
-25. Definition of Done
+1. Definition of Done
 
 The initial Academy implementation is complete when:
 
-* a new Engineering Stories course exists;
-* the course explains technical storytelling independently of any specific vendor;
-* the Crossplane restaurant is included as the reference implementation;
-* learners explicitly model technical truth before creating metaphors;
-* metaphor mappings are documented;
-* audio-first screenplay conventions are documented;
-* narration, dialogue, ambience and sound effects are covered;
-* scene-oriented storytelling is taught;
-* at least one AI audio-production workflow is documented;
-* Wondercraft is documented as the initially validated implementation;
-* the lab follows the Open Engineering Academy lab methodology;
-* the lab workflow is visualized where appropriate;
-* learners produce a 2–5 minute educational audio artifact;
-* technical accuracy is part of the evaluation;
-* provider-specific implementation details are isolated from the general methodology;
-* course artifacts are structured so future Composer automation remains possible.
+- a new Engineering Stories course exists;
+- the course explains technical storytelling independently of any specific vendor;
+- the Crossplane restaurant is included as the reference implementation;
+- learners explicitly model technical truth before creating metaphors;
+- metaphor mappings are documented;
+- audio-first screenplay conventions are documented;
+- narration, dialogue, ambience and sound effects are covered;
+- scene-oriented storytelling is taught;
+- at least one AI audio-production workflow is documented;
+- Wondercraft is documented as the initially validated implementation;
+- the lab follows the Open Engineering Academy lab methodology;
+- the lab workflow is visualized where appropriate;
+- learners produce a 2–5 minute educational audio artifact;
+- technical accuracy is part of the evaluation;
+- provider-specific implementation details are isolated from the general methodology;
+- course artifacts are structured so future Composer automation remains possible.
 
 ⸻
 
-26. Implementation Priority
+1. Implementation Priority
 
 Recommended priority:
 
@@ -972,13 +697,7 @@ Phase 1 — Capture
 
 Preserve the successful Crossplane experiment:
 
-concept
-metaphor
-characters
-scenes
-screenplay
-production notes
-result
+conceptmetaphorcharactersscenesscreenplayproduction notesresult
 
 Do this first so the practical lessons learned during the experiment are not lost.
 
@@ -1000,36 +719,38 @@ Only after the manual methodology works reliably, investigate a Technical Story 
 
 ⸻
 
-27. Architectural Principle
+1. Architectural Principle
 
 The implementation should preserve the following separation:
 
-             WHAT IS TRUE?
-                   │
-            Technical Model
-                   │
-                   ▼
-        HOW CAN WE EXPLAIN IT?
-                   │
-               Metaphor
-                   │
-                   ▼
-        HOW CAN WE EXPERIENCE IT?
-                   │
-                Story
-                   │
-                   ▼
-        HOW DO WE REPRESENT IT?
-                   │
-              Screenplay
-                   │
-                   ▼
-          HOW DO WE RENDER IT?
-                   │
-            Audio Producer
-                   │
-                   ▼
-             Audio Artifact
+```
+         WHAT IS TRUE?
+               │
+        Technical Model
+               │
+               ▼
+    HOW CAN WE EXPLAIN IT?
+               │
+           Metaphor
+               │
+               ▼
+    HOW CAN WE EXPERIENCE IT?
+               │
+            Story
+               │
+               ▼
+    HOW DO WE REPRESENT IT?
+               │
+          Screenplay
+               │
+               ▼
+      HOW DO WE RENDER IT?
+               │
+        Audio Producer
+               │
+               ▼
+         Audio Artifact
+```
 
 Each stage should remain inspectable.
 
@@ -1047,7 +768,7 @@ This makes creative production compatible with an engineering workflow.
 
 ⸻
 
-28. Decision
+1. Decision
 
 Implement Engineering Stories — From Architecture to Audio Drama as an Open Engineering Academy course and practical lab.
 
