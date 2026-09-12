@@ -159,13 +159,28 @@ event:
 
 ## Step 8 — Validate all seven
 
-Every file is local YAML. No network is used.
+Every file is local YAML. No network is used. These are Hands governance
+artefacts rather than Hello Pico Rules, so the check uses `python3` to
+confirm each file is well-formed YAML — `pico parse` only accepts the
+flat Rule shape (`id`/`kind`/`value`) taught in Part 1.
 
 ```bash
-for f in pico action rules selection execution evidence event; do
-  pico parse "scratch/hands/${f}.yaml" --out "/tmp/hands-${f}.json" \
-    && echo "OK: ${f}.yaml parses"
-done
+python3 - <<'PY'
+import sys, yaml, pathlib
+root = pathlib.Path("scratch/hands")
+failed = False
+for name in ("pico", "action", "rules", "selection", "execution", "evidence", "event"):
+    path = root / f"{name}.yaml"
+    try:
+        doc = yaml.safe_load(path.read_text())
+    except yaml.YAMLError as exc:
+        print(f"FAIL: {path} — {exc}", file=sys.stderr); failed = True; continue
+    if not isinstance(doc, dict) or not doc:
+        print(f"FAIL: {path} — expected a non-empty YAML mapping", file=sys.stderr)
+        failed = True; continue
+    print(f"OK: {name}.yaml parses")
+sys.exit(1 if failed else 0)
+PY
 ```
 
 ## Step 9 — Optional annex · Composio provider mapping (non-runnable)

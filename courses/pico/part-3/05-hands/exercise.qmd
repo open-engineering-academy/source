@@ -73,8 +73,11 @@ names, so the provider can be swapped without changing Pico behaviour.
 
 ## Automatable check
 
-Save the three snippets under a scratch working directory and confirm they
-parse. No external service is contacted.
+Save the snippet under a scratch working directory and confirm it is
+well-formed YAML with the expected capability-based shape. The Hands
+declaration is a governance artefact, not a Hello Pico Rule, so the
+check uses `python3` rather than `pico parse` (which only accepts the
+flat Rule shape taught in Part 1). No external service is contacted.
 
 ```bash
 mkdir -p scratch-hands
@@ -90,8 +93,20 @@ rules:
   - capability: kubernetes.resource.delete
     effect: deny
 EOF
-pico parse scratch-hands/hands.yaml --out /tmp/hands.json \
-  && echo "OK: Hands declaration parses"
+python3 - <<'PY'
+import sys, yaml
+doc = yaml.safe_load(open("scratch-hands/hands.yaml"))
+hands = doc.get("hands") or []
+rules = doc.get("rules") or []
+ok = (
+    isinstance(hands, list) and hands
+    and all(h.get("name") and h.get("capabilities") for h in hands)
+    and isinstance(rules, list) and rules
+    and all(r.get("capability") and r.get("effect") in {"allow", "deny"} for r in rules)
+)
+print("OK: Hands declaration parses" if ok else "FAIL")
+sys.exit(0 if ok else 1)
+PY
 ```
 
 The command exits with status `0` and prints an `OK:` line when the
