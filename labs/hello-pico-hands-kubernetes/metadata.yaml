@@ -1,0 +1,53 @@
+id: oe.lab.hello-pico-hands-kubernetes
+title: Hello Pico Hands (Kubernetes)
+level: intermediate
+duration: 45m
+prerequisites:
+  - oe.lab.hello-pico-on-manifold
+  - oe.course.pico
+  - oe.course.manifold
+  - oe.course.kubernetes
+teaches:
+  - Provider-neutral Hands contract
+  - KubernetesHands adapter
+  - Identity before action
+  - Authorization boundary via namespaced Role and resourceNames
+  - Allowlisted reversible action confined to Pico-owned ConfigMaps
+  - Normalized pico.hand.* action events and evidence JSON
+produces:
+  - hello-pico-hands-kubernetes
+referenced_by:
+  - oe.course.pico
+constructive_role: realization
+realizes:
+  - oe.course.pico
+realization_pattern: pico-hands-kubernetes-single-capability
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+hands_provider: kubernetes
+capabilities:
+  - pico.state.set
+control_surfaces:
+  - python-cli
+depends_on:
+  - oe.lab.hello-pico-on-manifold
+validated_by:
+  - "downloads/verify.sh static checks — Hands contract shape, namespaced RBAC boundary, Pod hardening, no Composio credentials"
+  - "walkthrough.qmd Step 6 — kubectl wait pod/hello-hands-pico Succeeded"
+  - "walkthrough.qmd Step 7 — state ConfigMap data.greeted equals event value; events ConfigMap carries pico.hand.requested/authorized/succeeded"
+lifecycle_state: operational
+evidence:
+  - check: "downloads/verify.sh static checks — Hands contract shape, namespaced RBAC boundary, Pod hardening, no Composio credentials"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh parses every YAML/JSON, confirms hands.json/rules.json declare exactly one reversible pico.state.set capability targeting a Pico-owned ConfigMap in the hands namespace, confirms the Role grants only get/patch on named ConfigMaps and has no cluster-scoped RoleBinding, and confirms the engine script carries no Composio or other external provider credentials."
+  - check: "walkthrough.qmd Step 6 — kubectl wait pod/hello-hands-pico Succeeded"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 6 shows the Pico engine Pod reaching phase Succeeded after invoking its one Kubernetes Hand under the pico-hello-hands ServiceAccount."
+  - check: "walkthrough.qmd Step 7 — state ConfigMap data.greeted equals event value; events ConfigMap carries pico.hand.requested/authorized/succeeded"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 7 reads back the Pico-owned state ConfigMap and the append-only events ConfigMap to confirm the reversible action landed and the normalized pico.hand.* lifecycle was emitted."
+feedback:
+  - observation: "Confining the Pico's Hand to two named ConfigMaps via resourceNames — and enforcing that boundary at the API server rather than inside the engine script — makes the difference between authentication and authorization visible: the ServiceAccount is a valid identity, but the Role decides which resources it may touch."
+    about: hello-pico-hands-kubernetes
+    refines: oe.course.pico
+    observation_source: manifold-on-kubernetes

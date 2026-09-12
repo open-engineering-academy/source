@@ -252,6 +252,16 @@ Composio is a provider/platform. These concerns remain separate.
 - [Summary](summary.qmd) — the key takeaways of the lesson.
 - [Quiz](quiz.qmd) — a short knowledge check.
 
+## Runnable lab
+
+- [Hello Pico Hands (Kubernetes)](../../../../labs/hello-pico-hands-kubernetes/index.qmd)
+  — realizes this lesson's provider-neutral capability model on a
+  local Kubernetes cluster: one declared capability
+  (`pico.state.set`), one `KubernetesHands` adapter, one allowlisted
+  reversible action confined by a namespaced `Role` and
+  `resourceNames` to a Pico-owned `ConfigMap`, and the normalized
+  `pico.hand.*` lifecycle plus evidence JSON.
+
 ## Next
 
 Continue with the [Exercise](exercise.qmd).

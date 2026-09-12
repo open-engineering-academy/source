@@ -50,6 +50,10 @@ project:
     - labs/outer-delivery-loop/objectives.qmd
     - labs/outer-delivery-loop/walkthrough.qmd
     - labs/outer-delivery-loop/solution.qmd
+    - labs/hello-pico-hands-kubernetes/index.qmd
+    - labs/hello-pico-hands-kubernetes/objectives.qmd
+    - labs/hello-pico-hands-kubernetes/walkthrough.qmd
+    - labs/hello-pico-hands-kubernetes/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd
