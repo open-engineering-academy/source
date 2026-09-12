@@ -125,6 +125,71 @@ the Capability Definitions the Pico depends on. This mirrors the
 Phase 7 rule that ControlSurfaces and runtime environments must not
 replace or bypass the constructive chain.
 
+## Nervous system as a governed extension
+
+The course also introduces a
+[Nervous System](glossary.qmd#nervous-system) — the provider-neutral
+communication fabric through which a Pico senses, communicates,
+coordinates, and interacts with other Picos, devices, and services.
+The Nervous System sits *after* Hands in the Pico progression and is
+distinct from Brain/Mind, Hands, and Voice: Brain/Mind decides
+*whether* to act, Hands decide *how* to act on external systems, Voice
+decides *what* to communicate outward, and the Nervous System is the
+transport-neutral fabric those messages travel through.
+
+Like Hands, the Nervous System slots into the same constructive
+vocabulary rather than sitting outside it, and it lines up with the
+Phase 7 runtime/control-surface contract in `templates/README.qmd`
+(in-repo scaffold, not published as a learner page).
+
+The mapping is:
+
+| Nervous System concept                              | Constructive-realization view                                                                                             |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Pico Agent Transport**                            | A **Realization** step: the constructive path from a Nervous System message Definition to a delivered message.            |
+| **Message Envelope**                                | The **Definition** of a single message: type, identity, correlation, timestamp, payload — stated independently of wire format. |
+| **Observation** (course-scoped)                     | A runtime-captured **Observation** in the Phase 7 sense; a candidate input to Feedback that MAY refine a Definition.       |
+| **Event**                                           | A named runtime occurrence carried through a Phase 7 **Channel** as a typed **EventType** value.                          |
+| **Command**                                         | The **Definition** of a requested action; the receiving Pico's Rules provide its Realization, and Policy is its Constraint.|
+| **Delegation**                                      | The **Definition** of a mission handed to another Pico; the delegate's Rules and Policy are its Realization and Constraints.|
+| **Result**                                          | A **Validation** of a Command or Delegation: the observable outcome recorded against the original request's Constraints.  |
+| **Presence**                                        | A runtime-captured **Observation** about a Pico's transport availability; not a Capability claim.                         |
+| **Discovery**                                       | A **Definition**-facing lookup of what Capabilities are advertised; it does not by itself authorize invocation.           |
+| **Topic Authorization**                             | A **Constraint** on the transport pathway an envelope may traverse.                                                       |
+| **Capability Authorization**                        | A **Constraint** on which Capabilities a specific Identity may invoke — the same Constraint concept Policy applies to Hands.|
+
+The Nervous System stays provider-neutral: Pico rules and Hands name
+Capabilities and Nervous System message types, not transport-specific
+identifiers, so the transport Realization step can be swapped (MQTT
+via EMQX, a future A2A binding, an in-process transport) without
+changing the Nervous System Definitions the Pico depends on. This
+mirrors the Phase 7 rule that ControlSurfaces and runtime environments
+must not replace or bypass the constructive chain, and the Hands rule
+that HandsProviders must not become the Pico's semantic owner.
+
+Identity, Authorization, Evidence, and Memory boundaries remain the
+same across Hands and the Nervous System:
+
+- **Identity** is required context on every envelope; the transport's
+  own client/session identifiers MUST NOT be treated as the Pico's
+  Identity.
+- **Authorization** is decided by Policy on the semantic layer;
+  Topic Authorization at the transport is necessary but not
+  sufficient, and a valid transport credential MUST NOT be treated as
+  Capability Authorization.
+- **Evidence** records what a governed exchange did — the acting
+  Pico, the requested Capability, the authorization decision, the
+  lifecycle of the request — without carrying transport credentials or
+  raw payloads.
+- **Memory** remains a Pico-side decision: an Observation or Event
+  received through the Nervous System is not automatically Memory.
+  The Pico's Rules decide whether it becomes Evidence, a Memory
+  candidate, or is discarded.
+
+The existing **Rules → Parser → Composer → Pico** pipeline and the
+[Part 3 · Hands](part-3/05-hands/index.qmd) contract remain unchanged;
+the Nervous System is an additive layer alongside them.
+
 ## Out of scope on this page
 
 This page intentionally does **not**:
@@ -135,6 +200,10 @@ This page intentionally does **not**:
 - Add HandsProvider SDKs, credentials, or external integrations; those
   are out of scope for the course contract and belong to separate
   provider-follow-up work.
+- Add transport SDKs, broker credentials, or a specific MQTT/EMQX
+  deployment; the Nervous System contract names transport-neutral
+  semantics and leaves broker adapters, credentials, and
+  schema-enforcement tooling to separate follow-up work.
 
 See the [Glossary](glossary.qmd) for one-line definitions of these terms
 and the [course overview](index.qmd) for how the pieces fit together.

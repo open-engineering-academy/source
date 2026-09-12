@@ -54,6 +54,10 @@ project:
     - labs/hello-pico-hands-kubernetes/objectives.qmd
     - labs/hello-pico-hands-kubernetes/walkthrough.qmd
     - labs/hello-pico-hands-kubernetes/solution.qmd
+    - labs/hello-pico-nervous-system-mqtt/index.qmd
+    - labs/hello-pico-nervous-system-mqtt/objectives.qmd
+    - labs/hello-pico-nervous-system-mqtt/walkthrough.qmd
+    - labs/hello-pico-nervous-system-mqtt/solution.qmd
     - exercises/index.qmd
     - exercises/pico-first-rule/index.qmd
     - exercises/pico-first-rule/solution.qmd

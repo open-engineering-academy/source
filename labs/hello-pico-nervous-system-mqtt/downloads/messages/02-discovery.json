@@ -1,0 +1,22 @@
+{
+  "id": "msg-02-discovery-detective",
+  "type": "discovery",
+  "ts": "2026-09-01T09:00:01Z",
+  "source": {
+    "pico": "pico.detective.017",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-det-9c21",
+        "topic": "pico/pico.detective.017/discovery"
+      }
+    }
+  },
+  "data": {
+    "capabilities": [
+      { "name": "architecture.investigate", "version": "1" },
+      { "name": "kubernetes.inspect", "version": "1" },
+      { "name": "repository.analyze", "version": "1" }
+    ],
+    "protocols": ["mqtt", "a2a"]
+  }
+}

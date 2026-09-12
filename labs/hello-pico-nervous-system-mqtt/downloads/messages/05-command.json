@@ -1,0 +1,32 @@
+{
+  "id": "msg-05-command-water",
+  "type": "command",
+  "ts": "2026-09-01T09:00:04Z",
+  "source": {
+    "pico": "pico.architect.001",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-arch-7f3a",
+        "topic": "pico/pico.garden.042/command/garden.water"
+      }
+    }
+  },
+  "target": {
+    "pico": "pico.garden.042",
+    "capability": "garden.water"
+  },
+  "subject": "garden/soil",
+  "causation_id": "msg-04-event-soil-dry",
+  "authorization": {
+    "principal": "pico.architect.001",
+    "capability": "garden.water",
+    "scope": {
+      "namespaces": ["nervous-system"],
+      "resourceNames": ["pico.garden.042"]
+    },
+    "granted_by": "ruleset.hello-nervous-system"
+  },
+  "data": {
+    "duration_seconds": 5
+  }
+}

@@ -1,0 +1,277 @@
+---
+title: "6. Nervous System"
+subtitle: "Giving a Pico an event-driven way to sense, communicate, and coordinate."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why a Pico needs an event-driven communication fabric distinct
+  from its Hands.
+- Distinguish **Hands** (act on external systems) from a **Nervous
+  System** (sense, communicate, coordinate across distributed
+  participants).
+- Describe a provider-neutral **Pico Agent Transport** and the semantic
+  message types it carries.
+- Separate discovery, presence, delegation, result, and memory concerns.
+- Explain why identity and authorization MUST remain independent of the
+  underlying transport, including MQTT client IDs.
+- Recognise EMQX/MQTT as a **candidate implementation/adapter** of the
+  transport rather than the semantic owner or a credentialed
+  prerequisite.
+
+## Prerequisites
+
+- [Pico Identity](../01-pico-identity/index.qmd).
+- [Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd).
+- [Trust and Authorization](../03-trust-and-authorization/index.qmd).
+- [Portability](../04-portability/index.qmd).
+- [Hands](../05-hands/index.qmd).
+
+## A Pico that senses and coordinates
+
+A Pico with Hands can change the world. To sense what is happening in the
+world, to communicate with other participants, and to coordinate work
+across distributed systems, it also needs an event-driven communication
+fabric. We call this capability a **Nervous System**.
+
+> A Pico without a Nervous System reasons and acts in isolation.
+> A Pico with a Nervous System senses, communicates, and coordinates.
+
+The resulting principle:
+
+> Open Engineering owns the semantics of what a Pico observes, publishes,
+> commands, delegates, and discovers. Infrastructure providers implement
+> the transport that carries those semantics.
+
+## Completing the Pico progression
+
+The Part 3 lessons progressively equipped the learner's Pico. This lesson
+adds the final faculty in the Part 3 progression:
+
+```
+Pico
+│
+├── Identity        →  Who am I?                    (lesson 01 · Pico Identity)
+│
+├── Senses          →  What is happening?           (lesson 02 · Cross-Mesh Communication, inbound)
+│
+├── Mind            →  What should I do?            (lesson 03 · Trust and Authorization + rules)
+│
+├── Voice           →  What should I communicate?   (lesson 02 · Cross-Mesh Communication, outbound)
+│
+├── Hands           →  What should I change         (lesson 05 · Hands)
+│                      or execute?
+│
+└── Nervous System  →  How do I sense, discover,    (this lesson · 06 · Nervous System)
+                       delegate, and coordinate
+                       across many participants?
+```
+
+Hands and the Nervous System are not synonyms:
+
+- **Hands** decide *how do I change this external system?* — one action,
+  one provider, one target.
+- A **Nervous System** decides *how do I stay in touch with everything
+  else?* — many participants, event-driven, many-to-many.
+
+Voice and Nervous System are also not synonyms. Voice is what a single
+Pico chooses to communicate. The Nervous System is the fabric across
+which many Voices, sensors, devices, and Picos exchange information.
+
+## Provider independence
+
+Picos MUST NOT be architecturally dependent upon any particular broker or
+protocol. Open Engineering defines the abstract capability — the **Pico
+Agent Transport** — and any concrete transport becomes one
+implementation of that capability:
+
+```
+Pico
+ │
+ ▼
+Pico Agent Transport
+ │
+ ├── MQTT / EMQX          (event-driven broker; this lesson's candidate)
+ ├── A2A                  (agent-to-agent protocols)
+ ├── in-process bus       (single-runtime tests, local development)
+ └── future transports    (not yet chosen)
+```
+
+This follows the Open Engineering principle of separating Definition from
+Implementation. It is the same posture the [Hands
+lesson](../05-hands/index.qmd) takes with providers: rules and message
+semantics name transport-neutral concepts, and any concrete transport is
+an adapter behind that boundary.
+
+::: {.callout-important}
+## EMQX/MQTT is a candidate adapter, not a credentialed prerequisite
+
+This lesson treats EMQX and MQTT as **one candidate implementation** of
+the Pico Agent Transport. No exercise, lab step, or verification command
+in this wave provisions a live broker, opens an MQTT connection, or
+requires an EMQX account, TLS certificate, username, password, or API
+token. Every runnable check operates on local YAML using the
+provider-neutral message vocabulary. A separate, optional follow-up page
+—
+[EMQX/MQTT as a transport adapter](emqx-adapter.qmd)
+— shows the adapter mapping without running it.
+:::
+
+## The semantic message model
+
+A Pico Agent Transport carries **semantic** messages, not raw bytes on a
+topic. The lesson distinguishes at least these message types, all
+provider-neutral and all named the same way regardless of the underlying
+transport:
+
+| Type | Meaning | Owned by |
+|---|---|---|
+| **observation** | *Something is observed* — sensor state, telemetry, a snapshot of reality. | sensing Pico or device |
+| **event** | *Something happened* — a state transition that other participants may react to. | source Pico or system |
+| **command** | *A request to perform an action* directed at a specific target. | requesting Pico |
+| **delegation** | *A Pico asks another Pico* to carry out a mission. | delegating Pico |
+| **result** | *The outcome* of a command, delegation, or mission. | executing Pico |
+| **presence** | *A Pico is available* on the transport right now. | the Pico itself |
+
+Collapsing any two — for example, treating every `command` as an `event`
+or every `observation` as long-term memory — weakens the architecture.
+The exercise, lab, and quiz reinforce that they stay separate.
+
+Every message carries at minimum:
+
+```
+envelope
+├── type         (observation | event | command | delegation | result | presence)
+├── source       (Pico identity of the sender)
+├── target       (Pico identity or capability, for commands/delegations)
+├── subject      (what the message is about — capability, resource, mission)
+├── correlation  (request/response correlation ID)
+├── timestamp    (when it was produced)
+└── payload      (type-specific data)
+```
+
+## Discovery is a first-class capability
+
+A Pico does not need to know every other Pico in advance. It should be
+able to determine:
+
+1. which Picos exist;
+2. which are currently available (**presence**);
+3. what capabilities they advertise;
+4. how they can be contacted (protocols, transport);
+5. what constraints apply (authorization, environments, versions).
+
+Discovery is therefore a Pico capability, not a broker feature. The
+transport carries discovery messages; Open Engineering owns the meaning
+of *"this Pico advertises capability X"* and of *"is this Pico permitted
+to answer that advertisement?"*
+
+## Identity before delivery
+
+Every participant on the Nervous System MUST have a stable Pico identity.
+The fundamental rule mirrors the Hands lesson:
+
+> No message is trusted without identity and authorization context.
+
+A Pico identity is independent of:
+
+- MQTT client IDs;
+- broker session IDs;
+- IP addresses and hostnames;
+- Kubernetes Pod names;
+- any broker-generated identifier.
+
+Infrastructure identifiers may change on every reconnect. The Pico
+identity MUST NOT.
+
+## Authorization boundary
+
+Authentication and authorization MUST remain separate. Being *allowed to
+publish to a topic* is not the same as being *permitted to invoke the
+capability that topic represents*. Broker authentication may answer *"is
+this client permitted to open this connection?"* Open Engineering must
+answer *"is this Pico permitted to observe, command, or delegate this?"*
+
+```
+Open Engineering                             Transport (e.g. MQTT / EMQX)
+(identity · rules · policy ·                 (broker authentication ·
+ capability authorization ·                   client IDs · topic ACLs ·
+ delegation authorization ·                   sessions · QoS · retained
+ evidence)                                    messages)
+        │                                              │
+        │  message: {type, source, target, subject}   │
+        └───────────────► Transport Adapter ─────────►│
+                          (topic naming,               │
+                           delivery, retention)        ▼
+                                                 Other participants
+```
+
+## Memory is not a side-effect of delivery
+
+Events received through the Nervous System MUST NOT automatically become
+long-term memory. The Pico decides how to classify each incoming
+message:
+
+```
+Nervous System delivers a message
+             │
+             ▼
+           Pico
+             │
+   ┌─────────┼─────────┬─────────┬─────────┐
+   ▼         ▼         ▼         ▼         ▼
+ discard   observe   store     delegate    act
+           (transient) (memory)  (mission)  (Hands)
+```
+
+Delivery is a communication concern. Classification and retention are
+cognitive concerns owned by Pico rules and memory, exactly as in the
+[Trust and Authorization](../03-trust-and-authorization/index.qmd) and
+[Hands](../05-hands/index.qmd) lessons.
+
+## Nervous System versus Hands
+
+| Aspect | Hands | Nervous System |
+|---|---|---|
+| Purpose | *Change* an external system | *Sense, communicate, coordinate* |
+| Shape | One capability, one target, one action | Many participants, many messages |
+| Direction | Outbound action + evidence | Bidirectional and many-to-many |
+| First runtime path | Kubernetes Hands (allowlisted, reversible) | Hello Two Picos (producer/consumer channel) |
+| Provider boundary | LocalHands · KubernetesHands · ComposioHands | in-process bus · MQTT/EMQX · A2A · future |
+
+Both faculties share the same architectural posture: capabilities are
+provider-neutral, identity precedes execution, evidence is separate from
+delivery, and the provider is an adapter behind a stable Open
+Engineering contract.
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — author the semantic message artefacts for one
+  provider-neutral Pico-to-Pico interaction.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Related runtime path
+
+- [Hello Two Picos](../../../../labs/hello-two-picos/index.qmd) —
+  demonstrates one *producer→consumer* event interaction between two
+  Picos hosted on Manifold and wired by one Wrangler-declared Channel.
+  It is the runtime realization of the semantics this lesson defines and
+  remains transport-agnostic at the Pico layer.
+
+## Optional follow-up
+
+- [EMQX/MQTT as a transport adapter](emqx-adapter.qmd) — an optional,
+  non-runnable extension that shows how the semantic message envelope
+  maps onto MQTT topics, QoS, and retained messages behind an
+  isolated adapter, and explicitly separates Open Engineering
+  identity/authorization/policy from broker authentication, client
+  IDs, and topic ACLs. No broker is provisioned; no credentials are
+  used.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

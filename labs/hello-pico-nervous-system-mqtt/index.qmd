@@ -1,0 +1,129 @@
+---
+title: "Hello Pico Nervous System (MQTT)"
+description: "Author a provider-neutral Pico message envelope, verify it locally without a broker, and map the same contract onto MQTT topics and an optional EMQX adapter."
+---
+
+## Overview
+
+**Hello Pico Nervous System (MQTT)** is the first *nervous-system* lab
+of the Open Engineering Academy. You will author a small, provider-neutral
+**Pico message envelope**, populate it with one sample message for each
+of the seven envelope kinds (observation, event, command, delegation,
+result, presence, discovery), and run a **deterministic local verifier**
+that checks the envelope shape, the separation of stable Pico identity
+from transport identity, the correlation and causation between related
+messages, the authorization context on commands and delegations, and
+the mapping of the same envelope onto MQTT topics and an EMQX adapter.
+
+This lab is deliberately contract-first: **one envelope, seven message
+kinds, one deterministic verifier, one explicit MQTT/EMQX mapping — no
+live broker, no credentials, no external SaaS.** It is the smallest
+honest realization of the Pico nervous-system model discussed in
+[Memo 10](../../memo10.md) on top of the same Kubernetes-hosted
+Manifold RuntimeEnvironment used by the
+[Hello Two Picos lab](../hello-two-picos/index.qmd).
+
+The lab is **reusable across courses**: it lives at the repository
+root under `labs/hello-pico-nervous-system-mqtt/` and is referenced
+from the [Pico course](../../courses/pico/index.html).
+
+::: {.callout-important title="Scope"}
+This lab covers **one** provider-neutral message envelope, **seven**
+sample messages (one per envelope kind), **one** MQTT topic-mapping
+document, and **one** EMQX adapter description explicitly marked
+`optional-not-executed`. It reuses the Manifold-on-Kubernetes
+RuntimeEnvironment from the
+[Hello Two Picos lab](../hello-two-picos/index.qmd) — a second
+runtime, an unrestricted command path, live MQTT/EMQX brokers,
+credentials, Composio, and any capability outside the envelope
+contract are explicitly out of scope.
+:::
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-pico-nervous-system-mqtt` —
+matching the `produces` entry in the lab
+[`metadata.yaml`](metadata.yaml). The directory contains:
+
+- the provider-neutral [envelope schema](downloads/envelope.schema.json)
+  covering observation, event, command, delegation, result, presence,
+  and discovery,
+- the [Pico registry](downloads/picos.yaml) that separates stable Pico
+  identity from MQTT and Kubernetes transport identifiers,
+- the [discovery snapshot](downloads/discovery.yaml) that would be
+  assembled by a live broker from presence and capability
+  advertisements,
+- the seven sample messages under
+  [`downloads/messages/`](downloads/messages/) that populate the
+  envelope with one instance per kind,
+- the [MQTT topic map](downloads/mqtt-topics.yaml) that shows how the
+  same envelope projects onto MQTT topics,
+- the [EMQX adapter](downloads/emqx-adapter.yaml) description marked
+  `optional-not-executed`,
+- the Wrangler-style [topology](downloads/topology.yaml) fragment that
+  hosts the nervous-system Picos on the same Manifold RuntimeEnvironment
+  as the [Hello Two Picos lab](../hello-two-picos/index.qmd), and
+- the captured verifier output — `verify.txt`, the single
+  `verify: OK` line produced by `bash downloads/verify.sh`.
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`: the envelope schema, the Pico
+registry, the discovery snapshot, the seven sample messages, the MQTT
+topic map, the EMQX adapter description, the Wrangler topology
+fragment, and `verify.sh` — the deterministic local verifier the
+walkthrough runs in Step 5. Screenshots referenced from the walkthrough
+live under `screenshots/`. Both directories are kept even when empty so
+authors have a consistent place to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+Fields follow the schema documented in the source repository under
+`templates/README.qmd`, including the Phase 7 fields
+`runtime_substrate`, `runs_on`, `interaction_topology`, and
+`control_surfaces`, plus the lab-specific `transport_adapters` list
+which explicitly marks both the MQTT and EMQX adapters as
+`optional-not-executed`.
+
+## Constructive realization
+
+This lab is the **Realization** of the provider-neutral nervous-system
+Definition proposed by [Memo 10](../../memo10.md). The role mapping is:
+
+- **Definition** (course-adjacent, Memo 10 §§ 9–13, 20): a Pico Agent
+  Transport with a provider-neutral message envelope, an identity
+  contract that separates stable Pico identity from transport
+  identifiers, correlation and causation across delegation and result,
+  and authorization gated by Pico Rulesets rather than by the ability
+  to publish to a topic.
+- **Realization** (this lab): a deterministic local set of YAML/JSON
+  artifacts under `downloads/`, checked by `verify.sh` without a live
+  broker, that shows what the Definition looks like as concrete files
+  and how the same envelope would map to MQTT topics and an EMQX
+  adapter.
+- **Element**: `hello-pico-nervous-system-mqtt` — the captured
+  envelope, Pico registry, discovery snapshot, sample messages, MQTT
+  topic map, EMQX adapter description, topology fragment, and verifier
+  output.
+
+## Referenced from
+
+- [Pico course · Home](../../courses/pico/index.html) — the
+  behaviour-focused course of the academy, into which the
+  nervous-system envelope contract slots as a Part 3-adjacent
+  realization.
+- [Hello Two Picos lab](../hello-two-picos/index.qmd) — the multi-Pico
+  runtime lab whose Manifold-on-Kubernetes RuntimeEnvironment this
+  lab reuses without introducing a second runtime.
+- [Hello Pico Hands (Kubernetes) lab](../hello-pico-hands-kubernetes/index.qmd) —
+  the companion *Hands* lab; where that lab governs a single
+  reversible action through a narrow RBAC boundary, this lab governs
+  the message envelope carrying commands and delegations across
+  Picos.

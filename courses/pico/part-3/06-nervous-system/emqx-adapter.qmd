@@ -1,0 +1,233 @@
+---
+title: "Optional follow-up · EMQX/MQTT as a transport adapter"
+description: "How the semantic Pico message envelope maps onto MQTT topics behind an isolated adapter, without making EMQX or MQTT a runtime dependency."
+---
+
+::: {.callout-important}
+## Optional, non-runnable, no broker, no accounts
+
+This page is a **separately governed extension** of the Nervous System
+lesson. It introduces no runtime dependency on EMQX or MQTT. No step
+here provisions or connects to a broker, opens an MQTT connection, or
+requires any EMQX account, TLS certificate, username, password, API
+token, or connected device. The mock contract check at the bottom
+operates on **local YAML** only, using tools already used elsewhere in
+this course (`python3` + `PyYAML`). The related runtime path for
+event-driven Pico interaction remains
+[Hello Two Picos](../../../../labs/hello-two-picos/index.qmd), which
+runs on Manifold over Kubernetes without a broker dependency.
+:::
+
+## Why this page exists
+
+The lesson establishes that Pico messages name **semantic types**
+(`observation`, `event`, `command`, `delegation`, `result`, `presence`)
+and never broker-specific concepts (MQTT topic strings, EMQX client IDs,
+retained-message flags). This page shows how that neutrality is
+preserved when the transport happens to be **EMQX/MQTT** — and, just as
+importantly, where the broker's concerns *stop*.
+
+## The two boundaries
+
+There are two boundaries around a Nervous System message. They MUST NOT
+be collapsed:
+
+```
+        Open Engineering                          EMQX / MQTT
+      (identity · rules ·                     (broker authentication ·
+       policy · authorization ·                client IDs · topic ACLs ·
+       delegation authorization ·              sessions · QoS · retained
+       evidence · action events)               messages · TLS)
+              │                                        │
+              │  message: {type, source, target,       │
+              │           subject, correlation}        │
+              └──────────► MQTT Adapter ──────────────►│
+                          (topic naming,               │
+                           QoS, retention)             ▼
+                                                Other participants
+```
+
+- **Open Engineering** answers: *Is this Pico permitted to observe,
+  command, or delegate this in this context?* Identity, rules, policy,
+  authorization, evidence, and memory classification all live here.
+  This side never sees broker credentials and never mentions MQTT
+  topic strings, client IDs, or QoS levels.
+- **EMQX/MQTT** answers: *Can a client authenticate to the broker,
+  and how is a message physically routed to subscribers?*
+  Authentication, client IDs, topic ACLs, sessions, QoS, retained
+  messages, and TLS all live here.
+
+The MQTT Adapter is the *only* place the two vocabularies touch.
+Everything else in the Pico — messages, rules, evidence, memory —
+stays transport-neutral.
+
+## The isolated MQTT mapping
+
+The mapping between a Pico semantic message type and a MQTT topic
+convention lives in a single, small file inside the adapter. Pico
+messages and rules never see it. Swapping transports means swapping
+this file.
+
+```yaml
+# scratch/nervous-followup/mqtt-mapping.yaml   (illustrative only)
+transport: mqtt
+mappings:
+  observation:  { topic: "picos/{source}/observation/{subject}", qos: 0, retained: false }
+  event:        { topic: "picos/{source}/event/{subject}",       qos: 1, retained: false }
+  command:      { topic: "picos/{target}/command/{subject}",     qos: 1, retained: false }
+  delegation:   { topic: "picos/{target}/mission/{subject}",     qos: 1, retained: false }
+  result:       { topic: "picos/{source}/result/{subject}",      qos: 1, retained: false }
+  presence:     { topic: "picos/{source}/presence",              qos: 1, retained: true  }
+```
+
+The corresponding Pico messages stay exactly as in the lesson lab — no
+MQTT concept appears in them:
+
+```yaml
+# scratch/nervous-followup/messages.yaml (shape unchanged from the lesson lab)
+messages:
+  - { type: observation, source: pico-alice, subject: garden/soil, payload: { moisture: 32 } }
+  - { type: event,       source: pico-alice, subject: garden/soil/dry }
+  - { type: command,     source: pico-alice, target: pico-bob, subject: garden.watering.request }
+  - { type: delegation,  source: pico-alice, target: pico-bob, subject: mission.x, correlation: c1 }
+  - { type: result,      source: pico-bob,   subject: mission.x, correlation: c1, payload: { status: completed } }
+  - { type: presence,    source: pico-bob,   payload: { state: online } }
+```
+
+## Contract of the adapter (interface only, no implementation)
+
+An MQTT Adapter — if one were built later on top of EMQX — would expose
+the same provider-neutral contract every other Pico Agent Transport
+adapter exposes:
+
+```
+MqttAdapter
+  resolve(message.type, message.subject) -> topic         # internal to the adapter
+  connect(broker_endpoint, credentials)  -> session       # transport concern
+  publish(topic, envelope, qos, retained) -> ack          # transport concern
+  subscribe(topic_pattern, handler)       -> subscription # transport concern
+```
+
+Only `resolve()`, `connect()`, `publish()`, and `subscribe()` ever
+mention MQTT-specific vocabulary. The envelope handed to `publish()` is
+provider-neutral, the value passed to handlers by `subscribe()` is
+provider-neutral, and identity/authorization/evidence continue to be
+owned by Open Engineering, exactly as with any other transport.
+
+## Gating live delivery (explicit decision)
+
+Turning any of the above into a live delivery over EMQX requires an
+**explicit deployment and secret-management decision** that has not
+been made in this wave. The decision covers, at minimum:
+
+- **Broker provisioning** (self-hosted EMQX, managed EMQX Cloud, or a
+  different MQTT broker).
+- **Broker authentication and secret management**: where the broker's
+  usernames, passwords, or TLS client certificates live, who can read
+  them, and how they reach the adapter process. Nothing in this
+  repository ships such secrets.
+- **Topic ACLs and per-Pico topic allowlists**, mapped onto but not
+  substituted for Open Engineering capability authorization.
+- **QoS and retention policy** for each message type, matching the
+  reversible/evidence posture of the [Hands
+  lesson](../05-hands/index.qmd).
+
+Until that decision is recorded, the MQTT Adapter remains an
+architectural placeholder. No such adapter, SDK, dependency, secret,
+or broker is added by this page.
+
+
+## Mock contract check (runs on local YAML only)
+
+The check below confirms three properties without contacting any
+broker:
+
+1. Pico **messages never name a broker concept** (MQTT topic strings,
+   QoS values, retained flags, or client IDs).
+2. The mapping file **only appears in the adapter surface**, and its
+   keys are the provider-neutral semantic message types.
+3. No credential-shaped strings (usernames, passwords, tokens, TLS
+   material, connected-broker IDs) appear anywhere in the mapping or
+   messages.
+
+```bash
+mkdir -p scratch/nervous-followup
+
+cat > scratch/nervous-followup/mqtt-mapping.yaml <<'EOF'
+transport: mqtt
+mappings:
+  observation:  { topic: "picos/{source}/observation/{subject}", qos: 0, retained: false }
+  event:        { topic: "picos/{source}/event/{subject}",       qos: 1, retained: false }
+  command:      { topic: "picos/{target}/command/{subject}",     qos: 1, retained: false }
+  delegation:   { topic: "picos/{target}/mission/{subject}",     qos: 1, retained: false }
+  result:       { topic: "picos/{source}/result/{subject}",      qos: 1, retained: false }
+  presence:     { topic: "picos/{source}/presence",              qos: 1, retained: true  }
+EOF
+
+cat > scratch/nervous-followup/messages.yaml <<'EOF'
+messages:
+  - { type: observation, source: pico-alice, subject: garden/soil }
+  - { type: event,       source: pico-alice, subject: garden/soil/dry }
+  - { type: command,     source: pico-alice, target: pico-bob, subject: garden.watering.request }
+  - { type: delegation,  source: pico-alice, target: pico-bob, subject: mission.x, correlation: c1 }
+  - { type: result,      source: pico-bob,   subject: mission.x, correlation: c1 }
+  - { type: presence,    source: pico-bob }
+EOF
+
+python3 - <<'PY'
+import re, sys, yaml, pathlib
+root = pathlib.Path("scratch/nervous-followup")
+mapping  = yaml.safe_load((root / "mqtt-mapping.yaml").read_text())
+messages = yaml.safe_load((root / "messages.yaml").read_text())
+
+REQUIRED_TYPES = {"observation","event","command","delegation","result","presence"}
+BROKER_TERMS   = re.compile(r"(qos|retained|topic|client[_-]?id|mqtt|broker)", re.IGNORECASE)
+SECRETS        = re.compile(
+    r"(password|token|secret|bearer|api[_-]?key|tls[_-]?cert|"
+    r"client[_-]?secret|connected[_-]?broker[_-]?id|username)",
+    re.IGNORECASE,
+)
+
+def fail(msg):
+    print(f"contract-check: FAIL — {msg}", file=sys.stderr); sys.exit(1)
+
+if mapping.get("transport") != "mqtt":
+    fail("mapping.transport must be 'mqtt' in this illustrative file")
+if set(mapping["mappings"].keys()) != REQUIRED_TYPES:
+    fail(f"mapping keys must be exactly the six semantic types, got {sorted(mapping['mappings'])}")
+
+for m in messages["messages"]:
+    if m.get("type") not in REQUIRED_TYPES:
+        fail(f"messages.yaml uses non-semantic type: {m.get('type')}")
+    body = yaml.safe_dump(m)
+    if BROKER_TERMS.search(body):
+        fail(f"messages.yaml leaks a broker concept in: {m}")
+
+for path in ("mqtt-mapping.yaml", "messages.yaml"):
+    body = (root / path).read_text()
+    m = SECRETS.search(body)
+    if m:
+        fail(f"credential-shaped token '{m.group(0)}' appears in {path}")
+
+print("contract-check: OK — messages stay semantic, mapping is isolated, no credentials present")
+PY
+```
+
+The check exits `0` and prints an `OK:` line when the contract holds.
+It performs no network I/O.
+
+## What this page does *not* do
+
+- It does not add an MQTT client library or any runtime dependency to
+  the repository.
+- It does not provision, connect to, or configure an EMQX broker.
+- It does not commit secrets, tokens, TLS material, or connected-broker
+  identifiers.
+- It does not change the transport-neutral posture of the lesson lab,
+  the [Hello Two Picos](../../../../labs/hello-two-picos/index.qmd)
+  runtime path, or the Hello Pico pipeline.
+
+## Next
+
+Return to the [Summary](summary.qmd) or the
+[Part 3 overview](../index.qmd).

@@ -26,11 +26,24 @@ teaches:
   - HandsProvider
   - Policy
   - Evidence
+  - Nervous System
+  - Pico Agent Transport
+  - Message Envelope
+  - Observation
+  - Event
+  - Command
+  - Delegation
+  - Result
+  - Presence
+  - Discovery
+  - Topic Authorization
+  - Capability Authorization
 produces:
   - hello-world-pico
 references_labs:
   - oe.lab.hello-pico
   - oe.lab.hello-pico-hands-kubernetes
+  - oe.lab.hello-pico-nervous-system-mqtt
 references_exercises:
   - oe.exercise.pico-first-rule
 constructive_role: definition

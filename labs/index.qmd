@@ -95,6 +95,23 @@ encounter a consistent experience across the academy.
   of scope. Referenced from the [pico course](../courses/pico/).
   Machine-readable descriptor:
   [`labs/hello-pico-hands-kubernetes/metadata.yaml`](hello-pico-hands-kubernetes/metadata.yaml).
+- **[Hello Pico Nervous System (MQTT)](hello-pico-nervous-system-mqtt/)** —
+  the first runnable *nervous-system* lab: author a
+  provider-neutral Pico message envelope covering the seven message
+  kinds (observation, event, command, delegation, result, presence,
+  discovery), populate it with one sample per kind, and run a
+  deterministic local verifier that checks the envelope shape,
+  the separation of stable Pico identity from MQTT/Kubernetes
+  transport identifiers, the correlation/causation graph across
+  delegation → result and observation → event, the authorization
+  context on commands and delegations, the MQTT topic mapping, and
+  the EMQX adapter description marked `optional-not-executed`. No
+  live broker, no credentials, and no external SaaS are required;
+  the Kubernetes-hosted Manifold RuntimeEnvironment from
+  [Hello Two Picos](hello-two-picos/) is reused unchanged.
+  Referenced from the [pico course](../courses/pico/).
+  Machine-readable descriptor:
+  [`labs/hello-pico-nervous-system-mqtt/metadata.yaml`](hello-pico-nervous-system-mqtt/metadata.yaml).
 - **[Outer delivery loop](outer-delivery-loop/)** — the first
   runnable outer-loop lab: push the hand-off's XR onto a real
   GitHub environment repo, open a real pull request, merge it, and

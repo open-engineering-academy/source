@@ -1,0 +1,98 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico Nervous System (MQTT) teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Author a small **provider-neutral Pico message envelope** covering
+  the seven kinds enumerated by Memo 10 §§ 9–10: **observation,
+  event, command, delegation, result, presence, discovery**.
+- Populate the envelope with one sample message per kind and show how
+  **stable Pico identity** (`source.pico`) is deliberately distinct
+  from every **transport identifier** (`source.transport.mqtt.client_id`,
+  `source.transport.kubernetes.pod`).
+- Wire **correlation and causation** across a delegation and its
+  paired result, and cite an upstream **observation** from its
+  downstream **event** via `causation_id`.
+- Attach an **authorization context** to every command and delegation
+  and explain why publishing to a topic is not itself authorization.
+- Run a **deterministic local verifier** — no broker, no credentials,
+  no external SaaS — that checks the envelope shape, the identity
+  separation, the correlation/delegation/causation graph, the
+  authorization context, and the MQTT/EMQX adapter shape.
+- Map the same provider-neutral envelope onto **MQTT topics** and
+  describe how an **EMQX adapter** would attach without claiming live
+  broker execution.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Hello Two Picos lab](../hello-two-picos/index.qmd) — the multi-Pico
+  runtime story this lab layers a provider-neutral message envelope
+  onto without introducing a second runtime.
+- Familiarity with [Memo 10 · EMQX as the Pico Nervous System](../../memo10.md)
+  sections 5–13 (Pico-to-Pico communication, discovery, event model,
+  identity, security, rulesets) and 16–22 (Kubernetes fit, MCP vs
+  MQTT, Composio comparison, reference architecture, proposed
+  artifacts, academy exercise).
+- Familiarity with the [Pico course](../../courses/pico/index.html)
+  vocabulary (Pico, Identity, Ruleset, Capability, Hands, Evidence).
+- `python3` with `pyyaml` installed — the verifier uses standard-library
+  `json` plus PyYAML. No Kubernetes cluster and no MQTT broker are
+  required.
+:::
+
+## Environment
+
+The verifier is intentionally environment-light:
+
+- **Operating system**: any (macOS, Linux, WSL) with `bash` and
+  `python3` on `PATH`.
+- **Python packages**: `pyyaml` (`pip install pyyaml`). The verifier
+  falls back with a clear error if PyYAML is missing.
+- **Reference Python pin**: `python3` **3.10+** was used to author this
+  lab.
+- **Estimated time**: **30–45 minutes**.
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  rm -rf build/hello-pico-nervous-system-mqtt work/hello-pico-nervous-system-mqtt
+  ```
+
+## Live-broker path (optional, out of scope)
+
+This lab does **not** stand up a live MQTT broker or EMQX cluster. The
+shipped `downloads/emqx-adapter.yaml` names no endpoint, ships no
+credentials, and is marked `status: optional-not-executed`. The
+verifier asserts this. If you later want to carry the same envelope
+over a real broker, that would be a follow-up lab.
+
+## Kubernetes substrate (unchanged)
+
+The Wrangler-style topology fragment in
+[`downloads/topology.yaml`](downloads/topology.yaml) reuses the same
+`manifold-on-kubernetes` RuntimeEnvironment used by the
+[Hello Two Picos lab](../hello-two-picos/index.qmd). This lab
+intentionally does not introduce a second runtime; the nervous-system
+envelope is authored and verified as data, and the same Manifold
+Channels used by the Hello Two Picos lab are the delivery path when a
+learner later wires the messages onto the cluster.
+
+## Related material
+
+- [Memo 10 · EMQX as the Pico Nervous System](../../memo10.md) — the
+  proposal this lab realizes as concrete artifacts.
+- [Pico course](../../courses/pico/index.html) — the behaviour-focused
+  course this lab is referenced from.
+- [Hello Two Picos lab](../hello-two-picos/index.qmd) — the multi-Pico
+  runtime prerequisite; the Manifold-on-Kubernetes RuntimeEnvironment
+  it stands up is the runtime substrate this lab keeps unchanged.
+- [Hello Pico Hands (Kubernetes) lab](../hello-pico-hands-kubernetes/index.qmd) —
+  the *Hands* companion; the authorization vocabulary used in this
+  lab's envelope (`principal`, `capability`, `scope.namespaces`,
+  `scope.resourceNames`, `granted_by`) matches the Hands-contract
+  fields shipped there.

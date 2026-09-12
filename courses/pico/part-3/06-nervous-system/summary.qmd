@@ -1,0 +1,70 @@
+---
+title: "Summary · Nervous System"
+---
+
+## Key takeaways
+
+- The **Nervous System** completes the Part 3 Pico progression:
+  Identity → Senses → Mind → Voice → Hands → Nervous System. It is
+  the event-driven fabric across which a Pico senses, communicates, and
+  coordinates with many other participants.
+- **Hands** change external systems (one capability, one target, one
+  action). The **Nervous System** senses, communicates, and coordinates
+  (many participants, many messages, many-to-many). They are not
+  synonyms.
+- The **Pico Agent Transport** is provider-neutral. The Pico depends on
+  a stable semantic vocabulary — **observation**, **event**, **command**,
+  **delegation**, **result**, **presence**, and **discovery** — not on
+  MQTT topic strings, broker client IDs, or vendor-specific message
+  formats.
+- **Discovery** is a first-class Pico capability: a Pico can advertise
+  its capabilities and be found by others without hard-coding a peer
+  list.
+- **Identity before delivery**: no message is trusted without identity
+  and authorization context. A Pico identity is independent of MQTT
+  client IDs, broker sessions, and all infrastructure identifiers.
+- **Authorization boundary**: broker authentication ("can this client
+  publish here?") is not Open Engineering authorization ("is this Pico
+  permitted to observe, command, or delegate this?"). The two remain
+  separate keys, decisions, and audit trails.
+- **Memory is not a side-effect of delivery**: the Pico classifies each
+  message (discard, observe, store, delegate, act). Delivery is a
+  communication concern; classification and retention are cognitive
+  concerns.
+- **EMQX/MQTT is a candidate adapter**, not the semantic owner. Every
+  runnable check in this wave operates on local YAML; no broker is
+  provisioned; no credentials are used.
+
+## The governing principle
+
+```
+Open Engineering owns the semantics.
+Infrastructure providers implement the transport.
+
+A Pico advertises its capabilities.
+A Pico advertises its presence.
+Another Pico discovers it.
+Messages carry provider-neutral meaning.
+Identity binds every message.
+Authorization gates every command and delegation.
+Delivery is not memory.
+The transport is an adapter, not a runtime dependency.
+```
+
+## What comes next
+
+- Return to the [Part 3 overview](../index.qmd) to review all lessons,
+  or revisit any lesson in this course: [Course home](../../index.qmd).
+- Related runtime path:
+  [Hello Two Picos](../../../../labs/hello-two-picos/index.qmd) — a
+  producer→consumer event interaction realized on a Wrangler-declared
+  Channel over Manifold on Kubernetes.
+- Optional, non-runnable extension:
+  [EMQX/MQTT as a transport adapter](emqx-adapter.qmd) — shows how the
+  semantic message envelope maps onto MQTT topics behind an isolated
+  adapter, and where broker authentication stops and Open Engineering
+  authorization begins.
+
+## Next
+
+Take the [Quiz](quiz.qmd) to finish the lesson.

@@ -18,6 +18,20 @@ the repository-root [`labs/`](../../../labs/index.html) directory.
   reversible action confined by a namespaced `Role` and `resourceNames`
   to a Pico-owned `ConfigMap`. Descriptor:
   [`labs/hello-pico-hands-kubernetes/metadata.yaml`](../../../labs/hello-pico-hands-kubernetes/metadata.yaml).
+- [Hello Pico Nervous System (MQTT)](../../../labs/hello-pico-nervous-system-mqtt/) —
+  the runnable *nervous-system* lab: author one provider-neutral
+  Pico message envelope covering the seven message kinds
+  (observation, event, command, delegation, result, presence,
+  discovery), populate it with one sample per kind, and run a
+  deterministic local verifier for envelope shape, stable-vs-transport
+  identity, correlation/causation across delegation → result and
+  observation → event, authorization context on commands and
+  delegations, MQTT topic mapping, and the EMQX adapter description
+  marked `optional-not-executed`. No live broker, no credentials, and
+  no external SaaS; the Kubernetes-hosted Manifold RuntimeEnvironment
+  from [Hello Two Picos](../../../labs/hello-two-picos/) is reused
+  unchanged. Descriptor:
+  [`labs/hello-pico-nervous-system-mqtt/metadata.yaml`](../../../labs/hello-pico-nervous-system-mqtt/metadata.yaml).
 
 ## Authoring course-scoped labs
 
