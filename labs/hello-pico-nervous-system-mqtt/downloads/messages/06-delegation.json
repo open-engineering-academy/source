@@ -1,0 +1,37 @@
+{
+  "id": "msg-06-delegation-investigate",
+  "type": "delegation",
+  "ts": "2026-09-01T09:00:05Z",
+  "source": {
+    "pico": "pico.architect.001",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-arch-7f3a",
+        "topic": "pico/pico.detective.017/delegation/architecture.investigate"
+      }
+    }
+  },
+  "target": {
+    "pico": "pico.detective.017",
+    "capability": "architecture.investigate"
+  },
+  "subject": "mission.hello-nervous-system.investigate-cluster",
+  "correlation_id": "corr-mission-investigate-001",
+  "delegation": {
+    "mission": "investigate_cluster",
+    "requested_by": "pico.architect.001",
+    "capability": "architecture.investigate"
+  },
+  "authorization": {
+    "principal": "pico.architect.001",
+    "capability": "architecture.investigate",
+    "scope": {
+      "namespaces": ["nervous-system"]
+    },
+    "granted_by": "ruleset.hello-nervous-system"
+  },
+  "data": {
+    "cluster": "manifold-on-kubernetes",
+    "depth": "shallow"
+  }
+}

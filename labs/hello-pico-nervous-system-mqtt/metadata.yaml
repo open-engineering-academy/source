@@ -1,0 +1,54 @@
+id: oe.lab.hello-pico-nervous-system-mqtt
+title: Hello Pico Nervous System (MQTT)
+level: intermediate
+duration: 60m
+prerequisites:
+  - oe.lab.hello-two-picos
+  - oe.lab.hello-pico-on-manifold
+  - oe.course.pico
+  - oe.course.manifold
+teaches:
+  - Provider-neutral Pico message envelope (observation, event, command, delegation, result, presence, discovery)
+  - Stable Pico identity distinct from transport identifiers (MQTT client_id, Kubernetes pod)
+  - Correlation and causation across delegation and result
+  - Authorization context on commands and delegations (publishing is not authorization)
+  - Deterministic local verification of the envelope, identity, correlation, and authorization contracts
+  - Explicit mapping of the provider-neutral contract onto MQTT topics and an optional EMQX adapter
+produces:
+  - hello-pico-nervous-system-mqtt
+referenced_by:
+  - oe.course.pico
+constructive_role: realization
+realizes:
+  - oe.course.pico
+realization_pattern: pico-nervous-system-provider-neutral-envelope
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+interaction_topology: downloads/topology.yaml
+transport_adapters:
+  - kind: mqtt
+    status: optional-not-executed
+    spec: downloads/mqtt-topics.yaml
+  - kind: emqx
+    status: optional-not-executed
+    spec: downloads/emqx-adapter.yaml
+control_surfaces:
+  - python-cli
+depends_on:
+  - oe.lab.hello-two-picos
+validated_by:
+  - "downloads/verify.sh static checks — envelope shape, stable-vs-transport identity, correlation/delegation/causation, authorization on commands and delegations, MQTT topic map, EMQX adapter status, no credentials or invented commands"
+  - "walkthrough.qmd Step 5 — bash downloads/verify.sh exits 0 on a clean checkout"
+lifecycle_state: operational
+evidence:
+  - check: "downloads/verify.sh static checks — envelope shape, stable-vs-transport identity, correlation/delegation/causation, authorization on commands and delegations, MQTT topic map, EMQX adapter status, no credentials or invented commands"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh parses every YAML/JSON artifact, validates each sample message against envelope.schema.json, confirms every source.pico is a stable identity from picos.yaml and is distinct from mqtt.client_id and kubernetes.pod, confirms commands and delegations carry authorization.principal and .capability, confirms every delegation has a paired result sharing correlation_id and citing causation_id with the same mission, confirms events cite an upstream observation via causation_id, confirms mqtt-topics.yaml declares patterns for all seven envelope kinds and every sample MQTT topic matches, confirms emqx-adapter.yaml is marked optional-not-executed with broker ACLs as outer perimeter only, and scans for credentials, live broker URLs, and invented mosquitto/emqxctl commands."
+  - check: "walkthrough.qmd Step 5 — bash downloads/verify.sh exits 0 on a clean checkout"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 5 runs the local verifier without credentials, external SaaS, or a live EMQX/MQTT broker and prints the single verify OK line."
+feedback:
+  - observation: "Separating source.pico (stable) from source.transport.mqtt.client_id and source.transport.kubernetes.pod in every envelope makes the identity contract auditable: the verifier can check that no message uses a transport identifier as its Pico identity, and the same envelope can travel over MQTT/EMQX or through the Manifold Channel used by Hello Two Picos without the semantics changing."
+    about: hello-pico-nervous-system-mqtt
+    refines: oe.course.pico
+    observation_source: manifold-on-kubernetes

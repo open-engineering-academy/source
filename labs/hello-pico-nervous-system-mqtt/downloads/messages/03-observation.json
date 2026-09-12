@@ -1,0 +1,18 @@
+{
+  "id": "msg-03-observation-garden",
+  "type": "observation",
+  "ts": "2026-09-01T09:00:02Z",
+  "source": {
+    "pico": "pico.garden.042",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-garden-04ee",
+        "topic": "pico/pico.garden.042/observation/garden.soil"
+      }
+    }
+  },
+  "subject": "garden/soil",
+  "data": {
+    "moisture": 32
+  }
+}

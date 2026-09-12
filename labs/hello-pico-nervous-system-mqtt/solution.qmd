@@ -1,0 +1,111 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Pico Nervous System (MQTT)."
+---
+
+## Reference solution
+
+A working solution consists of the shipped artifacts under
+`downloads/`, unchanged, running through the local verifier:
+
+1. [`envelope.schema.json`](downloads/envelope.schema.json) — the
+   provider-neutral message envelope covering the seven envelope
+   kinds; per-kind conditional requirements (`command` needs
+   `target` + `authorization`; `delegation` also needs
+   `delegation` + `correlation_id`; `result` needs both
+   `correlation_id` and `causation_id`; `event` needs `subject`) are
+   expressed with JSON-Schema `allOf`/`if`/`then`.
+2. [`picos.yaml`](downloads/picos.yaml) — the Pico registry naming
+   three Picos (`pico.architect.001`, `pico.detective.017`,
+   `pico.garden.042`) by stable identity, with transport identifiers
+   (MQTT `client_id`, Kubernetes `pod`) that are deliberately
+   different from the Pico identity.
+3. [`discovery.yaml`](downloads/discovery.yaml) — the local snapshot
+   of what a live broker's discovery view would advertise.
+4. [`messages/01-presence.json`](downloads/messages/01-presence.json)
+   through
+   [`messages/07-result.json`](downloads/messages/07-result.json) —
+   one sample message per envelope kind, forming one complete
+   delegation → result pair and one complete observation → event →
+   command chain.
+5. [`mqtt-topics.yaml`](downloads/mqtt-topics.yaml) — the topic
+   patterns for each envelope kind (`presence`, `discovery`,
+   `observation`, `event`, `command`, `delegation`, `result`) and the
+   note that publishing to a topic is not authorization.
+6. [`emqx-adapter.yaml`](downloads/emqx-adapter.yaml) — the EMQX
+   adapter description, marked `status: optional-not-executed`, with
+   no live endpoint, no credentials, and broker ACLs constrained to
+   the outer perimeter.
+7. [`topology.yaml`](downloads/topology.yaml) — the Wrangler-style
+   InteractionTopology fragment that binds the nervous-system Picos
+   to the same `manifold-on-kubernetes` RuntimeEnvironment used by
+   the [Hello Two Picos lab](../hello-two-picos/index.qmd).
+8. [`verify.sh`](downloads/verify.sh) — the deterministic local
+   verifier the walkthrough runs in Step 5.
+
+### Commands (recap)
+
+Run from `work/hello-pico-nervous-system-mqtt/` after copying the
+downloads in place (see the walkthrough for the full setup):
+
+```bash
+bash verify.sh
+```
+
+### Expected output
+
+```
+verify: static — envelope, identity, authorization, correlation, MQTT topic-map, EMQX adapter, and topology all OK
+verify: OK — verify passed
+```
+
+## Why this satisfies the objectives
+
+- **Provider-neutral envelope**: `envelope.schema.json` enumerates the
+  seven envelope kinds in one `type` enum; the sample messages under
+  `messages/` cover every kind and the verifier asserts none is
+  missing.
+- **Stable Pico identity vs transport identity**: every message names
+  its emitter via `source.pico`, drawn from `picos.yaml`; the
+  verifier confirms `source.pico` is registered and is different
+  from every transport identifier present on the same message.
+- **Correlation and delegation**: the delegation
+  (`messages/06-delegation.json`) and its paired result
+  (`messages/07-result.json`) share the same `correlation_id`, and
+  the result cites the delegation via `causation_id` and carries the
+  same `delegation.mission`; the verifier walks this graph.
+- **Event caused by observation**: `messages/04-event.json` cites
+  `messages/03-observation.json` via `causation_id`; the verifier
+  asserts every event's `causation_id` points at an observation.
+- **Authorization context**: `messages/05-command.json` and
+  `messages/06-delegation.json` carry an `authorization` block
+  naming `principal`, `capability`, `scope`, and `granted_by`; the
+  verifier requires both fields to be present.
+- **No live broker, no credentials**: the verifier scans every
+  shipped file for credentials, live broker URLs, PEM blocks, and
+  invented `mosquitto`/`emqxctl` commands. `emqx-adapter.yaml` is
+  explicitly `status: optional-not-executed` and the verifier fails
+  otherwise.
+- **MQTT/EMQX as optional adapters**: `mqtt-topics.yaml` maps every
+  envelope kind to a topic pattern, and every sample MQTT topic
+  matches its expected prefix; `emqx-adapter.yaml` names the topic
+  map it implements and marks ACLs as outer-perimeter only.
+- **Kubernetes substrate unchanged**: `topology.yaml` reuses
+  `runtimeEnvironment: manifold-on-kubernetes` and names only Picos
+  present in `picos.yaml`; no second runtime is introduced.
+
+## Variations
+
+- **Live MQTT broker**: a follow-up lab may add a local
+  `mosquitto` container and repeat the same verifier against
+  published messages. That lab would flip
+  `emqx-adapter.yaml`'s `status` from `optional-not-executed` to
+  `executed` and add a live-path branch to the verifier.
+- **Additional envelope kinds**: extending the enum in
+  `envelope.schema.json` (e.g. `evidence`, `memory-candidate` per
+  Memo 10 § 14) requires adding one sample message and updating the
+  MQTT topic map; the verifier will fail until both are consistent.
+- **Additional Picos**: registering another Pico in `picos.yaml`
+  with distinct transport identifiers and referencing it from one
+  new message is enough to grow the topology without changing the
+  envelope.

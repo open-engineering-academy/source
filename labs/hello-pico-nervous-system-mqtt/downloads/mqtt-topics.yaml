@@ -1,0 +1,43 @@
+# Provider-neutral -> MQTT topic mapping for the Hello Pico Nervous System
+# lab. This file is *documentation*: it names the topic pattern each
+# envelope `type` would use if the lab were carried over a real MQTT
+# broker. No live broker is required — the lab's verifier reads this
+# mapping statically and only checks that every sample message in
+# `messages/` uses a `transport.mqtt.topic` consistent with the pattern.
+apiVersion: pico.oe.academy/v1alpha1
+kind: TransportTopicMap
+metadata:
+  name: hello-nervous-system-mqtt
+spec:
+  transport: mqtt
+  # Base path under which all Pico nervous-system messages live. A real
+  # deployment MAY prefix this with a tenant, region, or environment.
+  root: pico
+  # Placeholder tokens used in the topic patterns below:
+  #   {pico}    -> stable Pico identity of the emitter (source.pico)
+  #   {target}  -> stable Pico identity of the recipient (target.pico)
+  #   {subject} -> the message's subject, slugified with '.'
+  #   {mission} -> delegation.mission
+  patterns:
+    presence:   "{root}/{pico}/presence"
+    discovery:  "{root}/{pico}/discovery"
+    observation: "{root}/{pico}/observation/{subject}"
+    event:      "{root}/{pico}/event/{subject}"
+    command:    "{root}/{target}/command/{capability}"
+    delegation: "{root}/{target}/delegation/{capability}"
+    result:     "{root}/{target}/result/{capability}"
+  # QoS defaults are advisory; the lab does not exercise a live broker.
+  qos_defaults:
+    presence: 1
+    discovery: 1
+    observation: 0
+    event: 1
+    command: 1
+    delegation: 1
+    result: 1
+  retained:
+    - presence
+    - discovery
+  notes:
+    - "Publishing to a topic is not authorization; every command and delegation carries `authorization` in the envelope."
+    - "The MQTT `client_id` in `source.transport.mqtt` is a transport identifier; it MUST NOT be used as a Pico identity."

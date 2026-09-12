@@ -1,0 +1,21 @@
+{
+  "id": "msg-04-event-soil-dry",
+  "type": "event",
+  "ts": "2026-09-01T09:00:03Z",
+  "source": {
+    "pico": "pico.garden.042",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-garden-04ee",
+        "topic": "pico/pico.garden.042/event/garden.soil.dry"
+      }
+    }
+  },
+  "subject": "garden/soil",
+  "causation_id": "msg-03-observation-garden",
+  "data": {
+    "event": "soil_dry",
+    "threshold": 40,
+    "observed": 32
+  }
+}

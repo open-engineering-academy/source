@@ -1,0 +1,196 @@
+---
+title: "Walkthrough"
+description: "Author the provider-neutral envelope, populate the seven message kinds, and verify locally."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them
+to match your setup. The walkthrough assumes you have completed the
+[one-time environment setup](objectives.qmd#environment) and that
+`bash` and `python3` (with `pyyaml`) resolve on your `PATH`.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [Hello Two Picos lab](../hello-two-picos/index.qmd) so the
+multi-Pico runtime story (Manifold as RuntimeEnvironment on a
+Kubernetes RuntimeSubstrate, one Wrangler-declared Channel, one event,
+one Observation) is already familiar. This lab layers a provider-neutral
+message envelope on top of that runtime story without adding a second
+runtime.
+:::
+
+## Step 1 — Create a working directory and copy the downloads
+
+From the root of your local clone of the academy repository:
+
+```bash
+mkdir -p work/hello-pico-nervous-system-mqtt && cd work/hello-pico-nervous-system-mqtt
+cp -r ../../labs/hello-pico-nervous-system-mqtt/downloads/. .
+ls -1
+```
+
+Expected output (order-independent):
+
+```
+discovery.yaml
+emqx-adapter.yaml
+envelope.schema.json
+messages
+mqtt-topics.yaml
+picos.yaml
+topology.yaml
+verify.sh
+```
+
+`messages/` contains the seven sample messages — one per envelope kind
+(presence, discovery, observation, event, command, delegation, result).
+
+## Step 2 — Read the provider-neutral envelope schema
+
+Before running anything, read `envelope.schema.json`. It is the
+authoritative shape of every Pico nervous-system message:
+
+```bash
+cat envelope.schema.json
+```
+
+Key fields to notice:
+
+- `source.pico` is the **stable Pico identity**. It is deliberately
+  separate from `source.transport.mqtt.client_id` and
+  `source.transport.kubernetes.pod`.
+- `correlation_id` groups related messages (e.g. a delegation and its
+  paired result); `causation_id` names the specific message that
+  caused this one (e.g. an event caused by an observation).
+- `authorization` is required on `command` and `delegation` — the
+  emitter must show which principal is acting and which capability is
+  being invoked. Publishing to a topic is not itself authorization.
+
+## Step 3 — Read the Pico registry and discovery snapshot
+
+```bash
+cat picos.yaml
+cat discovery.yaml
+```
+
+`picos.yaml` lists three Picos by stable identity
+(`pico.architect.001`, `pico.detective.017`, `pico.garden.042`) with
+transport identifiers (MQTT `client_id`, Kubernetes `pod`) that are
+different from the Pico identity. `discovery.yaml` is the local
+snapshot of what a live broker's discovery view would advertise from
+combined `presence` messages and retained capability advertisements.
+
+## Step 4 — Read the seven sample messages
+
+```bash
+ls -1 messages
+for f in messages/*.json; do echo "--- $f ---"; cat "$f"; done
+```
+
+Together the seven messages form two complete flows:
+
+- **observation → event → command**: the garden Pico observes
+  moisture (`03-observation.json`), emits a `soil_dry` event citing
+  that observation via `causation_id` (`04-event.json`), and the
+  architect Pico issues a `garden.water` command back to the garden
+  Pico with a full `authorization` context (`05-command.json`).
+- **delegation → result**: the architect Pico delegates
+  `architecture.investigate` to the detective Pico with a fresh
+  `correlation_id` and full authorization (`06-delegation.json`), and
+  the detective Pico returns a `result` sharing the same
+  `correlation_id`, citing the delegation via `causation_id`, and
+  carrying the same `delegation.mission` (`07-result.json`).
+
+## Step 5 — Run the deterministic local verifier
+
+Run the shipped verification script. It performs the checks listed
+in [Objectives](objectives.qmd#learning-objectives) without contacting
+a broker or a cluster:
+
+```bash
+bash verify.sh
+```
+
+Expected output ends with:
+
+```
+verify: static — envelope, identity, authorization, correlation, MQTT topic-map, EMQX adapter, and topology all OK
+verify: OK — verify passed
+```
+
+If PyYAML is missing the verifier prints a clear
+`verify: FAIL — PyYAML is required (pip install pyyaml)` line and
+exits non-zero.
+
+## Step 6 — Read the MQTT topic map and EMQX adapter
+
+```bash
+cat mqtt-topics.yaml
+cat emqx-adapter.yaml
+```
+
+`mqtt-topics.yaml` declares a topic pattern for each of the seven
+envelope kinds and records that publishing to a topic is not itself
+authorization. `emqx-adapter.yaml` names how a real EMQX broker would
+attach without claiming to run one: `status: optional-not-executed`
+and no live endpoint, credentials, or shared secrets are shipped. The
+verifier in Step 5 already asserts this.
+
+## Step 7 — Read the Kubernetes-substrate topology
+
+```bash
+cat topology.yaml
+```
+
+The Wrangler-style InteractionTopology fragment binds the three Picos
+to `runtimeEnvironment: manifold-on-kubernetes` — the same
+RuntimeEnvironment stood up by the
+[Hello Two Picos lab](../hello-two-picos/index.qmd). No second
+runtime is introduced.
+
+## Step 8 — Capture the produced artifact
+
+Capture the downloads and the verifier output into a single
+`hello-pico-nervous-system-mqtt/` directory — this is the lab's
+`produces:` artifact:
+
+```bash
+mkdir -p build/hello-pico-nervous-system-mqtt
+cp -r . build/hello-pico-nervous-system-mqtt/
+bash verify.sh > build/hello-pico-nervous-system-mqtt/verify.txt
+grep -Fq 'verify: OK' build/hello-pico-nervous-system-mqtt/verify.txt \
+  && echo "artifact OK"
+ls -1 build/hello-pico-nervous-system-mqtt
+```
+
+`verify.txt` is the captured evidence line the local verifier prints;
+it is the Phase 7 counterpart of the `observation.txt` captured in the
+[Hello Two Picos lab](../hello-two-picos/index.qmd).
+
+## Step 9 — Cleanup
+
+```bash
+cd ../.. && rm -rf work/hello-pico-nervous-system-mqtt build/hello-pico-nervous-system-mqtt
+```
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `verify.sh` reports `PyYAML is required`, run
+  `pip install pyyaml` (or `python3 -m pip install pyyaml`) inside the
+  same Python environment and re-run the verifier.
+- If `verify.sh` reports a `source.pico … not in Pico registry` error,
+  confirm you copied `picos.yaml` alongside the sample messages —
+  every `source.pico` value must be listed in `picos.yaml`.
+- If you add a new envelope kind or a new Pico, remember to update
+  both `envelope.schema.json` (or `picos.yaml`) and the corresponding
+  entry under `messages/` and `mqtt-topics.yaml`; the verifier will
+  fail until all three files agree.
+- The lab does not stand up a live MQTT broker or EMQX cluster. If
+  you want to carry the same envelope over a real broker, that is a
+  follow-up lab and requires flipping `emqx-adapter.yaml`'s `status`.
+:::
+
+## Next
+
+Compare your work against the [reference solution](solution.qmd).
