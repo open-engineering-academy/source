@@ -82,6 +82,19 @@ encounter a consistent experience across the academy.
   [sandcastle course](../courses/sandcastle/). Machine-readable
   descriptor:
   [`labs/handoff-sandcastle-to-kubernetes/metadata.yaml`](handoff-sandcastle-to-kubernetes/metadata.yaml).
+- **[Hello Pico Hands (Kubernetes)](hello-pico-hands-kubernetes/)** — the
+  first runnable *Hands* lab: give one Pico Element a
+  provider-neutral Hands contract, bind it to a narrow
+  `KubernetesHands` adapter, and watch it invoke exactly one
+  allowlisted, reversible action (`pico.state.set`) confined by a
+  namespaced `Role` and `resourceNames` to a Pico-owned `ConfigMap`
+  in the lab's own `hands` namespace. Emits the normalized
+  `pico.hand.requested` / `authorized` / `succeeded` lifecycle and
+  a single evidence JSON record. Composio, cluster-scoped RBAC,
+  destructive verbs, and non-Kubernetes runtimes are explicitly out
+  of scope. Referenced from the [pico course](../courses/pico/).
+  Machine-readable descriptor:
+  [`labs/hello-pico-hands-kubernetes/metadata.yaml`](hello-pico-hands-kubernetes/metadata.yaml).
 - **[Outer delivery loop](outer-delivery-loop/)** — the first
   runnable outer-loop lab: push the hand-off's XR onto a real
   GitHub environment repo, open a real pull request, merge it, and

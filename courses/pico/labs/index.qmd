@@ -11,6 +11,13 @@ the repository-root [`labs/`](../../../labs/index.html) directory.
 - [Hello Pico](../../../labs/hello-pico/) — the introductory lab used from
   [Part 1 · Introduction](../part-1/01-introduction/lab.qmd). Descriptor:
   [`labs/hello-pico/metadata.yaml`](../../../labs/hello-pico/metadata.yaml).
+- [Hello Pico Hands (Kubernetes)](../../../labs/hello-pico-hands-kubernetes/) —
+  the runnable *Hands* lab used from
+  [Part 3 · Hands](../part-3/05-hands/index.qmd): one provider-neutral
+  Hands contract, one `KubernetesHands` adapter, one allowlisted
+  reversible action confined by a namespaced `Role` and `resourceNames`
+  to a Pico-owned `ConfigMap`. Descriptor:
+  [`labs/hello-pico-hands-kubernetes/metadata.yaml`](../../../labs/hello-pico-hands-kubernetes/metadata.yaml).
 
 ## Authoring course-scoped labs
 

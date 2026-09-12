@@ -35,6 +35,38 @@ through which tools may be discovered or executed; Composio is a
 provider/platform. These concerns remain separate.
 :::
 
+## 5. Name the seven concerns of a Hand invocation and who owns each.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+1. **Composer equipment** — Composer.
+2. **Pico decision** — the Pico Mind.
+3. **Policy authorization** — Open Engineering rules.
+4. **Hand selection** — the Pico runtime.
+5. **Provider execution** — the provider (local, Kubernetes, Composio, …).
+6. **Evidence** — Pico memory.
+7. **Action event** — the Pico Voice.
+:::
+
+## 6. Why are **evidence** and the **action event** kept as separate artefacts?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Evidence is a retainable, verifiable record of *what actually happened*,
+stored by the Pico so it can be audited or reasoned about later. The action
+event is a broadcast on the Pico's Voice so *other participants* can
+subscribe and react. One serves memory and accountability; the other
+serves distributed communication. Collapsing them removes either
+auditability or reach.
+:::
+
+## 7. In this wave, is Composio a runnable dependency of the lesson?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. Composio (and every other external SaaS provider) is illustrative only
+in this wave. No exercise, lab step, or verification command contacts an
+external service, and no credentials are required. Every runnable check
+operates on local YAML using provider-neutral capabilities.
+:::
+
 ## Next
 
 Return to the [Part 3 overview](../index.qmd) or the

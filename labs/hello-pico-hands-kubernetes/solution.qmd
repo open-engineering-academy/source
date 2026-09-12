@@ -1,0 +1,125 @@
+---
+title: "Solution"
+description: "Reference solution for Hello Pico Hands (Kubernetes)."
+---
+
+## Reference solution
+
+A working solution consists of the eight files shipped under
+`downloads/`, applied against a local minikube cluster:
+
+1. [`01-namespace.yaml`](downloads/01-namespace.yaml) — the `hands`
+   Namespace that carries the entire Pico surface for this lab.
+2. [`02-hands-contract.yaml`](downloads/02-hands-contract.yaml) — the
+   provider-neutral Hands contract `ConfigMap` (identity, declared
+   capabilities, rules, sample event).
+3. [`03-rbac.yaml`](downloads/03-rbac.yaml) — the `ServiceAccount`,
+   namespaced `Role` (get/patch only, restricted by `resourceNames`
+   to the two Pico-owned `ConfigMap`s), and `RoleBinding` that
+   together form the authorization boundary.
+4. [`04-state-configmap.yaml`](downloads/04-state-configmap.yaml) —
+   the empty, Pico-owned state `ConfigMap` the Hand mutates.
+5. [`05-events-configmap.yaml`](downloads/05-events-configmap.yaml) —
+   the empty, Pico-owned events `ConfigMap` the Hand appends to.
+6. [`06-pico-engine.yaml`](downloads/06-pico-engine.yaml) — the
+   single-shot Pico engine Pod (`hello-hands-pico`) that carries the
+   Pico Element, mounts the Hands contract, evaluates the rules,
+   invokes the KubernetesHands adapter, and writes evidence.
+7. [`event.json`](downloads/event.json) — the single event payload
+   the Pico observes (a copy of the payload embedded in the Hands
+   contract for out-of-cluster testing).
+8. [`verify.sh`](downloads/verify.sh) — the automatable verification
+   script the walkthrough runs in Step 8. Static checks always run;
+   the live path runs when `kubectl` and a cluster are reachable.
+
+### Commands (recap)
+
+Run from `work/hello-pico-hands-kubernetes/` after copying the
+downloads in place (see the walkthrough for the full setup):
+
+```bash
+kubectl apply -f 01-namespace.yaml
+kubectl apply -f 02-hands-contract.yaml
+kubectl apply -f 03-rbac.yaml
+kubectl apply -f 04-state-configmap.yaml
+kubectl apply -f 05-events-configmap.yaml
+kubectl apply -f 06-pico-engine.yaml
+kubectl -n hands wait --for=jsonpath='{.status.phase}=Succeeded' \
+  --timeout=120s pod/hello-hands-pico
+bash verify.sh
+```
+
+### Expected output
+
+The Pico engine prints the full `pico.hand.*` lifecycle plus one
+normalized evidence line into its container logs:
+
+```
+pico[hello-hands-pico] pico.hand.requested capability=pico.state.set
+pico[hello-hands-pico] pico.hand.authorized capability=pico.state.set
+pico[hello-hands-pico] pico.hand.succeeded capability=pico.state.set
+pico[hello-hands-pico] evidence: {"execution":{"actor":"hello-hands-pico","pico":"hello-hands-pico","capability":"pico.state.set","provider":"kubernetes","target":{"kind":"ConfigMap","namespace":"hands","resourceName":"pico-hello-hands-state","key":"greeted"},"requested_at":"...","status":"succeeded","reason":""}}
+```
+
+The Pico-owned state `ConfigMap` carries the greeting the Hand
+applied, and the events `ConfigMap` carries the normalized
+lifecycle:
+
+```
+Hello, Pico!
+pico.hand.requested\npico.hand.authorized\npico.hand.succeeded
+```
+
+`verify.sh` re-runs the whole path and prints:
+
+```
+verify: OK — live — state=Hello, Pico!, lifecycle=[requested, authorized, succeeded]
+```
+
+## Why this satisfies the objectives
+
+- **Provider-neutral Hands contract**: `hands.json` and `rules.json`
+  in `02-hands-contract.yaml` name only capabilities and constraints
+  — no `kubectl`, no cluster verbs, no provider SDKs. A different
+  `HandsProvider` (e.g. `LocalHands`) could consume the same
+  contract and implement `pico.state.set` against its own target
+  without any change to the Pico or its rules.
+- **KubernetesHands adapter**: the Pico engine Pod's shell command
+  in `06-pico-engine.yaml` is the whole adapter — it maps the
+  contract's `pico.state.set` capability to exactly one `kubectl
+  patch` call against the target named in the contract.
+- **Identity before action**: every `kubectl` call the adapter makes
+  travels as the `pico-hello-hands` `ServiceAccount` (the Pico's
+  on-cluster identity), and the emitted `evidence.json` records the
+  Pico's own identity from `identity.json` as the `actor`.
+- **Authorization boundary**: the namespaced `Role` in
+  `03-rbac.yaml` grants only `get` and `patch` on ConfigMaps and is
+  further constrained by `resourceNames` to
+  `pico-hello-hands-state` and `pico-hello-hands-events`. Any other
+  verb, any other resource, or any other name is rejected by the
+  API server — not by the adapter script. This is what makes the
+  boundary trustworthy.
+- **Allowlisted reversible action confined to a Pico-owned
+  ConfigMap**: `pico.state.set` is the only allow rule in
+  `rules.json`; the mutation is a merge-patch that sets one key on
+  a `ConfigMap` the Pico exclusively owns, and Step 9 shows how
+  re-applying `04-state-configmap.yaml` reverses it.
+- **Normalized `pico.hand.*` events + evidence**: the append-only
+  events `ConfigMap` carries `pico.hand.requested`,
+  `pico.hand.authorized`, and `pico.hand.succeeded` (or the
+  `denied`/`failed` variants), and the Pod's own logs carry the
+  single normalized evidence JSON. Both are captured under
+  `build/hello-pico-hands-kubernetes/` as the lab's runtime
+  evidence.
+- **Composio and non-Kubernetes runtimes are out of scope**: the
+  static path of `verify.sh` fails the whole run if any of
+  `COMPOSIO`, `composio`, `gmail`, `slack.com`, `githubtoken`, or
+  `OPENAI_API_KEY` appear in the engine script.
+
+## Related labs and lessons
+
+- [Hello Pico on Manifold](../hello-pico-on-manifold/index.qmd) —
+  the single-Pico runtime this lab equips with Hands.
+- [Part 3 · Hands](../../courses/pico/part-3/05-hands/index.qmd) —
+  the Pico-course lesson whose provider-neutral capability model
+  this lab realizes.

@@ -1,0 +1,77 @@
+---
+title: "Hello Pico Hands (Kubernetes)"
+description: "Give one Pico a single reversible Kubernetes Hand, confined to a Pico-owned ConfigMap by a namespaced Role."
+---
+
+## Overview
+
+**Hello Pico Hands (Kubernetes)** is the first *runnable Hands* lab of
+the Open Engineering Academy. You will host a single Pico Element on a
+local **minikube** cluster, equip it with a **provider-neutral Hands
+contract**, bind that contract to a narrow **`KubernetesHands`**
+adapter, and watch the Pico invoke exactly **one reversible action**
+confined to a **Pico-owned ConfigMap** by a **namespaced Role**.
+
+This lab is deliberately capability-first: **one Pico, one declared
+capability, one allow rule, one reversible mutation, one normalized
+evidence record.** It is the smallest honest realization of the
+[Part 3 · Hands](../../courses/pico/part-3/05-hands/index.qmd)
+lesson's provider-neutral capability model on top of a real Kubernetes
+runtime.
+
+The lab is **reusable across courses**: it lives at the repository
+root under `labs/hello-pico-hands-kubernetes/` and is referenced from
+the [Pico course](../../courses/pico/index.html).
+
+::: {.callout-important title="Scope"}
+This lab covers **one** Pico Element equipped with **one**
+provider-neutral capability (`pico.state.set`), realized by the
+**`KubernetesHands`** adapter through **one** allowlisted, reversible
+`kubectl patch` call confined by a **namespaced `Role`** with
+`resourceNames` to a **Pico-owned `ConfigMap`** in the lab's own
+`hands` namespace. Composio (and every other external SaaS provider),
+non-Kubernetes runtimes, destructive verbs (`delete`,
+`deletecollection`, `create`, `*`), cluster-scoped RBAC, and any
+capability outside `pico.state.set` are explicitly out of scope. The
+Kubernetes substrate is kept fixed at local minikube throughout.
+:::
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single artifact directory named `hello-pico-hands-kubernetes` —
+matching the `produces` entry in the lab
+[`metadata.yaml`](metadata.yaml). The directory contains:
+
+- the exact Kubernetes manifests applied to the cluster (`Namespace`,
+  Hands-contract `ConfigMap`, `ServiceAccount` + `Role` +
+  `RoleBinding`, Pico-owned state `ConfigMap`, Pico-owned events
+  `ConfigMap`, and the Pico engine `Pod`),
+- the provider-neutral Hands contract that names the Pico's
+  capabilities and rules (embedded in `02-hands-contract.yaml`),
+- the captured **evidence** — `evidence.json`, the single normalized
+  JSON record the Pico engine writes to its own logs when its Hand
+  succeeds, and `events.txt`, the Pico-owned `pico.hand.*` lifecycle
+  read back from the events `ConfigMap`.
+
+## Downloads and screenshots
+
+Starter files live under `downloads/`: the Kubernetes manifests, the
+Hands contract, the RBAC boundary, the sample `event.json`, and
+`verify.sh` — the automatable verification script the walkthrough runs
+in the final step and that also runs unconditionally as a static check
+(YAML/JSON shape, RBAC boundary, Pod hardening, no Composio
+credentials). Screenshots referenced from the walkthrough live under
+`screenshots/`. Both directories are kept even when empty so authors
+have a consistent place to add assets.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml). Fields
+follow the schema documented in the source repository (see
+`labs/README.qmd` for the shared lab template).

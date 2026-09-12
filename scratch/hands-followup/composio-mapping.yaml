@@ -1,0 +1,5 @@
+provider: composio
+mappings:
+  email.send:          GMAIL_SEND_EMAIL
+  github.issue.create: GITHUB_CREATE_ISSUE
+  github.issue.read:   GITHUB_GET_ISSUE

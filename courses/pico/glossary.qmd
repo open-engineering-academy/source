@@ -98,20 +98,84 @@ prove what they are and what authority they hold.
 A provider-neutral action a Pico may perform, such as `email.send` or
 `github.issue.create`. Pico rules name capabilities rather than
 provider-specific tool names, keeping the Pico independent of any
-particular tool provider.
+particular tool provider. See
+[Part 3 · Hands](part-3/05-hands/index.qmd).
 
 ## Composio
 A provider/platform that supplies tools to Picos. In this course it is
-the primary external Hands provider, but the Pico Hands abstraction
-must remain independent of Composio or any other provider.
+named as one possible external Hands provider, but the Pico Hands
+abstraction must remain independent of Composio or any other provider.
 
 ## Hands
 The controlled mechanism through which a Pico acts on the world. A
 Composer equips a Pico with Hands; the Pico decides when to use them;
 the Hands perform the action. Hands are governed by identity, rules,
-policy, and authorization.
+policy, and authorization. Hands answer *how* an action is executed;
+Mind answers *whether* it should be. See
+[Part 3 · Hands](part-3/05-hands/index.qmd).
 
-## Hands Provider
-An implementation of the Pico Hands capability, such as ComposioHands,
-KubernetesHands, LocalHands, or PhysicalHands. Providers map Pico
-capabilities onto implementation-specific operations.
+## HandsProvider
+An implementation of the Pico Hands capability that binds one or more
+Capabilities to a concrete execution mechanism — for example
+`ComposioHands`, `KubernetesHands`, `LocalHands`, `MQTTHands`, or
+`PhysicalHands`. A HandsProvider maps a Pico Capability onto its own
+implementation-specific operation. Providers are interchangeable;
+Pico rules remain unchanged when a provider is swapped.
+
+## ActionRequest
+A structured request that a Pico's Mind emits when it decides to act.
+An ActionRequest names the acting Pico and principal, the Capability
+being requested, and the authorization context. It is the input to a
+Hand's execution and is evaluated against Policy before any provider
+is invoked. See [Part 3 · Hands](part-3/05-hands/index.qmd).
+
+## ActionResult
+The normalized outcome of executing an ActionRequest through a
+HandsProvider. An ActionResult records success or failure, a
+provider-independent status, and any values the caller needs, without
+carrying credentials or sensitive provider payloads. It is the
+Pico-facing shape used by Rules and downstream Voice communication.
+
+## ExecutionContext
+The bundle of identity, authorization, policy, and runtime information
+carried alongside an ActionRequest so a Hand can execute it safely.
+An ExecutionContext MUST include the acting Pico's Identity and the
+authorized Capability; it MAY include environment, tenant, or
+approval-gate metadata. No Hand acts without an ExecutionContext.
+
+## Identity
+The cryptographically verifiable answer to *who is acting*. In this
+course a Pico's Identity is provided by `did:webvh` as its public
+identity and by `did:peer` for relationship-specific identities.
+Identity is required context for every governed Hand action; it does
+not by itself imply authorization.
+
+## Policy
+A declarative rule that constrains what a Pico may do — which
+Capabilities are permitted, under which conditions, and with which
+required approvals. In the Pico course, Policy is stated in Rules and
+evaluated on the ActionRequest before a Hand executes. Policy is the
+Pico-course view of the Phase 7 `Policy` concept in
+`templates/README.qmd` (in-repo scaffold, not published as a learner
+page).
+
+## Authorization
+The decision that a specific ActionRequest, in a specific
+ExecutionContext, is permitted by Policy. Authorization is separate
+from authentication: a valid provider credential MUST NOT be treated
+as authorization to perform a Capability. Only Policy authorizes.
+
+## Evidence
+A durable record of a Hand's execution suitable for auditing — for
+example the acting Pico, the requested Capability, the chosen
+HandsProvider, the authorization decision, and the timestamped
+lifecycle of the request. Evidence describes execution without
+carrying credentials, access tokens, message bodies, or other
+sensitive values.
+
+## Action Event
+A named runtime event emitted at each stage of a Hand's execution
+lifecycle — for example `pico.hand.requested`, `pico.hand.authorized`,
+`pico.hand.denied`, `pico.hand.succeeded`, and `pico.hand.failed`.
+Action events let other Open Engineering components observe Pico
+behaviour without coupling themselves to a particular HandsProvider.

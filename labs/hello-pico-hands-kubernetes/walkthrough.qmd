@@ -1,0 +1,245 @@
+---
+title: "Walkthrough"
+description: "Equip one Pico with one reversible Kubernetes Hand, invoke it under a narrow Role, and capture the pico.hand.* evidence."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt them
+to match your setup. The walkthrough assumes you have completed the
+[one-time environment setup](objectives.qmd#environment) and that
+`docker`, `minikube`, `kubectl`, and `python3` all resolve on your
+`PATH`.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the
+[Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) so
+the single-Pico runtime story (Manifold as RuntimeEnvironment on a
+Kubernetes RuntimeSubstrate, one Wrangler-declared Channel, one
+event, one Observation) is already familiar. This lab extends that
+story by giving the hosted Pico **Hands** — one declared capability,
+one allow rule, one reversible action, one evidence record.
+:::
+
+## Step 1 — Create a working directory and copy the manifests
+
+From the root of your local clone of the academy repository:
+
+```bash
+mkdir -p work/hello-pico-hands-kubernetes && cd work/hello-pico-hands-kubernetes
+cp -r ../../labs/hello-pico-hands-kubernetes/downloads/. .
+ls -1
+```
+
+Expected output (order-independent):
+
+```
+01-namespace.yaml
+02-hands-contract.yaml
+03-rbac.yaml
+04-state-configmap.yaml
+05-events-configmap.yaml
+06-pico-engine.yaml
+event.json
+verify.sh
+```
+
+`02-hands-contract.yaml` is the **provider-neutral Hands contract**:
+identity, declared capabilities, and rules. `03-rbac.yaml` is the
+**authorization boundary** — a namespaced `Role` scoped by
+`resourceNames` to the two Pico-owned `ConfigMap`s. `verify.sh` is the
+automatable check the walkthrough runs in Step 8.
+
+## Step 2 — Start a local minikube cluster
+
+Start a dedicated minikube profile so this lab does not interfere with
+other clusters you may run (for example the `manifold-lab` profile
+from the [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd)):
+
+```bash
+minikube start --profile hands-lab \
+  --driver=docker --cpus=2 --memory=4g \
+  --kubernetes-version=v1.31.0
+```
+
+Confirm the cluster is Ready:
+
+```bash
+kubectl config current-context
+kubectl get nodes
+```
+
+Expected output:
+
+```
+hands-lab
+NAME        STATUS   ROLES           AGE   VERSION
+hands-lab   Ready    control-plane   1m    v1.31.0
+```
+
+## Step 3 — Read the Hands contract
+
+Before applying anything, read `02-hands-contract.yaml`. The `data`
+block is the **provider-neutral Hands contract**: `identity.json`
+carries the Pico and the acting principal, `hands.json` declares one
+`pico.state.set` capability targeting one Pico-owned `ConfigMap`, and
+`rules.json` declares one allow rule (narrowed to the `hands`
+namespace and the `pico-hello-hands-state` `resourceName`) plus one
+explicit deny for `kubernetes.resource.delete`.
+
+```bash
+sed -n '/^data:/,$p' 02-hands-contract.yaml
+```
+
+Nothing about this contract is Kubernetes-specific — a `LocalHands` or
+`PhysicalHands` provider could consume the same `hands.json` and
+`rules.json` and implement the same `pico.state.set` capability
+against its own targets. Step 4 binds this contract to the concrete
+`KubernetesHands` adapter.
+
+## Step 4 — Apply the namespace, contract, and authorization boundary
+
+```bash
+kubectl apply -f 01-namespace.yaml
+kubectl apply -f 02-hands-contract.yaml
+kubectl apply -f 03-rbac.yaml
+kubectl apply -f 04-state-configmap.yaml
+kubectl apply -f 05-events-configmap.yaml
+```
+
+Confirm the `Role` really is narrow — only `get` and `patch`, and only
+on the two Pico-owned `ConfigMap`s:
+
+```bash
+kubectl -n hands get role pico-hello-hands -o yaml \
+  | sed -n '/^rules:/,$p'
+```
+
+Expected output includes:
+
+```
+- apiGroups: [""]
+  resources: ["configmaps"]
+  resourceNames:
+    - pico-hello-hands-state
+    - pico-hello-hands-events
+  verbs: ["get", "patch"]
+```
+
+The `Role` is the **authorization boundary**. Even if the Pico engine
+were compromised, the API server would reject any attempt to `delete`,
+`create`, `patch` other resources, or reach outside the `hands`
+namespace.
+
+## Step 5 — Start the Pico engine
+
+Apply the Pico engine Pod. It runs as the `pico-hello-hands`
+`ServiceAccount`, mounts the Hands contract at `/etc/pico/`, and
+invokes its one Kubernetes Hand.
+
+```bash
+kubectl apply -f 06-pico-engine.yaml
+```
+
+## Step 6 — Wait for the Pico Hand to complete
+
+The Pico engine is a single-shot Pod. It reaches `Succeeded` only when
+the full `pico.hand.*` lifecycle terminated in `succeeded`:
+
+```bash
+kubectl -n hands wait --for=jsonpath='{.status.phase}=Succeeded' \
+  --timeout=120s pod/hello-hands-pico
+kubectl -n hands logs pod/hello-hands-pico
+```
+
+Expected log lines (order-preserving):
+
+```
+pico[hello-hands-pico] pico.hand.requested capability=pico.state.set
+pico[hello-hands-pico] pico.hand.authorized capability=pico.state.set
+pico[hello-hands-pico] pico.hand.succeeded capability=pico.state.set
+pico[hello-hands-pico] evidence: {"execution":{"actor":"hello-hands-pico","pico":"hello-hands-pico","capability":"pico.state.set","provider":"kubernetes","target":{"kind":"ConfigMap","namespace":"hands","resourceName":"pico-hello-hands-state","key":"greeted"},"requested_at":"...","status":"succeeded","reason":""}}
+```
+
+## Step 7 — Read back the state and events ConfigMaps
+
+The **reversible action** is one merge-patch on the Pico-owned state
+`ConfigMap`. Read it back to confirm the Hand landed:
+
+```bash
+kubectl -n hands get configmap pico-hello-hands-state \
+  -o jsonpath='{.data.greeted}'; echo
+```
+
+Expected output:
+
+```
+Hello, Pico!
+```
+
+The Pico also appended the normalized lifecycle to the Pico-owned
+events `ConfigMap`:
+
+```bash
+kubectl -n hands get configmap pico-hello-hands-events \
+  -o jsonpath='{.data.events}'; echo
+```
+
+Expected output (newline-separated):
+
+```
+pico.hand.requested\npico.hand.authorized\npico.hand.succeeded
+```
+
+Capture both, plus the evidence line, as the lab's runtime evidence:
+
+```bash
+mkdir -p ../../build/hello-pico-hands-kubernetes
+kubectl -n hands get configmap pico-hello-hands-events \
+  -o jsonpath='{.data.events}' \
+  > ../../build/hello-pico-hands-kubernetes/events.txt
+kubectl -n hands logs pod/hello-hands-pico \
+  | sed -n 's/^pico\[hello-hands-pico\] evidence: //p' \
+  > ../../build/hello-pico-hands-kubernetes/evidence.json
+```
+
+## Step 8 — Run the automated verifier
+
+Static checks always run; the live path runs when `kubectl` and a
+cluster are reachable, so this step re-executes everything above and
+asserts the invariants:
+
+```bash
+bash verify.sh
+```
+
+Expected final line:
+
+```
+verify: OK — live — state=Hello, Pico!, lifecycle=[requested, authorized, succeeded]
+```
+
+## Step 9 — Reverse the action and clean up
+
+The action is reversible by construction — re-apply the empty state
+`ConfigMap` to remove the `greeted` key, then delete the namespace to
+remove the entire Pico surface:
+
+```bash
+kubectl apply -f 04-state-configmap.yaml
+kubectl -n hands get configmap pico-hello-hands-state -o yaml \
+  | grep -E '^data:' -A 1
+```
+
+Expected output:
+
+```
+data: {}
+```
+
+Then tear the cluster down:
+
+```bash
+kubectl delete namespace hands --ignore-not-found
+minikube delete --profile hands-lab
+```

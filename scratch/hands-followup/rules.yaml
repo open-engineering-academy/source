@@ -1,0 +1,8 @@
+rules:
+  - capability: github.issue.create
+    effect: allow
+    constraints:
+      repositories:
+        - academy-test/*
+  - capability: email.send
+    effect: allow

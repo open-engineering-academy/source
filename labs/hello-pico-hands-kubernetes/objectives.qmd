@@ -1,0 +1,94 @@
+---
+title: "Objectives & prerequisites"
+description: "What Hello Pico Hands (Kubernetes) teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Declare a **provider-neutral Hands contract** for one Pico: identity,
+  one named **capability** (`pico.state.set`), and one **allow rule**
+  with narrow constraints — all as ordinary data, no provider SDKs.
+- Bind that contract to the **`KubernetesHands`** adapter and observe
+  that the adapter is *not* what enforces the boundary — the
+  **namespaced `Role`** with `resourceNames` is.
+- Watch the Pico engine invoke exactly **one reversible action** — a
+  `kubectl patch` confined to a **Pico-owned `ConfigMap`** in the
+  `hands` namespace — under the Pico's own **`ServiceAccount`**.
+- Read back the **normalized `pico.hand.*` lifecycle**
+  (`requested` → `authorized` → `succeeded`) from a Pico-owned events
+  `ConfigMap`, and the **evidence JSON** the Pico engine writes to its
+  own logs, as the lab's runtime evidence.
+- Explain why a valid `ServiceAccount` token does not imply
+  authorization — the `Role`'s `resourceNames` decides which resources
+  the Hand may touch, not the token.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- Completion of the
+  [Hello Pico on Manifold lab](../hello-pico-on-manifold/index.qmd) —
+  the single-Pico runtime story this lab equips with Hands.
+- Familiarity with the
+  [Part 3 · Hands lesson](../../courses/pico/part-3/05-hands/index.qmd)
+  vocabulary (Hands, Capability, HandsProvider, ActionRequest,
+  Policy, Evidence, Action Event).
+- A local Kubernetes cluster; see the
+  [Kubernetes setup foundation](../../courses/kubernetes/index.html)
+  for the canonical minikube install, PATH checks, and first cluster
+  bring-up. `helm` is **not** required for this lab.
+:::
+
+## Environment
+
+The canonical local Kubernetes setup — supported OS, install commands
+for `docker`, `minikube`, and `kubectl`, PATH checks, and a first
+cluster bring-up — lives in the
+[Kubernetes course setup foundation](../../courses/kubernetes/index.html).
+Complete that page first so `docker`, `minikube`, and `kubectl`
+resolve on your `PATH`.
+
+Lab-specific additions on top of that canonical setup:
+
+- **Reference minikube pin**: `v1.38.1` was used to author this lab
+  (any `v1.34+` should work).
+- **Bash + Python 3 utilities**: `grep`, `cat`, `mkdir`, `cp`,
+  `python3`, and the `PyYAML` package (`pip install pyyaml`) — the
+  static checks in `verify.sh` use PyYAML to validate the Hands
+  contract and RBAC boundary.
+- **Estimated time**: **30–45 minutes** (of which the cluster start
+  accounts for roughly 2–5 minutes and the `bitnami/kubectl` image
+  pull for another 1–2 minutes on a cold cache).
+- **Cleanup step** (also repeated at the end of the walkthrough):
+
+  ```bash
+  kubectl delete namespace hands --ignore-not-found
+  minikube delete --profile hands-lab
+  rm -rf build/hello-pico-hands-kubernetes work/hello-pico-hands-kubernetes
+  ```
+
+## Pinned versions (reference)
+
+The walkthrough was authored and verified against these versions.
+Newer versions are expected to work; older Kubernetes versions may
+lack API resources used by the shipped manifests.
+
+- Kubernetes API version in minikube: **v1.31.0**.
+- Container image used as the Pico engine (carries `kubectl` so the
+  `KubernetesHands` adapter can shell out under its own
+  `ServiceAccount`): **`bitnami/kubectl:1.31.0`**. The Pod runs
+  `runAsNonRoot: true`, `readOnlyRootFilesystem: true`,
+  `allowPrivilegeEscalation: false`, drops **all** capabilities, and
+  mounts no `hostPath` volumes.
+
+::: {.callout-note title="Why bitnami/kubectl for the Pico engine"}
+The Pico engine is the on-cluster host that carries the Pico Element
+`hello-hands-pico` and invokes its declared Hands. `bitnami/kubectl`
+ships with `bash` and the `kubectl` binary, so a small shell script
+can play the role of the `KubernetesHands` adapter: it reads the
+mounted Hands contract, evaluates the Pico's rules, and — when
+authorized — performs one narrow `kubectl patch` call against a
+Pico-owned `ConfigMap`. The authorization boundary is enforced by the
+API server through the `Role` in `03-rbac.yaml`, not by the script.
+:::

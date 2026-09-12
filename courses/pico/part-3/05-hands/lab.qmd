@@ -2,13 +2,23 @@
 title: "Lab · Give a Pico Hands"
 ---
 
-In this lab you will author a complete Hands-equipped Pico definition, a
-governed action request with identity context, and a ruleset — then validate
-the YAML with the `pico` CLI.
+In this lab you will author one artefact per stage of a Hand invocation —
+Composer equipment, Pico decision, Policy authorization, Hand selection,
+Provider execution, Evidence, and Action event — and validate the local
+YAML with the `pico` CLI.
 
 The scenario follows the memo progression: a Pico observes a condition,
-evaluates a rule, decides on an action, and uses its Hands to perform it
-(a low-risk, reversible action such as creating a GitHub issue).
+evaluates a rule, decides on an action, its Hand carries the action out, an
+evidence record is kept, and an action event is published.
+
+::: {.callout-important}
+## No external calls in this wave
+
+Every step in this lab operates on **local YAML** only. No step contacts
+Composio, GitHub, Kubernetes, or any other external service. The provider
+mapping in Step 6 is a labeled, optional, non-runnable annex — nothing in
+it executes.
+:::
 
 ## Setup
 
@@ -16,9 +26,11 @@ evaluates a rule, decides on an action, and uses its Hands to perform it
 mkdir -p scratch/hands
 ```
 
-## Step 1 — Pico definition with Hands
+## Step 1 — Composer equipment (Pico definition with Hands)
 
-Create `scratch/hands/pico.yaml`:
+Create `scratch/hands/pico.yaml`. This is what the **Composer** puts on the
+Pico. It says only what capabilities are *available*, not what is
+*permitted*.
 
 ```yaml
 # scratch/hands/pico.yaml
@@ -29,19 +41,21 @@ metadata:
 spec:
   hands:
     - name: external
-      provider: composio
+      provider: local          # provider-neutral placeholder
       capabilities:
         - github.issue.read
         - github.issue.create
     - name: cluster
-      provider: kubernetes
+      provider: local          # provider-neutral placeholder
       capabilities:
         - kubernetes.resource.read
 ```
 
-## Step 2 — Governed action request
+## Step 2 — Pico decision (governed action request)
 
-Create `scratch/hands/action.yaml` — the "identity before action" boundary:
+Create `scratch/hands/action.yaml` — the "identity before action" boundary.
+This is the Pico's **decision** to invoke a capability, not yet the
+authorization or the execution.
 
 ```yaml
 # scratch/hands/action.yaml
@@ -51,15 +65,15 @@ principal:
   type: user
   id: user.example
 action:
-  provider: composio
-  capability: github.issue.create
+  capability: github.issue.create   # provider-neutral
 authorization:
   capability: github.issue.create
 ```
 
-## Step 3 — Rules with constraints
+## Step 3 — Policy authorization (rules with constraints)
 
-Create `scratch/hands/rules.yaml`:
+Create `scratch/hands/rules.yaml`. These are the Open Engineering rules
+that decide whether the Pico's decision is permitted in this context.
 
 ```yaml
 # scratch/hands/rules.yaml
@@ -80,34 +94,142 @@ rules:
         - production/*
 ```
 
-## Step 4 — Validate all three
+## Step 4 — Hand selection
 
-```bash
-pico parse scratch/hands/pico.yaml --out /tmp/h1.json \
-  && echo "OK: pico definition parses"
-pico parse scratch/hands/action.yaml --out /tmp/h2.json \
-  && echo "OK: action request parses"
-pico parse scratch/hands/rules.yaml --out /tmp/h3.json \
-  && echo "OK: rules parse"
+Create `scratch/hands/selection.yaml`. This records which specific Hand on
+the Pico is bound to carry out the authorized capability.
+
+```yaml
+# scratch/hands/selection.yaml
+selection:
+  capability: github.issue.create
+  hand: external
+  rationale: "only 'external' declares github.issue.create in step 1"
 ```
 
-## Step 5 — Reflect
+## Step 5 — Provider execution (simulated)
+
+Create `scratch/hands/execution.yaml`. This is a **simulated** provider
+result. Nothing is actually contacted — the artefact just describes what a
+provider *would* return so later stages can consume it.
+
+```yaml
+# scratch/hands/execution.yaml
+execution:
+  hand: external
+  capability: github.issue.create
+  provider: local              # simulated; no external call
+  status: succeeded
+  provider-reference: "sim://issue/42"
+```
+
+## Step 6 — Evidence
+
+Create `scratch/hands/evidence.yaml`. Evidence is a signed, retainable
+record of what happened, distinct from the action itself.
+
+```yaml
+# scratch/hands/evidence.yaml
+evidence:
+  actor: issue-reporter
+  principal: user.example
+  capability: github.issue.create
+  authorized-by: rules/rules.yaml#0
+  hand: external
+  execution-reference: "sim://issue/42"
+  outcome: succeeded
+  observed-at: 2026-01-01T00:00:00Z
+```
+
+## Step 7 — Action event
+
+Create `scratch/hands/event.yaml`. This is the Pico's **Voice** reporting a
+state transition after the Hand acted. Other Picos, services, or humans
+can subscribe to it.
+
+```yaml
+# scratch/hands/event.yaml
+event:
+  type: pico.hand.executed
+  source: issue-reporter
+  capability: github.issue.create
+  outcome: succeeded
+  evidence-reference: evidence/evidence.yaml
+```
+
+## Step 8 — Validate all seven
+
+Every file is local YAML. No network is used. These are Hands governance
+artefacts rather than Hello Pico Rules, so the check uses `python3` to
+confirm each file is well-formed YAML — `pico parse` only accepts the
+flat Rule shape (`id`/`kind`/`value`) taught in Part 1.
+
+```bash
+python3 - <<'PY'
+import sys, yaml, pathlib
+root = pathlib.Path("scratch/hands")
+failed = False
+for name in ("pico", "action", "rules", "selection", "execution", "evidence", "event"):
+    path = root / f"{name}.yaml"
+    try:
+        doc = yaml.safe_load(path.read_text())
+    except yaml.YAMLError as exc:
+        print(f"FAIL: {path} — {exc}", file=sys.stderr); failed = True; continue
+    if not isinstance(doc, dict) or not doc:
+        print(f"FAIL: {path} — expected a non-empty YAML mapping", file=sys.stderr)
+        failed = True; continue
+    print(f"OK: {name}.yaml parses")
+sys.exit(1 if failed else 0)
+PY
+```
+
+## Step 9 — Optional annex · Composio provider mapping (non-runnable)
+
+::: {.callout-warning}
+## Optional and non-runnable in this wave
+
+This annex illustrates what a provider mapping for Composio *could* look
+like. It is not executed and is not a prerequisite for completing the lab.
+No credentials, tokens, or Composio account are needed.
+:::
+
+```yaml
+# scratch/hands/composio-mapping.yaml   (illustrative only — do not run)
+provider: composio
+mappings:
+  github.issue.create: GITHUB_CREATE_ISSUE
+  email.send:          GMAIL_SEND_EMAIL
+```
+
+The Pico rules in Step 3 still name only `github.issue.create`. Swapping
+the provider means swapping this mapping — nothing else changes.
+
+For a deeper walk-through of this mapping — including a mock contract
+check that runs on local YAML and asserts rules stay provider-neutral,
+no credential-shaped strings appear, and the Composio-specific
+vocabulary is confined to the adapter surface — see the optional,
+non-runnable follow-up page:
+[Composio as a Hands provider](composio-followup.qmd).
+
+## Step 10 — Reflect
 
 Answer, using your files:
 
-- Which file expresses *what the Pico can be equipped to do*?
+- Which file expresses *what the Pico can be equipped to do* (equipment)?
 - Which file expresses *what the Pico is permitted to do in a given
-  context*?
-- Why is the action request tied to an actor and capability rather than only
-  a provider tool?
+  context* (policy authorization)?
+- Why is the action request tied to an actor and capability rather than
+  only a provider tool?
+- Why do **evidence** and **action event** exist as separate artefacts?
 - What extra constraint would you add to require **human approval** for a
   production `github.issue.create`?
 
 ## What you will produce
 
-A Hands-equipped Pico definition, a governed action request, and a
-constraint-bearing ruleset that together show Hands as governed, governed
-execution.
+Seven local YAML artefacts — one per stage of the Hand invocation — plus an
+optional, non-runnable Composio mapping annex. Together they show Hands as
+governed execution with clear separation between equipment, decision,
+authorization, selection, execution, evidence, and action events.
 
 ## Next
 
