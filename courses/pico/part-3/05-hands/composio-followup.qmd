@@ -1,0 +1,230 @@
+---
+title: "Optional follow-up · Composio as a Hands provider"
+description: "How a provider-neutral capability such as email.send or github.issue.create maps behind ComposioHands without changing Pico rules — architecture only, no runtime dependency."
+---
+
+::: {.callout-important}
+## Optional, non-runnable, no external accounts
+
+This page is a **separately governed extension** of the Hands lesson. It
+introduces no runtime dependency on Composio. No step here contacts
+Composio, GitHub, Gmail, Slack, or any other external service, and no
+credentials, tokens, connected accounts, OAuth flows, or Composio SDKs
+are required. The mock contract check at the bottom operates on **local
+YAML** only, using tools already used elsewhere in this course
+(`python3` + `PyYAML`). The first runnable Hands path remains
+[Hello Pico Hands (Kubernetes)](../../../../labs/hello-pico-hands-kubernetes/index.qmd).
+:::
+
+## Why this page exists
+
+The lesson establishes that Pico rules name **capabilities**
+(`email.send`, `github.issue.create`) and never provider tool names
+(`GMAIL_SEND_EMAIL`, `GITHUB_CREATE_ISSUE`). This page shows how that
+neutrality is preserved when the provider happens to be **Composio** —
+and, just as importantly, where Composio's concerns *stop*.
+
+## The two boundaries
+
+There are two boundaries around a Hand invocation. They MUST NOT be
+collapsed:
+
+```
+        Open Engineering                          Composio
+      (identity · rules ·                     (authentication ·
+       policy · authorization ·                connected accounts ·
+       evidence · action events)               OAuth · tool execution)
+              │                                        │
+              │  capability: email.send                │
+              └──────────────► ComposioHands ─────────►│
+                              (adapter, isolation      │
+                               of provider names)      ▼
+                                                External System
+```
+
+- **Open Engineering** answers: *Is this Pico permitted to perform
+  `email.send` in this context?* Identity, rules, policy, authorization,
+  evidence, and action events all live here. This side never sees
+  provider secrets and never mentions provider tool names.
+- **Composio** answers: *Can a connected account authenticate to the
+  underlying SaaS, and how is the concrete tool invoked?* Authentication,
+  connected accounts, OAuth, credentials, and tool execution all live
+  here.
+
+The `ComposioHands` adapter is the *only* place the two vocabularies
+touch. Everything else in the Pico — rules, evidence, action events —
+stays provider-neutral.
+
+## The isolated `ComposioHands` mapping
+
+The mapping between a Pico capability and a Composio tool name lives in a
+single, small file inside the adapter. Pico rules never see it. Swapping
+providers means swapping this file.
+
+```yaml
+# scratch/hands-followup/composio-mapping.yaml   (illustrative only)
+provider: composio
+mappings:
+  email.send:          GMAIL_SEND_EMAIL
+  github.issue.create: GITHUB_CREATE_ISSUE
+  github.issue.read:   GITHUB_GET_ISSUE
+```
+
+The corresponding Pico rules stay exactly as in the lesson lab — no
+provider tool name appears:
+
+```yaml
+# scratch/hands-followup/rules.yaml (unchanged from the lesson lab)
+rules:
+  - capability: github.issue.create
+    effect: allow
+    constraints:
+      repositories:
+        - academy-test/*
+  - capability: email.send
+    effect: allow
+```
+
+## Contract of the adapter (interface only, no implementation)
+
+A `ComposioHands` adapter — if one were built later — would expose the
+same provider-neutral contract every other Hands provider exposes:
+
+```
+ComposioHands
+  resolve(capability) -> provider_tool_name        # internal to the adapter
+  authenticate(connected_account) -> session       # Composio concern
+  execute(action_request, session) -> action_result
+  evidence(action_result) -> evidence_record       # provider-neutral shape
+```
+
+Only `resolve()` and `authenticate()` ever mention Composio-specific
+vocabulary. `execute()` accepts a provider-neutral `ActionRequest` and
+returns a provider-neutral `ActionResult`, and `evidence()` produces the
+same evidence shape as `KubernetesHands` or `LocalHands`.
+
+## Gating live execution (explicit decision)
+
+Turning any of the above into a live call requires an **explicit
+approval and secret-management decision** that has not been made in this
+wave. The decision covers, at minimum:
+
+- **Human approval** for the capability's blast radius (see the seven
+  concerns diagram in the [lesson](index.qmd) — approval is part of
+  *Policy authorization*, not *Provider execution*).
+- **Secret management**: where Composio API keys and connected-account
+  credentials live, who can read them, and how they reach the adapter
+  process. Nothing in this repository ships such secrets.
+- **Connected-account provisioning** and OAuth consent flow — a
+  Composio-side concern that never appears in Pico rules or evidence.
+- **Reversibility and blast-radius review** for each mapped capability,
+  matching the reversible-action posture of the first runnable
+  KubernetesHands lab.
+
+Until that decision is recorded, `ComposioHands` remains an
+architectural placeholder. No such adapter, SDK, dependency, secret, or
+connected account is added by this page.
+
+## Mock contract check (runs on local YAML only)
+
+The check below confirms three properties without contacting any
+external service:
+
+1. Pico **rules never name a provider tool** (uppercase `_` names like
+   `GMAIL_SEND_EMAIL`).
+2. The mapping file **only appears in the adapter surface**, and its
+   keys are provider-neutral capabilities.
+3. No credential-shaped strings (API keys, tokens, OAuth secrets,
+   connected-account IDs) appear anywhere in the mapping or rules.
+
+```bash
+mkdir -p scratch/hands-followup
+
+cat > scratch/hands-followup/composio-mapping.yaml <<'EOF'
+provider: composio
+mappings:
+  email.send:          GMAIL_SEND_EMAIL
+  github.issue.create: GITHUB_CREATE_ISSUE
+  github.issue.read:   GITHUB_GET_ISSUE
+EOF
+
+cat > scratch/hands-followup/rules.yaml <<'EOF'
+rules:
+  - capability: github.issue.create
+    effect: allow
+    constraints:
+      repositories:
+        - academy-test/*
+  - capability: email.send
+    effect: allow
+EOF
+
+python3 - <<'PY'
+import re, sys, yaml, pathlib
+root = pathlib.Path("scratch/hands-followup")
+mapping = yaml.safe_load((root / "composio-mapping.yaml").read_text())
+rules   = yaml.safe_load((root / "rules.yaml").read_text())
+
+PROVIDER_TOOL = re.compile(r"^[A-Z][A-Z0-9_]{3,}$")   # e.g. GMAIL_SEND_EMAIL
+CAPABILITY    = re.compile(r"^[a-z][a-z0-9_.-]*\.[a-z][a-z0-9_.-]*$")  # dotted, lowercase
+SECRETS       = re.compile(
+    r"(api[_-]?key|token|secret|bearer|password|oauth|client[_-]?secret|"
+    r"connected[_-]?account[_-]?id)",
+    re.IGNORECASE,
+)
+
+def fail(msg):
+    print(f"contract-check: FAIL — {msg}", file=sys.stderr); sys.exit(1)
+
+# 1. rules never name a provider tool
+for rule in rules["rules"]:
+    cap = rule["capability"]
+    if PROVIDER_TOOL.match(cap):
+        fail(f"rules.yaml names a provider tool, not a capability: {cap}")
+    if not CAPABILITY.match(cap):
+        fail(f"rules.yaml capability shape is not provider-neutral: {cap}")
+
+# 2. mapping keys are capabilities; mapping values are provider tool names
+if mapping.get("provider") != "composio":
+    fail("mapping.provider must be 'composio' in this illustrative file")
+for cap, tool in mapping["mappings"].items():
+    if not CAPABILITY.match(cap):
+        fail(f"mapping key is not a provider-neutral capability: {cap}")
+    if not PROVIDER_TOOL.match(tool):
+        fail(f"mapping value is not a provider tool identifier: {tool}")
+
+# 3. no credential-shaped strings anywhere
+for path in ("composio-mapping.yaml", "rules.yaml"):
+    body = (root / path).read_text()
+    m = SECRETS.search(body)
+    if m:
+        fail(f"credential-shaped token '{m.group(0)}' appears in {path}")
+
+# 4. no rule names a Composio-specific concept
+for rule in rules["rules"]:
+    body = yaml.safe_dump(rule)
+    if "composio" in body.lower():
+        fail("rules.yaml mentions 'composio' — Pico rules must stay provider-neutral")
+
+print("contract-check: OK — rules are provider-neutral, mapping is isolated, no credentials present")
+PY
+```
+
+The check exits `0` and prints an `OK:` line when the contract holds.
+It performs no network I/O.
+
+## What this page does *not* do
+
+- It does not add a Composio SDK or any runtime dependency to the
+  repository (see the shipped `verify.sh` for
+  [Hello Pico Hands (Kubernetes)](../../../../labs/hello-pico-hands-kubernetes/index.qmd),
+  which asserts no Composio credentials leak into the engine script).
+- It does not perform live OAuth or provision a connected account.
+- It does not commit secrets, tokens, or Composio API keys.
+- It does not change the KubernetesHands first-runnable-path posture of
+  the lesson lab or the Hello Pico pipeline.
+
+## Next
+
+Return to the [Summary](summary.qmd) or the
+[Part 3 overview](../index.qmd).

@@ -42,6 +42,7 @@ project:
     - part-3/05-hands/lab.qmd
     - part-3/05-hands/summary.qmd
     - part-3/05-hands/quiz.qmd
+    - part-3/05-hands/composio-followup.qmd
     - labs/index.qmd
 
 website:
@@ -151,6 +152,8 @@ website:
                 text: Summary
               - href: part-3/05-hands/quiz.qmd
                 text: Quiz
+              - href: part-3/05-hands/composio-followup.qmd
+                text: "Optional follow-up · Composio"
       - href: labs/index.qmd
         text: Labs
       - href: constructive-realization.qmd

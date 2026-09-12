@@ -262,6 +262,17 @@ Composio is a provider/platform. These concerns remain separate.
   `resourceNames` to a Pico-owned `ConfigMap`, and the normalized
   `pico.hand.*` lifecycle plus evidence JSON.
 
+## Optional follow-up
+
+- [Composio as a Hands provider](composio-followup.qmd) — an optional,
+  non-runnable extension that shows how a provider-neutral capability
+  such as `email.send` or `github.issue.create` maps behind a
+  `ComposioHands` adapter without changing Pico rules, and explicitly
+  separates Open Engineering identity/authorization/policy from
+  Composio authentication, connected accounts, OAuth, and tool
+  execution. Includes a mock contract check that runs on local YAML
+  and requires no external accounts, tokens, or SDKs.
+
 ## Next
 
 Continue with the [Exercise](exercise.qmd).

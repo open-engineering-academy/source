@@ -42,6 +42,11 @@ Open Engineering governs the whole loop.
 
 - Return to the [Part 3 overview](../index.qmd) to review all lessons, or
   revisit any lesson in this course: [Course home](../../index.qmd).
+- Optional, non-runnable extension:
+  [Composio as a Hands provider](composio-followup.qmd) — shows how a
+  provider-neutral capability maps behind `ComposioHands` without
+  changing Pico rules, and where Composio authentication stops and
+  Open Engineering authorization begins.
 
 ## Next
 

@@ -189,6 +189,13 @@ mappings:
 The Pico rules in Step 3 still name only `github.issue.create`. Swapping
 the provider means swapping this mapping — nothing else changes.
 
+For a deeper walk-through of this mapping — including a mock contract
+check that runs on local YAML and asserts rules stay provider-neutral,
+no credential-shaped strings appear, and the Composio-specific
+vocabulary is confined to the adapter surface — see the optional,
+non-runnable follow-up page:
+[Composio as a Hands provider](composio-followup.qmd).
+
 ## Step 10 — Reflect
 
 Answer, using your files:
