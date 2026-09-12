@@ -38,6 +38,16 @@ By the end of the course you will be able to:
   **Hands** (how an action is executed), and explain why Hands stay
   provider-neutral. See
   [Part 3 · Hands](part-3/05-hands/index.qmd).
+- Place a Pico's
+  [**Nervous System**](glossary.qmd#nervous-system) *after* Hands in the
+  Pico progression and distinguish Brain/Mind, Hands, **Voice** (what a
+  Pico communicates outward), and the transport-neutral fabric those
+  messages travel through. The course defines provider-neutral message
+  semantics — envelope, observation, event, command, delegation,
+  result, presence, discovery, and topic/capability authorization —
+  before naming MQTT or EMQX as candidate transport implementations.
+  See
+  [Constructive realization · Nervous system as a governed extension](constructive-realization.qmd#nervous-system-as-a-governed-extension).
 
 See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
 machine-readable summary (id, level, duration, prerequisites, teaches,

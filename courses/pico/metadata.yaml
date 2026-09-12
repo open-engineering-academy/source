@@ -26,6 +26,18 @@ teaches:
   - HandsProvider
   - Policy
   - Evidence
+  - Nervous System
+  - Pico Agent Transport
+  - Message Envelope
+  - Observation
+  - Event
+  - Command
+  - Delegation
+  - Result
+  - Presence
+  - Discovery
+  - Topic Authorization
+  - Capability Authorization
 produces:
   - hello-world-pico
 references_labs:

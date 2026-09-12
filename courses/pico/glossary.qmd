@@ -179,3 +179,116 @@ lifecycle — for example `pico.hand.requested`, `pico.hand.authorized`,
 `pico.hand.denied`, `pico.hand.succeeded`, and `pico.hand.failed`.
 Action events let other Open Engineering components observe Pico
 behaviour without coupling themselves to a particular HandsProvider.
+
+## Nervous System
+The provider-neutral communication fabric through which a Pico senses,
+communicates, coordinates, and interacts with other Picos, devices, and
+services. In this course the Nervous System sits *after* Hands in the
+Pico progression and is distinct from Brain/Mind (whether/why to act),
+Hands (how an action is executed), and Voice (what a Pico chooses to
+communicate). The Nervous System defines the semantic layer; MQTT and
+EMQX are candidate transport implementations, not the semantics
+themselves. See
+[Constructive realization](constructive-realization.qmd#nervous-system-as-a-governed-extension).
+
+## Pico Agent Transport
+The abstraction that carries Nervous System messages between Picos and
+other participants. Pico Agent Transport names *what* is communicated
+(message envelopes carrying observations, events, commands,
+delegations, results, presence, and discovery) rather than *how* it is
+carried on the wire. MQTT is the first candidate implementation and
+EMQX is a candidate broker; the Pico must remain replaceable across
+transports without changing its Rules, Capabilities, or Hands.
+
+## Message Envelope
+The structured wrapper around every Nervous System message. A message
+envelope carries the message type (observation, event, command,
+delegation, result), the sending Pico's Identity, a stable message
+identifier, a correlation identifier for related exchanges, a
+timestamp, and the typed payload. Envelope fields are transport-neutral;
+transport bindings (for example MQTT topics or QoS) MUST NOT be
+required by the Pico to interpret the envelope.
+
+## Observation
+A Nervous System message reporting that *something was observed* — for
+example a soil-moisture reading or a repository status snapshot.
+Observations are transient by default; the Pico's Rules decide whether
+an Observation becomes Evidence, a Memory candidate, or is discarded.
+This course-scoped Observation is aligned with the Phase 7
+`Observation` concept in `templates/README.qmd` (in-repo scaffold, not
+published as a learner page) and feeds the same Observation → Feedback
+→ Definition loop.
+
+## Event
+A Nervous System message reporting that *something happened* — a
+completed state transition worth telling other Picos about. Events
+differ from Observations in that they name a discrete occurrence
+(`rollout_failed`, `door_opened`) rather than an ongoing reading.
+
+## Command
+A Nervous System message requesting that a named target perform an
+action. A Command is a *request*, not an authorization: the receiving
+Pico MUST evaluate the Command against its Rules and Policy before any
+Hand executes. Commands never bypass the Composer-equips, Pico-decides,
+Policy-authorizes, Hand-executes chain from
+[Part 3 · Hands](part-3/05-hands/index.qmd).
+
+## Delegation
+A Nervous System message in which one Pico asks another Pico to carry
+out a mission. Delegation is a scoped request between identified Picos
+and MUST carry enough context (mission, authorization, correlation) for
+the delegate to accept, decline, or refine it under its own Rules and
+Policy.
+
+## Result
+A Nervous System message reporting the outcome of a Command, a
+Delegation, or another correlated request. Results carry a
+provider-independent status and any values the caller needs, without
+carrying credentials or sensitive provider payloads — mirroring the
+shape of `ActionResult` for Hands.
+
+## Presence
+A Nervous System signal describing a Pico's availability on the
+transport — for example whether it is online, offline, degraded, or
+maintenance-mode. Presence is a transport-observable claim about
+availability; it is not a claim about capability, and it never
+substitutes for Discovery or Authorization.
+
+## Discovery
+The Nervous System capability by which a Pico determines *which*
+Picos exist, *which* are currently available, *what* Capabilities
+they advertise, *how* they can be contacted, and *what* constraints
+apply. Discovery is the semantic query surface; the transport merely
+delivers Discovery messages. Discovery advertises Capabilities but
+does *not* by itself authorize their invocation.
+
+## Topic Authorization
+The authorization decision that a specific Pico Identity is permitted
+to publish or subscribe on a specific transport pathway (for example
+an MQTT topic). Topic Authorization is a transport-level concern that
+sits *below* Nervous System semantics: it decides whether a message
+may traverse a pathway at all. It does not, by itself, authorize the
+Capability that message may request.
+
+## Capability Authorization
+The authorization decision that a specific Pico Identity is permitted
+to *invoke* a named Capability — separately from being permitted to
+publish on any particular topic. Capability Authorization is a
+semantic-layer concern evaluated by Policy, mirroring the Hands
+Authorization contract. Topic Authorization and Capability
+Authorization are complementary and MUST both hold before a governed
+action executes.
+
+## MQTT
+An event-driven publish/subscribe messaging protocol. In this course
+MQTT is named as the first candidate transport implementation of the
+Pico Agent Transport, not as the semantic owner of Pico messages.
+Nervous System vocabulary MUST remain intelligible without naming
+MQTT.
+
+## EMQX
+A production-grade MQTT broker. In this course EMQX is named as a
+candidate broker implementation for the MQTT transport binding of the
+Pico Agent Transport. EMQX operational concerns (deployment,
+credentials, cluster topology) are out of scope for the course
+contract; they belong to separate adapter follow-up work.
