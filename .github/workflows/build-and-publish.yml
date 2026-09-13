@@ -24,6 +24,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # ------------------------------------------------------------------
+      # OELS validation gate (runs before any Quarto render).
+      #
+      # Iterates over the nine course roots plus the shared top-level
+      # labs/ and templates/{course,lab,lesson,quiz}/ per memo14/memo15,
+      # projects academy metadata via the OELS-equivalent adapter, and
+      # asserts the deterministic malformed-fixture diagnostic code.
+      # Fails the workflow on any supported semantic error before
+      # publication. Deliberately separate from Quarto rendering.
+      # ------------------------------------------------------------------
+      - name: Set up Python for OELS validation
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML (OELS adapter dependency)
+        run: python3 -m pip install --disable-pip-version-check "pyyaml>=6"
+
+      - name: Run OELS validation across all nine course roots
+        run: python3 scripts/oels_ci_validate.py
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 

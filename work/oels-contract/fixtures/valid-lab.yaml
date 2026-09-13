@@ -1,0 +1,15 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Lab
+metadata:
+  name: oe-lab-fixture
+  id: oe.lab.fixture
+spec:
+  title: Valid lab fixture
+  level: intermediate
+  duration: 30m
+  prerequisites: []
+  teaches: []
+  produces: []
+  referenced_by: []
+  constructive_role: realization
+  lifecycle_state: operational

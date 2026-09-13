@@ -18,3 +18,16 @@ Starter files for a single lesson inside a course. Copy this directory to
 
 Lesson directories use a two-digit ordering prefix (`01-`, `02-`, ...) so the
 filesystem order matches the intended reading order.
+
+## OELS authoring
+
+Lessons and their embedded exercises (`exercise.qmd`) copied from this
+template inherit the shared Open Engineering Language Server (OELS)
+authoring contract. Lesson prose in `.qmd` files (including YAML front
+matter) is owned by Quarto and is not scanned by OELS. Lesson
+`metadata.yaml` is silently ignored by OELS today — no
+`apiVersion`/`kind` header should be added ad hoc. See the **OELS
+authoring integration** section of
+[`templates/README.qmd`](../README.qmd) for the full artifact
+classification table, portable local stdio/LSP usage, how OELS
+diagnostics differ from Quarto render errors, and troubleshooting.

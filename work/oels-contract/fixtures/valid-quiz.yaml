@@ -1,0 +1,12 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Quiz
+metadata:
+  name: oe-quiz-fixture
+  id: oe.quiz.fixture
+spec:
+  title: Valid quiz fixture
+  scope: course
+  course: oe.course.fixture
+  lesson: null
+  question_count: 3
+  teaches: []

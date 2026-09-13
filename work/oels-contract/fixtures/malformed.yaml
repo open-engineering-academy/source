@@ -1,0 +1,9 @@
+# Malformed OELS resource: the document root is a YAML sequence, not a mapping.
+# The OELS-equivalent validator (validate_resource) emits `MalformedResource`
+# whenever the root is not an object, mirroring the diagnostic the pinned
+# Open Engineering Language Server surfaces for the same shape.
+- apiVersion: open-engineering.io/v1alpha1
+  kind: Course
+  metadata:
+    name: oe-course-malformed-root-is-a-sequence
+    id: oe.course.malformed.root-is-a-sequence

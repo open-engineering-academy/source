@@ -1,0 +1,12 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Lesson
+metadata:
+  name: oe-lesson-fixture-01-intro
+  id: oe.lesson.fixture.01-intro
+spec:
+  title: Valid lesson fixture
+  course: oe.course.fixture
+  order: 1
+  duration: 15m
+  teaches: []
+  references_labs: []

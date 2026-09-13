@@ -34,3 +34,16 @@ walkthrough live under `screenshots/`.
 
 Machine-readable descriptor lives in `metadata.yaml` next to this file. See
 [`templates/README.qmd`](../README.qmd) for required fields.
+
+## OELS authoring
+
+Labs copied from this template inherit the shared Open Engineering
+Language Server (OELS) authoring contract. Lab `metadata.yaml` and
+files under `downloads/` (Kubernetes manifests, Crossplane resources,
+Home Assistant snippets, topology data, JSON payload samples, and
+`verify.sh` scripts) are intentionally **not** recognized as OE
+resources today — OELS ignores them silently, which is the correct
+behavior. See the **OELS authoring integration** section of
+[`templates/README.qmd`](../README.qmd) for the full artifact
+classification table, local stdio/LSP usage, diagnostics-vs-Quarto
+guidance, and troubleshooting.

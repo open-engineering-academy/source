@@ -21,3 +21,14 @@ courses/<slug>/quiz.qmd
 
 Lesson-embedded quizzes should use
 [`templates/lesson/quiz.qmd`](../lesson/quiz.qmd) instead.
+
+## OELS authoring
+
+Quizzes copied from this template inherit the shared Open Engineering
+Language Server (OELS) authoring contract. Quiz prose in `quiz.qmd`
+(including YAML front matter and any collapsible answer callouts) is
+owned by Quarto and is not scanned by OELS. Quiz `metadata.yaml` is
+silently ignored by OELS today. See the **OELS authoring integration**
+section of [`templates/README.qmd`](../README.qmd) for the full
+artifact classification table, portable local stdio/LSP usage,
+diagnostics-vs-Quarto guidance, and troubleshooting.

@@ -1,0 +1,65 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Definition
+metadata:
+  name: lesson
+  description: >
+    OE Lesson artifact contract, projected from lesson metadata.yaml files
+    copied from templates/lesson/. Currently applies only to the template
+    placeholder; see memo14.md.
+spec:
+  target:
+    apiVersion: open-engineering.io/v1alpha1
+    kind: Lesson
+  schema:
+    type: object
+    additionalProperties: false
+    required:
+      - apiVersion
+      - kind
+      - metadata
+      - spec
+    properties:
+      apiVersion:
+        type: string
+      kind:
+        type: string
+      metadata:
+        type: object
+        additionalProperties: false
+        required:
+          - name
+          - id
+        properties:
+          name:
+            type: string
+            description: DNS-1123 projection of the academy id (dots replaced with dashes).
+          id:
+            type: string
+      spec:
+        type: object
+        additionalProperties: true
+        required:
+          - title
+          - course
+        properties:
+          title:
+            type: string
+          course:
+            type: string
+            description: Academy id of the owning course (dot-shape).
+          order:
+            type: integer
+          duration:
+            type: string
+          prerequisites:
+            type: array
+            items:
+              type: string
+          teaches:
+            type: array
+            items:
+              type: string
+          references_labs:
+            type: array
+            items:
+              type: string

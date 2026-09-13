@@ -1222,3 +1222,226 @@ Phase 8 intentionally does **not** implement:
   formal files, or adding new checkable profiles.
 - Changing the Phase 1–7 `metadata.yaml` contract; where this phase adds the
   optional `conforms_to` field, it does so additively only.
+
+
+## OELS authoring integration
+
+This section is the shared authoring contract for the Open Engineering
+Language Server (OELS). It applies uniformly to every template in this
+directory and, by inheritance, to every course, course-scoped lab or
+exercise, and top-level lab copied from a template. It documents what
+OELS covers, how to run it locally, and how to keep its diagnostics
+distinct from Quarto render errors.
+
+OELS is the shared **semantic authoring surface** for structured Open
+Engineering (OE) artifacts. It is a Language Server Protocol (LSP)
+server that provides diagnostics, completion, hover, definition/reference
+navigation, and document/workspace symbols for files that declare
+themselves as OE resources. Quarto remains the sole publishing system;
+OELS never renders, transforms, or replaces Quarto output.
+
+### Scope of this section
+
+This section adds authoring guidance and configuration conventions
+only. It does **not** reshape any existing `metadata.yaml`, add
+`apiVersion`/`kind` headers to any current file, create a repository
+`definitions/` directory, install any dependency, add CI gates, embed
+the sibling OELS repository's absolute local path, or change learner
+behavior. Broad course-artifact migration and CI gating are separate,
+later tasks (see `memo13.md`).
+
+### What OELS treats as an OE resource
+
+OELS recognizes a file as an OE resource only when **all** of the
+following hold, as enforced by its parser and loader:
+
+1. The file extension is one of `.yaml`, `.yml`, or `.json`.
+2. The document root is a YAML/JSON mapping.
+3. The root declares `apiVersion` beginning with `open-engineering.io/`.
+4. The root declares a non-empty `kind`.
+5. `metadata.name` is present and matches the DNS-1123 shape
+   `[a-z0-9]([-a-z0-9]*[a-z0-9])?` (no dots or underscores).
+
+Every other well-formed file is **silently ignored** by OELS — this is
+by design so unrelated Kubernetes, Crossplane, Home Assistant, Quarto,
+CI, and configuration YAML/JSON can coexist without spurious
+diagnostics.
+
+Definitions live in `<workspace-root>/definitions/` (top-level only;
+`.yaml`, `.yml`, `.json`). A missing `definitions/` directory is not
+an error; it simply means no schema-driven validation is performed.
+
+### Artifact classification for template authors
+
+Use this table to decide, for any new file a template produces, which
+system owns it. **When in doubt, treat it as ordinary Quarto or neutral
+data** — silence from OELS is the correct behavior for non-OE files.
+
+| File pattern (under a template copy)              | Owner              | OELS behavior                                   |
+| ------------------------------------------------- | ------------------ | ----------------------------------------------- |
+| `*.qmd`, `*.md`, `*.html`, `*.css`, `*.svg`, `*.png` | Quarto             | Not scanned (extension not in OELS set).        |
+| YAML front matter inside `.qmd`                   | Quarto             | Not scanned; belongs to the Quarto document.    |
+| `_quarto.yml`, `_site/`, `.quarto/`, `_freeze/`   | Quarto             | Ignored (build config / generated output).      |
+| `metadata.yaml` (course / lab / lesson / quiz)    | Academy (current)  | Ignored today (no `apiVersion`/`kind`); slated for adapter migration. |
+| `labs/<slug>/downloads/*.yaml` (Kubernetes, Crossplane, Home Assistant, topology, envelope, ConfigMap) | Third-party runtimes | Ignored (non-OE `apiVersion`).                  |
+| `labs/<slug>/downloads/*.json` (payload samples, JSON Schema) | Lab data           | Ignored (no OE `apiVersion` at root).           |
+| `labs/<slug>/downloads/verify.sh` and other scripts | Lab runtime        | Not scanned (extension not in OELS set).        |
+| Root or course `.github/workflows/*.yml`          | CI                 | Ignored (non-OE data).                          |
+| `templates/constructive-realization/*.ttl`       | Phase 8 reference  | Out of scope (`.ttl` not in OELS extension set). |
+| Future `<workspace-root>/definitions/*.yaml`      | OELS               | Loaded as Definitions.                          |
+| Future OE-shaped `*.yaml`/`*.yml`/`*.json`        | OELS               | Recognized when the five rules above hold.      |
+
+Template authors introducing a new structured artifact should record
+its class in the copy's own README or in `metadata.yaml` comments, so
+that the migration task can act on it without re-inventorying.
+
+### Directories OELS skips during discovery
+
+OELS's resource walker prunes these directories by name: `node_modules`,
+`.git`, `dist`, `build`, dotfiles (any name beginning with `.`), and the
+top-level `definitions/` directory (which is scanned by Definition
+discovery instead). Template authors should avoid placing OE resources
+inside those directories, and should be aware that Quarto's `_site/`,
+`_freeze/`, and `.quarto/` output are excluded from the walk by the
+dotfile / `build`-style rule and by convention (they are Quarto
+outputs, not authored OE resources).
+
+### Portable local usage (stdio / LSP / editor)
+
+Every developer runs the pinned OELS binary locally over stdio. No
+absolute filesystem path to the sibling OELS repository may be
+committed anywhere in this repository (including `_quarto.yml`,
+templates, per-course configuration, editor settings, CI, scripts, or
+memos beyond development context notes).
+
+Portable configuration pattern:
+
+1. **Resolve the binary from PATH or from an environment variable.**
+   Prefer an on-PATH `open-engineering-lsp` executable (published npm
+   package, homebrew formula, or a per-developer shim). When PATH
+   resolution is not available, fall back to a per-developer environment
+   variable such as `OELS_SERVER_PATH` set in the developer's shell
+   profile — never in a committed file.
+2. **Launch with `--stdio`.** The standalone entrypoint accepts
+   `--stdio` (the default) and refuses any other transport. Every
+   editor client MUST pass `--stdio`.
+3. **Point the workspace at the repository root.** OELS derives its
+   workspace root from the LSP `workspaceFolders` (or `rootUri`) the
+   editor client sends at `initialize`. Opening the academy repository
+   folder is sufficient; no per-course override is needed today.
+
+Example VS Code `settings.json` (per developer, **not** committed):
+
+```jsonc
+{
+  // Preferred: leave empty so the VS Code client resolves the bundled or
+  // on-PATH binary.
+  "openEngineering.server.path": "",
+  // Or, when using a per-developer environment variable:
+  //   "openEngineering.server.path": "${env:OELS_SERVER_PATH}"
+  "openEngineering.trace.server": "off"
+}
+```
+
+Generic LSP client guidance (Neovim, Zed, Helix, agent clients):
+launch `open-engineering-lsp --stdio`, associate the client with the
+languageIds `open-engineering`, `yaml`, and `json` (OELS accepts any of
+these when the document content satisfies the OE-resource rules), and
+open the academy repository folder as the workspace root.
+
+### Inheritable configuration for all courses
+
+The current academy has **no per-course OELS configuration file** and
+does not need one. Every course inherits the same OELS behavior for
+free:
+
+- The workspace root is the academy repository root, regardless of
+  whether the developer renders the root site or a single course.
+- Definition discovery uses `<repo-root>/definitions/` (currently
+  absent; adding it is the first migration step).
+- Resource discovery walks every `.yaml`/`.yml`/`.json` under
+  `courses/**`, `labs/**`, `templates/**`, and the repository root,
+  minus the skipped directories above.
+- No absolute paths, per-course overrides, or forks of the semantic
+  contract exist or are permitted. A new course copied from
+  `templates/course/` inherits this contract without any additional
+  configuration.
+
+If a course later needs course-scoped Definitions, they SHOULD be
+proposed as a repository-root `definitions/` addition (shared across
+all courses), not as a per-course `definitions/` fork. Only introduce a
+per-course `definitions/` directory when a future OELS release supports
+nested workspace roots and a task explicitly authorizes it.
+
+### OELS diagnostics vs Quarto render errors
+
+Authors will see two independent error streams. Treat them as separate
+systems with different owners:
+
+| Symptom                                                   | Owner  | Where it surfaces                        | First response                                            |
+| --------------------------------------------------------- | ------ | ---------------------------------------- | --------------------------------------------------------- |
+| `UnknownProperty`, `MissingRequiredProperty`, `IncorrectType`, `InvalidEnumValue`, `MalformedIdentifier`, `UnknownDefinition` | OELS   | Editor `Problems` panel, LSP diagnostics | Check the file's `apiVersion`/`kind`/`metadata.name` and the Definition it references. |
+| Reference-shape diagnostics (dangling ref, wrong kind)    | OELS   | Editor `Problems` panel, LSP diagnostics | Verify the referenced OE resource exists and its `kind` matches the schema. |
+| YAML parse error inside a `.qmd` front matter block       | Quarto | `quarto render` output                   | Fix the front matter; OELS does not scan `.qmd` files.    |
+| `quarto render` fails: missing include, dead link, broken shortcode, unresolved cross-site link | Quarto | `quarto render` output                   | Fix the Quarto source; OELS is not involved.              |
+| `quarto render` succeeds but OELS shows diagnostics       | OELS   | Editor only                              | Publishing still works; fix the OE artifact separately.   |
+| OELS silent on a file the author expected to be validated | OELS   | Nothing shown                            | Confirm the file satisfies all five OE-resource rules above. |
+
+OELS diagnostics do not block `quarto render`, and Quarto errors do not
+appear in the OELS `Problems` panel. Do not resolve one by editing the
+other.
+
+### Troubleshooting
+
+- **Missing Definitions.** OELS emits `UnknownDefinition` (or leaves a
+  resource unvalidated beyond the identifier shape) when no Definition
+  matches its `apiVersion` + `kind`. Confirm that
+  `<repo-root>/definitions/` exists and contains a Definition whose
+  `spec.target.{apiVersion,kind}` matches the resource. Until the
+  migration task lands, no `definitions/` directory exists and this is
+  expected for every OE-shaped file in the repository (currently only
+  `courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml`).
+- **Unsupported artifact shape.** A file with `apiVersion:
+  apiextensions.crossplane.io/...`, `apiVersion: v1` (Kubernetes),
+  `apiVersion: apps/v1`, Home Assistant `configuration.yaml`, ordinary
+  academy `metadata.yaml`, or any file without a mapping root is
+  intentionally ignored. This is not an OELS bug; the resource is
+  simply not an OE resource. Do not add a synthetic
+  `apiVersion: open-engineering.io/...` header to force recognition —
+  such changes are migration decisions that must go through the
+  metadata migration task.
+- **Identifier rejected as malformed.** OELS requires DNS-1123
+  identifiers (`[a-z0-9]([-a-z0-9]*[a-z0-9])?`). Academy `id` values
+  such as `oe.course.pico` contain dots and will fail this check
+  verbatim. Templates keep the human-facing `id` as-is; the migration
+  task will introduce a parallel DNS-1123 `metadata.name` (or a
+  deterministic projection) rather than renaming existing `id` values.
+- **Binary startup failure.** If the editor reports that
+  `open-engineering-lsp` failed to start, check, in order: (1) the
+  binary is on PATH or `openEngineering.server.path` /
+  `OELS_SERVER_PATH` points at a real executable; (2) the client passed
+  `--stdio` (the standalone entrypoint exits with code 2 on any other
+  transport); (3) Node.js 20 or newer is available (the OELS package
+  declares `engines.node >= 20`); (4) no stray absolute path from
+  another developer's environment has leaked into a committed file
+  (grep the repository for the sibling workspace path before pushing).
+- **Stale workspace state.** OELS builds its workspace model from
+  `initialize` and updates it on document-change notifications. When
+  diagnostics appear out of sync (for example after moving or deleting
+  files outside the editor, or after switching git branches), restart
+  the language client: this triggers a fresh `initialize` and rebuilds
+  the workspace model. No cache or lock file needs to be cleared.
+- **Definitions added but not picked up.** OELS discovers Definitions
+  only at `<workspace-root>/definitions/` (top-level, non-recursive).
+  Files placed in nested subdirectories, in a course-scoped
+  `definitions/`, or under any dotfile-prefixed folder will not be
+  loaded. Move them to the top-level directory and restart the client.
+
+### Using OELS from a template copy
+
+When copying any template in this directory, no OELS-specific step is
+required today: the copy inherits every convention above by virtue of
+living inside the same repository. Template README files link back to
+this section so authors can locate the shared contract without
+duplicating it.
+

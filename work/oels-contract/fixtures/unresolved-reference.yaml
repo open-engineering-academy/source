@@ -1,0 +1,7 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: NotACoveredKind
+metadata:
+  name: oe-unknown-fixture
+  id: oe.unknown.fixture
+spec:
+  title: Kind not covered by any academy Definition

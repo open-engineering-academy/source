@@ -1,0 +1,9 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Course
+metadata:
+  name: oe.course.unsupported
+  id: oe.course.unsupported
+spec:
+  title: 123
+  level: expert
+extraneous_top_level: "triggers UnknownProperty at root level"
