@@ -1,0 +1,18 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Course
+metadata:
+  name: oe-course-fixture
+  id: oe.course.fixture
+  slug: fixture
+spec:
+  title: Valid course fixture
+  level: beginner
+  duration: 1h
+  entry: index.qmd
+  sections: []
+  prerequisites: []
+  teaches: []
+  produces: []
+  references_labs: []
+  references_exercises: []
+  constructive_role: definition
