@@ -1,15 +1,17 @@
 """Deterministic academy-metadata → OE-shape adapter.
 
 Projects a flat academy ``metadata.yaml`` (as authored today under
-``courses/``, ``labs/``, and ``templates/{course,lab,lesson,quiz}/``) into the
-OE resource shape recognised by the Open Engineering Language Server (OELS):
+``courses/``, ``labs/``, ``exercises/``, and
+``templates/{course,lab,lesson,quiz}/``) into the OE resource shape recognised
+by the Open Engineering Language Server (OELS):
 ``apiVersion``/``kind``/``metadata``/``spec``.
 
 The projection is the mapping the ``memo13.md`` inventory calls out
 explicitly: ``id`` → ``metadata.name`` by replacing dots with dashes, the
 academy ``id`` is preserved verbatim as ``metadata.id`` so cross-course and
 cross-lab links are not rewritten, and every other top-level field flows into
-``spec`` unchanged. See ``memo14.md`` for the classification matrix.
+``spec`` unchanged. See ``memo14.md`` for the classification matrix and
+``memo16.md`` for the exercises sweep.
 
 This module never edits an existing file. It performs projection in memory
 so the flat academy metadata files stay authoritative on disk.
@@ -26,6 +28,7 @@ COURSE_METADATA_FIELDS_RESERVED = {"id", "slug"}
 LAB_METADATA_FIELDS_RESERVED = {"id"}
 LESSON_METADATA_FIELDS_RESERVED = {"id"}
 QUIZ_METADATA_FIELDS_RESERVED = {"id"}
+EXERCISE_METADATA_FIELDS_RESERVED = {"id"}
 
 
 class UnsupportedShapeError(ValueError):
@@ -63,12 +66,14 @@ def classify_metadata_path(path: Path) -> str:
                 f"unknown templates/<role> for {path}: role={role!r}"
             )
         return role_to_kind[role]
+    if "exercises" in parts:
+        return "Exercise"
     if "labs" in parts:
         return "Lab"
     if "courses" in parts:
         return "Course"
     raise UnsupportedShapeError(
-        f"metadata path does not fall under courses/, labs/, or templates/: {path}"
+        f"metadata path does not fall under courses/, labs/, exercises/, or templates/: {path}"
     )
 
 
@@ -95,6 +100,7 @@ def project_metadata_to_oe(
         "Lab": LAB_METADATA_FIELDS_RESERVED,
         "Lesson": LESSON_METADATA_FIELDS_RESERVED,
         "Quiz": QUIZ_METADATA_FIELDS_RESERVED,
+        "Exercise": EXERCISE_METADATA_FIELDS_RESERVED,
     }
     reserved = reserved_map[kind]
 

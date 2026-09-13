@@ -1,0 +1,73 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Definition
+metadata:
+  name: exercise
+  description: >
+    OE Exercise artifact contract for academy exercise metadata (the projection
+    of every exercises/<slug>/metadata.yaml). Adapter-generated resources are
+    validated against this Definition; see memo14.md (adapter contract) and
+    memo16.md (exercises sweep).
+spec:
+  target:
+    apiVersion: open-engineering.io/v1alpha1
+    kind: Exercise
+  schema:
+    type: object
+    additionalProperties: false
+    required:
+      - apiVersion
+      - kind
+      - metadata
+      - spec
+    properties:
+      apiVersion:
+        type: string
+      kind:
+        type: string
+      metadata:
+        type: object
+        additionalProperties: false
+        required:
+          - name
+          - id
+        properties:
+          name:
+            type: string
+            description: DNS-1123 projection of the academy id (dots replaced with dashes).
+          id:
+            type: string
+            description: Original academy id (dot-shape) preserved for cross-artifact references.
+      spec:
+        type: object
+        additionalProperties: true
+        required:
+          - title
+          - level
+          - duration
+        properties:
+          title:
+            type: string
+          level:
+            type: string
+            enum:
+              - beginner
+              - intermediate
+              - advanced
+          duration:
+            type: string
+          prerequisites:
+            type: array
+            items:
+              type: string
+          teaches:
+            type: array
+            items:
+              type: string
+          produces:
+            type: array
+            items:
+              type: string
+          referenced_by:
+            type: array
+            items:
+              type: string

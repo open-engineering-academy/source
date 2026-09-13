@@ -1,0 +1,17 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Exercise
+metadata:
+  name: oe-exercise-fixture-first-rule
+  id: oe.exercise.fixture.first-rule
+spec:
+  title: Valid exercise fixture
+  level: beginner
+  duration: 15m
+  prerequisites:
+    - oe.course.fixture
+  teaches:
+    - Rule authoring
+  produces:
+    - a single validated Rule
+  referenced_by:
+    - oe.lesson.fixture.01-intro

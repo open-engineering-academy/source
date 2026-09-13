@@ -12,7 +12,11 @@ Iteration:
 - one pass per course root under ``courses/<slug>/`` for the nine
   courses listed in ``COURSE_ROOTS``;
 - one shared pass over top-level ``labs/*`` metadata;
-- one shared pass over ``templates/{course,lab,lesson,quiz}/metadata.yaml``.
+- one shared pass over top-level ``exercises/*`` metadata;
+- one shared pass over ``templates/{course,lab,lesson,quiz}/metadata.yaml``;
+- one shared pass over ``templates/examples/`` (documentation-shape
+  checkable-profile examples, expected to classify as intentionally
+  non-OE per memo13).
 
 Per-course reporting classifies each YAML/JSON file into one of five
 buckets: adapter-validated, OELS-recognized native OE resource,
@@ -75,6 +79,8 @@ TEMPLATE_ROOTS: tuple[str, ...] = (
     "templates/lesson",
     "templates/quiz",
 )
+
+EXAMPLES_ROOT = "templates/examples"
 
 PRUNED_DIR_NAMES = {
     "_site", "_freeze", ".quarto", "node_modules",
@@ -168,7 +174,7 @@ def _is_adapter_candidate(path: Path) -> bool:
         except IndexError:
             return False
         return role in {"course", "lab", "lesson", "quiz"}
-    return "courses" in parts or "labs" in parts
+    return "courses" in parts or "labs" in parts or "exercises" in parts
 
 
 def _is_template_metadata(path: Path) -> bool:
@@ -346,9 +352,14 @@ def main(argv: list[str] | None = None) -> int:
         reports.append(_run_scope(f"course:{slug}", REPO_ROOT / "courses" / slug, registry))
 
     reports.append(_run_scope("shared:labs", REPO_ROOT / "labs", registry))
+    reports.append(_run_scope("shared:exercises", REPO_ROOT / "exercises", registry))
 
     for tpl_rel in TEMPLATE_ROOTS:
         reports.append(_run_scope(f"shared:{tpl_rel}", REPO_ROOT / tpl_rel, registry))
+
+    reports.append(
+        _run_scope(f"shared:{EXAMPLES_ROOT}", REPO_ROOT / EXAMPLES_ROOT, registry)
+    )
 
     totals = BucketCounts()
     for r in reports:

@@ -22,6 +22,7 @@
 !/work/oels-contract/fixtures/valid-lab.yaml
 !/work/oels-contract/fixtures/valid-lesson.yaml
 !/work/oels-contract/fixtures/valid-quiz.yaml
+!/work/oels-contract/fixtures/valid-exercise.yaml
 
 **/.quarto/
 **/_site/

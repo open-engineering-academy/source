@@ -12,10 +12,11 @@ OELS diagnostic codes documented below.
 | `valid-lab.yaml`              | Lab     | *(none)*                                                                                               |
 | `valid-lesson.yaml`           | Lesson  | *(none)*                                                                                               |
 | `valid-quiz.yaml`             | Quiz    | *(none)*                                                                                               |
+| `valid-exercise.yaml`         | Exercise | *(none)*                                                                                              |
 | `malformed.yaml`              | —       | `MalformedResource`                                                                                    |
 | `unresolved-reference.yaml`   | *(kind not covered by any Definition)* | `UnknownDefinition`                                                                    |
 | `unsupported-shape.yaml`      | Course  | `MalformedIdentifier`, `UnknownProperty`, `MissingRequiredProperty`, `IncorrectType`, `InvalidEnumValue` |
 
 The fixtures are deliberately small so a change to the shared Course / Lab /
-Lesson / Quiz Definitions immediately surfaces here without having to touch
-real course content.
+Lesson / Quiz / Exercise Definitions immediately surfaces here without having
+to touch real course content.
