@@ -13,10 +13,18 @@ OELS diagnostic codes documented below.
 | `valid-lesson.yaml`           | Lesson  | *(none)*                                                                                               |
 | `valid-quiz.yaml`             | Quiz    | *(none)*                                                                                               |
 | `valid-exercise.yaml`         | Exercise | *(none)*                                                                                              |
+| `valid-pico.yaml`             | Pico    | *(none)*                                                                                               |
 | `malformed.yaml`              | —       | `MalformedResource`                                                                                    |
 | `unresolved-reference.yaml`   | *(kind not covered by any Definition)* | `UnknownDefinition`                                                                    |
 | `unsupported-shape.yaml`      | Course  | `MalformedIdentifier`, `UnknownProperty`, `MissingRequiredProperty`, `IncorrectType`, `InvalidEnumValue` |
+| `invalid-pico.yaml`           | Pico    | `MalformedIdentifier`, `MissingRequiredProperty`, `IncorrectType`, `UnknownProperty`                   |
 
 The fixtures are deliberately small so a change to the shared Course / Lab /
-Lesson / Quiz / Exercise Definitions immediately surfaces here without having
-to touch real course content.
+Lesson / Quiz / Exercise / Pico Definitions immediately surfaces here without
+having to touch real course content.
+
+The two Pico fixtures are the first pair for a **native OE** kind (authored
+OE-shaped on disk, not projected by the memo14 adapter). They therefore only
+carry `metadata.name` — there is no academy `id` sibling — which is what the
+Pico Definition also enforces. See `definitions/README.md` for the wider
+distinction between academy identifiers and OELS `metadata.name`.

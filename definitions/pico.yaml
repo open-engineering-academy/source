@@ -1,0 +1,91 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Definition
+metadata:
+  name: pico
+  description: >
+    OE Pico artifact contract for native OE-shaped Pico resources authored
+    directly on disk under courses/<slug>/picos/. Unlike academy Course/Lab/
+    Lesson/Quiz/Exercise metadata (projected by the memo14 adapter from a flat
+    metadata.yaml with a dotted academy id), Pico resources are already OE-
+    shaped and use metadata.name as a native DNS-1123 identifier with no
+    academy id sibling. Closes memo13 gap #4 for
+    courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml.
+spec:
+  target:
+    apiVersion: open-engineering.io/v1alpha1
+    kind: Pico
+  schema:
+    type: object
+    additionalProperties: false
+    required:
+      - apiVersion
+      - kind
+      - metadata
+      - spec
+    properties:
+      apiVersion:
+        type: string
+      kind:
+        type: string
+      metadata:
+        type: object
+        additionalProperties: false
+        required:
+          - name
+        properties:
+          name:
+            type: string
+            description: >
+              Native OE Pico identifier (DNS-1123). No academy id sibling —
+              Pico resources are authored OE-shaped, not projected.
+      spec:
+        type: object
+        additionalProperties: true
+        required:
+          - type
+          - capabilities
+          - implementation
+          - state
+          - events
+        properties:
+          type:
+            type: string
+            description: Logical Pico kind (e.g. actuator, sensor).
+          capabilities:
+            type: array
+            items:
+              type: string
+          implementation:
+            type: object
+            additionalProperties: true
+            properties:
+              deviceClass:
+                type: string
+              model:
+                type: string
+          state:
+            type: object
+            additionalProperties: true
+            description: >
+              Logical Pico state. Values may be booleans, numbers, strings, or
+              null (initial/unknown) — the shape is intentionally open so the
+              runtime Pico can evolve its projected state without a Definition
+              change. Matches the on-disk PixStars head-pitch Pico.
+          events:
+            type: object
+            additionalProperties: true
+            properties:
+              subscribesTo:
+                type: object
+                additionalProperties: true
+                properties:
+                  channel:
+                    type: string
+                  eventTypes:
+                    type: array
+                    items:
+                      type: string
+              emits:
+                type: array
+                items:
+                  type: string

@@ -23,6 +23,8 @@
 !/work/oels-contract/fixtures/valid-lesson.yaml
 !/work/oels-contract/fixtures/valid-quiz.yaml
 !/work/oels-contract/fixtures/valid-exercise.yaml
+!/work/oels-contract/fixtures/valid-pico.yaml
+!/work/oels-contract/fixtures/invalid-pico.yaml
 
 **/.quarto/
 **/_site/

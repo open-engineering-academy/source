@@ -1,0 +1,11 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: OE.Pico.Invalid
+spec:
+  type: sensor
+  capabilities: not-a-list
+  implementation:
+    deviceClass: example-class
+    model: EX-1
+extraneous_top_level: "triggers UnknownProperty at the resource root"

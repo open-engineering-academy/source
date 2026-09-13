@@ -1,0 +1,33 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: oe-pico-fixture
+spec:
+  type: actuator
+  capabilities:
+    - example-capability
+    - stop
+  implementation:
+    deviceClass: example-class
+    model: EX-1
+  state:
+    desiredPosition: 0
+    actualPosition: 0
+    moving: false
+    torqueEnabled: true
+    connected: true
+    temperature: null
+    voltage: null
+    lastCommand: null
+    lastCommandStatus: null
+    lastUpdated: null
+  events:
+    subscribesTo:
+      channel: oe-pico-fixture
+      eventTypes:
+        - oe.pico.fixture.requested
+        - oe.pico.fixture.stop.requested
+    emits:
+      - oe.pico.fixture.completed
+      - oe.pico.fixture.failed
+      - oe.pico.fixture.state.updated
