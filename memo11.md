@@ -20,16 +20,16 @@ The course should teach learners how a physical Raspberry Pi Pico can become par
 
 The course should reuse the existing Pico educational material wherever possible, especially:
 
-* Hello, Pico!
-* Pico GPIO
-* Sensors
-* LEDs
-* Buttons
-* MQTT
-* MicroPython
-* networking
-* device communication
-* existing EMQX/MQTT material
+- Hello, Pico!
+- Pico GPIO
+- Sensors
+- LEDs
+- Buttons
+- MQTT
+- MicroPython
+- networking
+- device communication
+- existing EMQX/MQTT material
 
 The new course should introduce AgentConnect as the orchestration layer for AI agents rather than attempting to put an LLM directly onto the Pico.
 
@@ -38,6 +38,7 @@ The new course should introduce AgentConnect as the orchestration layer for AI a
 ## 1. Core Idea
 
 The fundamental architecture taught by the course is:
+
 ```
                          OPEN ENGINEERING
                                 │
@@ -56,6 +57,7 @@ The fundamental architecture taught by the course is:
                     │                       │
               Sensors / LEDs          Sensors / Motors
 ```
+
 The Pico is the physical Engineering Element.
 
 AgentConnect provides the agent execution and orchestration environment.
@@ -68,27 +70,27 @@ The Pico does not need to run the AI. The Pico provides sensing and actuation; t
 
 ⸻
 
-2. Learning Goals
+1. Learning Goals
 
 After completing the course, a learner should understand:
 
-* What an AI agent is.
-* What makes an agent different from a conventional program.
-* Why AI inference normally belongs outside a microcontroller.
-* How AgentConnect can run and coordinate agents.
-* How a Pico can expose physical capabilities to an agent.
-* How MQTT connects agents and devices.
-* How EMQX can act as an MQTT broker.
-* How events can trigger agent actions.
-* How multiple agents can collaborate.
-* How to design safe boundaries between AI and physical systems.
-* How this architecture maps onto Open Engineering concepts.
+- What an AI agent is.
+- What makes an agent different from a conventional program.
+- Why AI inference normally belongs outside a microcontroller.
+- How AgentConnect can run and coordinate agents.
+- How a Pico can expose physical capabilities to an agent.
+- How MQTT connects agents and devices.
+- How EMQX can act as an MQTT broker.
+- How events can trigger agent actions.
+- How multiple agents can collaborate.
+- How to design safe boundaries between AI and physical systems.
+- How this architecture maps onto Open Engineering concepts.
 
 The learner should finish with a working physical/AI system.
 
 ⸻
 
-3. Prerequisites
+1. Prerequisites
 
 Reuse the prerequisite expectations from the existing Pico course.
 
@@ -98,35 +100,25 @@ Hello, Pico!
 
 and understand:
 
-* basic Python/MicroPython
-* variables
-* functions
-* GPIO
-* simple electronics
-* flashing MicroPython
-* connecting a Pico to a computer
+- basic Python/MicroPython
+- variables
+- functions
+- GPIO
+- simple electronics
+- flashing MicroPython
+- connecting a Pico to a computer
 
 No previous AI-agent experience should be required.
 
 ⸻
 
-4. Course Structure
+1. Course Structure
 
 Module 1 — From Pico to Agent
 
 Introduce the evolution:
 
-Program
-  ↓
-Networked Device
-  ↓
-IoT Device
-  ↓
-MQTT Device
-  ↓
-AI-enabled Device
-  ↓
-Agentic Device System
+Program↓Networked Device↓IoT Device↓MQTT Device↓AI-enabled Device↓Agentic Device System
 
 Explain that the Pico remains deliberately simple.
 
@@ -136,7 +128,7 @@ Reuse material from Hello, Pico! rather than rebuilding introductory Pico lesson
 
 ⸻
 
-5. Module 2 — What Is an Agent?
+1. Module 2 — What Is an Agent?
 
 Introduce the concept of an AI agent.
 
@@ -144,61 +136,38 @@ Compare:
 
 Traditional program
 
-input
-  ↓
-fixed logic
-  ↓
-output
+input↓fixed logic↓output
 
 with:
 
 Agent
 
-observe
-   ↓
-interpret
-   ↓
-reason
-   ↓
-decide
-   ↓
-act
-   ↓
-observe again
+observe↓interpret↓reason↓decide↓act↓observe again
 
 Connect this to the Open Engineering Kernel primitives:
 
-* Observation
-* Investigation
-* Execution
-* Events
-* Messaging
-* Workflow
-* Memory
-* Evidence
-* Reporting
-* Composition
+- Observation
+- Investigation
+- Execution
+- Events
+- Messaging
+- Workflow
+- Memory
+- Evidence
+- Reporting
+- Composition
 
 The learner should understand that agentic behaviour is a system architecture, not simply “putting ChatGPT in a device”.
 
 ⸻
 
-6. Module 3 — Meet AgentConnect
+1. Module 3 — Meet AgentConnect
 
 Introduce AgentConnect as the agent execution and orchestration layer.
 
 Explain the distinction:
 
-Pico
-= physical device
-MQTT
-= messaging
-EMQX
-= MQTT infrastructure
-AgentConnect
-= agent execution/orchestration
-AI model
-= reasoning capability
+Pico= physical deviceMQTT= messagingEMQX= MQTT infrastructureAgentConnect= agent execution/orchestrationAI model= reasoning capability
 
 The course should use the current AgentConnect documentation and APIs rather than hard-code assumptions about implementation details.
 
@@ -215,7 +184,7 @@ Learners should:
 
 ⸻
 
-7. Module 4 — Give the Agent a Pico
+1. Module 4 — Give the Agent a Pico
 
 Connect the agent environment to a physical Pico.
 
@@ -223,110 +192,73 @@ Start with a simple LED.
 
 The Pico exposes an MQTT interface such as:
 
-pico/living-room/led/set
-pico/living-room/led/state
+pico/living-room/led/setpico/living-room/led/state
 
 The agent can issue:
 
-ON
-OFF
+ONOFF
 
 and the Pico publishes its state.
 
 The learner should see:
 
-Agent
-  │
-  │ MQTT
-  ▼
-EMQX
-  │
-  ▼
-Pico
-  │
-  ▼
-LED
+Agent││ MQTT▼EMQX│▼Pico│▼LED
 
 ⸻
 
-8. Module 5 — Give the Pico Senses
+1. Module 5 — Give the Pico Senses
 
 Add a sensor.
 
 For example:
 
-* temperature
-* light
-* button
-* distance
-* motion
+- temperature
+- light
+- button
+- distance
+- motion
 
 The Pico publishes observations:
 
-pico/living-room/temperature
-pico/living-room/light
-pico/living-room/button
+pico/living-room/temperaturepico/living-room/lightpico/living-room/button
 
 The agent subscribes to these observations.
 
 Now the architecture becomes:
 
-Pico
- │
- ├── observe
- │
- └── publish
-       │
-       ▼
-     MQTT
-       │
-       ▼
-     Agent
-       │
-     reason
-       │
-       ▼
-     MQTT
-       │
-       ▼
-     Pico
-       │
-     act
+Pico│├── observe│└── publish│▼MQTT│▼Agent│reason│▼MQTT│▼Pico│act
 
 This is the first complete agentic feedback loop.
 
 ⸻
 
-9. Module 6 — Agent Instructions
+1. Module 6 — Agent Instructions
 
 Teach learners how to give an agent a role.
 
 Example:
 
-You are the Pico Environment Agent.
-Your job is to monitor the environment.
-You can:
+You are the Pico Environment Agent.Your job is to monitor the environment.You can:
+
 - read temperature observations
 - read light observations
-- control the status LED
-Do not activate an actuator unless the requested action
-is within your allowed capabilities.
+- control the status LEDDo not activate an actuator unless the requested actionis within your allowed capabilities.
 
 Explain the relationship between:
 
-* agent role
-* tools
-* capabilities
-* permissions
-* workspace
-* memory
-* runtime
+- agent role
+- tools
+- capabilities
+- permissions
+- workspace
+- memory
+- runtime
 
 Connect these concepts to Open Engineering AI Assistants.
 
 ⸻
 
-10. Module 7 — From Commands to Intent
+1. Module 7 — From Commands to Intent
 
 Move beyond explicit commands.
 
@@ -340,15 +272,7 @@ Make the room easier to find when it gets dark.
 
 The agent can reason:
 
-observe light
-     ↓
-light level is low
-     ↓
-decide LED should be enabled
-     ↓
-publish MQTT command
-     ↓
-Pico turns LED on
+observe light↓light level is low↓decide LED should be enabled↓publish MQTT command↓Pico turns LED on
 
 The course should emphasize that the agent is not replacing deterministic device firmware.
 
@@ -356,7 +280,7 @@ The Pico still enforces the actual hardware behaviour.
 
 ⸻
 
-11. Module 8 — Safety Boundaries
+1. Module 8 — Safety Boundaries
 
 This module is essential.
 
@@ -364,42 +288,28 @@ Teach that an AI agent should not automatically receive unrestricted control of 
 
 Introduce three layers:
 
-AI Agent
-   │
-   ▼
-Intent / Decision
-   │
-   ▼
-Capability Boundary
-   │
-   ▼
-Pico
+AI Agent│▼Intent / Decision│▼Capability Boundary│▼Pico
 
 For example:
 
-Agent requests:
-motor.speed = 100
-Capability layer:
-maximum allowed speed = 30
-Pico:
-motor.speed = 30
+Agent requests:motor.speed = 100Capability layer:maximum allowed speed = 30Pico:motor.speed = 30
 
 Teach:
 
-* allowlists
-* ranges
-* safe defaults
-* timeouts
-* authentication
-* authorization
-* command validation
-* fail-safe behaviour
+- allowlists
+- ranges
+- safe defaults
+- timeouts
+- authentication
+- authorization
+- command validation
+- fail-safe behaviour
 
 The Pico must remain safe even when the agent behaves incorrectly.
 
 ⸻
 
-12. Module 9 — Agent Memory
+1. Module 9 — Agent Memory
 
 Introduce memory.
 
@@ -407,51 +317,44 @@ The agent can remember observations and previous interactions.
 
 Example:
 
-Monday:
-room normally becomes dark around 20:15
-Tuesday:
-room became dark around 20:10
-Wednesday:
-room became dark around 20:12
+Monday:room normally becomes dark around 20:15Tuesday:room became dark around 20:10Wednesday:room became dark around 20:12
 
 The agent can use this information when making future decisions.
 
 Explain the difference between:
 
-Pico state
-MQTT retained state
-Agent session context
-Agent memory
-Open Engineering persistent knowledge
+Pico stateMQTT retained stateAgent session contextAgent memoryOpen Engineering persistent knowledge
 
 Do not make AgentConnect memory the authoritative Open Engineering knowledge store.
 
 ⸻
 
-13. Module 10 — Multiple Agents
+1. Module 10 — Multiple Agents
 
 Introduce an agent team.
 
 Example:
 
-                Pico System
-                     │
-                     ▼
-              Sensor Agent
-                     │
-                     ▼
-              Environment Agent
-                     │
-             ┌───────┴────────┐
-             ▼                ▼
-       Decision Agent    Safety Agent
-             │                │
-             └───────┬────────┘
-                     ▼
-                 Pico Agent
-                     │
-                     ▼
-                   Pico
+```
+            Pico System
+                 │
+                 ▼
+          Sensor Agent
+                 │
+                 ▼
+          Environment Agent
+                 │
+         ┌───────┴────────┐
+         ▼                ▼
+   Decision Agent    Safety Agent
+         │                │
+         └───────┬────────┘
+                 ▼
+             Pico Agent
+                 │
+                 ▼
+               Pico
+```
 
 Use AgentConnect’s agent-to-agent capabilities where appropriate.
 
@@ -459,48 +362,33 @@ Learners should understand that agents can specialize.
 
 For example:
 
-* Sensor Agent
-* Environment Agent
-* Safety Agent
-* Device Agent
-* Documentation Agent
+- Sensor Agent
+- Environment Agent
+- Safety Agent
+- Device Agent
+- Documentation Agent
 
 ⸻
 
-14. Module 11 — Event-Driven Agents
+1. Module 11 — Event-Driven Agents
 
 Introduce events.
 
 Examples:
 
-temperature changed
-button pressed
-light level crossed threshold
-Pico connected
-Pico disconnected
-MQTT message received
+temperature changedbutton pressedlight level crossed thresholdPico connectedPico disconnectedMQTT message received
 
 These events can trigger agent execution.
 
 Example:
 
-button pressed
-      ↓
-MQTT event
-      ↓
-AgentConnect
-      ↓
-Agent
-      ↓
-reason
-      ↓
-action
+button pressed↓MQTT event↓AgentConnect↓Agent↓reason↓action
 
 Relate this to the Open Engineering Events primitive and Runner OS.
 
 ⸻
 
-15. Module 12 — Build the Pico Agent
+1. Module 12 — Build the Pico Agent
 
 The learner now creates a complete agent.
 
@@ -517,25 +405,13 @@ The agent should:
 
 The result should demonstrate:
 
-Observation
-    ↓
-Investigation
-    ↓
-Decision
-    ↓
-Execution
-    ↓
-Observation
-    ↓
-Evidence
-    ↓
-Report
+Observation↓Investigation↓Decision↓Execution↓Observation↓Evidence↓Report
 
 This is the Open Engineering Kernel pattern expressed through a physical device.
 
 ⸻
 
-16. Final Project — The Intelligent Pico
+1. Final Project — The Intelligent Pico
 
 Build a small autonomous physical system.
 
@@ -547,64 +423,42 @@ Pico Environment Agent
 
 The Pico contains:
 
-* LED
-* button
-* temperature sensor
-* light sensor
+- LED
+- button
+- temperature sensor
+- light sensor
 
 The system contains:
 
-* Pico
-* MQTT
-* EMQX
-* AgentConnect
-* AI agent
+- Pico
+- MQTT
+- EMQX
+- AgentConnect
+- AI agent
 
 The agent should be able to:
 
-* monitor the environment
-* answer questions about the environment
-* control the LED
-* react to events
-* remember relevant observations
-* explain why it performed an action
-* respect safety constraints
+- monitor the environment
+- answer questions about the environment
+- control the LED
+- react to events
+- remember relevant observations
+- explain why it performed an action
+- respect safety constraints
 
 Example interaction:
 
-User:
-"It feels dark in here."
-Agent:
-"I'll check the light level."
-Pico:
-light = 18%
-Agent:
-"The measured light level is low.
-I'll activate the indicator LED."
-Pico:
-LED = ON
-Agent:
-"Indicator enabled because the measured light
-level was below the configured threshold."
+User:"It feels dark in here."Agent:"I'll check the light level."Pico:light = 18%Agent:"The measured light level is low.I'll activate the indicator LED."Pico:LED = ONAgent:"Indicator enabled because the measured lightlevel was below the configured threshold."
 
 ⸻
 
-17. Evidence
+1. Evidence
 
 The final system should demonstrate that an agent action can be traced.
 
 For example:
 
-Observation:
-light = 18%
-Decision:
-activate indicator
-Policy:
-minimum light = 25%
-Action:
-pico/living-room/led/set = ON
-Result:
-pico/living-room/led/state = ON
+Observation:light = 18%Decision:activate indicatorPolicy:minimum light = 25%Action:pico/living-room/led/set = ONResult:pico/living-room/led/state = ON
 
 This introduces the learner to the Open Engineering concept of Evidence.
 
@@ -612,47 +466,31 @@ The agent should ideally be able to explain its action based on observable facts
 
 ⸻
 
-18. Open Engineering Mapping
+1. Open Engineering Mapping
 
 The course should explicitly map the project to the Open Engineering architecture.
 
-Pico Course Concept	Open Engineering
-Pico	Engineering Element
-Sensor	Observation capability
-LED/actuator	Execution capability
-MQTT	Messaging
-EMQX	Infrastructure
-AgentConnect	Agent Runtime / Orchestration
-AI Agent	AI Assistant
-Agent skill	Capability / Capsule
-Event	Event
-Agent memory	Memory
-Agent decision	Investigation / reasoning
-Device command	Execution
-Sensor result	Evidence
-Agent report	Reporting
-Multiple agents	Composition
-Scheduled agent	Runner OS
+Pico Course Concept Open EngineeringPico Engineering ElementSensor Observation capabilityLED/actuator Execution capabilityMQTT MessagingEMQX InfrastructureAgentConnect Agent Runtime / OrchestrationAI Agent AI AssistantAgent skill Capability / CapsuleEvent EventAgent memory MemoryAgent decision Investigation / reasoningDevice command ExecutionSensor result EvidenceAgent report ReportingMultiple agents CompositionScheduled agent Runner OS
 
 This mapping should be part of the course material.
 
 ⸻
 
-19. Reuse Existing Pico Material
+1. Reuse Existing Pico Material
 
 The course must reuse rather than duplicate existing Academy content.
 
 Particularly reuse:
 
-* Hello, Pico!
-* MicroPython setup
-* GPIO
-* LED examples
-* button examples
-* sensor examples
-* networking
-* MQTT
-* existing Pico exercises
+- Hello, Pico!
+- MicroPython setup
+- GPIO
+- LED examples
+- button examples
+- sensor examples
+- networking
+- MQTT
+- existing Pico exercises
 
 The new course should link to those lessons and only introduce the additional material necessary for agentic operation.
 
@@ -660,23 +498,13 @@ Where the existing Pico course already contains a working MQTT/EMQX example, use
 
 ⸻
 
-20. EMQX Integration
+1. EMQX Integration
 
 Reuse the existing Open Engineering work around EMQX.
 
 The course should demonstrate:
 
-AgentConnect
-      │
-      ▼
-    MQTT
-      │
-      ▼
-    EMQX
-      │
-      ├──────── Pico
-      ├──────── Pico
-      └──────── other devices
+AgentConnect│▼MQTT│▼EMQX│├──────── Pico├──────── Pico└──────── other devices
 
 MQTT topics should follow the Open Engineering MQTT conventions.
 
@@ -684,43 +512,38 @@ Do not invent course-specific topic conventions if an existing Open Engineering 
 
 ⸻
 
-21. AgentConnect Integration Requirements
+1. AgentConnect Integration Requirements
 
 The implementation should verify the current AgentConnect capabilities before course publication.
 
 Specifically investigate:
 
-* Agent creation
-* Agent configuration
-* Agent runtimes
-* MCP
-* ACP
-* Agent-to-agent communication
-* Webhooks
-* Events
-* Scheduling
-* Workspace management
-* Memory
-* Permissions
-* GitHub integration
-* Local/self-hosted execution
+- Agent creation
+- Agent configuration
+- Agent runtimes
+- MCP
+- ACP
+- Agent-to-agent communication
+- Webhooks
+- Events
+- Scheduling
+- Workspace management
+- Memory
+- Permissions
+- GitHub integration
+- Local/self-hosted execution
 
 Only document APIs that are currently supported.
 
 ⸻
 
-22. Hardware Philosophy
+1. Hardware Philosophy
 
 The course should deliberately avoid requiring expensive hardware.
 
 The preferred setup is:
 
-1 × Raspberry Pi Pico
-1 × breadboard
-LEDs
-resistors
-button
-1 × simple sensor
+1 × Raspberry Pi Pico1 × breadboardLEDsresistorsbutton1 × simple sensor
 
 Optional components can extend the project.
 
@@ -728,31 +551,13 @@ The important lesson is the architecture, not the complexity of the electronics.
 
 ⸻
 
-23. Architecture Exercise
+1. Architecture Exercise
 
 Include an exercise where learners draw their own system architecture.
 
 They should identify:
 
-Physical World
-      ↓
-Pico
-      ↓
-MQTT
-      ↓
-EMQX
-      ↓
-AgentConnect
-      ↓
-AI Agent
-      ↓
-Decision
-      ↓
-MQTT
-      ↓
-Pico
-      ↓
-Physical World
+Physical World↓Pico↓MQTT↓EMQX↓AgentConnect↓AI Agent↓Decision↓MQTT↓Pico↓Physical World
 
 Then ask:
 
@@ -760,15 +565,15 @@ Which parts are deterministic and which parts are probabilistic?
 
 This should lead to an important engineering discussion:
 
-* Pico firmware should be deterministic.
-* Safety limits should be deterministic.
-* MQTT transport should be deterministic.
-* AI reasoning is probabilistic.
-* Agent decisions should be constrained by deterministic capabilities and policies.
+- Pico firmware should be deterministic.
+- Safety limits should be deterministic.
+- MQTT transport should be deterministic.
+- AI reasoning is probabilistic.
+- Agent decisions should be constrained by deterministic capabilities and policies.
 
 ⸻
 
-24. Assessment
+1. Assessment
 
 Assessment should be practical.
 
@@ -810,95 +615,67 @@ A final challenge should ask learners to extend the system with another sensor o
 
 ⸻
 
-25. Course Narrative
+1. Course Narrative
 
 The course should follow the same spirit as Hello, Pico!:
 
-Hello, Pico!
-      ↓
-Hello, Network!
-      ↓
-Hello, MQTT!
-      ↓
-Hello, Agent!
-      ↓
-Hello, AgentConnect!
-      ↓
-Hello, Intelligent Device!
-      ↓
-Hello, Agent Team!
+Hello, Pico!↓Hello, Network!↓Hello, MQTT!↓Hello, Agent!↓Hello, AgentConnect!↓Hello, Intelligent Device!↓Hello, Agent Team!
 
 The learner should experience a gradual transition from simple embedded programming to distributed agentic engineering.
 
 ⸻
 
-26. Deliverables
+1. Deliverables
 
 Create:
 
-course/
-├── README.md
-├── lessons/
-│   ├── 01-from-pico-to-agent/
-│   ├── 02-what-is-an-agent/
-│   ├── 03-agentconnect/
-│   ├── 04-connect-the-pico/
-│   ├── 05-sensors/
-│   ├── 06-agent-instructions/
-│   ├── 07-intent/
-│   ├── 08-safety/
-│   ├── 09-memory/
-│   ├── 10-multiple-agents/
-│   ├── 11-events/
-│   └── 12-final-project/
-├── examples/
-├── exercises/
-├── diagrams/
-└── hardware/
+course/├── README.md├── lessons/│ ├── 01-from-pico-to-agent/│ ├── 02-what-is-an-agent/│ ├── 03-agentconnect/│ ├── 04-connect-the-pico/│ ├── 05-sensors/│ ├── 06-agent-instructions/│ ├── 07-intent/│ ├── 08-safety/│ ├── 09-memory/│ ├── 10-multiple-agents/│ ├── 11-events/│ └── 12-final-project/├── examples/├── exercises/├── diagrams/└── hardware/
 
 Follow the existing Open Engineering Academy course conventions rather than imposing this structure if the Academy already has an established format.
 
 ⸻
 
-27. Definition of Done
+1. Definition of Done
 
 The course is complete when:
 
-* [ ]	Existing Pico lessons have been identified and reused.
-* [ ]	AgentConnect integration has been validated against its current APIs.
-* [ ]	AgentConnect setup is documented.
-* [ ]	A Pico can publish telemetry through MQTT.
-* [ ]	EMQX can route the telemetry.
-* [ ]	An AgentConnect agent can consume Pico observations.
-* [ ]	The agent can control a Pico actuator.
-* [ ]	Event-driven operation works.
-* [ ]	Agent memory/context is demonstrated.
-* [ ]	Multi-agent operation is demonstrated.
-* [ ]	Safety boundaries are demonstrated.
-* [ ]	Agent decisions produce traceable evidence.
-* [ ]	The final project works with inexpensive Pico hardware.
-* [ ]	All examples are reproducible.
-* [ ]	Existing Open Engineering MQTT conventions are followed.
-* [ ]	Existing Pico course material is reused rather than duplicated.
-* [ ]	The course maps the implementation back to Open Engineering concepts.
+- [ ] Existing Pico lessons have been identified and reused.
+- [ ] AgentConnect integration has been validated against its current APIs.
+- [ ] AgentConnect setup is documented.
+- [ ] A Pico can publish telemetry through MQTT.
+- [ ] EMQX can route the telemetry.
+- [ ] An AgentConnect agent can consume Pico observations.
+- [ ] The agent can control a Pico actuator.
+- [ ] Event-driven operation works.
+- [ ] Agent memory/context is demonstrated.
+- [ ] Multi-agent operation is demonstrated.
+- [ ] Safety boundaries are demonstrated.
+- [ ] Agent decisions produce traceable evidence.
+- [ ] The final project works with inexpensive Pico hardware.
+- [ ] All examples are reproducible.
+- [ ] Existing Open Engineering MQTT conventions are followed.
+- [ ] Existing Pico course material is reused rather than duplicated.
+- [ ] The course maps the implementation back to Open Engineering concepts.
 
 ⸻
 
-28. Desired Outcome
+1. Desired Outcome
 
 The learner should finish the course understanding that an AI-enabled physical system does not need to turn the microcontroller into a miniature AI computer.
 
 Instead:
 
-                    AI
-                     │
-               AgentConnect
-                     │
-                  MQTT
-                     │
-                    Pico
-                     │
-              Physical World
+```
+                AI
+                 │
+           AgentConnect
+                 │
+              MQTT
+                 │
+                Pico
+                 │
+          Physical World
+```
 
 This architecture creates a clean separation between:
 

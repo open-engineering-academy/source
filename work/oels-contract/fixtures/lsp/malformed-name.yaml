@@ -1,0 +1,4 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Course
+metadata:
+  name: BadName.WithDots
