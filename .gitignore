@@ -2,7 +2,26 @@
 /docs/
 /_site/
 /_freeze/
-/work/
+
+# /work/ is scratch space by default. Selectively expose the OELS
+# adapter/validator modules and contract fixtures that CI depends on;
+# everything else under /work/ stays untracked.
+/work/*
+!/work/oels_metadata_adapter.py
+!/work/oels_metadata_diagnostics.py
+!/work/oels_metadata_validator.py
+!/work/oels_metadata_validator_walk.py
+!/work/oels-contract
+/work/oels-contract/*
+!/work/oels-contract/fixtures
+!/work/oels-contract/fixtures/README.md
+!/work/oels-contract/fixtures/malformed.yaml
+!/work/oels-contract/fixtures/unresolved-reference.yaml
+!/work/oels-contract/fixtures/unsupported-shape.yaml
+!/work/oels-contract/fixtures/valid-course.yaml
+!/work/oels-contract/fixtures/valid-lab.yaml
+!/work/oels-contract/fixtures/valid-lesson.yaml
+!/work/oels-contract/fixtures/valid-quiz.yaml
 
 **/.quarto/
 **/_site/
