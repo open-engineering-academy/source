@@ -71,6 +71,31 @@ its `discovery.ts`, `loader.ts`, `parser.ts`, and `validation.ts`.
 
 Counts below are current on-disk files that match the categories.
 
+**Parser inventory scope (86-file total).** The verified 86-file count is
+the set of `*.yaml`, `*.yml`, and `*.json` files under `courses/`,
+`templates/`, and `labs/`, walked with the following pruned directories:
+`_site/`, `.quarto/`, `.github/`, `node_modules/`, `dist/`, `build/`.
+Reproduction command:
+
+```
+python3 -c "
+import os
+count = 0
+for root in ['courses','templates','labs']:
+  for dp, dirs, fs in os.walk(root):
+    dirs[:] = [d for d in dirs if d not in ('_site','.quarto','.github','node_modules','dist','build')]
+    for f in fs:
+      if f.endswith(('.yaml','.yml','.json')): count += 1
+print(count)"
+```
+
+The semantic-classification table below has a wider scope than the
+86-file parser scope: it also enumerates course-local
+`.github/workflows/*.yml`, root-level `.github/workflows/*.yml`, root
+`_quarto.yml`, root `metadata.yaml`, and
+`templates/constructive-realization/*.ttl`. Each row below states its
+own scope explicitly.
+
 | Scope                                      | metadata.yaml | Other structured | Notes                                                             |
 | ------------------------------------------ | ------------- | ---------------- | ----------------------------------------------------------------- |
 | `courses/pico/`                            | 1             | `_quarto.yml`    | Course metadata + Quarto site config.                             |
@@ -134,7 +159,7 @@ Counts below are current on-disk files that match the categories.
 
 | Class                                    | Example files                                                                                          | Count | OELS recognizes as… |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ | ----- | ------------------- |
-| Academy course/lab/lesson/quiz metadata  | `courses/*/metadata.yaml`, `courses/engineering-stories/labs/audio-drama-lab/metadata.yaml`, `labs/*/metadata.yaml`, `templates/{course,lab,lesson,quiz}/metadata.yaml` | 22    | Ignored (no `apiVersion`).           |
+| Academy course/lab/lesson/quiz metadata  | `courses/*/metadata.yaml`, `courses/engineering-stories/labs/audio-drama-lab/metadata.yaml`, `labs/*/metadata.yaml`, `templates/{course,lab,lesson,quiz}/metadata.yaml` | 25    | Ignored (no `apiVersion`).           |
 | Repository-organization metadata         | `metadata.yaml` (repo root)                                                                            | 1     | Ignored (no `apiVersion`; governed by external `metadata-controller`). |
 | OE-namespaced resource (Pico kind)       | `courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml`                                             | 1     | Recognized OE resource (no matching Definition on disk today). |
 | Academy rule/topology data (no header)   | `courses/make-the-lamp-nod/rules/*.yaml`, `labs/*/downloads/{topology,mqtt-topics,emqx-adapter,fleet,fleet-configmap,picos,discovery,expected-task,expected-xr,blueprint}.yaml` | ~14  | Ignored (no `apiVersion`).           |
@@ -145,7 +170,29 @@ Counts below are current on-disk files that match the categories.
 | JSON Schema                              | `labs/hello-pico-nervous-system-mqtt/downloads/envelope.schema.json`                                   | 1     | Ignored (no `apiVersion` at the OE root; used by lab `verify.sh`). |
 | Checkable-profile example + report(s)    | `templates/examples/hello-pico-v1/package.yaml`, `templates/examples/hello-pico-v1/reports/index.yaml`, `templates/examples/hello-pico-v1/reports/oe-course-crossplane.yaml` | 3   | Ignored (documentation-shape, no `apiVersion`). |
 | Constructive-realization ontology (TTL)  | `templates/constructive-realization/{ontology,hello-pico-instances,quality-gate.schema}.ttl`           | 3     | Out of scope (`.ttl` not in OELS default extension set). |
-| Site / build / CI config                 | Root `_quarto.yml`, `courses/*/_quarto.yml`, `courses/{durable-picos-celld,rust-python-pyo3}/.github/workflows/ci.yml`, root `.github/workflows/build-and-publish.yml` | 12  | Ignored (non-OE data).               |
+| Site / build / CI config                 | Root `_quarto.yml`, `courses/*/_quarto.yml`, `courses/{durable-picos-celld,rust-python-pyo3}/.github/workflows/ci.yml`, root `.github/workflows/build-and-publish.yml` | 13  | Ignored (non-OE data).               |
+
+### Counting rules for classification counts
+
+- **Academy course/lab/lesson/quiz metadata (25).** Every `metadata.yaml`
+  under `courses/`, `templates/`, or `labs/` that describes an academy
+  artifact (course, lab, lesson, or quiz), and excluding the
+  repository-root `metadata.yaml` (counted separately below).
+  Breakdown: 8 course-root `metadata.yaml` (all courses except
+  `engineering-stories`, which has no course-root metadata) + 1 nested
+  `courses/engineering-stories/labs/audio-drama-lab/metadata.yaml` +
+  12 top-level `labs/*/metadata.yaml` +
+  4 `templates/{course,lab,lesson,quiz}/metadata.yaml` = 25.
+- **Site / build / CI config (13).** All `_quarto.yml` at the repository
+  root and under `courses/*/`, plus every `.github/workflows/*.yml`
+  under the repository root and under `courses/*/`. Excludes
+  `templates/course/_quarto.yml` (counted under the `templates/course/`
+  scope row above). Breakdown: 1 root `_quarto.yml` + 9
+  `courses/*/_quarto.yml` (one per course) + 1 root
+  `.github/workflows/build-and-publish.yml` + 2 course-local
+  `courses/{durable-picos-celld,rust-python-pyo3}/.github/workflows/ci.yml`
+  = 13.
+
 
 ## Current validators
 
@@ -257,3 +304,26 @@ Counts below are current on-disk files that match the categories.
 - Hard-coding the sibling OELS repository's absolute local path
   into anything under `bin/`, `_quarto.yml`, `.github/`,
   `courses/`, `labs/`, or `templates/`.
+
+
+## Commit bookkeeping
+
+The initial inventory commit (`da306d8`, "Inventory course artifacts for
+OELS adoption") added this memo (`memo13.md`) and also removed the
+root-level `memo10.md`. That deletion followed the established
+memo-history convention (`archive/memo0.md`–`memo9.md` are the archived
+predecessors), but the file was not moved into `archive/` in the same
+commit, and the accompanying task-note bookkeeping stated "no other
+files modified".
+
+This corrective change restores that convention by tracking the archived
+memo at `archive/memo10.md` (byte-identical to the pre-deletion root
+`memo10.md`), so memo history is preserved on-disk without relying on
+`git log --follow`. No course content, CI, editor wiring, OELS code, or
+executable configuration is touched by this correction; the only source
+changes are this memo and the addition of `archive/memo10.md`.
+
+The 86-file inventory total, the one OE-recognized resource
+(`courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml`), the seven
+migration gaps, and the five-step recommended priority order are
+unchanged by this correction.

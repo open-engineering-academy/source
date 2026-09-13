@@ -33,3 +33,15 @@ courses/<slug>/
 ```
 
 The reference implementation is [`courses/pico/`](../../courses/pico/).
+
+## OELS authoring
+
+A new course copied from this template inherits the shared Open
+Engineering Language Server (OELS) authoring contract without any
+per-course configuration file, absolute path, or committed dependency.
+See the **OELS authoring integration** section of
+[`templates/README.qmd`](../README.qmd) for what OELS treats as an OE
+resource, how to run it locally over stdio without hardcoded paths, how
+its diagnostics differ from Quarto render errors, and troubleshooting.
+No change to `_quarto.yml`, `index.qmd`, or `metadata.yaml` is required
+by that contract today.
