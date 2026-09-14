@@ -4,6 +4,12 @@ title: "Exercise · Find the Technical Truth"
 
 A short, guided task. Complete it before moving on to the next lesson.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## System description
 
 Consider a simple **ticketing system** for a support desk:

@@ -4,6 +4,12 @@ title: "Exercise · Engineering Through Stories"
 
 A short, guided task. Complete it before moving on to the next lesson.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Listen to or read the Crossplane restaurant audio story (the reference example

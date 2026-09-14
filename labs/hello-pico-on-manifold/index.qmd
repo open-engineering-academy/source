@@ -3,6 +3,12 @@ title: "Hello Pico on Manifold"
 description: "Host one Pico on a Manifold RuntimeEnvironment, wire one Wrangler Channel, send one event, observe one response."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico on Manifold** is the first runtime-focused lab of the Open

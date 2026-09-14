@@ -3,6 +3,12 @@ title: "Outer delivery loop (PR → merge → GitOps → reconcile)"
 description: "Take the Crossplane XR the hand-off produced and drive it through a real GitHub PR, a real merge, and a GitOps sync onto the Crossplane cluster from the Hello Pico on Kubernetes lab."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Outer delivery loop** is the first runnable Sandcastle lab that

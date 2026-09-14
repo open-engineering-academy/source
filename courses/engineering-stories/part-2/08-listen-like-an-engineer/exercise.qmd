@@ -4,6 +4,12 @@ description: "Evaluate your own audio with the five-dimension rubric and record 
 order: 8
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Evaluate the `audio-play.mp3` you produced in Module 7, record findings, and

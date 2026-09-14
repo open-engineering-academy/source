@@ -4,6 +4,12 @@ description: "Create a scenes.md file for your own technical concept."
 order: 5
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Write a `scenes.md` file for the system you chose in Part 1. Follow the

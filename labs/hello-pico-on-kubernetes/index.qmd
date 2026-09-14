@@ -3,6 +3,12 @@ title: "Hello Pico on Kubernetes"
 description: "Compose the Hello Pico greeting onto a local Kubernetes cluster using Crossplane."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico on Kubernetes** is the first Crossplane lab of the Open

@@ -5,6 +5,12 @@ title: "Exercise · Trace the compose → construct hand-off on paper"
 A short, pen-and-paper task. Complete it before moving on to the
 runnable [Lab](lab.qmd).
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Trace, on paper, the two-file hand-off from a Crossplane XR to a

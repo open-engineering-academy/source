@@ -6,6 +6,12 @@ A short, guided task. Complete it before moving on to the lab. All snippets
 use **provider-neutral capabilities**; no external accounts, tokens, or
 network calls are required.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 For a Pico you have been modeling across Part 3, write a capability-based

@@ -3,6 +3,12 @@ title: "Hello Pico"
 description: "Author your first Pico from a single Rule and produce a hello-world-pico artifact."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico** is the introductory lab of the Open Engineering Academy.

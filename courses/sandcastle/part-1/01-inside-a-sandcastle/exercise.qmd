@@ -5,6 +5,12 @@ title: "Exercise · Sandcastle blueprint for HelloWorldPico"
 A short, pen-and-paper task. Complete it before moving on to the
 [Lab](lab.qmd) walkthrough.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Write a small **Sandcastle blueprint**: a one-page description of how

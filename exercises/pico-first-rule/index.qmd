@@ -6,6 +6,12 @@ description: "Write and validate one Rule for a Pico."
 Reusable exercise exemplar. Demonstrates the exercise convention
 documented in [`exercises/index.qmd`](../index.qmd).
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Write a single Rule for a Pico of your choice. The Rule must:

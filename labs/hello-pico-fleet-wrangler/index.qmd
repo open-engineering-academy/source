@@ -3,6 +3,12 @@ title: "Hello Pico Fleet (Wrangler)"
 description: "Declare a small Wrangler-authored fleet over two existing Manifold InteractionTopologies, name every Pico and binding, and express one fleet-level lifecycle intent."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico Fleet (Wrangler)** is the first *topology and fleet*
