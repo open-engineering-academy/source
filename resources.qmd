@@ -53,3 +53,11 @@ Each course carries a `metadata.yaml` descriptor (see `courses/pico/metadata.yam
 for the reference example). Machine-readable metadata is what will later drive
 curriculum maps, dependency graphs, and other automation without changing
 course content.
+
+## Authoring tools
+
+- [Open Engineering Language Server (OELS)](oels.qmd) — optional
+  learner-facing guide to install and use OELS locally for live
+  diagnostics on OE-shaped `.yaml` / `.yml` / `.json` files, and how to
+  keep OELS feedback distinct from Quarto, `bin/pico`, and lab
+  `verify.sh` checks.

@@ -1,0 +1,240 @@
+---
+title: "Open Engineering Language Server (OELS)"
+subtitle: "Learner onboarding — install, configure, and use OELS locally."
+---
+
+OELS is the shared **semantic authoring surface** for Open Engineering (OE)
+resources. It is a Language Server Protocol (LSP) server: your editor talks
+to it in the background and shows structural feedback on OE-shaped files
+(diagnostics, completion, hover, go-to-definition, references). Quarto still
+publishes course sites; OELS never renders, transforms, or replaces Quarto
+output.
+
+## Why and when to use OELS
+
+Use OELS while you are **editing structured OE resources** — for example an
+OE-shaped `apiVersion: open-engineering.io/...` `Pico` file (see
+[`courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml`](courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml)),
+or any future YAML/JSON that follows the same shape. OELS gives you live
+diagnostics before you commit or render.
+
+You do **not** need OELS to complete a lesson, run a lab, or render a
+course. Every course, exercise, and lab is designed to work without OELS
+installed. OELS is an optional authoring aid.
+
+## What OELS treats as an OE resource
+
+OELS validates a file only when **all** of the following hold:
+
+1. Extension is `.yaml`, `.yml`, or `.json`.
+2. The document root is a YAML/JSON mapping.
+3. The root declares `apiVersion` beginning with `open-engineering.io/`.
+4. The root declares a non-empty `kind`.
+5. `metadata.name` is present and matches the DNS-1123 shape
+   `[a-z0-9]([-a-z0-9]*[a-z0-9])?` (no dots, no underscores).
+
+Every other file — `.qmd`, `.md`, `_quarto.yml`, ordinary `metadata.yaml`,
+Kubernetes / Crossplane / Home Assistant YAML, JSON payload samples,
+schemas, lab `downloads/*.yaml`, CI workflows — is **silently ignored by
+design**. Silence on a non-OE file is the correct behavior, not a bug.
+
+For the full contract and diagnostic-code catalog, see
+[`templates/README.qmd § OELS authoring integration`](templates/README.qmd).
+
+## Prerequisites
+
+- **Node.js ≥ 20** on your `PATH` (OELS declares `engines.node >= 20`).
+- **Corepack** enabled (ships with Node) so `pnpm` is available.
+- **git**.
+
+No network service, credential, or hosted account is required.
+
+## Install and build the pinned OELS server
+
+OELS is built from a pinned upstream commit. Run this once per pin, in a
+scratch folder **outside** the academy repository:
+
+```bash
+git clone https://github.com/open-engineering-language-server/source.git oels
+cd oels
+git checkout 6016c77007d3f84f4aaac25b30952599ba0f05af
+corepack enable && corepack prepare pnpm@12.4.1 --activate
+pnpm install --frozen-lockfile
+pnpm --filter @open-engineering/lsp exec tsc -b
+```
+
+You now have a standalone stdio server bin shim at:
+
+```
+packages/lsp/bin/open-engineering-lsp.mjs
+```
+
+Nothing from the OELS clone belongs in the academy repository. Keep it
+side-by-side with the academy checkout.
+
+## Point your editor at the built server
+
+Set one per-developer environment variable in your **shell profile**
+(`~/.zshrc`, `~/.bashrc`, …). Replace the placeholder with your own path:
+
+```bash
+export OELS_SERVER_PATH=/path/to/oels/packages/lsp/bin/open-engineering-lsp.mjs
+```
+
+Never commit this value to any file in the academy repository.
+
+### VS Code
+
+The pinned OELS repository ships an optional VS Code client under
+`packages/vscode`. There is **no Marketplace listing** — install it from
+the OELS clone (open the folder in VS Code and run the client extension in
+development, or package a local VSIX with `vsce package`), then add this
+snippet to your **user** `settings.json` (never a committed
+`.vscode/settings.json`):
+
+```jsonc
+{
+  "openEngineering.server.path": "${env:OELS_SERVER_PATH}",
+  "openEngineering.trace.server": "off"
+}
+```
+
+### Neovim / Zed / Helix / other LSP clients
+
+Launch `open-engineering-lsp --stdio` from your `OELS_SERVER_PATH`. If
+`OELS_SERVER_PATH` ends in `.mjs`/`.js`, wrap it as
+`node "$OELS_SERVER_PATH" --stdio`. Associate the client with the
+`open-engineering`, `yaml`, and `json` languageIds. OELS decides whether
+to treat a document as an OE resource from its content, not from the
+languageId.
+
+## Open the academy at the workspace root
+
+OELS derives its workspace root from the folder the editor opens. **Open
+the academy repository root** (the folder that contains `_quarto.yml` and
+`courses/`), not a single course. This lets OELS discover:
+
+- `definitions/` — schema Definitions used to validate OE resources.
+- OE-shaped `.yaml`/`.yml`/`.json` anywhere under `courses/**`,
+  `labs/**`, `templates/**`, and the repo root, minus pruned directories
+  (`node_modules`, `.git`, `dist`, `build`, and dotfiles).
+
+No per-course setup file exists or is needed; every course inherits this.
+
+## Try it: your first diagnostic
+
+The repository ships a deterministic malformed fixture used by the
+capability check:
+
+```
+work/oels-contract/fixtures/lsp/malformed-name.yaml
+```
+
+It declares `metadata.name: BadName.WithDots`, which violates the DNS-1123
+rule (rule 5 above).
+
+Open that file in your OELS-configured editor and confirm you see one
+diagnostic in the editor's **Problems** panel referencing that URI. If
+you do, OELS is working end-to-end.
+
+If you prefer a scripted check, the repository also ships a stdlib-only
+Python capability check that performs the LSP `initialize` handshake,
+opens the same fixture, and asserts at least one
+`textDocument/publishDiagnostics` arrives:
+
+```bash
+export OELS_SERVER_PATH=/path/to/oels/packages/lsp/bin/open-engineering-lsp.mjs
+python3 work/oels/check-oels.py --workspace courses/pico
+# Expected final line: "check-oels: OK"
+```
+
+The check never opens a socket, never contacts the network, and never
+reads credentials.
+
+## Valid fields and values you will see in diagnostics
+
+OELS surfaces one of the following diagnostic codes for OE-shaped files:
+
+- `MalformedResource` — document root is not a mapping.
+- `MalformedIdentifier` — `metadata.name` is not DNS-1123.
+- `UnknownDefinition` — no Definition under `<repo-root>/definitions/`
+  matches this file's `apiVersion` + `kind`.
+- `MissingRequiredProperty`, `UnknownProperty`, `IncorrectType`,
+  `InvalidEnumValue` — the resource does not match the Definition it
+  claims.
+
+Fix the field the diagnostic points at (or the Definition, if the
+authored resource is correct). Re-save; OELS re-publishes diagnostics
+automatically.
+
+## OELS vs Quarto vs pico/parser vs `verify.sh`
+
+Four independent systems can give you feedback while you author. Keep
+their responsibilities separate:
+
+| System           | What it checks                                                     | Where feedback shows up                     |
+| ---------------- | ------------------------------------------------------------------ | ------------------------------------------- |
+| **OELS**         | Structural shape of OE-shaped `.yaml`/`.yml`/`.json` files.        | Editor Problems panel (LSP diagnostics).    |
+| **Quarto**       | `.qmd` front matter, cross-links, includes, shortcodes, HTML build. | `quarto render` output in the terminal.     |
+| **pico / parser CLI** (`bin/pico`) | Pico Rules/Parser/Composer behavior at runtime.                    | Terminal exit code and printed output.      |
+| **Lab `verify.sh`** | Lab-specific outcomes (a Kubernetes Job succeeded, a Pico produced expected output, an envelope validates). | Terminal exit code from the lab's `downloads/verify.sh`. |
+
+An OELS diagnostic does **not** block `quarto render`. A Quarto error
+does **not** appear in the OELS Problems panel. A failing `verify.sh`
+does not change what OELS thinks of your metadata. Do not "fix" one by
+editing the other.
+
+## Local, offline, and network behavior
+
+OELS runs entirely on your machine over stdio. It:
+
+- reads only files under the workspace root you opened,
+- opens **no** network sockets,
+- reads **no** credentials or secrets,
+- writes **no** files,
+- never talks to a hosted service.
+
+It is safe to use offline and on isolated networks.
+
+## Fallback when OELS is unavailable
+
+Every academy course, lab, and exercise is authored to work without
+OELS. If you have not (or cannot) install it:
+
+- Continue editing `.qmd` and `.yaml` files as usual.
+- Rely on `quarto render` for prose/site errors.
+- Rely on each lab's `downloads/verify.sh` and `bin/pico` for runtime
+  checks.
+- For structural sanity of OE-shaped files, the repository ships
+  `scripts/oels_ci_validate.py` and `work/verify_oels_metadata.py`
+  (stdlib-only Python) that emit the same diagnostic-code set OELS
+  would; you can run them locally without the language server.
+
+OELS improves the authoring loop; it is never a hard requirement to
+learn, publish, or run academy material.
+
+## Troubleshooting
+
+- **Editor reports the server failed to start.** Check, in order:
+  (1) `OELS_SERVER_PATH` points at a real file; (2) the client passed
+  `--stdio`; (3) Node ≥ 20 is on `PATH`; (4) no stray absolute path from
+  another developer has leaked into a committed file.
+- **A file you expected to be validated is silent.** Confirm all five
+  OE-resource rules above. Silence on `metadata.yaml`, Kubernetes YAML,
+  or `.qmd` front matter is expected.
+- **`UnknownDefinition` on an OE-shaped file.** Confirm
+  `<repo-root>/definitions/` contains a Definition whose
+  `spec.target.{apiVersion,kind}` matches this file. See
+  [`definitions/README.md`](definitions/README.md).
+- **Diagnostics look stale.** Restart the language client; OELS
+  rebuilds its workspace model on `initialize`. No cache needs to be
+  cleared.
+- **Definitions added but not picked up.** OELS reads only
+  `<workspace-root>/definitions/` (top-level, non-recursive). Move
+  nested files up one level and restart the client.
+
+## Where to learn more
+
+- [`templates/README.qmd § OELS authoring integration`](templates/README.qmd) — the full authoring contract, diagnostic-code catalog, and directory-skip rules.
+- [`definitions/README.md`](definitions/README.md) — the Definitions OELS loads and what they cover.
+- [`memo15.md`](memo15.md) — the pinned distribution, resolver, and capability-check reference (development notes).

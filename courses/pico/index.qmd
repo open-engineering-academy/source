@@ -92,6 +92,10 @@ courses/pico/
   first worked example, pointing each of those terms at concrete Hello
   Pico material.
 - [Glossary](glossary.qmd)
+- [Open Engineering Language Server (OELS)](../../oels.qmd) — optional
+  learner guide for installing OELS locally and reading its
+  diagnostics on OE-shaped Pico YAML (see the reference Pico at
+  [`courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml`](../../courses/make-the-lamp-nod/picos/pixstars-head-pitch.yaml)).
 
 ## Reference course notice
 
