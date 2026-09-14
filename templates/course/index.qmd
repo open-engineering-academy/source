@@ -17,6 +17,9 @@ who the course is for, what they will build, and how long it takes.
 
 {{< include ../../shared/includes/prerequisites.qmd >}}
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
 {{< include ../../shared/includes/oels.qmd >}}
 
 ## Course structure

@@ -1447,32 +1447,37 @@ duplicating it.
 
 ### Shared learner-facing OELS callout
 
-Learner-facing pages produced from these templates include a shared
-callout, `shared/includes/oels.qmd`, that points learners at the
-published [OELS onboarding guide](../oels.qmd) (also linked from the
-academy [Resources](../resources.qmd) page), recommends keeping OELS active
-in VS Code while editing OE-shaped YAML/JSON, and explains that
-diagnostics appear in the editor **Problems** panel independently of
-`quarto render`. The callout also restates the artifact classification
-above in learner terms — OE-shaped YAML/JSON is validated, ordinary
-metadata / Quarto / Kubernetes / Crossplane / payload / script files
-remain intentionally non-OE and must not receive synthetic
-`apiVersion`/`kind` headers — and confirms that the exercise's own
-parser or `verify.sh` remains the authoritative success check.
+Learner-facing pages produced from these templates carry two paired
+elements:
 
-The include is wired into the four learner surfaces every copy
-inherits:
+1. A short in-page link to the published [OELS onboarding guide](../oels.qmd)
+   (`oels.qmd` at the academy site root, also linked from the academy
+   [Resources](../resources.qmd) page).
+2. A shared callout include, `shared/includes/oels.qmd`, that recommends
+   keeping OELS active in VS Code while editing OE-shaped YAML/JSON,
+   restates the artifact classification above in learner terms
+   (OE-shaped YAML/JSON is validated; ordinary metadata / Quarto /
+   Kubernetes / Crossplane / payload / script files remain intentionally
+   non-OE and must not receive synthetic `apiVersion`/`kind` headers),
+   explains that diagnostics appear in the editor **Problems** panel
+   independently of `quarto render`, and confirms that the exercise's
+   own parser or `verify.sh` remains the authoritative success check.
+   The include itself is deliberately link-free so the same body can be
+   inlined at any depth without breaking per-course independent builds.
 
-- `templates/course/index.qmd`
-- `templates/lesson/index.qmd`
-- `templates/lesson/exercise.qmd`
-- `templates/lab/README.qmd`
+Both are wired into the four learner surfaces every copy inherits:
 
-Copies keep the same `../../shared/includes/oels.qmd` reference used by
-the existing `tryit.qmd` include; when a lesson is placed at deeper
-course nesting (`courses/<course>/part-<n>/<NN>-<slug>/`), adjust the
-relative path exactly as you already do for `tryit.qmd` (four `..`
-segments, or the course's `shared` symlink). No install steps, absolute
+| Template file                       | Copied to                                                 | Guide link path            |
+| ----------------------------------- | --------------------------------------------------------- | -------------------------- |
+| `templates/course/index.qmd`        | `courses/<slug>/index.qmd`                                | `../../oels.qmd`           |
+| `templates/lab/README.qmd`          | `labs/<slug>/README.qmd`                                  | `../../oels.qmd`           |
+| `templates/lesson/index.qmd`        | `courses/<c>/part-<n>/<NN>-<slug>/index.qmd`              | `../../../../oels.qmd`     |
+| `templates/lesson/exercise.qmd`     | `courses/<c>/part-<n>/<NN>-<slug>/exercise.qmd`           | `../../../../oels.qmd`     |
+
+When a template is copied to a different depth than shown, adjust the
+`../oels.qmd` link exactly as you would adjust the shared-include
+reference (`../../shared/includes/…`) for the same relocation: add one
+`../` segment per additional nesting level. No install steps, absolute
 paths, credentials, browser LSP, or new dependencies are introduced by
-the callout.
+the callout or the link.
 
