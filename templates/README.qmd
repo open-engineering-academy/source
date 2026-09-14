@@ -1445,3 +1445,34 @@ living inside the same repository. Template README files link back to
 this section so authors can locate the shared contract without
 duplicating it.
 
+### Shared learner-facing OELS callout
+
+Learner-facing pages produced from these templates include a shared
+callout, `shared/includes/oels.qmd`, that points learners at the
+published OELS onboarding guide (linked from the academy
+[Resources](../resources.qmd) page), recommends keeping OELS active
+in VS Code while editing OE-shaped YAML/JSON, and explains that
+diagnostics appear in the editor **Problems** panel independently of
+`quarto render`. The callout also restates the artifact classification
+above in learner terms — OE-shaped YAML/JSON is validated, ordinary
+metadata / Quarto / Kubernetes / Crossplane / payload / script files
+remain intentionally non-OE and must not receive synthetic
+`apiVersion`/`kind` headers — and confirms that the exercise's own
+parser or `verify.sh` remains the authoritative success check.
+
+The include is wired into the four learner surfaces every copy
+inherits:
+
+- `templates/course/index.qmd`
+- `templates/lesson/index.qmd`
+- `templates/lesson/exercise.qmd`
+- `templates/lab/README.qmd`
+
+Copies keep the same `../../shared/includes/oels.qmd` reference used by
+the existing `tryit.qmd` include; when a lesson is placed at deeper
+course nesting (`courses/<course>/part-<n>/<NN>-<slug>/`), adjust the
+relative path exactly as you already do for `tryit.qmd` (four `..`
+segments, or the course's `shared` symlink). No install steps, absolute
+paths, credentials, browser LSP, or new dependencies are introduced by
+the callout.
+

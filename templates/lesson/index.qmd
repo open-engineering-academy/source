@@ -17,6 +17,8 @@ matters, and what the learner will do.
 
 {{< include ../../shared/includes/prerequisites.qmd >}}
 
+{{< include ../../shared/includes/oels.qmd >}}
+
 ## Concepts
 
 Explain the concept(s) with prose, diagrams, and callouts. Keep code samples

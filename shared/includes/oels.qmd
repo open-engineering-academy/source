@@ -1,0 +1,27 @@
+::: {.callout-tip title="OELS in your editor"}
+While you work through this content, keep the [Open Engineering Language
+Server (OELS)](/resources.qmd) active in VS Code (or any LSP-capable
+editor). See the OELS onboarding guide linked from the academy
+**Resources** page for the one-time install and configuration steps.
+
+**What OELS validates.** OELS only recognizes **OE-shaped YAML/JSON**:
+files with a mapping root that declare an `apiVersion` beginning with
+`open-engineering.io/`, a non-empty `kind`, and a DNS-1123
+`metadata.name`. Ordinary academy `metadata.yaml`, Quarto/QMD pages and
+front matter, Kubernetes/Crossplane/runtime manifests, JSON payload
+samples, and shell scripts are intentionally **non-OE** — OELS ignores
+them silently and you should **not** add synthetic `apiVersion`/`kind`
+headers to force recognition.
+
+**Where you see diagnostics.** OELS surfaces `UnknownProperty`,
+`MissingRequiredProperty`, `IncorrectType`, `InvalidEnumValue`,
+`MalformedIdentifier`, `UnknownDefinition`, and reference-shape hints
+in the editor **Problems** panel as you type. These are independent of
+`quarto render`: OELS diagnostics do not block rendering, and Quarto
+errors do not appear in the Problems panel.
+
+**The executable check still comes from this exercise.** OELS speeds up
+editing, but the exercise's own parser, verifier, or `verify.sh` (for
+example the `pico parse …` command shown below) remains the
+authoritative success check. Run it as usual.
+:::
