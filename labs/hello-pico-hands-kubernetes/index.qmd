@@ -3,6 +3,12 @@ title: "Hello Pico Hands (Kubernetes)"
 description: "Give one Pico a single reversible Kubernetes Hand, confined to a Pico-owned ConfigMap by a namespaced Role."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico Hands (Kubernetes)** is the first *runnable Hands* lab of

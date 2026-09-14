@@ -4,6 +4,12 @@ title: "Exercise · Mapping Pico onto Crossplane"
 
 A short, pen-and-paper task. Complete it before moving on to the lab.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Take the same `rules/hello.yaml` you authored in the

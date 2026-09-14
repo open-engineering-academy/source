@@ -3,6 +3,12 @@ title: "Compose a Sandcastle request"
 description: "Turn a learner-authored Crossplane XR into an EngineeringTask and have a Sandcastle construct the requested artifact on a durable branch."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Compose a Sandcastle request** is the first *runnable* lab that

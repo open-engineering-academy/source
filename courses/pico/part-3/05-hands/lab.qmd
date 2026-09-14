@@ -2,6 +2,12 @@
 title: "Lab · Give a Pico Hands"
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 In this lab you will author one artefact per stage of a Hand invocation —
 Composer equipment, Pico decision, Policy authorization, Hand selection,
 Provider execution, Evidence, and Action event — and validate the local

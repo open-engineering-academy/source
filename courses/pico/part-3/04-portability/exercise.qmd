@@ -4,6 +4,12 @@ title: "Exercise · Portability"
 
 A short, guided task. Complete it before moving on to the lab.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 For the Pico you have been modeling across Part 3, write the beginning of a

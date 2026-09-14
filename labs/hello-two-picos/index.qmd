@@ -3,6 +3,12 @@ title: "Hello Two Picos"
 description: "Host two Picos on Manifold, wire one Wrangler Channel, watch one Pico emit an event that the other Pico consumes and reacts to."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Two Picos** is the first *multi-Pico* runtime lab of the Open

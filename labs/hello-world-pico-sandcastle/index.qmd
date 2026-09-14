@@ -3,6 +3,12 @@ title: "Hello World Pico Sandcastle"
 description: "Run a real Sandcastle end-to-end to construct the hello-world-pico artifact on a dedicated branch."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello World Pico Sandcastle** is the first *runnable* Sandcastle lab

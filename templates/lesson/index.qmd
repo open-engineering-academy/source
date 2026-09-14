@@ -17,6 +17,11 @@ matters, and what the learner will do.
 
 {{< include ../../shared/includes/prerequisites.qmd >}}
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
 ## Concepts
 
 Explain the concept(s) with prose, diagrams, and callouts. Keep code samples

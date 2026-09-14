@@ -5,6 +5,11 @@ description: "Small, focused practice task for this lesson."
 
 {{< include ../../shared/includes/tryit.qmd >}}
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
 ## Task
 
 Describe the exercise in one or two paragraphs. Keep it small — a lab handles

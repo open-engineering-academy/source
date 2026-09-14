@@ -4,6 +4,12 @@ description: "Write one or two scenes of your screenplay.md."
 order: 6
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Transform one or two scenes from your `scenes.md` into audio screenplay blocks,

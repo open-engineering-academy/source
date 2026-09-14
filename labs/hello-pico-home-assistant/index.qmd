@@ -3,6 +3,12 @@ title: "Hello Pico on Home Assistant"
 description: "Layer a Home Assistant graphical ControlSurface over the approved Manifold runtime through the same Python CLI."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico on Home Assistant** is the first *graphical*

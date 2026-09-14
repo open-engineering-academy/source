@@ -3,6 +3,12 @@ title: "Sandcastle → Kubernetes hand-off"
 description: "Take the branch a Sandcastle produced and hand its greeting off as a Crossplane XR for the Hello Pico on Kubernetes composition."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Sandcastle → Kubernetes hand-off** is the first runnable lab that

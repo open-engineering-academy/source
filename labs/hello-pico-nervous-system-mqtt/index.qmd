@@ -3,6 +3,12 @@ title: "Hello Pico Nervous System (MQTT)"
 description: "Author a provider-neutral Pico message envelope, verify it locally without a broker, and map the same contract onto MQTT topics and an optional EMQX adapter."
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
 ## Overview
 
 **Hello Pico Nervous System (MQTT)** is the first *nervous-system* lab

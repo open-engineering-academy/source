@@ -4,6 +4,12 @@ title: "Exercise · Design the Metaphor"
 
 A short, guided task. Complete it before moving on to the next lesson.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Starting point
 
 Use the `concept.md` you wrote for the ticketing system in the

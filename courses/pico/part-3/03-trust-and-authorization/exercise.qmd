@@ -4,6 +4,12 @@ title: "Exercise · Trust and Authorization"
 
 A short, guided task. Complete it before moving on to the lab.
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 For the relationship you established in the

@@ -7,6 +7,7 @@ project:
     - index.qmd
     - about.qmd
     - resources.qmd
+    - oels.qmd
     - curriculum/index.qmd
     - courses/index.qmd
     - labs/index.qmd

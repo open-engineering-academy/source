@@ -4,6 +4,12 @@ description: "Document the production workflow and capability requirements for y
 order: 7
 ---
 
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
 ## Task
 
 Write a `production.md` file documenting the production workflow and capability
