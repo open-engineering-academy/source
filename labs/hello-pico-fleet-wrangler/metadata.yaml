@@ -1,0 +1,45 @@
+id: oe.lab.hello-pico-fleet-wrangler
+title: Hello Pico Fleet (Wrangler)
+level: intermediate
+duration: 30m
+prerequisites:
+  - oe.lab.hello-pico-on-manifold
+  - oe.lab.hello-two-picos
+  - oe.course.manifold
+  - oe.course.kubernetes
+teaches:
+  - Wrangler as the declarative topology/fleet authoring layer over Manifold
+  - Composing existing InteractionTopologies into one fleet
+  - Attributing named Picos and channel bindings back to owning topologies
+  - Expressing one fleet-level lifecycle intent distinct from runtime execution
+produces:
+  - hello-pico-fleet
+referenced_by: []
+constructive_role: realization
+realizes:
+  - oe.course.manifold
+realization_pattern: wrangler-fleet-over-manifold-topologies
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+interaction_topology: downloads/fleet.yaml
+control_surfaces:
+  - python-cli
+depends_on:
+  - oe.lab.hello-pico-on-manifold
+  - oe.lab.hello-two-picos
+validated_by:
+  - "downloads/verify.sh — shape-checks the Wrangler fleet fragment, member topologies, bindings, and lifecycle intent, and spec-compares the ConfigMap carrier"
+  - "walkthrough.qmd Step 3 — kubectl -n manifold get cm hello-pico-fleet -o yaml renders the same fleet spec the learner authored"
+lifecycle_state: operational
+evidence:
+  - check: "downloads/verify.sh — Wrangler fleet is layered honestly over the approved runtime"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh confirms the fleet targets manifold-on-kubernetes, composes existing wrangler.oe.academy/v1alpha1 InteractionTopologies from the two member labs, only binds channels those topologies already declare, includes a fleet-level lifecycle.desiredState, and that the ConfigMap carrier embeds the authored fleet spec verbatim."
+  - check: "walkthrough.qmd Step 3 — on-cluster fleet spec matches the authored fragment"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 3 shows the learner reading the fleet ConfigMap back from the manifold namespace and confirming the embedded spec matches downloads/fleet.yaml, so declared truth on the cluster equals what was authored."
+feedback:
+  - observation: "Keeping the fleet at one Wrangler-authored fragment composed of two existing InteractionTopologies, three named Picos, three bindings across two Channels, and one fleet-level lifecycle intent makes the declarative topology/fleet story auditable end-to-end: the fleet lives above the runtime, references only what the underlying labs already declare, and does not start Pods or open Channels of its own."
+    about: hello-pico-fleet
+    refines: oe.course.manifold
+    observation_source: manifold-on-kubernetes

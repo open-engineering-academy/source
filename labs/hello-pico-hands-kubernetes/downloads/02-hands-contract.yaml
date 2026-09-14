@@ -1,0 +1,70 @@
+# The provider-neutral Hands contract, the Pico identity, and the Pico's
+# rules for this lab. Everything below is data, not credentials, and is
+# consumed by the Pico engine Pod (06-pico-engine.yaml) as mounted files.
+#
+# Layout in-Pod (via volumeMount):
+#   /etc/pico/identity.json    — actor identity (Pico + principal)
+#   /etc/pico/hands.json       — declared Hands: provider + capabilities
+#   /etc/pico/rules.json       — allow/deny rules with narrow constraints
+#   /etc/pico/event.json       — the one event the Pico observes
+#
+# The "Hands contract" is deliberately small and provider-neutral: it only
+# names capabilities. A HandsProvider (in this lab, KubernetesHands) later
+# maps a capability to a concrete cluster operation. Rules gate which
+# capabilities the Pico may exercise, and constrain WHERE it may exercise
+# them (namespace + resourceName). This mirrors the "governed execution"
+# language of the Part 3 · Hands lesson.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pico-hello-hands-contract
+  namespace: hands
+  labels:
+    oe.academy/pico: hello-hands-pico
+    oe.academy/hands-provider: kubernetes
+data:
+  identity.json: |
+    {
+      "actor": { "pico": "hello-hands-pico" },
+      "principal": { "type": "user", "id": "user.learner" }
+    }
+  hands.json: |
+    {
+      "provider": "kubernetes",
+      "capabilities": [
+        {
+          "name": "pico.state.set",
+          "target": {
+            "kind": "ConfigMap",
+            "namespace": "hands",
+            "resourceName": "pico-hello-hands-state"
+          },
+          "reversible": true,
+          "description": "Set a bounded state value on a Pico-owned ConfigMap in the hands namespace."
+        }
+      ]
+    }
+  rules.json: |
+    {
+      "rules": [
+        {
+          "capability": "pico.state.set",
+          "effect": "allow",
+          "constraints": {
+            "namespaces": ["hands"],
+            "resourceNames": ["pico-hello-hands-state"],
+            "keys": ["greeted"]
+          }
+        },
+        {
+          "capability": "kubernetes.resource.delete",
+          "effect": "deny"
+        }
+      ]
+    }
+  event.json: |
+    {
+      "eventType": "hello.request",
+      "channel": "hello",
+      "value": "Hello, Pico!"
+    }

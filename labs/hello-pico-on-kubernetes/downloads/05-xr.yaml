@@ -1,0 +1,10 @@
+# The Composite Resource the learner authors. This is the Crossplane
+# equivalent of the Rule from the Hello Pico lab: a small declarative
+# input that the control plane will validate against the XRD and hand to
+# the Composition.
+apiVersion: oe.academy/v1alpha1
+kind: XHelloWorldPico
+metadata:
+  name: hello
+spec:
+  value: "Hello, Pico!"

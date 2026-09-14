@@ -1,0 +1,33 @@
+id: oe.course.crossplane
+slug: crossplane
+title: Running Hello Pico on Kubernetes with Crossplane
+level: intermediate
+duration: 8h
+entry: index.qmd
+glossary: glossary.qmd
+sections:
+  - part-1
+  - part-2
+  - part-3
+prerequisites:
+  - oe.course.pico
+teaches:
+  - Crossplane
+  - Composition
+  - Managed Resource
+  - Kubernetes control plane
+produces:
+  - hello-world-pico-on-kubernetes
+references_labs:
+  - oe.lab.hello-pico
+  - oe.lab.hello-pico-on-kubernetes
+references_exercises: []
+constructive_role: definition
+checkable_profile: hello-pico-v1
+constraints:
+  - "A valid hello-world-pico-on-kubernetes Element is realized as a Kubernetes Job that composes the hello-world-pico executable Element."
+  - "The composed Job completes successfully and its logs contain 'Hello, Pico!'."
+feedback:
+  - observation: "Wrapping an already-realized hello-world-pico Element in a Kubernetes Job via a Crossplane XR keeps the compose/construct/behave boundaries visible: Crossplane composes, the upstream lab constructs, and Kubernetes governs behavior."
+    about: hello-world-pico-on-kubernetes
+    refines: oe.course.crossplane

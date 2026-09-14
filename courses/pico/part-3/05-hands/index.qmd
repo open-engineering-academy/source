@@ -1,0 +1,278 @@
+---
+title: "5. Hands"
+subtitle: "Giving a Pico the ability to act."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Explain why a Pico needs a controlled mechanism for acting on the world.
+- Distinguish **Mind** (should I do this?) from **Hands** (how do I do
+  this?).
+- Describe the provider-neutral Hands capability model.
+- Author a Pico definition and rule that express Hands capabilities.
+- Explain why a valid credential does not imply authorization.
+
+## Prerequisites
+
+- [Pico Identity](../01-pico-identity/index.qmd).
+- [Cross-Mesh Communication](../02-cross-mesh-communication/index.qmd).
+- [Trust and Authorization](../03-trust-and-authorization/index.qmd).
+
+## A Pico that can change the world
+
+A Pico can reason, observe, remember, communicate, and make decisions. To
+affect systems outside itself, however, it also needs a controlled mechanism
+for taking action. We call this capability **Hands**.
+
+> A Pico without Hands can understand the world.
+> A Pico with Hands can change it.
+
+The resulting principle:
+
+> A Composer equips a Pico with Hands. The Pico decides when to use them.
+> A Hand performs the action. Open Engineering governs the whole loop.
+
+## Extending the Pico across Part 3
+
+The previous Part 3 lessons progressively equipped the learner's Pico. This
+lesson adds the final faculty in that progression:
+
+```
+Pico
+│
+├── Identity   →  Who am I?                (lesson 01 · Pico Identity)
+│
+├── Senses     →  What is happening?       (lesson 02 · Cross-Mesh Communication, inbound)
+│
+├── Mind       →  What should I do?        (lesson 03 · Trust and Authorization + rules)
+│
+├── Voice      →  What should I communicate? (lesson 02 · Cross-Mesh Communication, outbound)
+│
+└── Hands      →  What should I change     (this lesson · 05 · Hands)
+                  or execute?
+```
+
+The distinction between Mind and Hands is particularly important:
+
+- The **Mind** determines: *Should I do this?*
+- The **Hands** determine: *How do I do this?*
+
+Identity, Senses, Voice, and Mind were established earlier in Part 3. Hands
+build on all four — a Hand cannot act without identity, cannot know what to
+do without the Mind, cannot receive the trigger without Senses, and cannot
+report the outcome without Voice.
+
+## Provider independence
+
+Picos MUST NOT be architecturally dependent upon any particular tool
+provider. Open Engineering defines the abstract capability — **Pico Hands** —
+and any concrete provider becomes one implementation of that capability:
+
+```
+Pico
+ │
+ ▼
+Hands
+ │
+ ├── LocalHands       (in-process functions)
+ ├── KubernetesHands  (cluster APIs)
+ ├── PhysicalHands    (actuators, devices)
+ └── ComposioHands    (external SaaS via Composio — optional)
+```
+
+This follows the Open Engineering principle of separating Definition from
+Implementation.
+
+::: {.callout-important}
+## Composio and external providers — optional, non-runnable in this wave
+
+This lesson treats Composio (and any other external SaaS provider) as
+**illustrative only**. No exercise, lab step, or verification command in
+this wave calls out to Composio, GitHub, Gmail, or Slack. The learner does
+not need any external accounts, tokens, or credentials to complete the
+lesson. All runnable checks operate on local YAML using the provider-neutral
+capability vocabulary.
+:::
+
+## The capability model
+
+Hands should expose **capabilities**, not merely provider-specific tool
+names. For example:
+
+```
+github.issue.create
+email.send
+messaging.post
+kubernetes.resource.read
+mqtt.publish
+servo.position.set
+```
+
+A provider maps these capabilities onto implementation-specific operations.
+For instance, `email.send` might map onto a hypothetical Composio tool such
+as `GMAIL_SEND_EMAIL` — but the Pico rule still names only `email.send`. This
+keeps Pico rules independent from any provider's API vocabulary and lets
+the provider be swapped without changing the rules.
+
+## Identity before action
+
+Hands MUST integrate with Pico identity. The fundamental security rule:
+
+> No Hand acts without identity and authorization context.
+
+The Pico is not merely saying "send this email." It is saying:
+
+```
+I am Pico X.
+I am acting within this identity context.
+My rules permit this capability.
+My Hands provider can perform it.
+Execute the requested action.
+```
+
+## Authorization boundary
+
+Authentication and authorization MUST remain conceptually separate. A valid
+credential MUST NOT imply authorization. Composio may answer "can this
+connected account authenticate to Gmail?" Open Engineering must answer "is
+this Pico permitted to send this email?"
+
+```
+Open Engineering
+      │
+      ├── Identity
+      ├── Rules
+      ├── Policy
+      ├── Capability authorization
+      └── Evidence
+             │
+             ▼
+          Hands
+             │
+             ▼
+          Composio
+             │
+             ▼
+       External System
+```
+
+## Governed execution
+
+Hands integrate with Pico rules. Rules declare which capabilities are
+allowed, and richer rules constrain destinations, namespaces, environments,
+time windows, and approvals. For example:
+
+```
+capability: kubernetes.resource.apply
+constraints:
+  namespaces:
+    - pico-*
+  environments:
+    - development
+    - test
+```
+
+This turns Hands into **governed execution** rather than unrestricted tool
+calling. Some operations support human approval gates, so the architecture
+supports future human-in-the-loop execution.
+
+## The seven concerns of a Hand invocation
+
+A single Hand invocation crosses seven distinct concerns. The lesson lab
+produces one artefact for each of them.
+
+```
+1. Composer equipment
+       │  what Hands the Pico is equipped with
+       ▼
+2. Pico decision
+       │  the Mind chooses a capability to invoke
+       ▼
+3. Policy authorization
+       │  Open Engineering rules say "yes, in this context"
+       ▼
+4. Hand selection
+       │  the specific Hand (provider binding) is chosen
+       ▼
+5. Provider execution
+       │  the underlying provider actually performs the action
+       ▼
+6. Evidence
+       │  a signed record of what happened is kept
+       ▼
+7. Action event
+          the Pico publishes a state-transition event via its Voice
+```
+
+Each concern belongs to a different actor:
+
+| Stage | Owned by | Answers |
+|---|---|---|
+| 1 · Composer equipment | Composer | *What Hands does this Pico even have?* |
+| 2 · Pico decision | Pico Mind | *Do I want to do this now?* |
+| 3 · Policy authorization | Open Engineering rules | *Am I allowed to do this here?* |
+| 4 · Hand selection | Pico runtime | *Which Hand should carry it out?* |
+| 5 · Provider execution | Provider (Composio, k8s, local, …) | *How does the outside world change?* |
+| 6 · Evidence | Pico memory | *What actually happened, verifiably?* |
+| 7 · Action event | Pico Voice | *Who else needs to know?* |
+
+Collapsing any two of these — for example, equating provider authentication
+with policy authorization, or treating an action as its own evidence —
+weakens the architecture. The exercise, lab, and quiz reinforce that they
+stay separate.
+
+## Hands versus MCP
+
+Hands and MCP should not be treated as synonyms. MCP may be one mechanism
+through which tools become discoverable or executable.
+
+```
+Pico
+ ↓
+Hands
+ ↓
+Provider / Protocol
+ ├── Composio
+ ├── MCP
+ ├── REST
+ ├── Kubernetes
+ ├── MQTT
+ └── local execution
+```
+
+Hands are the Pico capability abstraction. MCP is an integration mechanism.
+Composio is a provider/platform. These concerns remain separate.
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — a short, guided task you complete inline.
+- [Lab](lab.qmd) — author a Hands-equipped Pico definition and rules.
+- [Summary](summary.qmd) — the key takeaways of the lesson.
+- [Quiz](quiz.qmd) — a short knowledge check.
+
+## Runnable lab
+
+- [Hello Pico Hands (Kubernetes)](../../../../labs/hello-pico-hands-kubernetes/index.qmd)
+  — realizes this lesson's provider-neutral capability model on a
+  local Kubernetes cluster: one declared capability
+  (`pico.state.set`), one `KubernetesHands` adapter, one allowlisted
+  reversible action confined by a namespaced `Role` and
+  `resourceNames` to a Pico-owned `ConfigMap`, and the normalized
+  `pico.hand.*` lifecycle plus evidence JSON.
+
+## Optional follow-up
+
+- [Composio as a Hands provider](composio-followup.qmd) — an optional,
+  non-runnable extension that shows how a provider-neutral capability
+  such as `email.send` or `github.issue.create` maps behind a
+  `ComposioHands` adapter without changing Pico rules, and explicitly
+  separates Open Engineering identity/authorization/policy from
+  Composio authentication, connected accounts, OAuth, and tool
+  execution. Includes a mock contract check that runs on local YAML
+  and requires no external accounts, tokens, or SDKs.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

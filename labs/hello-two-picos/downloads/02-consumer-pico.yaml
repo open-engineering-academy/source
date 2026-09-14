@@ -1,0 +1,46 @@
+# The consumer Pico Pod hosted by the Manifold RuntimeEnvironment.
+#
+# This Pod plays the role of a Pico engine hosting the Pico Element
+# "hello-consumer-pico" in the Phase 7 vocabulary. It subscribes to the
+# Wrangler-declared Channel "greeting" (EventType "hello.greeting"), waits
+# for exactly one event, and produces one Observation:
+#
+#   pico[hello-consumer-pico] observation: greeting from <from>: <value>
+#
+# The Pod is single-shot: after the one event it exits, and Kubernetes marks
+# it Succeeded. The `busybox`-based command is a stand-in for a real Pico
+# engine; Phase 7 explicitly does not introduce a new runtime implementation.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-consumer-pico
+  namespace: manifold
+  labels:
+    app: hello-consumer-pico
+    oe.academy/pico: hello-consumer-pico
+    oe.academy/hosted-by: manifold
+    oe.academy/subscribes-to: greeting
+spec:
+  restartPolicy: Never
+  containers:
+    - name: pico-engine
+      image: busybox:1.36
+      command:
+        - /bin/sh
+        - -c
+        - |
+          set -eu
+          echo "pico-engine: hosted by manifold on kubernetes; hello-consumer-pico subscribed to channel 'greeting' for eventType 'hello.greeting'"
+          req="$(nc -l -p 8080)"
+          from="$(printf '%s' "$req" | tr -d '\r' | grep -o '"from"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"from"[[:space:]]*:[[:space:]]*"\([^"]*\)"/\1/')"
+          value="$(printf '%s' "$req" | tr -d '\r' | grep -o '"value"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"value"[[:space:]]*:[[:space:]]*"\([^"]*\)"/\1/')"
+          if [ -z "$from" ]; then
+            from="(no from)"
+          fi
+          if [ -z "$value" ]; then
+            value="(no value)"
+          fi
+          echo "pico[hello-consumer-pico] observation: greeting from ${from}: ${value}"
+      ports:
+        - containerPort: 8080
+          name: greeting

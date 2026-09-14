@@ -1,0 +1,43 @@
+# Pico digital twin — the logical PixStars head-pitch actuator.
+#
+# The Pico represents the LOGICAL actuator and its state, not merely a
+# hardware register. The AX-12A is one current implementation; the Pico
+# capability survives replacing the AX-12A with another servo.
+#
+# Canonical Pico format (open-engineering.io/v1alpha1) — see the Pico course.
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: pixstars-head-pitch
+spec:
+  type: actuator
+  capabilities:
+    - nod
+    - center
+    - stop
+    - set-position
+  implementation:
+    deviceClass: dynamixel
+    model: AX-12A
+  state:
+    desiredPosition: 0
+    actualPosition: 0
+    moving: false
+    torqueEnabled: true
+    connected: true
+    temperature: null
+    voltage: null
+    lastCommand: null
+    lastCommandStatus: null
+    lastUpdated: null
+  events:
+    subscribesTo:
+      channel: pixstars-head
+      eventTypes:
+        - pixstars.head.nod.requested
+        - pixstars.head.center.requested
+        - pixstars.head.stop.requested
+    emits:
+      - pixstars.head.nod.completed
+      - pixstars.head.nod.failed
+      - pixstars.head.state.updated

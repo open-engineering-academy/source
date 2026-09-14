@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-engineering.example/pico/nervous-system/envelope.schema.json",
+  "title": "Pico provider-neutral message envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "ts", "source"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Globally unique message identifier (ULID/UUID); stable across the message's lifetime and independent of any transport identifier."
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "observation",
+        "event",
+        "command",
+        "delegation",
+        "result",
+        "presence",
+        "discovery"
+      ],
+      "description": "One of the seven provider-neutral message kinds enumerated by Memo 10 sections 9-10."
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp the message was minted."
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pico"],
+      "properties": {
+        "pico": {
+          "type": "string",
+          "description": "Stable Pico identity of the emitter. Independent of MQTT client_id, Kubernetes pod name, IP address, or any transport-specific identifier."
+        },
+        "transport": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Transport-scoped identifiers. Distinct from source.pico; may vary across sessions.",
+          "properties": {
+            "mqtt": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["client_id"],
+              "properties": {
+                "client_id": { "type": "string" },
+                "topic": { "type": "string" }
+              }
+            },
+            "kubernetes": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "pod": { "type": "string" },
+                "namespace": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pico": { "type": "string" },
+        "capability": { "type": "string" }
+      },
+      "description": "Required for command and delegation; must name the recipient Pico by stable identity."
+    },
+    "subject": {
+      "type": "string",
+      "description": "What the message is about (device path, mission id, Pico resource, etc.)."
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Groups related messages that belong to the same mission or interaction (e.g. delegation and its result share a correlation_id)."
+    },
+    "causation_id": {
+      "type": "string",
+      "description": "The id of the message that directly caused this one (e.g. an event caused by an observation, a result caused by a delegation)."
+    },
+    "delegation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mission": { "type": "string" },
+        "requested_by": { "type": "string" },
+        "capability": { "type": "string" }
+      },
+      "description": "Delegation context. Present on delegation messages; carried on the paired result message so the outcome can be attributed."
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["principal", "capability"],
+      "properties": {
+        "principal": { "type": "string", "description": "The identity on whose behalf the action is taken (user, Pico, service account)." },
+        "capability": { "type": "string", "description": "The capability being exercised (e.g. pico.state.set, garden.water)." },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "namespaces": { "type": "array", "items": { "type": "string" } },
+            "resourceNames": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "granted_by": { "type": "string", "description": "Ruleset or policy that granted the capability." }
+      },
+      "description": "Required for command and delegation. Publishing to a topic is not itself authorization; the emitter must show which principal is acting and which capability is being invoked."
+    },
+    "data": {
+      "description": "Type-specific payload; validated by the emitter's Ruleset, not by this envelope schema."
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "command" } } },
+      "then": { "required": ["target", "authorization"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "delegation" } } },
+      "then": { "required": ["target", "authorization", "delegation", "correlation_id"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "result" } } },
+      "then": { "required": ["correlation_id", "causation_id"] }
+    },
+    {
+      "if": { "properties": { "type": { "const": "event" } } },
+      "then": { "required": ["subject"] }
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+# Home Assistant configuration snippet — Make the Lamp Nod.
+#
+# Home Assistant is a CONTROL SURFACE only. It requests capabilities
+# (nod, center, stop) and observes state. It does NOT implement the servo
+# trajectory and does NOT own the actuator behavior.
+#
+# Every write below delegates to the approved `pico runtime emit` CLI (the
+# Python ControlSurface at bin/pico), which emits one Open Engineering event
+# onto the pixstars-head Channel. The Pico twin + Manifold do the coercion.
+#
+# Merge these keys into your Home Assistant configuration.yaml. The `pico`
+# executable and a working kubeconfig must both be reachable from inside the
+# Home Assistant container.
+
+# --- Observation surface ---------------------------------------------
+# One sensor surfacing the Pico twin's reported state (via the CLI), so HA
+# reflects the runtime truth instead of inventing its own.
+command_line:
+  - sensor:
+      name: pixstars_head_state
+      unique_id: oe.course.make-the-lamp-nod.head_state
+      command: "/config/make-the-lamp-nod/head-state.sh"
+      scan_interval: 5
+      command_timeout: 10
+
+# --- Safe control actions --------------------------------------------
+# Three shell_commands that each emit exactly one semantic request as an
+# Open Engineering event. argv is byte-equal to a shell prompt against the
+# same Manifold/Wrangler Channel used by the Pico twin.
+shell_command:
+  pixstars_nod: "pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.nod.requested --value '{}'"
+  pixstars_center: "pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.center.requested --value '{}'"
+  pixstars_stop: "pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.stop.requested --value '{}'"
+
+# --- UI triggers ------------------------------------------------------
+input_button:
+  pixstars_nod:
+    name: "NOD"
+  pixstars_center:
+    name: "CENTER"
+  pixstars_stop:
+    name: "STOP"
+
+# --- Automations (bind buttons to events, no logic of their own) ------
+automation:
+  - alias: "PixStars — nod on button press"
+    id: oe.course.make-the-lamp-nod.nod_automation
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_button.pixstars_nod
+    action:
+      - service: shell_command.pixstars_nod
+  - alias: "PixStars — center on button press"
+    id: oe.course.make-the-lamp-nod.center_automation
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_button.pixstars_center
+    action:
+      - service: shell_command.pixstars_center
+  - alias: "PixStars — stop on button press"
+    id: oe.course.make-the-lamp-nod.stop_automation
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_button.pixstars_stop
+    action:
+      - service: shell_command.pixstars_stop

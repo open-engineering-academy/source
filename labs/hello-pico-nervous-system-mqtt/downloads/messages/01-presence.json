@@ -1,0 +1,21 @@
+{
+  "id": "msg-01-presence-architect",
+  "type": "presence",
+  "ts": "2026-09-01T09:00:00Z",
+  "source": {
+    "pico": "pico.architect.001",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-arch-7f3a",
+        "topic": "pico/pico.architect.001/presence"
+      },
+      "kubernetes": {
+        "pod": "hello-architect-pico",
+        "namespace": "nervous-system"
+      }
+    }
+  },
+  "data": {
+    "status": "online"
+  }
+}

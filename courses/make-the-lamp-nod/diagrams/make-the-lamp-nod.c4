@@ -1,0 +1,54 @@
+// Make the Lamp Nod — LikeC4 visualization of the cyber-physical system.
+// Follows the Open Engineering LikeC4 orientation (memo7).
+
+model {
+  system "MakeTheLampNod" {
+    // Human / interface layer
+    component "Home Assistant" {
+      description "Human control surface only — requests nod/center/stop, reflects state."
+    }
+    component "Open Engineering" {
+      description "Capability resolution, identifiers, events, composition, observability."
+    }
+    component "Pico Twin" {
+      description "pixstars-head-pitch — desired and observed state."
+    }
+    component "Manifold" {
+      description "Pico runtime execution environment (Kubernetes-hosted RuntimeEnvironment)."
+    }
+    component "Edge Adapter" {
+      description "Open Engineering semantics to device protocol (ESP32)."
+    }
+    component "ESP32" {
+      description "Actuator-level commands; no character reasoning."
+    }
+    component "74HCT245" {
+      description "Electrical interface (voltage levels, bus, direction)."
+    }
+    component "AX-12A" {
+      description "Physical actuator — Dynamixel Protocol 1.0."
+    }
+    component "Lamp Head" {
+      description "Physical motion: nod."
+    }
+
+    Home Assistant -> Open Engineering : "nod (semantic request)"
+    Open Engineering -> Pico Twin : "capability/event"
+    Pico Twin -> Manifold : "rule execution"
+    Manifold -> Edge Adapter : "actuator command"
+    Edge Adapter -> ESP32 : "network message"
+    ESP32 -> 74HCT245 : "Dynamixel Protocol 1.0"
+    74HCT245 -> AX-12A : "electrical communication"
+    AX-12A -> Lamp Head : "rotation"
+    Lamp Head -> Pico Twin : "telemetry (ascent)"
+    Pico Twin -> Home Assistant : "state (ascent)"
+  }
+}
+
+views {
+  view "system" {
+    title "Make the Lamp Nod — system"
+    include * with desc
+    $edges = LabeledEdges
+  }
+}
