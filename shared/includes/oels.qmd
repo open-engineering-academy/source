@@ -1,8 +1,9 @@
 ::: {.callout-tip title="OELS in your editor"}
-While you work through this content, keep the [Open Engineering Language
-Server (OELS)](/resources.qmd) active in VS Code (or any LSP-capable
-editor). See the OELS onboarding guide linked from the academy
-**Resources** page for the one-time install and configuration steps.
+While you work through this content, keep the Open Engineering Language
+Server (OELS) active in VS Code (or any LSP-capable editor). See the
+[OELS onboarding guide](/oels.qmd) (also linked from the academy
+[Resources](/resources.qmd) page) for the one-time install and
+configuration steps.
 
 **What OELS validates.** OELS only recognizes **OE-shaped YAML/JSON**:
 files with a mapping root that declare an `apiVersion` beginning with

@@ -1449,8 +1449,8 @@ duplicating it.
 
 Learner-facing pages produced from these templates include a shared
 callout, `shared/includes/oels.qmd`, that points learners at the
-published OELS onboarding guide (linked from the academy
-[Resources](../resources.qmd) page), recommends keeping OELS active
+published [OELS onboarding guide](../oels.qmd) (also linked from the
+academy [Resources](../resources.qmd) page), recommends keeping OELS active
 in VS Code while editing OE-shaped YAML/JSON, and explains that
 diagnostics appear in the editor **Problems** panel independently of
 `quarto render`. The callout also restates the artifact classification
