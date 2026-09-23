@@ -1,0 +1,34 @@
+id: oe.lab.handoff-sandcastle-to-kubernetes
+title: Sandcastle → Kubernetes hand-off
+level: intermediate
+duration: 30m
+prerequisites:
+  - oe.lab.hello-world-pico-sandcastle
+  - oe.lab.hello-pico-on-kubernetes
+teaches:
+  - Artifact hand-off (construct → compose)
+  - Sandcastle branch as durable input
+  - Crossplane XR as composition request
+  - Value promotion (rule.value → xr.spec.value)
+produces:
+  - hello-world-pico-on-kubernetes-xr
+referenced_by:
+  - oe.course.sandcastle
+  - oe.lesson.sandcastle.03-handing-off-to-kubernetes
+constructive_role: realization
+realization_pattern: sandcastle-branch-to-crossplane-xr
+validated_by:
+  - "downloads/verify.sh assertion 1 — generated XR file exists"
+  - "downloads/verify.sh assertion 2 — generated XR fields match expected shape"
+  - "downloads/verify.sh assertion 3 — generated XR matches labs/hello-pico-on-kubernetes/downloads/05-xr.yaml"
+lifecycle_state: operational
+evidence:
+  - check: "downloads/verify.sh assertion 1 — generated XR file exists"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh checks the generated XR YAML exists at work/handoff-sandcastle-to-kubernetes/build/xr.yaml."
+  - check: "downloads/verify.sh assertion 2 — generated XR fields match expected shape"
+    path: downloads/expected-xr.yaml
+    description: "downloads/expected-xr.yaml is the reference shape verify.sh compares apiVersion / kind / name / value against."
+  - check: "downloads/verify.sh assertion 3 — generated XR matches labs/hello-pico-on-kubernetes/downloads/05-xr.yaml"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh compares the generated XR to the downstream Crossplane lab's reference 05-xr.yaml so hand-off is byte-equivalent."

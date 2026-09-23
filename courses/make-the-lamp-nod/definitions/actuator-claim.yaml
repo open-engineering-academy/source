@@ -1,0 +1,16 @@
+# The claim — "I want a head-pitch actuator that can nod."
+#
+# The developer/learner does NOT define the pico, the runtime registration,
+# the event connectivity, the edge-adapter configuration, the observability,
+# or the Home Assistant exposure. Crossplane composes all of those.
+apiVersion: robotics.open-engineering.io/v1alpha1
+kind: Actuator
+metadata:
+  name: pixstars-head
+spec:
+  capabilities:
+    - nod
+    - center
+    - stop
+  gesture:
+    name: nod

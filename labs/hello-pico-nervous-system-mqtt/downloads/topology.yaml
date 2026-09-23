@@ -1,0 +1,75 @@
+# Wrangler-style InteractionTopology fragment for the Hello Pico Nervous
+# System (MQTT) lab. This mirrors the shape used by the Hello Two Picos
+# lab (labs/hello-two-picos/downloads/topology.yaml) so the two labs
+# share the same Manifold RuntimeEnvironment on Kubernetes.
+#
+# The fragment names three Picos (architect, detective, garden) and the
+# nervous-system channels they publish and subscribe on. It also records
+# the explicit producer -> consumer wiring for the two multi-step
+# interactions the lab teaches: an observation-driven command
+# (garden -> architect -> garden) and a delegation with a result
+# (architect -> detective -> architect).
+apiVersion: wrangler.oe.academy/v1alpha1
+kind: InteractionTopology
+metadata:
+  name: hello-nervous-system
+spec:
+  runtimeEnvironment: manifold-on-kubernetes
+  channels:
+    - name: presence
+      eventType: pico.presence
+    - name: discovery
+      eventType: pico.discovery
+    - name: garden.observation
+      eventType: garden.soil.moisture
+    - name: garden.event
+      eventType: garden.soil.dry
+    - name: garden.command
+      eventType: garden.water
+    - name: architect.delegation
+      eventType: architecture.investigate
+    - name: architect.result
+      eventType: architecture.investigate.result
+  picos:
+    - name: pico.architect.001
+      publishes:
+        - channel: garden.command
+          eventType: garden.water
+        - channel: architect.delegation
+          eventType: architecture.investigate
+      subscribes:
+        - channel: garden.event
+          eventType: garden.soil.dry
+        - channel: architect.result
+          eventType: architecture.investigate.result
+        - channel: discovery
+          eventType: pico.discovery
+    - name: pico.detective.017
+      publishes:
+        - channel: architect.result
+          eventType: architecture.investigate.result
+        - channel: discovery
+          eventType: pico.discovery
+      subscribes:
+        - channel: architect.delegation
+          eventType: architecture.investigate
+    - name: pico.garden.042
+      publishes:
+        - channel: garden.observation
+          eventType: garden.soil.moisture
+        - channel: garden.event
+          eventType: garden.soil.dry
+        - channel: presence
+          eventType: pico.presence
+      subscribes:
+        - channel: garden.command
+          eventType: garden.water
+  wiring:
+    - from: { pico: pico.garden.042,     channel: garden.event,        eventType: garden.soil.dry }
+      to:   { pico: pico.architect.001,  subscription: garden.event }
+    - from: { pico: pico.architect.001,  channel: garden.command,      eventType: garden.water }
+      to:   { pico: pico.garden.042,     subscription: garden.command }
+    - from: { pico: pico.architect.001,  channel: architect.delegation, eventType: architecture.investigate }
+      to:   { pico: pico.detective.017,  subscription: architect.delegation }
+    - from: { pico: pico.detective.017,  channel: architect.result,    eventType: architecture.investigate.result }
+      to:   { pico: pico.architect.001,  subscription: architect.result }

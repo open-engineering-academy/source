@@ -1,0 +1,43 @@
+# Wrangler-style InteractionTopology fragment for this lab.
+#
+# In Phase 7 vocabulary this is an InteractionTopology description: it names
+# one Channel ("greeting") and two Picos ("hello-producer-pico" publishes,
+# "hello-consumer-pico" subscribes). The "wiring" list makes the runtime
+# relationship between the two Picos explicit: producer -> channel -> consumer.
+#
+# It is authored as an ordinary YAML fragment adjacent to the lab, not a new
+# platform format. It is applied to the cluster as a ConfigMap
+# (04-topology-configmap.yaml) so the RuntimeEnvironment can carry the same
+# declarative truth as the walkthrough.
+apiVersion: wrangler.oe.academy/v1alpha1
+kind: InteractionTopology
+metadata:
+  name: hello-two-picos
+spec:
+  runtimeEnvironment: manifold-on-kubernetes
+  channels:
+    - name: greeting
+      eventType: hello.greeting
+      shape:
+        from: string
+        value: string
+  picos:
+    - name: hello-producer-pico
+      publishes:
+        - channel: greeting
+          eventType: hello.greeting
+    - name: hello-consumer-pico
+      subscribes:
+        - channel: greeting
+          eventType: hello.greeting
+      produces:
+        - observation: consumed-greeting
+          shape: string
+  wiring:
+    - from:
+        pico: hello-producer-pico
+        channel: greeting
+        eventType: hello.greeting
+      to:
+        pico: hello-consumer-pico
+        subscription: greeting

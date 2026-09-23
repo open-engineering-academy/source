@@ -1,0 +1,41 @@
+# Reference EngineeringTask that compose.sh must emit from
+# xr-request.yaml. verify.sh compares the generated task against this
+# file on the fields that matter (kind, task name, artifact kind,
+# greeting input, target branch, requestedBy provenance).
+#
+# EngineeringTask is the declarative record of *construction work the
+# cluster wants done*. It is the compose-side output of Crossplane's
+# Composition and the construct-side input to the Sandcastle. It is
+# intentionally not an XR: the composition has already decided *what*
+# needs to be built and captured that decision as a task, so the
+# Sandcastle never has to reason about the original request shape.
+kind: EngineeringTask
+metadata:
+  name: greetings-de
+spec:
+  requestedBy:
+    apiVersion: oe.academy/v1alpha1
+    kind: XHelloWorldPico
+    name: greetings-de
+  artifact:
+    kind: hello-world-pico
+    producesFiles:
+      - rules/hello.yaml
+  inputs:
+    greeting: "Hallo, Pico!"
+  target:
+    repo: file://./work/compose-sandcastle-request/target-repo
+    branch: sandcastle/hello-world-pico-greetings-de
+  workspace:
+    sandboxProvider: local-scratch-dir
+    tools:
+      - pico
+      - git
+      - python3
+    permissions:
+      - git.read:file:./target-repo
+      - git.write:branch:sandcastle/hello-world-pico-greetings-de
+      - fs.write:workspace-only
+  artifactBoundary:
+    survives: [branch]
+    disposed: [workspace, tools, scratch_state]

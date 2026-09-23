@@ -1,0 +1,32 @@
+{
+  "id": "msg-07-result-investigate",
+  "type": "result",
+  "ts": "2026-09-01T09:00:06Z",
+  "source": {
+    "pico": "pico.detective.017",
+    "transport": {
+      "mqtt": {
+        "client_id": "mqtt-det-9c21",
+        "topic": "pico/pico.architect.001/result/architecture.investigate"
+      }
+    }
+  },
+  "target": {
+    "pico": "pico.architect.001"
+  },
+  "subject": "mission.hello-nervous-system.investigate-cluster",
+  "correlation_id": "corr-mission-investigate-001",
+  "causation_id": "msg-06-delegation-investigate",
+  "delegation": {
+    "mission": "investigate_cluster",
+    "requested_by": "pico.architect.001",
+    "capability": "architecture.investigate"
+  },
+  "data": {
+    "status": "completed",
+    "findings": {
+      "namespaces_inspected": 1,
+      "picos_seen": 3
+    }
+  }
+}

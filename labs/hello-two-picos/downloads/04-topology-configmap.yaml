@@ -1,0 +1,52 @@
+# On-cluster carrier for the Wrangler-declared InteractionTopology.
+#
+# The topology fragment (topology.yaml, shipped alongside the lab) is the
+# authored declarative truth. Copying it into a ConfigMap keeps that same
+# truth reachable inside the Manifold RuntimeEnvironment, so an operator
+# inspecting the cluster can read the exact Channel, subscriptions, and
+# wiring the running two-Pico topology was deployed under.
+#
+# The `.data.topology\.yaml` key holds the fragment verbatim so a
+# `kubectl -n manifold get cm hello-two-picos-topology -o yaml` renders the
+# same YAML the learner authored.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-two-picos-topology
+  namespace: manifold
+  labels:
+    oe.academy/interaction-topology: hello-two-picos
+data:
+  topology.yaml: |
+    apiVersion: wrangler.oe.academy/v1alpha1
+    kind: InteractionTopology
+    metadata:
+      name: hello-two-picos
+    spec:
+      runtimeEnvironment: manifold-on-kubernetes
+      channels:
+        - name: greeting
+          eventType: hello.greeting
+          shape:
+            from: string
+            value: string
+      picos:
+        - name: hello-producer-pico
+          publishes:
+            - channel: greeting
+              eventType: hello.greeting
+        - name: hello-consumer-pico
+          subscribes:
+            - channel: greeting
+              eventType: hello.greeting
+          produces:
+            - observation: consumed-greeting
+              shape: string
+      wiring:
+        - from:
+            pico: hello-producer-pico
+            channel: greeting
+            eventType: hello.greeting
+          to:
+            pico: hello-consumer-pico
+            subscription: greeting

@@ -1,0 +1,1429 @@
+[
+  {
+    "objectID": "labs/index.html",
+    "href": "labs/index.html",
+    "title": "Labs",
+    "section": "",
+    "text": "The primary hands-on artifact of this course is the Open Engineering Mini Kernel living in kernel/.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#suggested-lab-sequence",
+    "href": "labs/index.html#suggested-lab-sequence",
+    "title": "Labs",
+    "section": "Suggested lab sequence",
+    "text": "Suggested lab sequence\n\nRust-only tests — cargo test inside kernel/\nFirst binding — expose and call normalize_identifier\nIdentifier class — construct and reject invalid identifiers from Python\nManifest validation — feed valid and invalid dicts\nRule evaluation — write a small rule and observe match / no-match\nPython contract tests — pytest tests/python\nWheel packaging — maturin build --release and install into a clean environment",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "labs/index.html#running-the-automated-suites",
+    "href": "labs/index.html#running-the-automated-suites",
+    "title": "Labs",
+    "section": "Running the automated suites",
+    "text": "Running the automated suites\ncd kernel\n\n# Domain logic (no Python required)\ncargo test\n\n# Public Python contract (requires maturin develop first)\nmaturin develop\npytest tests/python -q\nSee the Capstone for the complete acceptance criteria.",
+    "crumbs": [
+      "Home",
+      "Labs"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html",
+    "href": "modules/14-what-stays-python.html",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "",
+    "text": "Resist the urge to move everything into Rust. Know when Python is the right home.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html#goal",
+    "href": "modules/14-what-stays-python.html#goal",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "",
+    "text": "Resist the urge to move everything into Rust. Know when Python is the right home.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html#examples-that-often-stay-in-python",
+    "href": "modules/14-what-stays-python.html#examples-that-often-stay-in-python",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "Examples that often stay in Python",
+    "text": "Examples that often stay in Python\nagent.ask(...)\nllm.generate(...)\nmqtt.publish(...)\nhome_assistant.call_service(...)\nworkflow.execute(...)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html#typical-reasons-to-remain-in-python",
+    "href": "modules/14-what-stays-python.html#typical-reasons-to-remain-in-python",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "Typical reasons to remain in Python",
+    "text": "Typical reasons to remain in Python\n\n\n\n\n\n\n\nReason\nWhy it matters\n\n\n\n\nNetwork latency dominates\nNative speed is irrelevant\n\n\nRapid experimentation\nPython iteration speed wins\n\n\nEcosystem integration\nRich libraries already exist\n\n\nImplementation changes often\nAvoid rewriting native code\n\n\nPerformance is irrelevant\nClarity beats micro-optimisation\n\n\nOrchestration readability\nAgents and workflows are easier to follow",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html#the-course-principle-restated",
+    "href": "modules/14-what-stays-python.html#the-course-principle-restated",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "The course principle restated",
+    "text": "The course principle restated\n\nDo not introduce Rust merely to eliminate Python.\n\nRust earns its place when the implementation is part of the platform contract: shared semantics, validation, deterministic evaluation, portable domain logic.\nPython remains the flexible orchestration and AI environment.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html#decision-checklist",
+    "href": "modules/14-what-stays-python.html#decision-checklist",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "Decision checklist",
+    "text": "Decision checklist\nAsk for each component:\n\nIs there a single definition of “correct” that many consumers must share?\nWould an incorrect implementation silently break the platform?\nDo we need the same logic from Python, CLI, and possibly WASM?\nHave we measured a real performance problem?\n\nIf most answers are “no”, keep it in Python.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/14-what-stays-python.html#exercise",
+    "href": "modules/14-what-stays-python.html#exercise",
+    "title": "Module 14 — What Should Stay Python?",
+    "section": "Exercise",
+    "text": "Exercise\nRevisit the classification table from Module 01.\nUpdate any answers now that you have seen the full kernel and boundary design.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "14 What Stays Python?"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html",
+    "href": "modules/12-concurrency-gil.html",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "",
+    "text": "Understand just enough about the Python Global Interpreter Lock to design safe PyO3 boundaries.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html#goal",
+    "href": "modules/12-concurrency-gil.html#goal",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "",
+    "text": "Understand just enough about the Python Global Interpreter Lock to design safe PyO3 boundaries.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html#what-the-gil-is-practical-view",
+    "href": "modules/12-concurrency-gil.html#what-the-gil-is-practical-view",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "What the GIL is (practical view)",
+    "text": "What the GIL is (practical view)\nPython bytecode in a single process is generally executed by only one thread at a time. Native extensions can release the GIL while they do pure Rust work that does not touch Python objects.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html#when-rust-can-run-independently-of-python",
+    "href": "modules/12-concurrency-gil.html#when-rust-can-run-independently-of-python",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "When Rust can run independently of Python",
+    "text": "When Rust can run independently of Python\n\n\n\n\n\n\n\nSituation\nTypical approach\n\n\n\n\nCPU-heavy pure computation\nRelease the GIL around the hot loop\n\n\nLong-running native operation\nRelease the GIL; re-acquire only to return results\n\n\nTouching Python objects\nMust hold the GIL\n\n\nSimple, fast domain calls\nHolding the GIL is often fine",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html#what-this-course-does-not-require",
+    "href": "modules/12-concurrency-gil.html#what-this-course-does-not-require",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "What this course does not require",
+    "text": "What this course does not require\n\nA complete tour of CPython internals\nWriting your own free-threaded interpreter build\nPremature parallelisation of every kernel call",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html#practical-guidance-for-the-mini-kernel",
+    "href": "modules/12-concurrency-gil.html#practical-guidance-for-the-mini-kernel",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "Practical guidance for the Mini Kernel",
+    "text": "Practical guidance for the Mini Kernel\nMost Identifier / Manifest / Rule operations are short. Keeping them synchronous and coarse-grained is the right default.\nIf you later add a heavy graph algorithm or bulk validation pass, measure first, then consider releasing the GIL around the pure-Rust section.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/12-concurrency-gil.html#exercise",
+    "href": "modules/12-concurrency-gil.html#exercise",
+    "title": "Module 12 — Concurrency and the GIL",
+    "section": "Exercise",
+    "text": "Exercise\n\nRead the current kernel entry points and note whether any of them perform long-running work.\nExplain in one paragraph when you would not release the GIL for a kernel function.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "12 Concurrency & GIL"
+    ]
+  },
+  {
+    "objectID": "modules/10-testing.html",
+    "href": "modules/10-testing.html",
+    "title": "Module 10 — Testing",
+    "section": "",
+    "text": "Test the system at two layers that serve different purposes.\n             Rust core\n             ▲       ▲\n             │       │\n        Rust tests   PyO3\n                     │\n                     ▼\n                  Python API\n                     ▲\n                     │\n                  pytest",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "10 Testing"
+    ]
+  },
+  {
+    "objectID": "modules/10-testing.html#goal",
+    "href": "modules/10-testing.html#goal",
+    "title": "Module 10 — Testing",
+    "section": "",
+    "text": "Test the system at two layers that serve different purposes.\n             Rust core\n             ▲       ▲\n             │       │\n        Rust tests   PyO3\n                     │\n                     ▼\n                  Python API\n                     ▲\n                     │\n                  pytest",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "10 Testing"
+    ]
+  },
+  {
+    "objectID": "modules/10-testing.html#layer-1-rust-tests-canonical-behaviour",
+    "href": "modules/10-testing.html#layer-1-rust-tests-canonical-behaviour",
+    "title": "Module 10 — Testing",
+    "section": "Layer 1 — Rust tests (canonical behaviour)",
+    "text": "Layer 1 — Rust tests (canonical behaviour)\ncargo test\nThese tests exercise the domain logic without Python in the loop.\nThey answer: “Does the kernel implement the rules correctly?”",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "10 Testing"
+    ]
+  },
+  {
+    "objectID": "modules/10-testing.html#layer-2-python-tests-public-contract",
+    "href": "modules/10-testing.html#layer-2-python-tests-public-contract",
+    "title": "Module 10 — Testing",
+    "section": "Layer 2 — Python tests (public contract)",
+    "text": "Layer 2 — Python tests (public contract)\npytest tests/python\nThese tests exercise the exposed API the way a Python application would use it.\nThey answer: “Does the package we ship behave as documented for Python callers?”",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "10 Testing"
+    ]
+  },
+  {
+    "objectID": "modules/10-testing.html#why-both-are-required",
+    "href": "modules/10-testing.html#why-both-are-required",
+    "title": "Module 10 — Testing",
+    "section": "Why both are required",
+    "text": "Why both are required\n\n\n\nLayer\nProtects against\n\n\n\n\nRust tests\nLogic regressions inside the kernel\n\n\nPython tests\nBinding mistakes, conversion bugs, packaging gaps\n\n\n\nA pure Rust test suite cannot catch a broken #[pyfunction] annotation.\nA pure Python test suite is a slow way to debug a pure domain-logic error.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "10 Testing"
+    ]
+  },
+  {
+    "objectID": "modules/10-testing.html#exercise",
+    "href": "modules/10-testing.html#exercise",
+    "title": "Module 10 — Testing",
+    "section": "Exercise",
+    "text": "Exercise\n\nRun cargo test and confirm the domain tests pass.\nRun the Python test suite (see kernel/tests/python/).\nIntentionally break one Rust invariant and observe which layer fails first.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "10 Testing"
+    ]
+  },
+  {
+    "objectID": "modules/08-structured-data.html",
+    "href": "modules/08-structured-data.html",
+    "title": "Module 08 — Structured Data",
+    "section": "",
+    "text": "Accept structured input (Python dicts) and return structured results without turning the boundary into a free-for-all of nested conversions.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "08 Structured Data"
+    ]
+  },
+  {
+    "objectID": "modules/08-structured-data.html#goal",
+    "href": "modules/08-structured-data.html#goal",
+    "title": "Module 08 — Structured Data",
+    "section": "",
+    "text": "Accept structured input (Python dicts) and return structured results without turning the boundary into a free-for-all of nested conversions.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "08 Structured Data"
+    ]
+  },
+  {
+    "objectID": "modules/08-structured-data.html#manifest-example",
+    "href": "modules/08-structured-data.html#manifest-example",
+    "title": "Module 08 — Structured Data",
+    "section": "Manifest example",
+    "text": "Manifest example\nresult = validate_manifest({\n    \"kind\": \"pico\",\n    \"name\": \"lamp\",\n    \"version\": \"1.0\",\n})\n\n# result →\n# {\n#   \"valid\": True,\n#   \"errors\": [],\n#   \"manifest\": {\n#     \"kind\": \"pico\",\n#     \"name\": \"lamp\",\n#     \"version\": \"1.0\",\n#     \"identifier\": \"open-engineering.pico.lamp\"\n#   }\n# }",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "08 Structured Data"
+    ]
+  },
+  {
+    "objectID": "modules/08-structured-data.html#approaches-considered-in-the-course",
+    "href": "modules/08-structured-data.html#approaches-considered-in-the-course",
+    "title": "Module 08 — Structured Data",
+    "section": "Approaches considered in the course",
+    "text": "Approaches considered in the course\n\n\n\n\n\n\n\nApproach\nWhen it is useful\n\n\n\n\nDirect Python dict → Rust\nSimple, explicit validation boundary\n\n\nTyped PyO3 objects\nStronger typing on the Python side\n\n\nJSON string round-trip\nEasy interop, clear serialization point\n\n\nserde-backed structures\nCanonical internal representation\n\n\n\nThe kernel uses a clear validation boundary: Python supplies a dict, Rust validates and returns a structured result.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "08 Structured Data"
+    ]
+  },
+  {
+    "objectID": "modules/08-structured-data.html#design-guidance",
+    "href": "modules/08-structured-data.html#design-guidance",
+    "title": "Module 08 — Structured Data",
+    "section": "Design guidance",
+    "text": "Design guidance\n\nDo not blindly translate every Python dictionary into internal Rust state.\nValidate at the boundary.\nKeep the domain model free of Python-specific types.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "08 Structured Data"
+    ]
+  },
+  {
+    "objectID": "modules/08-structured-data.html#exercise",
+    "href": "modules/08-structured-data.html#exercise",
+    "title": "Module 08 — Structured Data",
+    "section": "Exercise",
+    "text": "Exercise\n\nCall validate_manifest with a valid dict and inspect the result.\nCall it with missing kind / name and inspect the error list.\nExplain where validation occurs (Python vs Rust) and why that placement was chosen.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "08 Structured Data"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html",
+    "href": "modules/06-strong-domain-types.html",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "",
+    "text": "Stop treating everything as strings. Encode invariants in the type system so invalid identifiers are hard (or impossible) to construct.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html#goal",
+    "href": "modules/06-strong-domain-types.html#goal",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "",
+    "text": "Stop treating everything as strings. Encode invariants in the type system so invalid identifiers are hard (or impossible) to construct.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html#from-loose-strings-to-structured-values",
+    "href": "modules/06-strong-domain-types.html#from-loose-strings-to-structured-values",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "From loose strings to structured values",
+    "text": "From loose strings to structured values\nstring\n   │\n   ▼\nparser\n   │\n   ├── valid ─────► Identifier\n   │\n   └── invalid ───► Error",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html#what-strong-means-here",
+    "href": "modules/06-strong-domain-types.html#what-strong-means-here",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "What “strong” means here",
+    "text": "What “strong” means here\n// Preferred: construction goes through validation\nlet id = Identifier::parse(\"oe.pico.lamp\")?;\n\n// Or through a checked constructor\nlet id = Identifier::new(\"open-engineering\", \"pico\", \"lamp\")?;\nThere is no public way to build an Identifier that violates the grammar.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html#grammar-used-in-the-kernel",
+    "href": "modules/06-strong-domain-types.html#grammar-used-in-the-kernel",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "Grammar used in the kernel",
+    "text": "Grammar used in the kernel\nCanonical form: namespace.kind.name\nRules:\n\nexactly three segments separated by .\neach segment non-empty\nonly lowercase letters, digits, and hyphens\nsegments normalized to lowercase on parse\nno leading or trailing hyphen inside a segment\n\nThese rules live in Rust so every consumer (Python, later CLI/WASM) inherits the same definition of “valid”.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html#why-this-matters-for-open-engineering",
+    "href": "modules/06-strong-domain-types.html#why-this-matters-for-open-engineering",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "Why this matters for Open Engineering",
+    "text": "Why this matters for Open Engineering\nA platform contract that is only documented in prose will drift.\nA platform contract that is enforced by a single typed implementation does not.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/06-strong-domain-types.html#exercise",
+    "href": "modules/06-strong-domain-types.html#exercise",
+    "title": "Module 06 — Strong Domain Types",
+    "section": "Exercise",
+    "text": "Exercise\n\nAttempt to parse several invalid strings from Python and observe the error.\nList three additional invariants you might want an Open Engineering identifier to enforce in a later version of the kernel.\nExplain why those invariants belong in the Rust type rather than in ad-hoc Python checks.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "06 Strong Domain Types"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html",
+    "href": "modules/04-maturin.html",
+    "title": "Module 04 — Maturin",
+    "section": "",
+    "text": "Package the Rust library so Python can import it as an ordinary module.\nFrom the Python consumer’s point of view there should be no Cargo, no .so hunting, and no special knowledge of the build system.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#goal",
+    "href": "modules/04-maturin.html#goal",
+    "title": "Module 04 — Maturin",
+    "section": "",
+    "text": "Package the Rust library so Python can import it as an ordinary module.\nFrom the Python consumer’s point of view there should be no Cargo, no .so hunting, and no special knowledge of the build system.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#what-maturin-does",
+    "href": "modules/04-maturin.html#what-maturin-does",
+    "title": "Module 04 — Maturin",
+    "section": "What Maturin does",
+    "text": "What Maturin does\n\n\n\nConcern\nMaturin responsibility\n\n\n\n\nCompile the Rust crate\nYes\n\n\nProduce a Python extension module\nYes\n\n\nBuild wheels\nYes\n\n\nDevelopment installs\nmaturin develop\n\n\nRelease artifacts\nmaturin build",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#create-a-virtual-environment-first",
+    "href": "modules/04-maturin.html#create-a-virtual-environment-first",
+    "title": "Module 04 — Maturin",
+    "section": "Create a virtual environment first",
+    "text": "Create a virtual environment first\nmaturin develop installs into the active Python environment. Maturin expects a virtualenv (or conda env); it will refuse to install into the system Python.\nFrom the kernel/ directory:\n# 1. Create a venv (once)\npython3 -m venv .venv\n\n# 2. Activate it\n#    Linux / macOS:\nsource .venv/bin/activate\n#    Windows (cmd):\n#    .venv\\Scripts\\activate.bat\n#    Windows (PowerShell):\n#    .venv\\Scripts\\Activate.ps1\n\n# 3. Confirm you are inside the venv\nwhich python    # should point at .../kernel/.venv/bin/python\npython -c \"import sys; print(sys.prefix)\"\n\n# 4. Install Maturin into this venv\npip install -U maturin\nWhen the venv is active, your prompt often shows (.env).\nTo leave the venv later:\ndeactivate",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#optional-named-venv-elsewhere",
+    "href": "modules/04-maturin.html#optional-named-venv-elsewhere",
+    "title": "Module 04 — Maturin",
+    "section": "Optional: named venv elsewhere",
+    "text": "Optional: named venv elsewhere\npython3 -m venv ~/venvs/oe-kernel\nsource ~/venvs/oe-kernel/bin/activate\npip install -U maturin",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#development-workflow",
+    "href": "modules/04-maturin.html#development-workflow",
+    "title": "Module 04 — Maturin",
+    "section": "Development workflow",
+    "text": "Development workflow\n# Inside kernel/\nmaturin develop          # builds + installs into the active environment\npython -c \"import open_engineering_kernel; print('ok')\"\nmaturin develop is the iterative loop while writing the course exercises.\nIf you see:\nCouldn't find a virtualenv or conda environment\nthe venv is not active - run source .venv/bin/activate (or Windows equivalent) and try againc.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#release-workflow",
+    "href": "modules/04-maturin.html#release-workflow",
+    "title": "Module 04 — Maturin",
+    "section": "Release workflow",
+    "text": "Release workflow\nmaturin build --release\n# → target/wheels/open_engineering_kernel-…‑….whl\nls target/wheels/\n# Absolute path to the wheel\nWHEEL=$(realpath target/wheels/open_engineering_kernel-*.whl)\necho \"$WHEEL\"\nThen in a fresh environment (definition of done for packaging):\npython3 -m venv /tmp/oe-clean\nsource /tmp/oe-clean/bin/activate\npip install \"$WHEEL\"    # path/to/open_engineering_kernel-*.whl\npython -c \"from open_engineering_kernel import Identifier; print(Identifier.parse('oe.course.pico'))\"\nThe course must not stop at maturin develop. Shipping a wheel that installs cleanly is part of the definition of done.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#concepts-to-understand-without-drowning",
+    "href": "modules/04-maturin.html#concepts-to-understand-without-drowning",
+    "title": "Module 04 — Maturin",
+    "section": "Concepts to understand (without drowning)",
+    "text": "Concepts to understand (without drowning)\n\nVirtual environment — isolated Python prefix; keeps course packages off the system interpreter\nNative extension — compiled code loaded by the Python interpreter\nWheel — the standard binary distribution format for Python packages\nPlatform tags — Linux / macOS / Windows × CPU architecture × Python ABI\nDevelopment vs release builds — speed of iteration vs optimised artifacts",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#design-rule",
+    "href": "modules/04-maturin.html#design-rule",
+    "title": "Module 04 — Maturin",
+    "section": "Design rule",
+    "text": "Design rule\nDownstream Python code should treat the kernel like any other package:\nfrom open_engineering_kernel import Identifier, validate_manifest\nNo sys.path hacks, no ctypes loading, no knowledge of target/debug.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/04-maturin.html#exercise",
+    "href": "modules/04-maturin.html#exercise",
+    "title": "Module 04 — Maturin",
+    "section": "Exercise",
+    "text": "Exercise\n\nCreate and activate a venv under kernel/.venv.\nInstall Maturin with pip install maturin.\nRun maturin develop successfully.\nImport the module from a Python REPL while the venv is active.\nBuild a release wheel with maturin build --release.\nInstall that wheel into a second clean venv and import again.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "04 Maturin"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html",
+    "href": "modules/02-rust-library.html",
+    "title": "Module 02 — The Rust Library",
+    "section": "",
+    "text": "Create the initial Rust library that will become the Open Engineering Mini Kernel.\nThe domain implementation must exist independently of any Python binding.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#goal",
+    "href": "modules/02-rust-library.html#goal",
+    "title": "Module 02 — The Rust Library",
+    "section": "",
+    "text": "Create the initial Rust library that will become the Open Engineering Mini Kernel.\nThe domain implementation must exist independently of any Python binding.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#project-layout",
+    "href": "modules/02-rust-library.html#project-layout",
+    "title": "Module 02 — The Rust Library",
+    "section": "Project layout",
+    "text": "Project layout\nkernel/\n├── Cargo.toml\n├── pyproject.toml      # added later for Maturin\n├── src/\n│   └── lib.rs\n├── tests/              # integration tests (optional)\n└── README.md",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#cargo.toml-essentials",
+    "href": "modules/02-rust-library.html#cargo.toml-essentials",
+    "title": "Module 02 — The Rust Library",
+    "section": "Cargo.toml essentials",
+    "text": "Cargo.toml essentials\n[package]\nname = \"open_engineering_kernel\"\nversion = \"0.1.0\"\nedition = \"2021\"\n\n[dependencies]\npyo3 = { version = \"0.22\", features = [\"extension-module\"] }\n\n[lib]\nname = \"open_engineering_kernel\"\ncrate-type = [\"cdylib\", \"rlib\"]   # rlib for Rust tests, cdylib for Python",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#first-domain-function",
+    "href": "modules/02-rust-library.html#first-domain-function",
+    "title": "Module 02 — The Rust Library",
+    "section": "First domain function",
+    "text": "First domain function\n/// Normalize an identifier candidate: trim whitespace and lowercase.\npub fn normalize_identifier(value: &str) -&gt; String {\n    value.trim().to_lowercase()\n}",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#rust-concepts-introduced-only-what-is-needed",
+    "href": "modules/02-rust-library.html#rust-concepts-introduced-only-what-is-needed",
+    "title": "Module 02 — The Rust Library",
+    "section": "Rust concepts introduced (only what is needed)",
+    "text": "Rust concepts introduced (only what is needed)\n\n\n\nConcept\nWhy it appears here\n\n\n\n\nFunctions\nEntry points for domain logic\n\n\n&str / String\nBorrowed vs owned text\n\n\nModules\nLater split into identifier, manifest, rule\n\n\nResult\nUsed when we introduce fallible parsing\n\n\nCargo\nBuild, test, and dependency management",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#establish-the-independence-principle",
+    "href": "modules/02-rust-library.html#establish-the-independence-principle",
+    "title": "Module 02 — The Rust Library",
+    "section": "Establish the independence principle",
+    "text": "Establish the independence principle\nWrite the native Rust test before any Python binding exists:\n#[cfg(test)]\nmod tests {\n    use super::*;\n\n    #[test]\n    fn normalize_trims_and_lowercases() {\n        assert_eq!(\n            normalize_identifier(\"  OE.PICO.LAMP  \"),\n            \"oe.pico.lamp\"\n        );\n    }\n}\nRun:\ncargo test --lib",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#why-this-order-matters",
+    "href": "modules/02-rust-library.html#why-this-order-matters",
+    "title": "Module 02 — The Rust Library",
+    "section": "Why this order matters",
+    "text": "Why this order matters\nRust domain logic\n       ▲\n       │  tested here first\n       │\n   later: PyO3 binding\nIf the kernel only works when called from Python, the boundary has leaked into the domain.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "modules/02-rust-library.html#exercise",
+    "href": "modules/02-rust-library.html#exercise",
+    "title": "Module 02 — The Rust Library",
+    "section": "Exercise",
+    "text": "Exercise\n\nCreate the crate (or use the provided kernel/ directory).\nImplement normalize_identifier.\nAdd the unit test above.\nConfirm cargo test passes with no Python tooling installed.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "02 The Rust Library"
+    ]
+  },
+  {
+    "objectID": "glossary.html",
+    "href": "glossary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "Term\nMeaning\n\n\n\n\nPyO3\nRust crate that enables writing native Python modules and embedding Python in Rust.\n\n\nMaturin\nBuild tool that produces Python wheels from Rust (PyO3) projects.\n\n\nIdentifier\nCanonical namespace.kind.name value. Academy compact form uses namespace oe (e.g. oe.course.pico).\n\n\nManifest\nStructured declaration of an entity (kind, name, optional version/identifier).\n\n\nRule\nDeterministic when/then evaluation unit living in the kernel.\n\n\nCanonical semantics\nThe single authoritative definition of what “valid” means.\n\n\nCoarse-grained boundary\nAn API that crosses languages with one meaningful operation rather than many tiny calls.\n\n\nMini Kernel\nThe small Rust domain core (Identifier + Manifest + Rule) produced by this course.\n\n\nGIL\nPython Global Interpreter Lock — only one thread executes Python bytecode at a time in a process.\n\n\noe namespace\nCompact Academy namespace used in metadata ids (oe.course.pico, oe.lab.hello-pico).",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "",
+    "text": "This course teaches an intentional boundary:\n                Python\n                   │\n        AI / agents / workflows\n                   │\n                 PyO3\n                   │\n                   ▼\n            ┌─────────────┐\n            │  Rust Core  │\n            │ identifiers │\n            │ manifests   │\n            │ validation  │\n            │ rules       │\n            └─────────────┘\nRust should not replace Python.\nPython should not duplicate functionality that belongs in a canonical kernel.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#the-architectural-idea",
+    "href": "index.html#the-architectural-idea",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "",
+    "text": "This course teaches an intentional boundary:\n                Python\n                   │\n        AI / agents / workflows\n                   │\n                 PyO3\n                   │\n                   ▼\n            ┌─────────────┐\n            │  Rust Core  │\n            │ identifiers │\n            │ manifests   │\n            │ validation  │\n            │ rules       │\n            └─────────────┘\nRust should not replace Python.\nPython should not duplicate functionality that belongs in a canonical kernel.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-will-build",
+    "href": "index.html#what-you-will-build",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "What you will build",
+    "text": "What you will build\nBy the end of the course you will have produced a working Open Engineering Mini Kernel:\n\n\n\nComponent\nResponsibility\n\n\n\n\nIdentifier\nParse, validate, normalize domain identifiers\n\n\nManifest\nValidate structured declarations\n\n\nRule\nDeterministic evaluation of simple rules\n\n\n\nThe kernel is implemented in Rust and consumed from Python as an ordinary package.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#learning-outcomes",
+    "href": "index.html#learning-outcomes",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "Learning outcomes",
+    "text": "Learning outcomes\nAfter completing the course you will be able to:\n\nExplain why Rust and Python are complementary.\nCreate a Rust library and expose it with PyO3.\nPackage the result with Maturin.\nDesign coarse-grained language boundaries.\nHandle errors across the FFI boundary.\nTest both the Rust core and the Python API.\nDecide what should stay in Python and what belongs in Rust.\nShip a small domain kernel that Python applications can import.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#course-path",
+    "href": "index.html#course-path",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "Course path",
+    "text": "Course path\n\n\n\nModule\nTopic\n\n\n\n\n01\nWhy Rust + Python?\n\n\n02\nThe Rust Library\n\n\n03\nFirst PyO3 Binding\n\n\n04\nMaturin\n\n\n05\nTypes Across the Boundary\n\n\n06\nStrong Domain Types\n\n\n07\nErrors\n\n\n08\nStructured Data\n\n\n09\nBoundary Design\n\n\n10\nTesting\n\n\n11\nPerformance\n\n\n12\nConcurrency and the GIL\n\n\n13\nAsync Interoperability\n\n\n14\nWhat Should Stay Python?\n\n\n15\nCapstone — Mini Kernel",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#prerequisites",
+    "href": "index.html#prerequisites",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "Prerequisites",
+    "text": "Prerequisites\n\nBasic Python\nCommand-line tools and Git\nNo prior Rust experience required (concepts are introduced as needed)",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#tooling",
+    "href": "index.html#tooling",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "Tooling",
+    "text": "Tooling\ngit\npython ≥ 3.9\nrustup / cargo\nmaturin\npytest",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "Installation",
+    "text": "Installation\n\ngit\npython 3\nrustup\ncargo\nmaturin\npytest",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#principle-to-remember",
+    "href": "index.html#principle-to-remember",
+    "title": "Rust + Python — Building Native Python Modules with PyO3",
+    "section": "Principle to remember",
+    "text": "Principle to remember\n\nOne semantic core, multiple interfaces.\n\nThe same Rust kernel can later be reused via PyO3, CLI, or WASM without rewriting the domain logic.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html",
+    "href": "modules/01-why-rust-python.html",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "",
+    "text": "When should an Open Engineering system keep logic in Python, and when should it place that logic in a Rust kernel?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html#the-question-this-course-answers",
+    "href": "modules/01-why-rust-python.html#the-question-this-course-answers",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "",
+    "text": "When should an Open Engineering system keep logic in Python, and when should it place that logic in a Rust kernel?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html#a-familiar-starting-point",
+    "href": "modules/01-why-rust-python.html#a-familiar-starting-point",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "A familiar starting point",
+    "text": "A familiar starting point\ndef normalize_identifier(value: str) -&gt; str:\n    return value.strip().lower()\nThis is perfectly acceptable for many situations. The course does not claim that every string transformation belongs in Rust.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html#when-the-implementation-becomes-part-of-the-platform-contract",
+    "href": "modules/01-why-rust-python.html#when-the-implementation-becomes-part-of-the-platform-contract",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "When the implementation becomes part of the platform contract",
+    "text": "When the implementation becomes part of the platform contract\nRust becomes attractive when:\n\nparsing and validation rules grow complex\nthe same semantics must be shared across Python, CLI, WASM, or other runtimes\nincorrect implementations would silently break downstream systems\nperformance of the core algorithm matters\nyou want the type system to make invalid states hard to construct",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html#five-motivations-not-just-speed",
+    "href": "modules/01-why-rust-python.html#five-motivations-not-just-speed",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "Five motivations (not just speed)",
+    "text": "Five motivations (not just speed)\n\n\n\n\n\n\n\nMotivation\nMeaning\n\n\n\n\nCorrectness\nOne canonical implementation of the rules\n\n\nSafety\nMemory safety and strong typing for critical paths\n\n\nCanonical semantics\nThe definition of “valid” lives in one place\n\n\nPortability\nSame logic reusable from Python, CLI, WASM\n\n\nPerformance\nWhen the work is CPU-bound and measured\n\n\n\nThe strongest architectural argument is usually canonical semantics.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html#classification-exercise",
+    "href": "modules/01-why-rust-python.html#classification-exercise",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "Classification exercise",
+    "text": "Classification exercise\nFor each component, decide: Python, Rust candidate, or Depends.\n\n\n\n\n\n\n\n\nComponent\nSuggested classification\nReasoning\n\n\n\n\nLLM prompt orchestration\nPython\nExperimentation & ecosystem\n\n\nIdentifier parser\nRust candidate\nShared semantics, validation\n\n\nMQTT integration\nPython\nNetwork + library ecosystem\n\n\nGraph traversal engine\nRust candidate\nDeterministic, performance\n\n\nREST API orchestration\nPython\nRapid change, frameworks\n\n\nManifest validator\nRust candidate\nPlatform contract\n\n\nAgent workflow\nPython\nComposition & AI tooling\n\n\nState-machine engine\nRust candidate\nCorrectness & determinism\n\n\n\nYour reasoning matters more than absolute answers.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/01-why-rust-python.html#reflection",
+    "href": "modules/01-why-rust-python.html#reflection",
+    "title": "Module 01 — Why Rust + Python?",
+    "section": "Reflection",
+    "text": "Reflection\n\nUse Rust when the implementation itself becomes part of the platform contract.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "01 Why Rust + Python?"
+    ]
+  },
+  {
+    "objectID": "modules/03-first-pyo3-binding.html",
+    "href": "modules/03-first-pyo3-binding.html",
+    "title": "Module 03 — First PyO3 Binding",
+    "section": "",
+    "text": "Expose a pure Rust function to Python so that:\nfrom open_engineering_kernel import normalize_identifier\nassert normalize_identifier(\"  OE.PICO.LAMP  \") == \"oe.pico.lamp\"",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "03 First PyO3 Binding"
+    ]
+  },
+  {
+    "objectID": "modules/03-first-pyo3-binding.html#goal",
+    "href": "modules/03-first-pyo3-binding.html#goal",
+    "title": "Module 03 — First PyO3 Binding",
+    "section": "",
+    "text": "Expose a pure Rust function to Python so that:\nfrom open_engineering_kernel import normalize_identifier\nassert normalize_identifier(\"  OE.PICO.LAMP  \") == \"oe.pico.lamp\"",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "03 First PyO3 Binding"
+    ]
+  },
+  {
+    "objectID": "modules/03-first-pyo3-binding.html#conceptual-flow",
+    "href": "modules/03-first-pyo3-binding.html#conceptual-flow",
+    "title": "Module 03 — First PyO3 Binding",
+    "section": "Conceptual flow",
+    "text": "Conceptual flow\nPython\n   │  function call\n   ▼\nPyO3\n   │\n   ▼\nRust",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "03 First PyO3 Binding"
+    ]
+  },
+  {
+    "objectID": "modules/03-first-pyo3-binding.html#the-binding-simplified",
+    "href": "modules/03-first-pyo3-binding.html#the-binding-simplified",
+    "title": "Module 03 — First PyO3 Binding",
+    "section": "The binding (simplified)",
+    "text": "The binding (simplified)\nuse pyo3::prelude::*;\nuse pyo3::types::PyModule;\nuse pyo3::PyResult;\n\n#[pyfunction]\nfn normalize_identifier(value: &str) -&gt; String {\n    value.trim().to_lowercase()\n}\n\n#[pymodule]\nfn open_engineering_kernel(m: &Bound&lt;'_, PyModule&gt;) -&gt; PyResult&lt;()&gt; {\n    m.add_function(wrap_pyfunction!(normalize_identifier, m)?)?;\n    Ok(())\n}\n(The actual course kernel uses the current stable PyO3 API; see kernel/src/lib.rs.)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "03 First PyO3 Binding"
+    ]
+  },
+  {
+    "objectID": "modules/03-first-pyo3-binding.html#what-you-should-understand",
+    "href": "modules/03-first-pyo3-binding.html#what-you-should-understand",
+    "title": "Module 03 — First PyO3 Binding",
+    "section": "What you should understand",
+    "text": "What you should understand\n\nThe domain function can be tested in Rust before any Python binding exists.\nPyO3 is the bridge, not the place where domain rules live.\nFrom the Python side the result looks like an ordinary function.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "03 First PyO3 Binding"
+    ]
+  },
+  {
+    "objectID": "modules/03-first-pyo3-binding.html#exercise",
+    "href": "modules/03-first-pyo3-binding.html#exercise",
+    "title": "Module 03 — First PyO3 Binding",
+    "section": "Exercise",
+    "text": "Exercise\n\nLocate normalize_identifier in the kernel.\nCall it from a small Python script after maturin develop.\nConfirm the Rust unit test for the same logic still passes with cargo test.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "03 First PyO3 Binding"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html",
+    "href": "modules/05-types-across-boundary.html",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "",
+    "text": "Move beyond free functions and expose a Rust type as a Python class.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html#goal",
+    "href": "modules/05-types-across-boundary.html#goal",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "",
+    "text": "Move beyond free functions and expose a Rust type as a Python class.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html#domain-type-rust",
+    "href": "modules/05-types-across-boundary.html#domain-type-rust",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "Domain type (Rust)",
+    "text": "Domain type (Rust)\npub struct Identifier {\n    namespace: String,\n    kind: String,\n    name: String,\n}",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html#python-facing-surface",
+    "href": "modules/05-types-across-boundary.html#python-facing-surface",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "Python-facing surface",
+    "text": "Python-facing surface\nidentifier = Identifier(\n    namespace=\"open-engineering\",\n    kind=\"pico\",\n    name=\"lamp\",\n)\n# or\nidentifier = Identifier.parse(\"oe.pico.lamp\")\n\nprint(identifier.namespace)  # property\nprint(identifier.kind)\nprint(identifier.name)\nprint(str(identifier))",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html#what-pyo3-gives-you",
+    "href": "modules/05-types-across-boundary.html#what-pyo3-gives-you",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "What PyO3 gives you",
+    "text": "What PyO3 gives you\n\n\n\nRust concept\nTypical Python mapping\n\n\n\n\nstruct\n@pyclass\n\n\nConstructor\n#[new]\n\n\nMethod\n#[pymethods]\n\n\nField access\n#[getter]\n\n\n&str / String\nstr\n\n\nOption&lt;T&gt;\nT | None\n\n\nVec&lt;T&gt;\nlist\n\n\nHashMap\ndict (when appropriate)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html#important-distinction",
+    "href": "modules/05-types-across-boundary.html#important-distinction",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "Important distinction",
+    "text": "Important distinction\nRust domain representation and Python-facing API representation do not have to be identical.\n\nInternally the kernel may use newtypes, enums, and private fields.\nExternally the Python API should feel natural to Python callers.\n\nThe boundary is a deliberate translation layer, not a 1:1 mirror.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/05-types-across-boundary.html#exercise",
+    "href": "modules/05-types-across-boundary.html#exercise",
+    "title": "Module 05 — Types Across the Boundary",
+    "section": "Exercise",
+    "text": "Exercise\n\nLocate the Identifier / PyIdentifier implementation in kernel/src/.\nConstruct an identifier from parts and from a string.\nInspect the properties from Python.\nConfirm that equality (==) works between two instances that represent the same identifier.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "05 Types Across the Boundary"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html",
+    "href": "modules/07-errors.html",
+    "title": "Module 07 — Errors",
+    "section": "",
+    "text": "Make failures across the language boundary useful, not opaque.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html#goal",
+    "href": "modules/07-errors.html#goal",
+    "title": "Module 07 — Errors",
+    "section": "",
+    "text": "Make failures across the language boundary useful, not opaque.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html#rust-side",
+    "href": "modules/07-errors.html#rust-side",
+    "title": "Module 07 — Errors",
+    "section": "Rust side",
+    "text": "Rust side\nDomain operations return Result&lt;T, KernelError&gt;:\npub enum KernelError {\n    InvalidIdentifier(String),\n    InvalidManifest(String),\n    RuleEvaluation(String),\n}",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html#python-side",
+    "href": "modules/07-errors.html#python-side",
+    "title": "Module 07 — Errors",
+    "section": "Python side",
+    "text": "Python side\nThose errors become typed exceptions:\nfrom open_engineering_kernel import (\n    Identifier,\n    InvalidIdentifierError,\n    InvalidManifestError,\n    RuleEvaluationError,\n)\n\ntry:\n    Identifier.parse(\"not-valid\")\nexcept InvalidIdentifierError as e:\n    print(e)   # clear message, catchable by type",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html#what-to-avoid",
+    "href": "modules/07-errors.html#what-to-avoid",
+    "title": "Module 07 — Errors",
+    "section": "What to avoid",
+    "text": "What to avoid\n\n\n\nAnti-pattern\nWhy it is bad\n\n\n\n\npanic! crossing the boundary\nTurns into an opaque crash\n\n\nReturning only a string\nCallers cannot distinguish error kinds\n\n\nSwallowing errors in Rust\nHides failures from Python",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html#design-rule",
+    "href": "modules/07-errors.html#design-rule",
+    "title": "Module 07 — Errors",
+    "section": "Design rule",
+    "text": "Design rule\nThe boundary is part of the public API.\nError types and messages are therefore a deliberate product decision, not an afterthought.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/07-errors.html#exercise",
+    "href": "modules/07-errors.html#exercise",
+    "title": "Module 07 — Errors",
+    "section": "Exercise",
+    "text": "Exercise\n\nTrigger InvalidIdentifierError and InvalidManifestError from Python.\nConfirm each can be caught by its specific exception class.\nRead the message and decide whether a future learner would understand what went wrong.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "07 Errors"
+    ]
+  },
+  {
+    "objectID": "modules/09-boundary-design.html",
+    "href": "modules/09-boundary-design.html",
+    "title": "Module 09 — Boundary Design",
+    "section": "",
+    "text": "This is generally preferable:\nresult = engine.evaluate_model(model)\nto this:\nfor item in model:\n    engine.evaluate_field(item.x)\n    engine.evaluate_field(item.y)\n    engine.evaluate_field(item.z)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "09 Boundary Design"
+    ]
+  },
+  {
+    "objectID": "modules/09-boundary-design.html#prefer-coarse-grained-operations",
+    "href": "modules/09-boundary-design.html#prefer-coarse-grained-operations",
+    "title": "Module 09 — Boundary Design",
+    "section": "",
+    "text": "This is generally preferable:\nresult = engine.evaluate_model(model)\nto this:\nfor item in model:\n    engine.evaluate_field(item.x)\n    engine.evaluate_field(item.y)\n    engine.evaluate_field(item.z)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "09 Boundary Design"
+    ]
+  },
+  {
+    "objectID": "modules/09-boundary-design.html#why",
+    "href": "modules/09-boundary-design.html#why",
+    "title": "Module 09 — Boundary Design",
+    "section": "Why",
+    "text": "Why\nEvery crossing of the language boundary has a cost:\n\nargument conversion\nallocation\npossible GIL interaction\ncognitive load for the reader\n\nA single meaningful operation keeps the boundary clear:\nPython\n      │  one meaningful operation\n      ▼\n┌──────────────────────┐\n│        Rust          │\n│ parse · validate     │\n│ calculate · evaluate │\n│ construct result     │\n└──────────────────────┘\n      │\n      ▼\nPython result",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "09 Boundary Design"
+    ]
+  },
+  {
+    "objectID": "modules/09-boundary-design.html#design-guideline",
+    "href": "modules/09-boundary-design.html#design-guideline",
+    "title": "Module 09 — Boundary Design",
+    "section": "Design guideline",
+    "text": "Design guideline\nDesign the API, not just the FFI syntax.\nAsk:\n\nWhat is the unit of work that is useful on the Python side?\nWhat invariants belong inside the Rust kernel?\nCan invalid states be made unrepresentable on the Rust side?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "09 Boundary Design"
+    ]
+  },
+  {
+    "objectID": "modules/09-boundary-design.html#exercise",
+    "href": "modules/09-boundary-design.html#exercise",
+    "title": "Module 09 — Boundary Design",
+    "section": "Exercise",
+    "text": "Exercise\nReview the three kernel entry points (Identifier.parse, validate_manifest, evaluate_rule).\nFor each, write one sentence explaining why the boundary is coarse-grained rather than fine-grained.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "09 Boundary Design"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html",
+    "href": "modules/11-performance.html",
+    "title": "Module 11 — Performance",
+    "section": "",
+    "text": "Measure rather than assume. Rust does not automatically make an application faster.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html#goal",
+    "href": "modules/11-performance.html#goal",
+    "title": "Module 11 — Performance",
+    "section": "",
+    "text": "Measure rather than assume. Rust does not automatically make an application faster.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html#what-can-make-a-rust-path-slower",
+    "href": "modules/11-performance.html#what-can-make-a-rust-path-slower",
+    "title": "Module 11 — Performance",
+    "section": "What can make a Rust path slower",
+    "text": "What can make a Rust path slower\n\n\n\n\n\n\n\nCost\nWhen it appears\n\n\n\n\nObject conversion\nEvery boundary crossing\n\n\nAllocation\nBuilding Strings / collections for Python\n\n\nSerialization\nDict ↔︎ structured value\n\n\nFFI transitions\nMany tiny calls instead of one coarse call\n\n\nGIL interactions\nHolding the GIL while doing little native work",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html#experiment-shape",
+    "href": "modules/11-performance.html#experiment-shape",
+    "title": "Module 11 — Performance",
+    "section": "Experiment shape",
+    "text": "Experiment shape\nCompare three approaches for the same logical work:\n\nPure Python implementation of the operation\nPython → Rust with a coarse-grained API (one call)\nPathological version: many tiny boundary calls in a loop\n\nOnly the second pattern is typically worth the complexity. The third teaches why Module 09 (Boundary Design) matters.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html#what-to-measure",
+    "href": "modules/11-performance.html#what-to-measure",
+    "title": "Module 11 — Performance",
+    "section": "What to measure",
+    "text": "What to measure\n\nWall-clock time for a realistic batch size\nAllocation behaviour if you have tools available\nClarity of the resulting Python code\n\nDo not optimise a one-liner that runs once at startup.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html#design-rule",
+    "href": "modules/11-performance.html#design-rule",
+    "title": "Module 11 — Performance",
+    "section": "Design rule",
+    "text": "Design rule\nIntroduce Rust for canonical semantics first.\nTreat performance as a measured property, not a slogan.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/11-performance.html#exercise",
+    "href": "modules/11-performance.html#exercise",
+    "title": "Module 11 — Performance",
+    "section": "Exercise",
+    "text": "Exercise\n\nTime a pure-Python identifier normalizer over 100_000 inputs.\nTime the kernel normalize_identifier / Identifier.parse path over the same inputs.\nTime a pathological loop that crosses the boundary once per character or once per field.\nRecord which approach won and why the pathological case lost.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "11 Performance"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html",
+    "href": "modules/13-async.html",
+    "title": "Module 13 — Async Interoperability",
+    "section": "",
+    "text": "Understand that Python asyncio and Rust async (e.g. Tokio) are different runtime environments, and choose deliberately whether to bridge them.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html#goal",
+    "href": "modules/13-async.html#goal",
+    "title": "Module 13 — Async Interoperability",
+    "section": "",
+    "text": "Understand that Python asyncio and Rust async (e.g. Tokio) are different runtime environments, and choose deliberately whether to bridge them.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html#two-runtimes",
+    "href": "modules/13-async.html#two-runtimes",
+    "title": "Module 13 — Async Interoperability",
+    "section": "Two runtimes",
+    "text": "Two runtimes\nPython asyncio loop          Rust async runtime (Tokio, …)\n        │                              │\n        └──────── PyO3 bridge ─────────┘\nBridging them is possible (via current PyO3 async helpers) but is an architectural decision, not a default.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html#when-a-synchronous-coarse-grained-api-is-better",
+    "href": "modules/13-async.html#when-a-synchronous-coarse-grained-api-is-better",
+    "title": "Module 13 — Async Interoperability",
+    "section": "When a synchronous coarse-grained API is better",
+    "text": "When a synchronous coarse-grained API is better\n\nThe Rust work is short and deterministic (Identifier, Manifest, Rule)\nThe Python side is already orchestrating with agents / workflows\nYou want a simple, testable boundary\n\nThe Mini Kernel intentionally stays synchronous.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html#when-async-on-the-rust-side-might-be-justified",
+    "href": "modules/13-async.html#when-async-on-the-rust-side-might-be-justified",
+    "title": "Module 13 — Async Interoperability",
+    "section": "When async on the Rust side might be justified",
+    "text": "When async on the Rust side might be justified\n\nNative networking or long I/O inside the kernel\nBulk background processing that should not block the event loop\nA future Pico runtime that is itself async\n\nEven then, prefer exposing a clear async or sync API rather than leaking runtime details.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html#design-rule",
+    "href": "modules/13-async.html#design-rule",
+    "title": "Module 13 — Async Interoperability",
+    "section": "Design rule",
+    "text": "Design rule\nDo not introduce async merely because it exists.\nA synchronous, coarse-grained kernel API is often the simpler and more portable choice.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/13-async.html#exercise",
+    "href": "modules/13-async.html#exercise",
+    "title": "Module 13 — Async Interoperability",
+    "section": "Exercise",
+    "text": "Exercise\n\nList the current kernel operations and classify each as sync-appropriate or potentially async-worthy.\nWrite one sentence explaining why the course keeps the Mini Kernel synchronous.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "13 Async"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html",
+    "href": "modules/15-capstone.html",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "",
+    "text": "Ship a working domain kernel that Python applications can import:\nfrom open_engineering_kernel import (\n    Identifier,\n    validate_manifest,\n    evaluate_rule,\n)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#goal",
+    "href": "modules/15-capstone.html#goal",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "",
+    "text": "Ship a working domain kernel that Python applications can import:\nfrom open_engineering_kernel import (\n    Identifier,\n    validate_manifest,\n    evaluate_rule,\n)",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#architecture",
+    "href": "modules/15-capstone.html#architecture",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Architecture",
+    "text": "Architecture\nPython application\n       │\n       ├── AI / agents / workflows\n       ▼\n   Python API\n       │\n      PyO3\n       │\n       ▼\n┌───────────────────────────┐\n│    Open Engineering       │\n│       Mini Kernel         │\n│  Identifier · Manifest    │\n│  Rule · Validation        │\n└───────────────────────────┘\n            │\n           Rust",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#requirement-1-identifier",
+    "href": "modules/15-capstone.html#requirement-1-identifier",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Requirement 1 — Identifier",
+    "text": "Requirement 1 — Identifier\nid = Identifier.parse(\"oe.pico.lamp\")\nprint(id.namespace)  # open-engineering\nprint(id.kind)       # pico\nprint(id.name)       # lamp\nInvalid input must raise InvalidIdentifierError.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#requirement-2-manifest",
+    "href": "modules/15-capstone.html#requirement-2-manifest",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Requirement 2 — Manifest",
+    "text": "Requirement 2 — Manifest\nresult = validate_manifest({\n    \"kind\": \"pico\",\n    \"name\": \"lamp\",\n})\nassert result[\"valid\"] is True\nassert result[\"manifest\"][\"identifier\"] == \"oe.pico.lamp\"",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#requirement-3-rule",
+    "href": "modules/15-capstone.html#requirement-3-rule",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Requirement 3 — Rule",
+    "text": "Requirement 3 — Rule\nrule = {\n    \"id\": \"nod-when-ready\",\n    \"when\": {\"op\": \"eq\", \"key\": \"intent\", \"value\": \"nod\"},\n    \"then\": {\"op\": \"emit\", \"event\": \"nod\"},\n}\nresult = evaluate_rule(rule, {\"intent\": \"nod\"})\nassert result[\"matched\"] is True",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#packaging",
+    "href": "modules/15-capstone.html#packaging",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Packaging",
+    "text": "Packaging\nmaturin build --release\n# then install the resulting wheel into a clean environment",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#definition-of-done-learner",
+    "href": "modules/15-capstone.html#definition-of-done-learner",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Definition of done (learner)",
+    "text": "Definition of done (learner)\n\nRust tests pass (cargo test)\nPython API imports cleanly\nIdentifier, Manifest, and Rule examples succeed\nWheel builds and installs in a fresh environment\nYou can explain why each piece lives on the Rust side of the boundary",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  },
+  {
+    "objectID": "modules/15-capstone.html#principle",
+    "href": "modules/15-capstone.html#principle",
+    "title": "Module 15 — Capstone: Mini Open Engineering Kernel",
+    "section": "Principle",
+    "text": "Principle\n\nOne semantic core, multiple interfaces.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "15 Capstone — Mini Kernel"
+    ]
+  }
+]

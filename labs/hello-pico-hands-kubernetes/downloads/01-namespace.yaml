@@ -1,0 +1,14 @@
+# Namespace that carries the Pico-owned Kubernetes Hands surface for this lab.
+#
+# The Pico's Hands can only reach ConfigMaps inside this Namespace, and even
+# then only by resourceName through the Role in 03-rbac.yaml. Deleting the
+# Namespace removes the entire Pico surface — identity ConfigMap, state
+# ConfigMap, events ConfigMap, ServiceAccount, Role, RoleBinding, and Pod.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hands
+  labels:
+    oe.academy/runtime-environment: manifold
+    oe.academy/runtime-substrate: kubernetes
+    oe.academy/pico-hands: kubernetes

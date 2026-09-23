@@ -1,0 +1,44 @@
+id: oe.lab.hello-pico-home-assistant
+title: Hello Pico on Home Assistant
+level: intermediate
+duration: 45m
+prerequisites:
+  - oe.lab.hello-pico-on-manifold
+  - oe.course.manifold
+  - oe.course.kubernetes
+teaches:
+  - Home Assistant as a graphical ControlSurface
+  - Layering a UI over the approved Python CLI ControlSurface
+  - Reading declared runtime state without bypassing the CLI or kubectl
+  - Asserting one safe OperatorIntent from a UI button
+produces:
+  - hello-world-pico-home-assistant
+referenced_by: []
+constructive_role: realization
+realizes:
+  - oe.course.manifold
+realization_pattern: home-assistant-over-pico-runtime-cli
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+interaction_topology: ../hello-pico-on-manifold/downloads/topology.yaml
+control_surfaces:
+  - home-assistant
+  - python-cli
+depends_on:
+  - oe.lab.hello-pico-on-manifold
+validated_by:
+  - "downloads/verify.sh — shape-checks the HA configuration snippet and helper against the approved pico runtime CLI"
+  - "walkthrough.qmd Step 4 — press the HA button and observe the same 'Hello, Pico!' Observation the underlying lab produces"
+lifecycle_state: operational
+evidence:
+  - check: "downloads/verify.sh — HA integration is layered over the approved runtime"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh confirms the command_line sensor delegates to `pico runtime inspect`, the shell_command argv matches `pico runtime emit` against the same Wrangler-declared channel, the UI button is bound to that shell_command, and event.json is byte-identical to the approved lab's payload."
+  - check: "walkthrough.qmd Step 4 — HA button triggers the same one-event/one-response contract"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 4 shows a learner pressing the HA button, which fires the shell_command that runs `pico runtime emit` and produces the same 'Hello, Pico!' Observation captured by the underlying Manifold lab."
+feedback:
+  - observation: "Home Assistant reads and writes only via the approved Python CLI ControlSurface, so the UI cannot drift from declared runtime truth: the sensor state is exactly what `pico runtime inspect` reports and the button press is exactly what `pico runtime emit` sends."
+    about: hello-world-pico-home-assistant
+    refines: oe.course.manifold
+    observation_source: home-assistant
