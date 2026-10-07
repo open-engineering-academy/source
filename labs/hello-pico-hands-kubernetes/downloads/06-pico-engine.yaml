@@ -1,0 +1,114 @@
+# The Pico engine Pod that carries the Pico Element "hello-hands-pico"
+# and invokes its Kubernetes Hands.
+#
+# The Pod runs as the `pico-hello-hands` ServiceAccount, so every
+# kubectl call it makes is subject to the Role in 03-rbac.yaml — the
+# authorization boundary is enforced by the API server, not by the
+# script below. The script is intentionally small and does five things:
+#
+#   1. emit `pico.hand.requested` — an intent to exercise a capability;
+#   2. evaluate the Pico's rules against the declared Hands and the
+#      event, then emit `pico.hand.authorized` or `pico.hand.denied`;
+#   3. invoke the KubernetesHands adapter — one `kubectl patch` call
+#      confined by `resourceNames` in the Role to Pico-owned ConfigMaps;
+#   4. emit `pico.hand.succeeded` or `pico.hand.failed` based on the
+#      exit status of that one call;
+#   5. record normalized evidence JSON on stdout (auditable, no secrets)
+#      and append the event lines to `pico-hello-hands-events`.
+#
+# The image is a small kubectl image; override with the IMAGE env var in
+# the walkthrough if a different mirror is preferred. No hostPath, no
+# privileged, no capabilities added, no serviceAccountToken automount
+# quirks — the Pod uses the default projected token for its own SA.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-hands-pico
+  namespace: hands
+  labels:
+    app: hello-hands-pico
+    oe.academy/pico: hello-hands-pico
+    oe.academy/hosted-by: manifold
+    oe.academy/hands-provider: kubernetes
+spec:
+  restartPolicy: Never
+  serviceAccountName: pico-hello-hands
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    fsGroup: 1001
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: pico-engine
+      image: bitnami/kubectl:1.31.0
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      volumeMounts:
+        - name: pico-contract
+          mountPath: /etc/pico
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+      command:
+        - /bin/bash
+        - -c
+        - |
+          set -eu
+          PICO="hello-hands-pico"
+          CAP="pico.state.set"
+          NS="hands"
+          STATE_CM="pico-hello-hands-state"
+          EVENTS_CM="pico-hello-hands-events"
+          KEY="greeted"
+          VALUE="$(sed -n 's/.*"value"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' /etc/pico/event.json | head -1)"
+          : "${VALUE:=Hello, Pico!}"
+          ACTOR="$(sed -n 's/.*"pico"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' /etc/pico/identity.json | head -1)"
+          NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          emit() { printf 'pico[%s] %s capability=%s\n' "${PICO}" "$1" "${CAP}"; }
+          emit "pico.hand.requested"
+          # Rule evaluation: allow if hands.json declares the capability AND
+          # rules.json has an allow effect matching (capability, namespace,
+          # resourceName, key). No jq — grep is sufficient for this contract.
+          if ! grep -q "\"name\": \"${CAP}\"" /etc/pico/hands.json; then
+            emit "pico.hand.denied"; STATUS="denied"; REASON="capability-not-declared"
+          elif grep -q "\"capability\": \"${CAP}\",[[:space:]]*\"effect\": \"deny\"" /etc/pico/rules.json; then
+            emit "pico.hand.denied"; STATUS="denied"; REASON="explicit-deny"
+          elif ! grep -q "\"capability\": \"${CAP}\",[[:space:]]*\"effect\": \"allow\"" /etc/pico/rules.json; then
+            emit "pico.hand.denied"; STATUS="denied"; REASON="no-allow-rule"
+          else
+            emit "pico.hand.authorized"
+            # KubernetesHands adapter — one narrow, reversible patch.
+            PATCH="{\"data\":{\"${KEY}\":\"${VALUE}\"}}"
+            if kubectl -n "${NS}" patch configmap "${STATE_CM}" \
+                 --type=merge -p "${PATCH}" >/tmp/patch.out 2>&1; then
+              emit "pico.hand.succeeded"; STATUS="succeeded"; REASON=""
+            else
+              emit "pico.hand.failed"; STATUS="failed"
+              REASON="$(tr -d '\n' </tmp/patch.out | cut -c1-200)"
+            fi
+          fi
+          EVIDENCE="{\"execution\":{\"actor\":\"${ACTOR}\",\"pico\":\"${PICO}\",\"capability\":\"${CAP}\",\"provider\":\"kubernetes\",\"target\":{\"kind\":\"ConfigMap\",\"namespace\":\"${NS}\",\"resourceName\":\"${STATE_CM}\",\"key\":\"${KEY}\"},\"requested_at\":\"${NOW}\",\"status\":\"${STATUS}\",\"reason\":\"${REASON}\"}}"
+          printf 'pico[%s] evidence: %s\n' "${PICO}" "${EVIDENCE}"
+          EVENTS="pico.hand.requested"
+          [ "${STATUS}" = "denied" ] && EVENTS="${EVENTS}\npico.hand.denied"
+          if [ "${STATUS}" = "succeeded" ] || [ "${STATUS}" = "failed" ]; then
+            EVENTS="${EVENTS}\npico.hand.authorized\npico.hand.${STATUS}"
+          fi
+          EVENTS_PATCH="{\"data\":{\"events\":\"${EVENTS}\"}}"
+          kubectl -n "${NS}" patch configmap "${EVENTS_CM}" \
+            --type=merge -p "${EVENTS_PATCH}" >/dev/null
+          # Non-zero exit on any non-succeeded terminal state so
+          # `kubectl wait --for=jsonpath=... Succeeded` reflects the
+          # Pico's decision, not just process termination.
+          [ "${STATUS}" = "succeeded" ]
+  volumes:
+    - name: pico-contract
+      configMap:
+        name: pico-hello-hands-contract
+    - name: tmp
+      emptyDir: {}

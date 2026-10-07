@@ -1,0 +1,48 @@
+id: oe.lab.hello-two-picos
+title: Hello Two Picos
+level: intermediate
+duration: 60m
+prerequisites:
+  - oe.lab.hello-pico-on-manifold
+  - oe.course.manifold
+  - oe.course.kubernetes
+teaches:
+  - Two named Picos hosted by one Manifold RuntimeEnvironment
+  - Wrangler-declared Channel plus explicit producer→consumer wiring
+  - Single-event, single-reaction two-Pico interaction
+  - Runtime Observation attributed to an upstream Pico via wiring
+produces:
+  - hello-two-picos
+referenced_by:
+  - oe.course.manifold
+constructive_role: realization
+realizes:
+  - oe.course.manifold
+realization_pattern: two-picos-on-manifold-single-channel
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+interaction_topology: downloads/topology.yaml
+control_surfaces:
+  - python-cli
+depends_on:
+  - oe.lab.hello-pico-on-manifold
+validated_by:
+  - "walkthrough.qmd Step 5 — kubectl wait pod/hello-consumer-pico Ready"
+  - "walkthrough.qmd Step 7 — downloads/verify.sh applies the producer Pico, then confirms one 'hello.greeting' emitted and one Observation consumed"
+  - "walkthrough.qmd Step 8 — captured build/hello-two-picos/observation.txt contains the reaction line"
+lifecycle_state: operational
+evidence:
+  - check: "walkthrough.qmd Step 5 — kubectl wait pod/hello-consumer-pico Ready"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 5 shows the Manifold-hosted consumer Pico Pod becoming Ready before the producer runs."
+  - check: "walkthrough.qmd Step 7 — downloads/verify.sh applies the producer Pico, then confirms one 'hello.greeting' emitted and one Observation consumed"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh applies the producer Pico Pod, waits for both single-shot Pods to Succeed, and asserts the producer 'sent' line and the consumer Observation line both appear."
+  - check: "walkthrough.qmd Step 8 — captured build/hello-two-picos/observation.txt contains the reaction line"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 8 captures observation.txt — the single Observation the consumer Pico produced in reaction to the producer Pico's emitted event."
+feedback:
+  - observation: "Keeping the topology at two Picos, one Channel, and one explicit producer→consumer wiring makes the multi-Pico runtime story auditable end-to-end: the Wrangler-declared wiring, the single event on the wire, and the single Observation attributing it back to the producer Pico all line up one-for-one."
+    about: hello-two-picos
+    refines: oe.course.manifold
+    observation_source: manifold-on-kubernetes

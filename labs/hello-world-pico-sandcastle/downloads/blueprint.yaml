@@ -1,0 +1,30 @@
+kind: SandcastleBlueprint
+target:
+  repo: file://./work/hello-world-pico-sandcastle/target-repo
+  branch: sandcastle/hello-world-pico
+artifact:
+  kind: hello-world-pico
+  produces_files:
+    - rules/hello.yaml
+workspace:
+  sandbox_provider: local-scratch-dir
+  isolation_notes: "Scratch directory under work/, destroyed at the end of the run. Not container-level isolation; see walkthrough."
+tools:
+  - name: pico
+    purpose: parse rules/*.yaml and compose the hello-world-pico artifact
+  - name: git
+    purpose: clone target repo, commit on branch, push branch back
+  - name: python3
+    purpose: read blueprint fields inside the driver
+permissions:
+  - git.read:file:./target-repo
+  - git.write:branch:sandcastle/hello-world-pico
+  - fs.write:workspace-only
+agent_loop:
+  - inspect_conventions
+  - generate_files
+  - validate
+  - commit
+artifact_boundary:
+  survives: [branch]
+  disposed: [workspace, tools, scratch_state]

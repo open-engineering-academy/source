@@ -1,0 +1,17 @@
+# Pico-owned state ConfigMap — the only ConfigMap the Pico's Hands may
+# patch through the `pico.state.set` capability. It starts empty; the
+# Pico engine sets `data.greeted` when the rule authorizes the action.
+#
+# Reversibility: the walkthrough's cleanup step re-applies this file to
+# restore the empty state, and the Namespace deletion in the final
+# cleanup removes it altogether. The Pod cannot delete the ConfigMap —
+# the Role in 03-rbac.yaml only grants get/patch.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pico-hello-hands-state
+  namespace: hands
+  labels:
+    oe.academy/pico: hello-hands-pico
+    oe.academy/pico-owned: "true"
+data: {}

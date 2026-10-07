@@ -1,0 +1,31 @@
+# Open Engineering Rules — what the pixstars-head-pitch Pico is permitted to do.
+#
+# Uses the canonical Rules format (capability / effect / constraints) taught by
+# the Pico course. The gesture *gate* — only nod when connected, ready, and
+# within safe limits — is expressed as constraints on the capability request.
+rules:
+  - capability: actuator.nod
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+      gate:
+        connected: true
+        ready: true
+        withinSafeLimits: true
+  - capability: actuator.center
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+  - capability: actuator.stop
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+  - capability: actuator.set-position
+    effect: allow
+    constraints:
+      actuator: pixstars-head-pitch
+      withinSafeLimits: true
+  - capability: actuator.write-register
+    effect: deny
+  - capability: actuator.raw-motion
+    effect: deny

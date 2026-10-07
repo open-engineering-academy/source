@@ -1,0 +1,65 @@
+# CompositeResourceDefinition — the actuator capability type
+#
+# Adapted to the Academy Crossplane conventions (see the Crossplane course and
+# labs/hello-pico-on-kubernetes). The learner requests a semantic actuator
+# capability, never raw servo registers.
+#
+# NOTE: exact group/version follow Academy Open Engineering Definitions.
+# The group below ("robotics.open-engineering.io") is the capstone's proposal;
+# treat existing canonical Definition groups as authoritative where they differ.
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xactuators.robotics.open-engineering.io
+spec:
+  group: robotics.open-engineering.io
+  names:
+    kind: XActuator
+    listKind: XActuatorList
+    plural: xactuators
+    singular: xactuator
+  claimNames:
+    kind: Actuator
+    plural: actuators
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                capabilities:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - nod
+                      - center
+                      - stop
+                      - set-position
+                gesture:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                        - nod
+                    calibration:
+                      type: object
+                      properties:
+                        center:
+                          type: integer
+                        down:
+                          type: integer
+                        up:
+                          type: integer
+                        repetitions:
+                          type: integer
+                        speed:
+                          type: string
+              required:
+                - capabilities

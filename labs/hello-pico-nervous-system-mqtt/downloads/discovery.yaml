@@ -1,0 +1,44 @@
+# Deterministic local snapshot of the discovery view a Pico would see if
+# it queried the nervous system for available peers and capabilities.
+#
+# In a live EMQX deployment this snapshot would be assembled by combining
+# `presence` messages, retained capability advertisements, and the
+# broker's `$SYS/#` topics. Here it is authored as a static file so the
+# lab's verifier can validate discovery shape without a live broker.
+apiVersion: pico.oe.academy/v1alpha1
+kind: DiscoverySnapshot
+metadata:
+  name: hello-nervous-system
+spec:
+  advertisements:
+    - pico: pico.architect.001
+      status: online
+      capabilities:
+        - name: mission.plan
+          version: "1"
+      protocols:
+        - mqtt
+        - a2a
+
+    - pico: pico.detective.017
+      status: online
+      capabilities:
+        - name: architecture.investigate
+          version: "1"
+        - name: kubernetes.inspect
+          version: "1"
+        - name: repository.analyze
+          version: "1"
+      protocols:
+        - mqtt
+        - a2a
+
+    - pico: pico.garden.042
+      status: online
+      capabilities:
+        - name: garden.water
+          version: "1"
+        - name: garden.moisture.observe
+          version: "1"
+      protocols:
+        - mqtt

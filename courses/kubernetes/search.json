@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Kubernetes for Open Engineering",
+    "section": "",
+    "text": "ImportantScope — setup foundation only\n\n\n\nThis page is a setup foundation, not a full Kubernetes course. It exists so that other academy surfaces — notably the Crossplane course and the runnable Hello Pico on Kubernetes lab — can link here as the single canonical home for local minikube installation, PATH checks, and a first cluster bring-up. There is deliberately no Part 1 / Part 2 / Part 3 structure, no lessons, no exercises, and no runnable Kubernetes lab in this course yet."
+  },
+  {
+    "objectID": "index.html#where-this-fits-in-the-academy",
+    "href": "index.html#where-this-fits-in-the-academy",
+    "title": "Kubernetes for Open Engineering",
+    "section": "Where this fits in the academy",
+    "text": "Where this fits in the academy\nThe academy’s three-layer story is:\n\nCrossplane composes, Sandcastle constructs, Picos behave.\n\nKubernetes is the concrete runtime environment those layers compose onto. This page owns the smallest honest thing every Kubernetes-touching learner surface needs: a working local Kubernetes cluster, provided by minikube, with docker, kubectl, and helm on PATH.\nAnything beyond that — Pods, Deployments, Services, Ingress, Namespaces, RBAC theory, cluster operators — is deliberately out of scope for this foundation page and lives in either the labs that use them or in a later Kubernetes curriculum wave."
+  },
+  {
+    "objectID": "index.html#supported-environment",
+    "href": "index.html#supported-environment",
+    "title": "Kubernetes for Open Engineering",
+    "section": "Supported environment",
+    "text": "Supported environment\n\nOS: macOS (Apple Silicon or Intel), Linux, or WSL.\nShell: bash 3.2+ or zsh 5.0+.\nRequired tools (all must resolve on PATH after install):\n\ndocker v20.10+ — minikube’s driver and container runtime.\nminikube v1.34+ (v1.38.1 is the reference pin used by the Hello Pico on Kubernetes lab).\nkubectl v1.31+ (minikube ships one; brew install kubectl or the upstream instructions work too).\nhelm v3.14+ (v3.16+ recommended — used by labs that install Crossplane or other Helm-packaged operators).\nbash and standard POSIX utilities (grep, cat, mkdir, cp).\n\nEstimated time: 5–10 minutes for install + first cluster bring-up on a machine with Docker already installed."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "Kubernetes for Open Engineering",
+    "section": "Install",
+    "text": "Install\nOn macOS with Homebrew:\nbrew install --cask docker\nbrew install minikube kubectl helm\nOn Linux, follow the upstream install guides:\n\nDocker Engine — https://docs.docker.com/engine/install/\nminikube — https://minikube.sigs.k8s.io/docs/start/\nkubectl — https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/\nhelm — https://helm.sh/docs/intro/install/"
+  },
+  {
+    "objectID": "index.html#path-checks",
+    "href": "index.html#path-checks",
+    "title": "Kubernetes for Open Engineering",
+    "section": "PATH checks",
+    "text": "PATH checks\nConfirm each tool resolves on PATH before touching a cluster:\ncommand -v docker   && docker version --format 'client: {{.Client.Version}}'\ncommand -v minikube && minikube version --short\ncommand -v kubectl  && kubectl version --client --output=yaml | head -3\ncommand -v helm     && helm version --short\nEach command should print a path (from command -v) followed by a version line. Any command not found result means that tool is missing from PATH and the install step above needs to be completed for it before continuing."
+  },
+  {
+    "objectID": "index.html#first-cluster-bring-up",
+    "href": "index.html#first-cluster-bring-up",
+    "title": "Kubernetes for Open Engineering",
+    "section": "First cluster bring-up",
+    "text": "First cluster bring-up\nStart a small local cluster with the Docker driver. Using a dedicated profile keeps this cluster isolated from any other minikube profiles you may already have:\nminikube start --profile oe-foundation \\\n  --driver=docker --cpus=2 --memory=4g\nConfirm the cluster is Ready and that kubectl is pointed at it:\nkubectl config current-context\nkubectl get nodes\nExpected output (versions and age will vary):\noe-foundation\nNAME             STATUS   ROLES           AGE   VERSION\noe-foundation    Ready    control-plane   1m    v1.xx.y\nLabs may pin a specific --kubernetes-version or larger --cpus/--memory values (for example, the Hello Pico on Kubernetes lab uses its own crossplane-lab profile pinned to Kubernetes v1.31.0 with more resources). Those larger, lab-owned choices live inside each lab and do not change this foundation."
+  },
+  {
+    "objectID": "index.html#cleanup",
+    "href": "index.html#cleanup",
+    "title": "Kubernetes for Open Engineering",
+    "section": "Cleanup",
+    "text": "Cleanup\nWhen you are finished, delete the foundation profile so it does not hold Docker resources open:\nminikube delete --profile oe-foundation\nDeleting the oe-foundation profile does not touch any other minikube profile (for example crossplane-lab)."
+  },
+  {
+    "objectID": "index.html#where-to-go-next",
+    "href": "index.html#where-to-go-next",
+    "title": "Kubernetes for Open Engineering",
+    "section": "Where to go next",
+    "text": "Where to go next\nThis setup foundation is intentionally small. Once your tools resolve on PATH and your first cluster comes up Ready, continue in the surface that actually uses Kubernetes for a learner-visible outcome:\n\nCrossplane course — the composition layer of the academy. Uses a local minikube cluster to compose Hello Pico into a Kubernetes Job.\nHello Pico on Kubernetes lab — the runnable end-to-end lab that installs Crossplane on minikube and verifies the composed Job prints Hello, Pico!.\nSandcastle → Kubernetes hand-off lab — takes a Sandcastle-produced branch and hands its greeting off as a Crossplane Composite Resource compatible with the Hello Pico on Kubernetes lab."
+  },
+  {
+    "objectID": "index.html#metadata",
+    "href": "index.html#metadata",
+    "title": "Kubernetes for Open Engineering",
+    "section": "Metadata",
+    "text": "Metadata\nMachine-readable descriptor: metadata.yaml."
+  }
+]

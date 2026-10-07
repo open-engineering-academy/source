@@ -1,0 +1,19 @@
+id: oe.lab.compose-sandcastle-request
+title: Compose a Sandcastle request
+level: intermediate
+duration: 45m
+prerequisites:
+  - oe.lab.hello-world-pico-sandcastle
+  - oe.course.crossplane
+teaches:
+  - Compose → construct boundary
+  - Crossplane requests engineering work (XR → EngineeringTask)
+  - Sandcastle consumes an EngineeringTask, not an XR
+  - Parametric construction (request value → durable artifact)
+  - Artifact boundary preserved across compose → construct
+produces:
+  - compose-sandcastle-request-branch
+  - compose-sandcastle-request-engineering-task
+referenced_by:
+  - oe.course.sandcastle
+  - oe.lesson.sandcastle.02-composing-a-sandcastle-request
