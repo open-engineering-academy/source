@@ -1,11 +1,11 @@
-Memo: Open Engineering Operations Course
+# Memo 21: Open Engineering Operations Course
 
-Status: Proposed
-Target: Open Engineering Academy
-Related project: Open Engineering Operations
-Implementation platform: Budibase
+Status: Proposed  
+Target: Open Engineering Academy  
+Related project: Open Engineering Operations  
+Implementation platform: Budibase  
 
-1. Purpose
+## 1. Purpose
 
 Create an Open Engineering Academy course that teaches learners how to operate an Open Engineering ecosystem through an Open Engineering Operations environment.
 
@@ -13,12 +13,12 @@ The course uses Open Engineering Operations as its practical target and Budibase
 
 The course should demonstrate how operators can observe, understand and operate the runtime state of Picos through dashboards, telemetry, events and controlled operational actions.
 
-2. Core idea
+## 2. Core idea
 
 A Pico is an operational building block of the Open Engineering ecosystem.
 
 Open Engineering Operations provides the operational envelope around these Picos:
-
+```
                     Open Engineering Operations
                               │
                     ┌─────────┴─────────┐
@@ -38,7 +38,7 @@ Open Engineering Operations provides the operational envelope around these Picos
        │          │           │           │           │
     Python     Rust/PyO3     Celld      Composio     EMQX
      Pico        Pico        Pico        Pico        Pico
-
+```
 The important architectural distinction is:
 
 Budibase is the operator interface; Open Engineering Operations is the operational system; Picos remain the systems being operated.
