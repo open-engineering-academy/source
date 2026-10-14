@@ -1,11 +1,11 @@
 # Memo 22: Memo: Introducing the Bot Feature of a Pico Through MausBot
 
-Status: Proposed
-Target: Open Engineering Academy — Pico course
-Subject: Teaching task-oriented AI bots as a feature of a Pico
-Reference implementation: MausBot
+Status: Proposed  
+Target: Open Engineering Academy — Pico course  
+Subject: Teaching task-oriented AI bots as a feature of a Pico  
+Reference implementation: MausBot  
 
-1. Purpose
+## 1. Purpose
 
 Introduce the concept of a Bot feature of a Pico in the Open Engineering Academy Pico course, using MausBot as a practical reference application.
 
@@ -13,7 +13,7 @@ The objective is to teach learners how an AI bot can provide a task-oriented con
 
 MausBot should be used as a learning example, not as a mandatory dependency or a replacement for the Open Engineering Pico architecture.
 
-2. Context
+## 2. Context
 
 Open Engineering Picos are modular, independently useful engineering components. A Pico can expose capabilities through well-defined interfaces and integrate with other components in the Open Engineering ecosystem.
 
@@ -31,7 +31,7 @@ The Academy should use this example to help learners distinguish between:
 
 These concepts are related but are not interchangeable.
 
-3. Proposed concept: The Bot feature of a Pico
+## 3. Proposed concept: The Bot feature of a Pico
 
 Introduce the Bot feature as an optional, reusable capability of a Pico.
 
@@ -55,10 +55,10 @@ MausBot demonstrates one possible bot experience. An Open Engineering Pico may i
 
 The Academy must not imply that MausBot already implements all Open Engineering Pico conventions or that its internal architecture is identical to the Pico architecture.
 
-4. Relationship to the Open Engineering Pico architecture
+## 4. Relationship to the Open Engineering Pico architecture
 
 Use the existing Pico architecture as the foundation for explaining how a bot can interact with the component.
-
+```
 Open Engineering concept	Teaching application
 Python face	Explore how application logic, orchestration and interfaces can be implemented.
 Rust/PyO3 muscles	Explain how native implementations can provide performance-sensitive capabilities where required.
@@ -67,12 +67,12 @@ Composio Hands	Demonstrate how authorised external tools and application integra
 EMQX nervous system	Explain how events and messaging can communicate operational changes between components.
 Bot feature	Provide a task-oriented AI interaction layer over selected Pico capabilities.
 Open Engineering Operations	Explore how operational dashboards can expose Pico status, bot activity and relevant events.
-
+```
 This mapping is conceptual. It does not assert that MausBot natively implements or directly integrates with each of these components.
 
 In particular, a MausBot integration with Composio, Celld, EMQX or a Pico interface must be investigated and implemented explicitly where required.
 
-5. Proposed Academy lab: Give Your Pico a Bot
+## 5. Proposed Academy lab: Give Your Pico a Bot
 
 Add a practical lab to the existing Pico course rather than creating a separate MausBot course.
 
@@ -93,19 +93,19 @@ Lab phases
 
 Follow the Open Engineering Academy’s seven-phase learning approach for labs, keeping each phase concise and outcome-oriented.
 
-Phase 1 — Discover
+### Phase 1 — Discover
 
 Explore MausBot and identify its relevant capabilities, including bot configuration, model selection, conversation handling and tool integrations.
 
 Outcome: A short description of the bot application and the capabilities relevant to the lab.
 
-Phase 2 — Understand
+### Phase 2 — Understand
 
 Explain the roles of the AI model, bot instructions, context, tools, memory and Pico interfaces.
 
 Outcome: A simple architecture diagram showing the intended interaction between the user, bot, Pico and any external services.
 
-Phase 3 — Configure
+### Phase 3 — Configure
 
 Create a bot called Pico Assistant with the responsibility of explaining one selected Pico and its documented capabilities.
 
@@ -113,7 +113,7 @@ Use the actual configuration options supported by the chosen MausBot version.
 
 Outcome: A configured bot with a documented responsibility and defined scope.
 
-Phase 4 — Connect
+### Phase 4 — Connect
 
 Provide the bot with a safe, read-only example of Pico documentation or metadata.
 
@@ -121,7 +121,7 @@ If a live Pico integration is not available, use a documented mock interface or 
 
 Outcome: The bot can retrieve or interpret the permitted information.
 
-Phase 5 — Exercise
+### Phase 5 — Exercise
 
 Ask the bot to explain the Pico, identify its interfaces and propose an appropriate operational task.
 
@@ -129,7 +129,7 @@ Test whether its responses are grounded in the supplied documentation and whethe
 
 Outcome: A set of example interactions and an evaluation of their accuracy.
 
-Phase 6 — Supervise
+### Phase 6 — Supervise
 
 Ask the bot to prepare a proposed operation without granting unnecessary execution permissions.
 
@@ -137,7 +137,7 @@ Where the selected integration supports approval workflows, inspect and approve 
 
 Outcome: A documented action flow showing where human oversight occurs.
 
-Phase 7 — Reflect
+### Phase 7 — Reflect
 
 Evaluate the implementation against its objectives, including usability, reliability, permissions, privacy and operational requirements.
 
@@ -145,7 +145,7 @@ Record what worked, what remains unsupported and what would be needed to integra
 
 Outcome: A concise lab report and a proposed next step.
 
-6. Security, privacy and operational requirements
+## 6. Security, privacy and operational requirements
 
 The lab must teach that a conversational interface does not remove the need for conventional security controls.
 
@@ -164,33 +164,33 @@ Apply the following principles:
 
 Production integrations should use explicit authentication, authorisation, auditing and failure handling.
 
-7. Integration roadmap
+## 7. Integration roadmap
 
 Treat integration as an incremental progression.
 
-Level 1 — Demonstration
+### Level 1 — Demonstration
 
 Run MausBot as a standalone application and configure a bot that explains a Pico using sample documentation.
 
 No live Pico operations are required.
 
-Level 2 — Read-only Pico integration
+### Level 2 — Read-only Pico integration
 
 Investigate a documented Pico API, metadata interface or other supported integration mechanism.
 
 Allow the bot to retrieve permitted status and configuration information.
 
-Level 3 — Supervised operations
+### Level 3 — Supervised operations
 
 Allow the bot to prepare operational requests. Introduce explicit authorisation and human approval before executing actions that modify state.
 
-Level 4 — Ecosystem integration
+### Level 4 — Ecosystem integration
 
 Evaluate whether the bot can interact with Open Engineering Operations dashboards, Composio Hands and EMQX-based messaging through documented interfaces.
 
 Implement adapters where needed, keeping the Pico’s core capabilities independent of MausBot.
 
-Level 5 — Reusable Bot capability
+### Level 5 — Reusable Bot capability
 
 Extract the lessons from the integration into reusable Open Engineering conventions, interfaces and implementation guidance.
 
@@ -198,7 +198,7 @@ Evaluate alternative bot clients and agent frameworks to avoid coupling the Pico
 
 These levels are a proposed roadmap, not a claim that the integrations already exist.
 
-8. Acceptance criteria
+## 8. Acceptance criteria
 
 The Academy lab is ready for publication when:
 
@@ -212,7 +212,7 @@ The Academy lab is ready for publication when:
 * The lab concludes with a documented outcome and a suggested next step.
 * The external references have been checked against the MausBot version used in the course.
 
-9. Deliverables
+## 9. Deliverables
 
 The proposed course contribution consists of:
 
@@ -225,9 +225,9 @@ The proposed course contribution consists of:
 7. A brief assessment and reflection exercise.
 8. A roadmap for optional Pico integration.
 
-10. References
+## 10. References
 
-MausBot
+### MausBot
 
 * Website: https://mausbot.com/
 * Project source and documentation: Start from the official website and follow its current source-code and documentation links.
@@ -235,7 +235,7 @@ MausBot
 
 Before publishing the lab, verify the current repository URL, licence, supported model providers, tool integration mechanisms and approval behaviour against the actual version being taught. Do not assume that an advertised feature is available in every deployment or configuration.
 
-Open Engineering
+### Open Engineering
 
 * Open Engineering: https://open-engineering.io/
 * Open Engineering Picos: https://github.com/open-engineering-picos
@@ -244,7 +244,7 @@ Open Engineering
 
 Repository URLs should be verified before linking them in published course materials.
 
-Related technologies
+### Related technologies
 
 * Composio: https://composio.dev/
 * EMQX: https://www.emqx.com/
@@ -252,7 +252,7 @@ Related technologies
 
 Use the official documentation for each selected integration to establish its actual capabilities, authentication requirements and operational constraints.
 
-11. Recommendation
+## 11. Recommendation
 
 Adopt MausBot as an optional, hands-on reference application in the Open Engineering Academy Pico course.
 
