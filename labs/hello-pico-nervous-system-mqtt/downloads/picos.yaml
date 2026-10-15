@@ -1,0 +1,52 @@
+# Pico registry for the Hello Pico Nervous System (MQTT) lab.
+#
+# Every participating Pico is listed by its STABLE identity (`pico:` field).
+# The `transport:` block records how each Pico currently appears on the
+# nervous-system wire — MQTT client_id, Kubernetes pod name, etc. These
+# transport identifiers are intentionally different from `pico:`; they may
+# rotate across sessions or restarts while the Pico identity does not.
+#
+# This registry is the deterministic local stand-in for what a live broker
+# discovery layer (e.g. EMQX + `$SYS`) would advertise at runtime.
+apiVersion: pico.oe.academy/v1alpha1
+kind: PicoRegistry
+metadata:
+  name: hello-nervous-system
+spec:
+  runtimeEnvironment: manifold-on-kubernetes
+  picos:
+    - pico: pico.architect.001
+      kind: architect
+      capabilities:
+        - mission.plan
+      transport:
+        mqtt:
+          client_id: mqtt-arch-7f3a
+        kubernetes:
+          pod: hello-architect-pico
+          namespace: nervous-system
+
+    - pico: pico.detective.017
+      kind: architecture-detective
+      capabilities:
+        - architecture.investigate
+        - kubernetes.inspect
+        - repository.analyze
+      transport:
+        mqtt:
+          client_id: mqtt-det-9c21
+        kubernetes:
+          pod: hello-detective-pico
+          namespace: nervous-system
+
+    - pico: pico.garden.042
+      kind: device-pico
+      capabilities:
+        - garden.water
+        - garden.moisture.observe
+      transport:
+        mqtt:
+          client_id: mqtt-garden-04ee
+        kubernetes:
+          pod: hello-garden-pico
+          namespace: nervous-system

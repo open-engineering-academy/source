@@ -1,0 +1,16 @@
+id: oe.course.kubernetes
+slug: kubernetes
+title: Kubernetes for Open Engineering — minikube setup foundation
+level: beginner
+duration: 0.5h
+entry: index.qmd
+sections: []
+prerequisites: []
+teaches:
+  - Local Kubernetes with minikube
+  - Cluster bring-up
+  - Environment PATH checks
+produces: []
+references_labs:
+  - oe.lab.hello-pico-on-kubernetes
+references_exercises: []

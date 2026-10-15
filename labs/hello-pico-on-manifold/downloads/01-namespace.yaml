@@ -1,0 +1,12 @@
+# Namespace that holds the Manifold RuntimeEnvironment for this lab.
+# Manifold is the RuntimeEnvironment; Kubernetes is the RuntimeSubstrate.
+# Keeping the RuntimeEnvironment in its own Namespace makes lifecycle
+# and cleanup match one-for-one: delete the Namespace and the entire
+# hosted-Pico topology goes with it.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: manifold
+  labels:
+    oe.academy/runtime-environment: manifold
+    oe.academy/runtime-substrate: kubernetes

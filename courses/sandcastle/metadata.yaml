@@ -1,0 +1,27 @@
+id: oe.course.sandcastle
+slug: sandcastle
+title: Building Safely with Sandcastles
+level: intermediate
+duration: 6h
+entry: index.qmd
+glossary: glossary.qmd
+sections:
+  - part-1
+  - part-2
+  - part-3
+prerequisites:
+  - oe.course.pico
+teaches:
+  - Sandcastle
+  - Isolated workspace
+  - Sandbox provider
+  - Engineering agent
+  - Artifact boundary
+produces:
+  - hello-world-pico-sandcastle-blueprint
+references_labs:
+  - oe.lab.hello-world-pico-sandcastle
+  - oe.lab.compose-sandcastle-request
+  - oe.lab.handoff-sandcastle-to-kubernetes
+  - oe.lab.outer-delivery-loop
+references_exercises: []

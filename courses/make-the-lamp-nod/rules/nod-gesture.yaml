@@ -1,0 +1,24 @@
+# Nod gesture — logical gesture versus physical calibration.
+#
+# The LOGICAL gesture is fixed: center → slightly down → slightly up → center.
+# The PHYSICAL calibration values are configurable and MUST be calibrated
+# against the real lamp before any gesture executes. These values are
+# illustrative until calibrated; do not copy them into production hardware.
+nod:
+  center: 0
+  down: 15
+  up: -8
+  repetitions: 1
+  speed: safe
+
+# Safe limits - physical movement operates only inside these boundaries.
+# Safe startup: center. Safe shutdown: center, torque may be released only at
+# a safe position.
+safety:
+  minPosition: -30
+  maxPosition: 30
+  movementSpeed: safe
+  commandTimeoutMs: 2000
+  emergencyStop: true
+  safeStartupState: center
+  safeShutdownState: center

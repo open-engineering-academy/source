@@ -1,0 +1,5 @@
+{
+  "eventType": "hello.request",
+  "channel": "hello",
+  "value": "Hello, Pico!"
+}

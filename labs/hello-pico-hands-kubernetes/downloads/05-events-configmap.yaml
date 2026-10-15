@@ -1,0 +1,22 @@
+# Pico-owned events ConfigMap — the append-only surface into which the
+# Pico engine writes one `pico.hand.*` event line per lifecycle step.
+# It starts empty; the Pico engine patches `data.events` with the
+# newline-separated event log using the same narrow Role as the state
+# ConfigMap.
+#
+# The event log is the auditable record of a Hands lifecycle:
+#   pico.hand.requested   -> a rule matched an intent
+#   pico.hand.authorized  -> constraints passed
+#   pico.hand.succeeded   -> the provider returned success
+#   pico.hand.denied      -> a deny rule or missing capability short-circuited
+#   pico.hand.failed      -> the provider returned an error
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pico-hello-hands-events
+  namespace: hands
+  labels:
+    oe.academy/pico: hello-hands-pico
+    oe.academy/pico-owned: "true"
+    oe.academy/carries: pico-hand-events
+data: {}
