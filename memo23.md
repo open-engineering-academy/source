@@ -1,11 +1,11 @@
-Memo: Refactor the Pico Course Around Capsules
+# Memo 23: Refactor the Pico Course Around Capsules
 
-* Target: Open Engineering Academy
-* Type: Curriculum and architecture proposal
-* Status: Proposed
-* Date: 2026-10-15
+* Target: Open Engineering Academy  
+* Type: Curriculum and architecture proposal  
+* Status: Proposed  
+* Date: 2026-10-15  
 
-1. Summary
+## 1. Summary
 
 Refactor the Open Engineering Academy course on Picos to teach capsule-first development. A Pico should be introduced as a minimal runtime and composition of small, explicit, independently testable capabilities rather than as an application that requires a large collection of framework-specific dependencies from the start.
 
@@ -13,7 +13,7 @@ The course should teach learners to define a capsule contract, implement and tes
 
 This is a proposed curriculum direction. It does not assert that the existing Pico implementation already supports every capability or mechanism described below. The relevant contracts, Composer behaviour, runtime responsibilities, and integration points must be validated against the current Open Engineering repositories before implementation.
 
-2. Motivation
+## 2. Motivation
 
 A Pico can accumulate complexity when its core implementation directly depends on several programming frameworks, databases, message brokers, agent platforms, and deployment systems. Requiring learners to install and understand all of these technologies at the beginning makes the course harder to follow and creates unnecessary coupling.
 
@@ -30,7 +30,7 @@ Capsules provide a way to make capabilities explicit and composable. The intende
 
 Capsules do not automatically eliminate dependency complexity. The architecture must define and enforce interface contracts, dependency boundaries, version compatibility, and runtime requirements.
 
-3. Architectural principle
+## 3. Architectural principle
 
 Adopt the following learning principle:
 
@@ -45,7 +45,7 @@ Use the existing Open Engineering separation of definitions and implementations:
 
 These are proposed responsibility boundaries. Confirm repository names, current ownership, and existing APIs before introducing or duplicating concepts.
 
-3.1 Conceptual composition
+### 3.1 Conceptual composition
 
 A Pico may be composed from a minimal core and optional capabilities such as:
 
@@ -59,7 +59,7 @@ A Pico may be composed from a minimal core and optional capabilities such as:
 
 These are examples, not a required list. A basic Pico should not need to install every technology.
 
-3.2 Contract before implementation
+### 3.2 Contract before implementation
 
 A capsule definition should specify, as appropriate:
 
@@ -76,11 +76,11 @@ A capsule definition should specify, as appropriate:
 
 The exact schema belongs in the relevant definitions repository and should be agreed before the course depends on it. Avoid inventing a second, course-specific capsule format.
 
-4. Proposed course progression
+## 4. Proposed course progression
 
 The Pico course should use the following modules. Each module should have a clear learning objective, a practical exercise, observable evidence of completion, and a short reflection.
 
-Module 1 — Understand a Pico
+### Module 1 — Understand a Pico
 
 Teach
 
@@ -96,7 +96,7 @@ Evidence
 
 * A short architecture diagram and a minimal Pico definition.
 
-Module 2 — Define a capsule
+### Module 2 — Define a capsule
 
 Teach
 
@@ -112,7 +112,7 @@ Evidence
 
 * A valid capsule definition and contract tests or validation rules.
 
-Module 3 — Implement and test a capsule
+### Module 3 — Implement and test a capsule
 
 Teach
 
@@ -128,7 +128,7 @@ Evidence
 
 * An independently testable implementation, repeatable tests, and documented dependency requirements.
 
-Module 4 — Compose a Pico
+### Module 4 — Compose a Pico
 
 Teach
 
@@ -144,7 +144,7 @@ Evidence
 
 * A reproducible composition definition and a successful validation report.
 
-Module 5 — Run and inspect the Pico
+### Module 5 — Run and inspect the Pico
 
 Teach
 
@@ -160,7 +160,7 @@ Evidence
 
 * A repeatable run procedure and captured test results.
 
-Module 6 — Extend and operate the Pico
+### Module 6 — Extend and operate the Pico
 
 Teach
 
@@ -176,7 +176,7 @@ Evidence
 
 * A working extension, tests, an updated composition, and operational evidence.
 
-5. Dependency-management rules to teach
+## 5. Dependency-management rules to teach
 
 The course should make these principles explicit:
 
@@ -193,10 +193,10 @@ The course should make these principles explicit:
 
 Do not introduce a general-purpose dependency-injection framework merely to implement these principles. Use the smallest mechanism compatible with the existing Open Engineering architecture.
 
-6. Reuse existing ecosystem capabilities
+## 6. Reuse existing ecosystem capabilities
 
 Treat the following as possible implementations or integrations, not mandatory Pico dependencies:
-
+```
 Capability	Candidate technology or ecosystem	Course guidance
 Application logic or AI	Python and suitable AI libraries	Add only when required by the use case.
 Native performance	Rust and PyO3, where appropriate	Keep language bridging behind a clear capsule boundary.
@@ -206,10 +206,10 @@ Messaging	EMQX or another supported event transport	Make transport replaceable a
 Bot interaction	Mausbot or another supported bot integration	Teach as an extension after the minimal Pico works.
 Operations	Open Engineering Operations	Use operational interfaces to inspect and manage running Picos.
 Infrastructure composition	Crossplane, where appropriate	Teach infrastructure provisioning separately from application-level capsule composition.
-
+```
 Before using a candidate in course instructions, verify its current role, compatibility, maintenance state, licensing, and fit with the existing implementation.
 
-7. Relationship to Crossplane and declarative engineering
+## 7. Relationship to Crossplane and declarative engineering
 
 The course should reinforce the distinction between composing application capabilities and provisioning infrastructure.
 
@@ -225,7 +225,7 @@ Teach the concepts in this order:
 
 This keeps the beginner path focused while preserving a route toward Kubernetes, Crossplane, and broader Open Engineering orchestration.
 
-8. Lab methodology and assessment
+## 8. Lab methodology and assessment
 
 Apply the Academy’s standard lab approach to practical exercises without making every explanatory section of the course verbose. Each lab should state:
 
@@ -240,7 +240,7 @@ Where LikeC4 is already available in the Academy workflow, use it to visualize t
 
 Assessment should prioritize demonstrated behaviour over technology choice. A learner succeeds when the capsule conforms to its contract, tests pass, the Pico composition validates, the capability runs, and dependencies are explicit.
 
-9. Migration plan for the existing course
+## 9. Migration plan for the existing course
 
 Refactor incrementally rather than rewriting all course material at once.
 
@@ -255,7 +255,7 @@ Refactor incrementally rather than rewriting all course material at once.
 
 Do not change production interfaces or introduce new capsule schemas solely to match the proposed teaching sequence. If the current architecture cannot support a proposed exercise, document the gap and decide whether it belongs in this Academy memo or in a separate implementation memo for the responsible repository.
 
-10. Acceptance criteria
+## 10. Acceptance criteria
 
 The course refactor is ready for review when:
 
@@ -270,15 +270,15 @@ The course refactor is ready for review when:
 * Security, configuration, version compatibility, and failure behaviour are addressed at an appropriate level.
 * Links to the relevant Open Engineering repositories and documentation are accurate and maintained.
 
-11. Decision requested
+## 11. Decision requested
 
 Approve capsule-first development as the organizing principle for the Open Engineering Academy Pico course, subject to verification against the existing capsule and Pico implementations.
 
 The first implementation milestone should be a single end-to-end lab: define one capsule, implement it, test it, compose it into a minimal Pico, run it, and document the evidence. Use that lab to validate both the architecture and the curriculum before expanding the course.
 
-12. References
+## 12. References
 
-Open Engineering
+### Open Engineering
 
 * Open Engineering Academy: https://github.com/open-engineering-academy
 * Open Engineering Picos: https://github.com/open-engineering-picos
@@ -286,7 +286,7 @@ Open Engineering
 
 Verify the current canonical repositories for Open Engineering Capsules and Open Engineering Capsule before adding their URLs. Do not infer repository URLs from naming conventions.
 
-Crossplane
+### Crossplane
 
 * Composite Resources: https://docs.crossplane.io/latest/composition/composite-resources/
 * Compositions: https://docs.crossplane.io/latest/composition/compositions/
@@ -294,7 +294,7 @@ Crossplane
 
 These references support the declarative composition analogy and are not specifications for the Pico capsule contract.
 
-Kubernetes
+### Kubernetes
 
 * Kubernetes documentation: https://kubernetes.io/docs/home/
 
