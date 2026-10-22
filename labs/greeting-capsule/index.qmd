@@ -55,10 +55,13 @@ not fork or shadow it (`memo23` §3.2, `memo26` §5).
 The lab reads the normative capsule schema and fixtures directly from
 `open-engineering-capsules/source` at the pinned commit
 `bf071c2c1b57`. A small script, `solution/fetch-upstream.sh`,
-downloads them into an untracked `upstream/` directory (listed in the
-lab-local `.gitignore`). The lab commits **no schema copy** and **no
-resolver** — only the capsule, its implementation, its tests, the
-Pico, the fetch script and the hand resolution report.
+downloads them into an untracked `build/upstream/` directory (the
+lab-local `.gitignore` ignores `build/`; `build/` is one of the
+pruned directory names in `scripts/oels_ci_validate.py` so the
+fetched OE-shaped fixtures do not trip the OELS gate). The lab
+commits **no schema copy** and **no resolver** — only the capsule,
+its implementation, its tests, the Pico, the fetch script and the
+hand resolution report.
 
 ## Downloads and screenshots
 

@@ -18,7 +18,7 @@ referenced_by:
 validated_by:
   - "walkthrough.qmd Step 1 — bash solution/fetch-upstream.sh fetches upstream artefacts at bf071c2c1b57"
   - "walkthrough.qmd Step 2 — solution/capsule.yaml written per memo1 §3 verbatim"
-  - "walkthrough.qmd Step 3 — jsonschema validates capsule.yaml against upstream/capsule.schema.json; one invalid fixture fails"
+  - "walkthrough.qmd Step 3 — jsonschema validates capsule.yaml against build/upstream/capsule.schema.json; one invalid fixture fails"
   - "walkthrough.qmd Step 4 — solution/greeting.py implements the capability behind declared inputs/outputs"
   - "walkthrough.qmd Step 5 — python3 -m unittest discover solution/tests passes"
   - "walkthrough.qmd Step 6 — solution/pico.yaml validates against definitions/pico.yaml"

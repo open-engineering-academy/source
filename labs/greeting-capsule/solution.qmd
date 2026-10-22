@@ -71,7 +71,9 @@ spec:
 Downloads `capsule.schema.json` and the three fixtures the
 walkthrough reads from
 `https://raw.githubusercontent.com/open-engineering-capsules/source/bf071c2c1b57/…`
-into the untracked `upstream/` directory.
+into the untracked `build/upstream/` directory (the lab-local
+`.gitignore` ignores `build/`; `build/` is one of the pruned
+directory names in `scripts/oels_ci_validate.py`).
 
 ### `solution/resolution.md`
 
@@ -90,7 +92,7 @@ Run from `labs/greeting-capsule/` inside your local clone, with the
 
 ```bash
 bash solution/fetch-upstream.sh
-python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("solution/capsule.yaml")), json.load(open("upstream/capsule.schema.json"))); print("valid")'
+python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("solution/capsule.yaml")), json.load(open("build/upstream/capsule.schema.json"))); print("valid")'
 python3 -c 'import yaml, jsonschema; defn = yaml.safe_load(open("../../definitions/pico.yaml")); jsonschema.validate(yaml.safe_load(open("solution/pico.yaml")), defn["spec"]["schema"]); print("valid")'
 python3 -m unittest discover -s solution/tests
 ```
@@ -98,7 +100,7 @@ python3 -m unittest discover -s solution/tests
 ### Expected output
 
 ```
-fetch-upstream: downloaded upstream artefacts at bf071c2c1b57 into .../labs/greeting-capsule/upstream
+fetch-upstream: downloaded upstream artefacts at bf071c2c1b57 into .../labs/greeting-capsule/build/upstream
 valid
 valid
 ........
@@ -111,7 +113,7 @@ OK
 ## Why this satisfies the objectives
 
 - **Define a capsule**: `solution/capsule.yaml` is memo1 §3 verbatim
-  and conforms to `upstream/capsule.schema.json`.
+  and conforms to `build/upstream/capsule.schema.json`.
 - **Validate against the upstream contract**: Step 3 shows one valid
   document passing and one upstream invalid fixture failing for the
   reason the schema states.

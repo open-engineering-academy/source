@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # Fetch the upstream capsule contract artefacts at the pinned SHA
 # bf071c2c1b57 from open-engineering-capsules/source into an
-# untracked ../upstream/ directory (added to the lab-local .gitignore).
+# untracked ../build/upstream/ directory (the lab-local .gitignore
+# ignores build/; build/ is one of PRUNED_DIR_NAMES in
+# scripts/oels_ci_validate.py so fetched OE-shaped fixtures do not
+# trigger UnknownDefinition gaps under --fail-on-gap).
 #
 # This script does NOT copy a schema into the Academy; it downloads
 # the normative files at lab time and leaves them in an untracked
-# directory. Nothing in `upstream/` is committed (memo23 §3.2 / memo26
+# directory. Nothing under `build/` is committed (memo23 §3.2 / memo26
 # §5: no fork, no shadow).
 #
 # Pinned commit:
@@ -23,7 +26,7 @@ RAW_BASE="https://raw.githubusercontent.com/${REPO}/${PINNED_SHA}"
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 LAB_ROOT="$(cd "$HERE/.." && pwd)"
-OUT="$LAB_ROOT/upstream"
+OUT="$LAB_ROOT/build/upstream"
 
 mkdir -p "$OUT/fixtures/valid" "$OUT/fixtures/invalid" "$OUT/fixtures/scenarios"
 

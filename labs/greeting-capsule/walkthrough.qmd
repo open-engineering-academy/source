@@ -29,12 +29,15 @@ bash solution/fetch-upstream.sh
 Expected output:
 
 ```
-fetch-upstream: downloaded upstream artefacts at bf071c2c1b57 into .../labs/greeting-capsule/upstream
+fetch-upstream: downloaded upstream artefacts at bf071c2c1b57 into .../labs/greeting-capsule/build/upstream
 ```
 
-The `upstream/` directory it creates is listed in the lab-local
-`.gitignore` and is **not** committed. The lab reads these files;
-it does not copy them into the Academy tree.
+The `build/upstream/` directory it creates sits under the lab-local
+`build/` directory (ignored in the lab's `.gitignore`) and is **not**
+committed. The lab reads these files; it does not copy them into the
+Academy tree. `build/` is also one of the pruned directory names in
+`scripts/oels_ci_validate.py`, so the fetched OE-shaped fixtures do
+not trigger `UnknownDefinition` diagnostics under `--fail-on-gap`.
 
 ## Step 2 — Write the capsule document
 
@@ -67,16 +70,19 @@ This is the smallest capsule document that satisfies memo1 §1
 Run the one-liner JSON Schema validation:
 
 ```bash
-python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("solution/capsule.yaml")), json.load(open("upstream/capsule.schema.json"))); print("valid")'
+python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("solution/capsule.yaml")), json.load(open("build/upstream/capsule.schema.json"))); print("valid")'
 ```
 
 Expected output: `valid`.
 
 Now show the schema rejects one upstream invalid fixture for the
-stated reason:
+stated reason. The traceback below is piped through
+`grep ValidationError` so the expected output stays a single line
+(the full traceback also dumps the schema and failing instance; the
+grep extracts just the diagnostic line):
 
 ```bash
-python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("upstream/fixtures/invalid/missing-outputs.yaml")), json.load(open("upstream/capsule.schema.json")))'
+python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("build/upstream/fixtures/invalid/missing-outputs.yaml")), json.load(open("build/upstream/capsule.schema.json")))' 2>&1 | grep ValidationError
 ```
 
 Expected output:
@@ -190,6 +196,11 @@ the upstream scenario: it should be byte-equivalent.
 - If `python3 -m unittest` reports `ModuleNotFoundError: No module
   named 'yaml'` or `'jsonschema'`, re-run `python3 -m pip install
   --user jsonschema pyyaml` from [one-time setup](objectives.qmd#one-time-setup).
+- The fetched upstream files land under `build/upstream/`, not
+  `upstream/`. `build/` is in `scripts/oels_ci_validate.py`'s pruned
+  directory list, so after Step 1 the repository's OELS gate
+  (`python3 scripts/oels_ci_validate.py --fail-on-gap`) still ignores
+  them and no extra `UnknownDefinition` diagnostics appear.
 :::
 
 ## Next
