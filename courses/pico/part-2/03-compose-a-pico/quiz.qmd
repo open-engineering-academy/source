@@ -1,0 +1,123 @@
+---
+title: "Quiz · Compose a Pico"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. In one sentence, what is **capability composition / resolution**, and how is it different from **rule compilation**?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+*Capability composition / resolution* takes one Pico definition and a
+set of installed capsule definitions and produces a resolved
+composition manifest that pins each `spec.capabilities` entry to a
+specific capsule (memo2 §4 D4). *Rule compilation* is what
+`bin/pico compose` does in this repository: it turns one parsed Rule
+into one executable shell-script artefact and currently handles only
+`kind: greeting` (verified in
+[`memo24.md`](../../../../memo24.md) §2.4). The two operations live
+in different repositories; the Academy ships neither resolver nor a
+new validator (memo2 §4 D4 Consequences for the Academy).
+See the [lesson](index.qmd#two-terms-kept-separate).
+:::
+
+## 2. Classify `foo.bar@0.1.0`, `foo.bar@1.2.0`, `foo.bar@=1.0.0`, and `foo.bar`.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+From memo2 §2 D2:
+
+- `foo.bar@0.1.0` — **caret** (`0.x` variant). Resolves against any
+  `foo.bar` capsule whose version has the **same minor** `1` and
+  **patch ≥ 0**.
+- `foo.bar@1.2.0` — **caret** on the `≥ 1.0` line. Same major (`1`)
+  and version ≥ `1.2.0`.
+- `foo.bar@=1.0.0` — **exact**. Strict equality on
+  `metadata.version`.
+- `foo.bar` — **bare**. Matches **any** version of a `foo.bar`
+  provider.
+:::
+
+## 3. The lab's capsule provides `oe.greeting` at `0.1.0`. Why does `oe.greeting@=0.2.0` fail where `oe.greeting@0.1.0` succeeds?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+`@=0.2.0` is an **exact-match** constraint; it requires
+`metadata.version == 0.2.0`. The installed capsule is at `0.1.0`, so
+zero candidates survive the version check and the resolver returns
+`outcome: error`, `error: no-matching-provider`,
+`requirement: oe.greeting@=0.2.0`. `@0.1.0` is a **caret** constraint
+on a `0.x` line; it requires the **same minor** and **patch ≥ 0**,
+which `0.1.0` satisfies exactly — so the same capsule succeeds. See
+the [exercise Task B](exercise.qmd#task-b-author-a-failing-pico) and
+upstream fixture `fixtures/scenarios/exact-nomatch-patch.yaml`.
+:::
+
+## 4. Two installed capsules both provide `foo.bar` and both satisfy a Pico's bare `foo.bar` requirement. What does a conforming resolver emit at v0.1, and why can you not just pick one in `spec.composition`?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+It emits `outcome: error`, `error: multiple-matching-providers`,
+`requirement: foo.bar`, and lists both candidate providers (upstream
+fixture `fixtures/scenarios/duplicate-provider.yaml`). In v0.1,
+*more than one* matching provider is an explicit error — memo2 §3 D3
+§2 amendment: "resolving to more than one matching provider is an
+explicit error (memo23 §5 rule 9 'Graceful failure')". The
+`spec.composition` block that would let a Pico pick one is
+**reserved for v0.2** and is upstream-owned; v0.1 Picos SHOULD NOT
+declare it, and the Academy will not add such a block locally.
+:::
+
+## 5. A requirement reads `foo.bar@0.1.0` and the installed capsule is `foo.bar` at `0.2.0`. Does `0.x` caret cross a minor boundary?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. memo2 §2 D2 states explicitly that for `0.x` versions caret
+requires the **same minor** and **patch ≥ requested**; a different
+minor is a non-match. The resolver emits `outcome: error`,
+`error: no-matching-provider`, `requirement: foo.bar@0.1.0`
+(upstream fixture `fixtures/scenarios/zerox-different-minor-nomatch.yaml`).
+Contrast this with the `≥ 1.0` line, where caret crosses *minor and
+patch* within the same major (`fixtures/scenarios/caret-match.yaml`).
+:::
+
+## 6. Does `definitions/pico.yaml` need any change to teach Module 4, and where will capability composition be validated once the reference validator ships?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No change is needed.
+[`definitions/pico.yaml`](../../../../definitions/pico.yaml) already
+requires `spec.capabilities: [string]`; each item is a capability
+identifier (optionally plus a constraint) per memo2 §3 D3 §2
+amendment. No new required field is added and the Academy does not
+introduce `spec.composition` locally. Once memo2 §5 follow-up (b)
+ships, capability composition is validated by the reference CLI in
+`open-engineering-capsule/source`; the Academy MAY add a thin
+delegating `pico resolve` wrapper that calls it. Until then,
+resolution is done by hand against the upstream scenarios (memo2 §4
+D4 Consequences for the Academy).
+:::
+
+## 7. Which capability identifiers below are grammar-conformant, and which are not? Give the memo2 §3 D3 reason for each rejection.
+
+`oe.greeting`, `pico.state.set`, `Greeting`, `oe..greeting`,
+`oe_greeting`, `github.issue.create`
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Conformant: `oe.greeting`, `pico.state.set`, `github.issue.create` —
+each is two or more dot-separated segments, every segment starts with
+a lower-case ASCII letter, and only `[a-z0-9]` or single internal
+hyphens appear.
+
+Non-conformant:
+
+- `Greeting` — upper-case leading letter *and* single segment (needs
+  at least one `.`).
+- `oe..greeting` — empty segment between the two dots.
+- `oe_greeting` — underscore is not in the segment alphabet; also no
+  dot separator.
+
+See upstream fixtures `invalid/capability-upper-case.yaml`,
+`invalid/capability-empty-segment.yaml`, and
+`invalid/capability-underscore.yaml`.
+:::
+
+## Next
+
+Return to [Part 2](../index.qmd) or continue to
+[Part 3](../../part-3/index.qmd).

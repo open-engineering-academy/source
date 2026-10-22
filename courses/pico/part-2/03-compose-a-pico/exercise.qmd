@@ -1,0 +1,163 @@
+---
+title: "Exercise · Compose a Pico"
+---
+
+A short, by-hand resolution exercise against the upstream conformance
+fixtures. Complete it before starting the lab.
+
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
+## Setup
+
+From a local clone, run the lab's fetch script once so the upstream
+scenarios are available in an untracked directory:
+
+```bash
+cd labs/greeting-capsule
+bash solution/fetch-upstream.sh
+```
+
+The ten scenario files then live at
+`labs/greeting-capsule/build/upstream/fixtures/scenarios/*.yaml`.
+`build/` is listed in the lab-local `.gitignore` and is never
+committed.
+
+Every scenario has the same shape: a Pico's `spec.capabilities`, a
+set of `installed:` providers (minimal — only `metadata.name`,
+`metadata.version`, and `spec.capability` are shown), and an
+`expected:` block that a conforming resolver MUST produce
+(upstream `fixtures/README.md` at commit `bf071c2c1b57`). Resolution
+rules are in [memo2](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md)
+§2 D2 (versions) and §3 D3 (grammar, uniqueness).
+
+## Task A — Hand-resolve four named scenarios
+
+For each scenario below:
+
+1. Read the file in `labs/greeting-capsule/build/upstream/fixtures/scenarios/`.
+2. Hide the `expected:` block (cover it with a scrap of paper or
+   collapse it in your editor).
+3. Resolve the Pico against `installed:` by hand, following the six
+   steps in the [lesson's worked example](index.qmd#worked-resolution--the-oegreeting-example).
+4. Reveal the `expected:` block and compare. You should match it
+   **byte for byte** on `outcome`, `error` (if any), `requirement`,
+   `constraint`, and `provider`/`providers`.
+
+### A1 — Caret match (`caret-match.yaml`)
+
+- Requirement: `foo.bar@1.2.0` (caret, major ≥ 1 line).
+- Installed: one capsule, `foo.bar` at `1.3.5`.
+- Resolve it. What is the `constraint` label? Does the provider
+  satisfy "same major, version ≥ `1.2.0`"?
+
+### A2 — `0.x` match (`zerox-same-minor-match.yaml`)
+
+- Requirement: `foo.bar@0.1.0` (caret, `0.x` rule).
+- Installed: one capsule, `foo.bar` at `0.1.3`.
+- Resolve it. For `0.x`, caret requires **same minor** and
+  **patch ≥ requested**. Does `0.1.3` satisfy both parts?
+
+### A3 — Exact-nomatch (`exact-nomatch-patch.yaml`)
+
+- Requirement: `foo.bar@=1.0.0` (exact).
+- Installed: one capsule, `foo.bar` at `1.0.1`.
+- Resolve it. The `@=` prefix is an **exact-match** constraint
+  (memo2 §2 D2). Does a patch bump satisfy exact match? Which
+  `error` label does the `expected:` block carry?
+
+### A4 — Duplicate provider (`duplicate-provider.yaml`)
+
+- Requirement: `foo.bar` (bare).
+- Installed: two capsules, `foo-bar-a` and `foo-bar-b`, both
+  providing `foo.bar` at `1.0.0`.
+- Resolve it. Both candidates satisfy the (bare) version constraint.
+  How many providers survive? Which v0.1 clause makes "more than one
+  survivor" an explicit error (hint: memo2 §3 D3 §2 amendment)?
+  Which `error` label does the `expected:` block carry? Which `v0.2`
+  mechanism would allow explicit provider selection (and why does
+  the lesson say you SHOULD NOT reach for it at v0.1)?
+
+## Task B — Author a failing Pico
+
+Create a Pico that requires `oe.greeting` pinned exactly at `0.2.0`.
+Write the YAML in a scratch file (do **not** add it to the lab's
+`solution/`); copy the shape from
+[`labs/greeting-capsule/solution/pico.yaml`](../../../../labs/greeting-capsule/solution/pico.yaml)
+and change only the `spec.capabilities` entry:
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: hello-pico-exact
+spec:
+  type: greeter
+  capabilities:
+    - oe.greeting@=0.2.0
+  implementation: {}
+  state: {}
+  events: {}
+```
+
+Now resolve this Pico against the lab's one installed capsule
+([`labs/greeting-capsule/solution/capsule.yaml`](../../../../labs/greeting-capsule/solution/capsule.yaml),
+`greeting` at `0.1.0`) by hand.
+
+Answer:
+
+- **B1.** Classify the constraint on `oe.greeting@=0.2.0`. Which row
+  of the memo2 §2 D2 table does it belong to?
+- **B2.** List the candidate providers after Step 3 ("enumerate
+  candidate providers") of the lesson's worked example.
+- **B3.** Apply the version rule for your constraint from B1. Does
+  `0.1.0` satisfy it? Why / why not?
+- **B4.** Write the `expected:` block your hand-resolver would emit.
+  Use the shape of `fixtures/scenarios/exact-nomatch-patch.yaml` —
+  `outcome: error`, an `error:` label, and the `requirement:` field.
+- **B5.** In one sentence, explain why `@=0.2.0` fails here where a
+  caret `@0.1.0` succeeds against the same capsule (as the lab's
+  Step 7 shows).
+
+## Success criteria
+
+- [ ] For each of A1–A4 your hand-written `expected:` block is
+      byte-equivalent to the one in the fixture.
+- [ ] For B4 your `expected:` block names `outcome: error`,
+      `error: no-matching-provider`, and
+      `requirement: oe.greeting@=0.2.0`.
+- [ ] You can state in one line why the Academy does not ship a
+      resolver (memo2 §4 D4 Consequences for the Academy).
+
+## Automatable check
+
+Only two automatable checks apply at this lesson's level — both are
+Pico-shape checks, not resolution checks (there is no Academy
+resolver; memo2 §5 follow-up (b) is pending).
+
+```bash
+# From the repository root. Validates the failing Pico from Task B
+# against the Academy's Pico Definition. "valid" means the shape is
+# OE-conformant; it does NOT mean the capability resolves.
+python3 -c 'import yaml, jsonschema; d=yaml.safe_load(open("definitions/pico.yaml")); jsonschema.validate(yaml.safe_load(open("/tmp/hello-pico-exact.yaml")), d["spec"]["schema"]); print("valid")'
+```
+
+```bash
+# The lab's Step 6 runs the same check for the succeeding caret Pico;
+# re-run it here to see that both Picos pass the Pico-shape check and
+# differ only in resolution.
+cd labs/greeting-capsule
+python3 -c 'import yaml, jsonschema; d=yaml.safe_load(open("../../definitions/pico.yaml")); jsonschema.validate(yaml.safe_load(open("solution/pico.yaml")), d["spec"]["schema"]); print("valid")'
+```
+
+If a reference resolver / `pico resolve` wrapper ever ships
+(memo2 §5 follow-up (b) + §4 D4 Consequences for the Academy), this
+section will add an invocation of it. Today the resolution step is
+by hand.
+
+## Next
+
+Continue with the [Lab](lab.qmd).
