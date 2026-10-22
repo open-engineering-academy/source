@@ -159,8 +159,8 @@ In this repository the Composer (defined in the
 [Glossary](../../glossary.qmd#composer)) is a **Rules → artefact code
 generator**: `pico compose` reads a parsed Rule, requires
 `kind: greeting`, and writes an executable shell script that prints
-the Rule's `value` ([`bin/pico`](../../../../bin/pico) lines 56 and
-82–86, verified in [`memo24.md`](../../../../memo24.md) §2.4). It is
+the Rule's `value` ([`bin/pico`](../../../../bin/pico) lines 105–109,
+verified in [`memo24.md`](../../../../memo24.md) §2.4). It is
 **not** a capability composer: it does not resolve capsule
 dependencies, bind interfaces, or check compatibility across capsule
 contracts. Capability composition is a separate concept that would

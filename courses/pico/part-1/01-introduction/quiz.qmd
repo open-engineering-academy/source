@@ -51,7 +51,7 @@ schema requires none of them by name.
 ::: {.callout-tip collapse="true" title="Show answer"}
 No. In this repository, "Composer" refers to `pico compose`, which
 turns a parsed Rule into an executable shell-script artefact
-(`bin/pico` lines 56 and 82–86, verified in memo24 §2.4). It currently
+(`bin/pico` lines 105–109, verified in memo24 §2.4). It currently
 handles only `kind: greeting`. It is **not** a capability composer: it
 does not resolve capsule dependencies, bind interfaces, or check
 compatibility across capsule contracts. Capability composition is a
