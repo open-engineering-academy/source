@@ -1,0 +1,76 @@
+---
+title: "Greeting Capsule"
+description: "Define, implement, test and compose the oe.greeting capsule against the adopted upstream contract."
+---
+
+See the [Open Engineering Language Server (OELS) onboarding guide](../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../shared/includes/oels.qmd >}}
+
+
+## Overview
+
+**Greeting Capsule** is the first end-to-end capsule lab (Memo 23 §9
+step 4). You will define the `oe.greeting` capsule against the
+adopted upstream contract, validate it with the upstream schema,
+implement it in a stdlib Python function behind that contract, test
+it, compose it into a minimal Pico definition, and resolve the
+Pico's capability requirement against your capsule **by hand**.
+
+The lab is intentionally small — about 45–60 minutes — and reuses the
+Hello Pico greeting (`"Hello, Pico!"`) at the **capability** level so
+you can see the capsule-first restatement of the same observable
+behaviour.
+
+## Structure
+
+- [Objectives and prerequisites](objectives.qmd)
+- [Walkthrough](walkthrough.qmd)
+- [Solution](solution.qmd)
+
+## What you will produce
+
+A single capsule named `greeting-capsule` — matching the `produces`
+entry in this lab's [`metadata.yaml`](metadata.yaml). Concretely:
+`solution/capsule.yaml`, a stdlib implementation in
+`solution/greeting.py`, passing unit and contract tests under
+`solution/tests/`, a minimal composing `solution/pico.yaml`, and a
+hand-written `solution/resolution.md` in the shape of the upstream
+`resolve-greeting.yaml` scenario.
+
+::: {.callout-important title="Python call convention is a course-local teaching harness"}
+This lab calls the capsule as a Python function behind its declared
+`spec.inputs`/`spec.outputs`. That calling convention is a
+**course-local teaching harness only**. The implementation convention
+for capsules belongs to `open-engineering-capsule/source`, which has
+published none yet (`memo24` §2.1 as updated by observation at the
+pinned upstream commit `bf071c2c1b57`). When the implementation org
+publishes a convention, the Academy will consume it; this lab will
+not fork or shadow it (`memo23` §3.2, `memo26` §5).
+:::
+
+## Upstream artefacts (fetched, never vendored)
+
+The lab reads the normative capsule schema and fixtures directly from
+`open-engineering-capsules/source` at the pinned commit
+`bf071c2c1b57`. A small script, `solution/fetch-upstream.sh`,
+downloads them into an untracked `upstream/` directory (listed in the
+lab-local `.gitignore`). The lab commits **no schema copy** and **no
+resolver** — only the capsule, its implementation, its tests, the
+Pico, the fetch script and the hand resolution report.
+
+## Downloads and screenshots
+
+This lab does not ship starter downloads or screenshots; everything a
+learner needs is produced step by step in the walkthrough.
+
+## Metadata
+
+Machine-readable descriptor: [`metadata.yaml`](metadata.yaml).
+
+## Referenced from
+
+- [Pico course · Part 2](../../courses/pico/part-2/index.html) —
+  the capsule-first modules (2 Define, 3 Implement and test, 4
+  Compose) point at the steps of this lab for their evidence.

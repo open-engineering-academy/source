@@ -1,0 +1,197 @@
+---
+title: "Walkthrough"
+description: "Define, validate, implement, test and compose oe.greeting end to end."
+---
+
+::: {.callout-tip title="Try it yourself"}
+Follow along in your own environment. Copy the commands and adapt
+them to match your setup.
+:::
+
+::: {.callout-important title="Before you start"}
+Complete the [one-time setup](objectives.qmd#one-time-setup) so that
+`python3`, `jsonschema`, `pyyaml` and `curl` are available in the
+shell you use for this lab.
+:::
+
+Unless stated otherwise, every command below runs from
+`labs/greeting-capsule/` inside your local clone.
+
+## Step 1 — Fetch the upstream artefacts
+
+Run the fetch script to download the normative schema and the three
+fixtures used by this walkthrough at the pinned upstream commit:
+
+```bash
+bash solution/fetch-upstream.sh
+```
+
+Expected output:
+
+```
+fetch-upstream: downloaded upstream artefacts at bf071c2c1b57 into .../labs/greeting-capsule/upstream
+```
+
+The `upstream/` directory it creates is listed in the lab-local
+`.gitignore` and is **not** committed. The lab reads these files;
+it does not copy them into the Academy tree.
+
+## Step 2 — Write the capsule document
+
+Author the capsule verbatim from memo1 §3 (identifier conformed to
+memo2 §3 D3 as `oe.greeting`). Create `solution/capsule.yaml` with:
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Capsule
+metadata:
+  name: greeting
+  version: 0.1.0
+spec:
+  capability: oe.greeting
+  inputs:
+    value:
+      type: string
+      required: true
+  outputs:
+    greeting:
+      type: string
+  dependencies: []
+```
+
+This is the smallest capsule document that satisfies memo1 §1
+(required field set) and memo2 §3 D3 (capability identifier grammar).
+
+## Step 3 — Validate it against the upstream schema
+
+Run the one-liner JSON Schema validation:
+
+```bash
+python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("solution/capsule.yaml")), json.load(open("upstream/capsule.schema.json"))); print("valid")'
+```
+
+Expected output: `valid`.
+
+Now show the schema rejects one upstream invalid fixture for the
+stated reason:
+
+```bash
+python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("upstream/fixtures/invalid/missing-outputs.yaml")), json.load(open("upstream/capsule.schema.json")))'
+```
+
+Expected output:
+
+```
+jsonschema.exceptions.ValidationError: 'outputs' is a required property
+```
+
+The upstream fixture carries a top-of-file comment
+`# fails: memo1 §1 — spec.outputs is required (may be {} but must be present).`
+— matching the schema message.
+
+## Step 4 — Implement the capability
+
+::: {.callout-important title="Python call convention is a course-local teaching harness"}
+The function-call shape used below is a **course-local teaching
+harness only**. The implementation convention for capsules belongs
+to `open-engineering-capsule/source`, which has published none yet
+(`memo24` §2.1 as updated by observation at `bf071c2c1b57`). When
+that convention is published the Academy will consume it; this lab
+will not fork or shadow it.
+:::
+
+Create `solution/greeting.py` with a single function behind the
+declared `spec.inputs`/`spec.outputs` of the capsule. The function
+reads `value` (declared required, type `string`) and returns
+`greeting` (declared type `string`). A missing required input raises
+a structured `MissingRequiredInput` error (memo23 §5 rule 9 "graceful
+failure").
+
+See [`solution/greeting.py`](solution/greeting.py) for the full
+implementation.
+
+## Step 5 — Run the tests
+
+Two test modules live under `solution/tests/`:
+
+- `test_greeting.py` — unit tests for `greeting()`;
+- `test_contract.py` — reads `solution/capsule.yaml` and asserts the
+  implementation honours each declared input/output name and type,
+  plus the structured error on each declared-required input.
+
+Run them with:
+
+```bash
+python3 -m unittest discover -s solution/tests
+```
+
+Expected tail of output:
+
+```
+Ran 8 tests in 0.001s
+
+OK
+```
+
+## Step 6 — Compose a minimal Pico and validate it
+
+Create `solution/pico.yaml` per memo1 §3, declaring the capability
+need with a caret pin:
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: hello-pico
+spec:
+  type: greeter
+  capabilities:
+    - oe.greeting@0.1.0
+  implementation: {}
+  state: {}
+  events: {}
+```
+
+Validate the Pico against the Academy's `definitions/pico.yaml` by
+extracting its `spec.schema` and running JSON Schema 2020-12
+validation (this is the only Pico-shaped contract the repository
+offers today; no dedicated Pico validator CLI exists, so no new
+validator is added here):
+
+```bash
+python3 -c 'import yaml, jsonschema; defn = yaml.safe_load(open("../../definitions/pico.yaml")); jsonschema.validate(yaml.safe_load(open("solution/pico.yaml")), defn["spec"]["schema"]); print("valid")'
+```
+
+Expected output: `valid`.
+
+## Step 7 — Resolve the capability by hand
+
+No reference validator / resolver exists yet — memo2 §5 follow-up (b)
+is pending. For this lab you therefore resolve
+`spec.capabilities: [oe.greeting@0.1.0]` against the one installed
+provider (`solution/capsule.yaml`) by hand, applying memo2 §2 D2
+(SemVer / caret / `0.x`) and memo2 §3 D3 (grammar) step by step.
+Record the result in `solution/resolution.md`, in the shape of
+upstream `fixtures/scenarios/resolve-greeting.yaml` — see
+[`solution/resolution.md`](solution/resolution.md) for the finished
+report. Compare the `outcome`/`resolution` block in your file against
+the upstream scenario: it should be byte-equivalent.
+
+## Troubleshooting
+
+::: {.callout-warning title="Heads up"}
+- If `fetch-upstream.sh` prints `failed to retrieve …`, the private
+  upstream repository likely requires authentication. Install the
+  GitHub CLI and run `gh auth login`; the script then falls back to
+  `gh api` automatically.
+- If the Step 3 validation fails with a different message, re-copy
+  the capsule block verbatim from Step 2 — a missing colon or an
+  extra indent changes the shape.
+- If `python3 -m unittest` reports `ModuleNotFoundError: No module
+  named 'yaml'` or `'jsonschema'`, re-run `python3 -m pip install
+  --user jsonschema pyyaml` from [one-time setup](objectives.qmd#one-time-setup).
+:::
+
+## Next
+
+Compare your result against the [reference solution](solution.qmd).

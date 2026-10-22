@@ -1,0 +1,156 @@
+---
+title: "Solution"
+description: "Reference solution for the Greeting Capsule lab."
+---
+
+## Reference solution
+
+A working solution consists of one capsule document, one stdlib
+implementation, two test modules, one Pico definition, one upstream
+fetch script and one hand resolution report. All of them live under
+[`solution/`](solution/).
+
+### `solution/capsule.yaml`
+
+The capsule document is memo1 §3 verbatim (with
+`spec.capability: oe.greeting` conformed to memo2 §3 D3):
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Capsule
+metadata:
+  name: greeting
+  version: 0.1.0
+spec:
+  capability: oe.greeting
+  inputs:
+    value:
+      type: string
+      required: true
+  outputs:
+    greeting:
+      type: string
+  dependencies: []
+```
+
+### `solution/greeting.py`
+
+Single function behind the declared inputs/outputs; stdlib only;
+raises `MissingRequiredInput` on a missing required input. See
+[`solution/greeting.py`](solution/greeting.py).
+
+### `solution/tests/`
+
+- [`test_greeting.py`](solution/tests/test_greeting.py) — unit tests
+  for the function.
+- [`test_contract.py`](solution/tests/test_contract.py) — reads
+  `solution/capsule.yaml` and asserts the implementation honours each
+  declared input/output name and type and raises
+  `MissingRequiredInput` for each declared-required input.
+
+### `solution/pico.yaml`
+
+Minimal Pico composing the capability (memo1 §3 verbatim):
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: hello-pico
+spec:
+  type: greeter
+  capabilities:
+    - oe.greeting@0.1.0
+  implementation: {}
+  state: {}
+  events: {}
+```
+
+### `solution/fetch-upstream.sh`
+
+Downloads `capsule.schema.json` and the three fixtures the
+walkthrough reads from
+`https://raw.githubusercontent.com/open-engineering-capsules/source/bf071c2c1b57/…`
+into the untracked `upstream/` directory.
+
+### `solution/resolution.md`
+
+Hand-written resolution report in the shape of upstream
+`fixtures/scenarios/resolve-greeting.yaml`, applying memo2 §2 D2
+(SemVer / caret / `0.x`) and memo2 §3 D3 (grammar). The
+`outcome`/`resolution` block is byte-equivalent to the upstream
+scenario's `expected` block. See
+[`solution/resolution.md`](solution/resolution.md).
+
+### Commands
+
+Run from `labs/greeting-capsule/` inside your local clone, with the
+[one-time setup](objectives.qmd#one-time-setup) applied so
+`python3`, `jsonschema`, `pyyaml` and `curl` are on your `PATH`:
+
+```bash
+bash solution/fetch-upstream.sh
+python3 -c 'import json, yaml, jsonschema; jsonschema.validate(yaml.safe_load(open("solution/capsule.yaml")), json.load(open("upstream/capsule.schema.json"))); print("valid")'
+python3 -c 'import yaml, jsonschema; defn = yaml.safe_load(open("../../definitions/pico.yaml")); jsonschema.validate(yaml.safe_load(open("solution/pico.yaml")), defn["spec"]["schema"]); print("valid")'
+python3 -m unittest discover -s solution/tests
+```
+
+### Expected output
+
+```
+fetch-upstream: downloaded upstream artefacts at bf071c2c1b57 into .../labs/greeting-capsule/upstream
+valid
+valid
+........
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK
+```
+
+## Why this satisfies the objectives
+
+- **Define a capsule**: `solution/capsule.yaml` is memo1 §3 verbatim
+  and conforms to `upstream/capsule.schema.json`.
+- **Validate against the upstream contract**: Step 3 shows one valid
+  document passing and one upstream invalid fixture failing for the
+  reason the schema states.
+- **Implement a capability**: `solution/greeting.py` honours the
+  declared `spec.inputs`/`spec.outputs` with stdlib Python and raises
+  a structured error on a missing required input.
+- **Test the implementation**: `python3 -m unittest discover
+  -s solution/tests` runs 8 tests across unit and contract test
+  modules.
+- **Compose a Pico**: `solution/pico.yaml` uses only required fields
+  of `definitions/pico.yaml`, declares one capability requirement
+  (`oe.greeting@0.1.0`) and validates against the schema in that
+  Definition.
+- **Resolve by hand**: `solution/resolution.md` records the step-by-
+  step application of memo2 §§2–3 and emits a resolution block
+  byte-equivalent to the upstream `resolve-greeting.yaml` scenario.
+
+## Verification
+
+You can verify your solution matches this reference by:
+
+1. Diffing your `solution/capsule.yaml` and `solution/pico.yaml`
+   against the blocks above.
+2. Running the four commands under **Commands** and matching the
+   **Expected output**.
+3. Opening `solution/resolution.md` and comparing its
+   `outcome`/`resolution` block against the upstream
+   `fixtures/scenarios/resolve-greeting.yaml` `expected` block at
+   `bf071c2c1b57`.
+
+## Variations
+
+- **Bare requirement**: change the Pico's capability line to
+  `- oe.greeting` (no `@`). Re-run Step 7 by hand: the constraint
+  column reads `any`; the single candidate still matches.
+- **Exact requirement**: change the Pico's capability line to
+  `- oe.greeting@=0.1.0`. Re-run Step 7 by hand: the comparison
+  tightens to equality; the single candidate still matches.
+- **Missing provider**: delete `solution/capsule.yaml` and re-run
+  Step 7 mentally against zero candidates. Per memo2 §3 D3 the
+  outcome is an explicit `no-matching-provider` error, mirroring
+  upstream `fixtures/scenarios/missing-provider.yaml`.

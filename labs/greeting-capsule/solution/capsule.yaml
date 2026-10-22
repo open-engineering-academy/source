@@ -1,0 +1,15 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Capsule
+metadata:
+  name: greeting
+  version: 0.1.0
+spec:
+  capability: oe.greeting
+  inputs:
+    value:
+      type: string
+      required: true
+  outputs:
+    greeting:
+      type: string
+  dependencies: []
