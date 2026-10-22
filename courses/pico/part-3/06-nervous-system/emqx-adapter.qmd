@@ -1,7 +1,10 @@
 ---
 title: "Optional follow-up · EMQX/MQTT as a transport adapter"
 description: "How the semantic Pico message envelope maps onto MQTT topics behind an isolated adapter, without making EMQX or MQTT a runtime dependency."
+extension-platforms: 'shell, Python 3, PyYAML; no broker, no EMQX account, no credential.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ::: {.callout-important}
 ## Optional, non-runnable, no broker, no accounts

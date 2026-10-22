@@ -1,7 +1,10 @@
 ---
 title: "4. Portability"
 subtitle: "Moving a Pico without losing who it is."
+extension-platforms: 'shell, YAML comfort; lab adds `bin/pico` and bash.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ## Learning objectives
 

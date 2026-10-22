@@ -1,7 +1,10 @@
 ---
 title: "6. Nervous System"
 subtitle: "Giving a Pico an event-driven way to sense, communicate, and coordinate."
+extension-platforms: 'shell, YAML comfort; lesson lab adds Python 3 + PyYAML. The lesson itself contacts no broker.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ## Learning objectives
 

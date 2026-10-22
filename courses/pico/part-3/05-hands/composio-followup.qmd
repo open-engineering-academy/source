@@ -1,7 +1,10 @@
 ---
 title: "Optional follow-up · Composio as a Hands provider"
 description: "How a provider-neutral capability such as email.send or github.issue.create maps behind ComposioHands without changing Pico rules — architecture only, no runtime dependency."
+extension-platforms: 'shell, Python 3, PyYAML; no Composio account, SDK, or credential.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ::: {.callout-important}
 ## Optional, non-runnable, no external accounts

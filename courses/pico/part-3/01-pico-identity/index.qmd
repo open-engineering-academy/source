@@ -1,7 +1,10 @@
 ---
 title: "1. Pico Identity"
 subtitle: "did:webvh as a passport, did:peer as a relationship address."
+extension-platforms: 'shell, YAML comfort; the lab adds `bin/pico` for `pico parse`.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ## Learning objectives
 
