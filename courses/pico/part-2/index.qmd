@@ -2,20 +2,47 @@
 title: "Part 2 — Building"
 ---
 
-Part 2 walks through building your first Pico end-to-end: authoring Rules,
-running the Parser, and using the Composer to produce
-`hello-world-pico`.
+Part 2 is the planned home of **Modules 2–5** in the capsule-first course
+spine proposed in [`memo23.md`](../../../memo23.md) §4. It will walk a
+learner from defining one capsule, through implementing and testing it,
+to composing and running a minimal Pico.
 
-## Lessons
+## What Modules 2–5 will teach
 
-Lesson content for Part 2 is authored following the same lesson layout as
-[Part 1, lesson 1](../part-1/01-introduction/index.qmd). This page will list
-lessons as they are added.
+One line per module, taken from [`memo23.md`](../../../memo23.md) §4:
 
-::: {.callout-warning title="Scaffold — not yet runnable"}
-Part 2 is intentionally scaffolded rather than written out in full. It
-is included so the reference course demonstrates a multi-part
-structure, but it does **not** yet carry runnable learner content.
-Use the [Introduction lesson](../part-1/01-introduction/index.qmd) as
-the canonical example of the lesson structure to follow.
-:::
+- **Module 2 — Define a capsule** — capsule metadata and contract
+  boundaries using the canonical capsule definition format.
+- **Module 3 — Implement and test a capsule** — implement one small
+  capability behind its contract, keeping third-party dependencies
+  local, and cover it with unit and contract tests.
+- **Module 4 — Compose a Pico** — declaratively compose the Module 3
+  capsule into a minimal Pico; demonstrate dependency resolution,
+  interface binding, version compatibility, and validation.
+- **Module 5 — Run and inspect the Pico** — run the composed Pico,
+  invoke its capability, and inspect its logs and health information.
+
+## Single blocking dependency
+
+Modules 2–5 are **not yet available** and do not yet have lessons under
+`part-2/`. They depend on one upstream artefact: a canonical **capsule
+contract** published by `open-engineering-capsules/source`.
+
+Verification on 2026-10-16 (recorded in
+[`memo24.md`](../../../memo24.md) §2.1) found that
+`open-engineering-capsules/source` contains only `README.md` and a
+generated-placeholder `metadata.yaml` (`lifecycle: proposed`). No
+capsule schema, convention, worked example, Composer, lifecycle
+document, or dependency model is committed upstream. The capsule shape
+discussed in [Part 1 lesson 1](../part-1/01-introduction/index.qmd) is
+the [`memo26.md`](../../../memo26.md) proposal addressed to that
+repository; it is **proposed, not yet adopted upstream**.
+
+Until the owning repository publishes a canonical capsule contract,
+this course **does not ask you to author or validate a capsule file**
+under Part 2. The three Part 1 pages, the shared
+[`labs/hello-pico/`](../../../labs/hello-pico/) lab, and the Part 3
+Module 6 extensions remain the runnable content.
+
+See the [course overview](../index.qmd) for the six-module course
+spine and the zero-optional-platform path.

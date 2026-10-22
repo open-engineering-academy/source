@@ -2,13 +2,16 @@
 title: "Part 1 — Foundations"
 ---
 
-Part 1 introduces the vocabulary and mental model for Picos. It is designed
-to be completed before Parts 2 and 3.
+Part 1 is **Module 1 — Understand a Pico** in the capsule-first course
+spine proposed in [`memo23.md`](../../../memo23.md) §4. It introduces
+the vocabulary and mental model for Picos and is designed to be
+completed before Parts 2 and 3.
 
 ## Lessons
 
-- [1. Introduction](01-introduction/index.qmd) — what a Pico is, why it
-  exists, and how the pieces fit together.
+- [1. Understand a Pico](01-introduction/index.qmd) — what a Pico is,
+  the four terms *capability*, *capsule definition*, *capsule
+  implementation*, and *composed Pico*, and how the pieces fit together.
 
 Each lesson in this course follows the same page layout — see the
 [course overview](../index.qmd) for the full pattern.
