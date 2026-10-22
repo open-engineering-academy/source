@@ -1,0 +1,92 @@
+---
+title: "Lab · Greeting Capsule (Steps 4–5)"
+---
+
+The lab for this lesson is the shared
+[**Greeting Capsule**](../../../../labs/greeting-capsule/) lab —
+the same lab [Module 2](../01-define-a-capsule/lab.qmd) uses, picked
+up at the implementation and testing steps. It lives at the
+repository root so Module 4 can reuse the same solution tree.
+
+For Module 3 ("Implement and test a capsule") only **Steps 4–5** of
+the walkthrough are in scope: implement the capability in a stdlib
+Python function behind the contract, then run the two test modules
+under `solution/tests/`. Steps 1–3 (fetch, author, validate the
+capsule document) belong to Module 2; Steps 6–7 (compose a Pico,
+hand-resolve the capability) belong to Module 4.
+
+## What this lab covers for Module 3
+
+- [Step 4 — Implement the capability](../../../../labs/greeting-capsule/walkthrough.html#step-4-implement-the-capability)
+  creates `solution/greeting.py`: a single Python stdlib function
+  behind the capsule's declared `spec.inputs`/`spec.outputs`, with a
+  structured `MissingRequiredInput` error on a missing required input.
+  See [`solution/greeting.py`](../../../../labs/greeting-capsule/solution/greeting.py)
+  for the reference implementation (44 lines, no non-stdlib imports).
+- [Step 5 — Run the tests](../../../../labs/greeting-capsule/walkthrough.html#step-5-run-the-tests)
+  runs `python3 -m unittest discover -s solution/tests` and expects
+  `Ran 8 tests in 0.001s` / `OK`. The two test modules —
+  [`test_greeting.py`](../../../../labs/greeting-capsule/solution/tests/test_greeting.py)
+  (unit) and
+  [`test_contract.py`](../../../../labs/greeting-capsule/solution/tests/test_contract.py)
+  (contract, derived from `solution/capsule.yaml`) — cover the two
+  failure modes the [lesson](index.qmd#unit-tests-vs-contract-tests)
+  separates.
+
+::: {.callout-important title="Course-local call convention"}
+The function-call shape (`greeting(inputs: dict) -> dict`) used in
+Steps 4–5 is a **course-local teaching harness**. The implementation
+convention for capsules belongs to `open-engineering-capsule/source`,
+which has published none yet
+([`memo24.md`](../../../../memo24.md) §2.1 as updated by observation
+at upstream commit `bf071c2c1b57`). When that convention is
+published, the Academy will consume it; this lab will not fork or
+shadow it ([`memo23.md`](../../../../memo23.md) §3.2,
+[`memo26.md`](../../../../memo26.md) §5).
+:::
+
+## Where to go
+
+Open the [Greeting Capsule lab](../../../../labs/greeting-capsule/)
+and continue the walkthrough from Step 4 through the end of Step 5:
+
+- [Objectives and prerequisites](../../../../labs/greeting-capsule/objectives.html)
+- [Walkthrough](../../../../labs/greeting-capsule/walkthrough.html) —
+  Steps 4–5 for this module.
+- [Solution](../../../../labs/greeting-capsule/solution.html) — the
+  reference `solution/greeting.py` matches the code block in this
+  lesson's [index](index.qmd#implementing-behind-the-contract).
+
+## What you will produce
+
+By the end of Step 5 you will have:
+
+- `labs/greeting-capsule/solution/greeting.py` — a stdlib Python
+  function behind the capsule contract, with a named exception on a
+  missing required input;
+- a passing run of `python3 -m unittest discover -s solution/tests`
+  showing both the unit tests (`test_greeting.py`) and the contract
+  tests (`test_contract.py`, derived from `solution/capsule.yaml`)
+  succeed.
+
+That evidence satisfies memo23 §4 Module 3 ("an independently
+testable implementation, repeatable tests, and documented dependency
+requirements") at the capsule level; Module 4 adds the composition
+tier.
+
+## What this lab does *not* do (in Module 3)
+
+- It does **not** author or revalidate the capsule document. Steps
+  1–3 belong to [Module 2](../01-define-a-capsule/lab.qmd).
+- It does **not** compose a Pico or hand-resolve the capability.
+  Steps 6–7 belong to Module 4 ("Compose a Pico").
+- It does **not** introduce a database, broker, AI library, bot
+  platform, or Kubernetes. The implementation and both test modules
+  run on Python 3.8+ and `pyyaml` alone.
+- It does **not** publish a reference implementation convention; the
+  function-call harness is a teaching device until the implementation
+  org publishes one (see the callout above).
+
+## Next
+
+Continue with the [Summary](summary.qmd).

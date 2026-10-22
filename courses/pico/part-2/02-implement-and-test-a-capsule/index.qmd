@@ -1,0 +1,188 @@
+---
+title: "2. Implement and test a capsule"
+subtitle: "Implement oe.greeting behind its contract with stdlib only; cover it with unit and contract tests, structured errors, and useful diagnostics."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Implement one small capability behind its capsule contract, treating
+  the capsule's `spec.inputs` and `spec.outputs` as the only public
+  surface the implementation may rely on.
+- Keep third-party dependencies local to the implementation (here,
+  Python stdlib only) and explain where a non-stdlib dependency would
+  live if the capability needed one.
+- Write **unit tests** against the implementation and **contract
+  tests** whose cases are derived at test time from the capsule
+  document, so a drift between code and contract fails a test rather
+  than ships silently.
+- Handle a missing required input as a structured error — not a
+  stack-trace crash — at the capability boundary.
+- State what to log from a capsule implementation and why, without
+  pulling in a logging framework.
+
+These objectives map one-to-one to the five "Teach" bullets of
+[`memo23.md`](../../../../memo23.md) §4 Module 3.
+
+## Prerequisites
+
+- Completed [Part 2 · Module 2 — Define a capsule](../01-define-a-capsule/index.qmd).
+- A working shell and text editor.
+- Python 3.8+ on `PATH`; `pyyaml` installed (for the contract test).
+- No database, broker, AI library, bot platform, or Kubernetes.
+
+::: {.callout-important title="Course-local call convention — not an upstream convention"}
+This lesson calls the capsule as a plain Python function behind its
+declared `spec.inputs`/`spec.outputs`. That calling shape is a
+**course-local teaching harness only**. The implementation convention
+for capsules belongs to `open-engineering-capsule/source` (the
+implementation org, memo2 §1 D1), which has published none yet
+([`memo24.md`](../../../../memo24.md) §2.1 as updated by observation
+at upstream commit
+[`bf071c2c1b57`](https://github.com/open-engineering-capsule/source/tree/bf071c2c1b57)).
+When the implementation org publishes a convention, the Academy will
+consume it; this course will not fork or shadow it
+([`memo23.md`](../../../../memo23.md) §3.2,
+[`memo26.md`](../../../../memo26.md) §5).
+:::
+
+## Implementing behind the contract
+
+The capsule document authored in [Module 2](../01-define-a-capsule/index.qmd#a-valid-minimal-capsule)
+declares the capability's **only** public surface: one input (`value`,
+required, `string`) and one output (`greeting`, `string`). An
+implementation satisfies the contract when it:
+
+- reads only the declared inputs by their declared names and types;
+- returns exactly the declared outputs by their declared names and
+  types;
+- fails loudly, in a structured way, when a declared-required input is
+  absent.
+
+The reference implementation at
+[`labs/greeting-capsule/solution/greeting.py`](../../../../labs/greeting-capsule/solution/greeting.py)
+does precisely this in Python stdlib:
+
+```python
+class MissingRequiredInput(Exception):
+    """Raised when a declared-required capsule input is not provided."""
+
+    def __init__(self, name: str) -> None:
+        super().__init__(f"missing required input: {name!r}")
+        self.name = name
+
+
+def greeting(inputs: dict) -> dict:
+    if "value" not in inputs or inputs["value"] is None:
+        raise MissingRequiredInput("value")
+    value = inputs["value"]
+    if not isinstance(value, str):
+        raise TypeError(
+            f"input 'value' must be a string per capsule.yaml, got {type(value).__name__}"
+        )
+    return {"greeting": f"Hello, {value}!"}
+```
+
+No capsule-visible state. No side effects. No module-level import
+outside the standard library. A later implementation org convention
+may wrap this function differently; it will not change what the
+contract says.
+
+## Keeping dependencies local
+
+[`memo23.md`](../../../../memo23.md) §5 rules 2 (Optional by default)
+and 3 (Explicit dependencies) say the Pico core must not inherit
+every capability's library choices. The capsule-first corollary is:
+whichever libraries a capsule implementation needs live **inside that
+implementation**, declared in its own packaging manifest, and are
+visible to a composing Pico only through the capsule's declared
+contract (not as a transitive requirement on the core).
+
+The `oe.greeting` capsule needs no third-party library at all; Python
+stdlib suffices. The lab accordingly ships no `requirements.txt`
+inside `solution/`. If a later capability needed, say, `httpx`, it
+would be pinned in a sibling capsule implementation's manifest and
+imported inside that implementation — never from `bin/pico` and never
+from a sibling capsule.
+
+## Unit tests vs contract tests
+
+The lab ships two test modules under
+[`labs/greeting-capsule/solution/tests/`](../../../../labs/greeting-capsule/solution/tests/):
+
+| Module | What it asserts | What a failure means |
+|---|---|---|
+| [`test_greeting.py`](../../../../labs/greeting-capsule/solution/tests/test_greeting.py) | Specific behaviour of the Python function (e.g. `greeting({"value": "Pico"}) == {"greeting": "Hello, Pico!"}`). | The implementation stopped producing the expected concrete answer. |
+| [`test_contract.py`](../../../../labs/greeting-capsule/solution/tests/test_contract.py) | Properties derived at test time from `solution/capsule.yaml` (capability identifier, each declared-required input raises `MissingRequiredInput` when absent, declared input/output names and types are honoured). | The implementation has drifted from the capsule contract, regardless of whether any one example still works. |
+
+The split matters because it isolates two different reasons to fail.
+A unit test can keep passing while the contract test catches a rename
+or a type change in the capsule document, and vice versa. The
+contract test does not re-encode the contract — it **reads** the
+capsule document and derives the cases from it, so there is one
+source of truth for the contract (`capsule.yaml`) and one source of
+truth for the implementation (`greeting.py`).
+
+Run both together, from inside `labs/greeting-capsule/`:
+
+```bash
+python3 -m unittest discover -s solution/tests
+```
+
+Expected tail: `Ran 8 tests in 0.001s` / `OK`.
+
+## Error handling at the capability boundary
+
+[`memo23.md`](../../../../memo23.md) §5 rule 9 (Graceful failure)
+requires that missing capabilities and incompatible contracts are
+reported clearly rather than silently falling back to unsafe or
+unexpected behaviour. At the single-capsule level that means: a
+declared-required input that is absent raises a **named**, catchable
+exception that carries the missing input's name — not a generic
+`KeyError` and not a stack trace from somewhere deep in the function.
+
+The reference implementation uses `MissingRequiredInput("value")`.
+The contract test iterates over every declared-required input in the
+capsule document and asserts the exception's `.name` matches, so a
+future capsule that adds a second required input will fail the test
+until the implementation handles it the same way.
+
+## Diagnostics without a framework
+
+[`memo23.md`](../../../../memo23.md) §5 rule 10 (Observable
+operation) asks for useful diagnostics without forcing every capsule
+to adopt the same internal technology stack. For a stdlib function
+this means logging to Python's standard `logging` module (not to a
+chosen framework), at these points and no others:
+
+- the capability identifier and capsule `metadata.version` once per
+  process, at the first call, so a reader can tell **which** capsule
+  implementation served the request;
+- a structured record on each `MissingRequiredInput` with the input
+  name, so an operator can tell *which* input was missing without
+  reading the stack trace.
+
+The lab's reference implementation does not add logging today
+(stdlib-only, 44 lines); the [exercise](exercise.qmd) walks through
+where and why it would go if you added it. A later Module 5 lesson
+("Run and inspect the Pico") will cover log plumbing at the Pico
+boundary.
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — add one contract-test case the solution
+  lacks; deliberately break the contract and watch the contract test
+  catch it; map a code change to its row in the memo2 §2 D2
+  breaking-change table.
+- [Lab](lab.qmd) — Steps 4–5 of the shared
+  [`labs/greeting-capsule/`](../../../../labs/greeting-capsule/) lab:
+  implement `greeting.py` and run the two test modules.
+- [Summary](summary.qmd) — key takeaways and the five memo23 §5 rules
+  this lesson exercises (1, 2, 4, 5, 9, 10).
+- [Quiz](quiz.qmd) — short knowledge check on contract vs unit tests,
+  structured errors, and dependency locality.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).
