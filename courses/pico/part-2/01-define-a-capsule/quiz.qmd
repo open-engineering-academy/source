@@ -1,0 +1,107 @@
+---
+title: "Quiz · Define a capsule"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you
+can self-grade after answering.
+
+## 1. Which fields are required on an `apiVersion: open-engineering.io/v1alpha1`, `kind: Capsule` at v0.1?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+`apiVersion`, `kind`, `metadata.name`, `metadata.version`,
+`spec.capability`, `spec.inputs`, `spec.outputs`,
+`spec.dependencies`. See
+[memo1 §1](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md#1-required-field-set-minimal)
+at `bf071c2c1b57`.
+:::
+
+## 2. Which of these identifiers are valid capability identifiers under the memo2 §3 D3 grammar? Explain each rejection.
+
+a. `oe.greeting`
+b. `github.issue.create`
+c. `Greeting`
+d. `oe..greeting`
+e. `oe_greeting`
+f. `pico.state.set`
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Valid: **a, b, f** — each is two or more lower-case dotted segments
+whose first character is a lower-case letter and whose remaining
+characters are lower-case letters, digits, or single internal
+hyphens.
+
+Invalid:
+
+- **c (`Greeting`)** — single segment and starts with an upper-case
+  letter.
+- **d (`oe..greeting`)** — empty segment between the two dots.
+- **e (`oe_greeting`)** — underscore is not in the segment alphabet
+  and there is no dot separator.
+
+See [memo2 §3 D3](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#3-d3--capability-identifier-grammar-and-2-amendment).
+:::
+
+## 3. A Pico ships at `oe.greeting@0.1.0`. The capsule maintainer wants to add an optional `locale` input. What is the smallest conformant next version, and why?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+`0.2.0` — a **minor** bump. The memo2 §2 D2 breaking-change table
+classifies **"Add an optional `spec.inputs` entry (with no
+`required: true`)"** as compatible / minor: no existing consumer
+breaks because every previously-required input is still required,
+no existing type changed, and the new input is omitted-by-default.
+See [memo2 §2 D2](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#2-d2--version-compatibility-rule).
+:::
+
+## 4. The same maintainer then wants to remove the `greeting` output entirely. What is the next version, and why?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+`1.0.0` — a **major** bump. The memo2 §2 D2 breaking-change table
+lists **"Remove a declared `spec.outputs` entry"** as breaking /
+major: callers that read `greeting` from the previous contract no
+longer see it. A `0.3.0` would silently violate the contract.
+:::
+
+## 5. memo1 §1 lists `spec.config`, `spec.secrets`, `spec.lifecycle`, `spec.compatibility`, `spec.health`, `spec.tests`, `spec.permissions`, and `spec.resources` as optional at v0.1. Pick two and give the one-line rationale memo1 §1 records for each.
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Any two of (memo1 §1):
+
+- `spec.config` / `spec.secrets` — memo23 §5 rule 8 (Secure
+  configuration) applies when a capsule needs them; many capsules
+  (e.g. the Module 3 greeting) need neither.
+- `spec.lifecycle` — memo23 §5 rule 1 (Minimal core) keeps
+  lifecycle on the Pico runtime, not inside every capsule.
+- `spec.compatibility` — memo23 §5 rule 6 is already met by
+  `metadata.version` plus the memo2 §2 D2 constraint forms at
+  v0.1; richer constraints are a later concern.
+- `spec.health` / `spec.tests` — memo23 §5 rule 10 (Observable
+  operation) and Module 3's test discipline can be satisfied by
+  the implementation without a schema slot at v0.1.
+- `spec.permissions` / `spec.resources` — memo23 §5 rule 8 and
+  Module 6 operational concerns apply when a capsule needs them;
+  the greeting needs neither.
+
+In all cases the rule is "optional until a capsule actually needs
+it", so Modules 2–4 can be taught against the smallest field set.
+:::
+
+## 6. A capsule YAML and a Python module implementing the capability are two different things. Which one belongs in `open-engineering-capsules/source`, and which belongs in `open-engineering-capsule/source`?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The **capsule YAML** (the contract) belongs in
+`open-engineering-capsules/source` — the definitions org, which
+owns the normative schema, the conformance fixtures, and the
+`spec.capability` / version-compatibility rules (memo2 §1 D1).
+
+The **implementation** belongs in
+`open-engineering-capsule/source` — the implementation org, which
+ships the reference validator and any capsule implementation
+behind its contract. The Academy consumes whichever conventions
+those two repositories publish and does not fork or shadow them
+(memo23 §3.2).
+:::
+
+## Next
+
+Return to [Part 2](../index.qmd) or continue to
+[Module 3 — Implement and test a capsule](../02-implement-and-test-a-capsule/index.qmd).

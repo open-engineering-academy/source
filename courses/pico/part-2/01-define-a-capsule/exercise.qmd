@@ -1,0 +1,149 @@
+---
+title: "Exercise · Define a capsule"
+---
+
+Two short, guided exercises against the adopted v0.1 capsule
+contract. Complete them before moving on to the [Lab](lab.qmd).
+
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+
+## Setup
+
+Both exercises read fixtures from the upstream pinned commit
+`bf071c2c1b57`. The shared
+[Greeting Capsule lab](../../../../labs/greeting-capsule/)'s
+`solution/fetch-upstream.sh` downloads what the walkthrough needs
+into `labs/greeting-capsule/build/upstream/`. For a one-off, you
+can instead `curl` each fixture referenced below from
+`https://raw.githubusercontent.com/open-engineering-capsules/source/bf071c2c1b57/<path>`
+into `/tmp/`.
+
+## Exercise 1 — Classify six upstream fixtures
+
+Below are six fixtures from the upstream conformance set at
+`bf071c2c1b57`. Three validate against
+[`capsule.schema.json`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/capsule.schema.json);
+three do not. **Before** running the validator, decide for each
+fixture whether it is **valid** or **invalid**, and — if invalid —
+which rule it violates. Use the memo1 §1 required-field table and
+the memo2 §2 D2 / §3 D3 rules reproduced in the
+[lesson](index.qmd#required-and-optional-fields-at-v01).
+
+### The six fixtures (classify first)
+
+1. [`fixtures/valid/greeting.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/valid/greeting.yaml)
+   — `oe.greeting` worked example from memo1 §3.
+2. [`fixtures/valid/github-issue-create.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/valid/github-issue-create.yaml)
+   — three-segment identifier `github.issue.create`, version `1.4.2`.
+3. [`fixtures/valid/pico-state-set.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/valid/pico-state-set.yaml)
+   — `pico.state.set`, version `0.2.0`, with a non-empty
+   `spec.dependencies` carrying a caret pin.
+4. [`fixtures/invalid/missing-outputs.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/invalid/missing-outputs.yaml)
+   — a capsule with `spec.capability`, `spec.inputs`, and
+   `spec.dependencies` but **no** `spec.outputs` key.
+5. [`fixtures/invalid/version-not-semver.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/invalid/version-not-semver.yaml)
+   — `metadata.version: "1.0"`.
+6. [`fixtures/invalid/capability-upper-case.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/invalid/capability-upper-case.yaml)
+   — `spec.capability: Greeting`.
+
+Write your classification down (one line per fixture: *valid* or
+*invalid, violates memo§…*) before you look at the next section.
+
+### Check with the validator
+
+Run the one-liner from the lab walkthrough against each fixture
+(adjust the paths for your `/tmp/` download):
+
+```bash
+python3 -c 'import json, yaml, jsonschema, sys; \
+jsonschema.validate(yaml.safe_load(open(sys.argv[1])), \
+json.load(open("build/upstream/capsule.schema.json"))); print("valid")' \
+  build/upstream/fixtures/valid/greeting.yaml
+```
+
+Repeat for each file. Valid documents print `valid`; invalid
+documents raise `jsonschema.exceptions.ValidationError` with a
+message that lines up with the `# fails:` comment at the top of
+each `invalid/*.yaml`.
+
+### Worked answer
+
+::: {.callout-note collapse="true" title="Show worked answer"}
+
+| Fixture | Verdict | Reason |
+|---|---|---|
+| `valid/greeting.yaml` | valid | All memo1 §1 required fields present; `oe.greeting` matches memo2 §3 D3 grammar; `0.1.0` is valid SemVer 2.0.0. |
+| `valid/github-issue-create.yaml` | valid | `github.issue.create` is three D3 segments; `1.4.2` is valid SemVer; required field set complete. |
+| `valid/pico-state-set.yaml` | valid | `pico.state.set` matches D3; `pico.state.lock@0.2.0` in `spec.dependencies` is a valid memo2 §2 D2 caret requirement. |
+| `invalid/missing-outputs.yaml` | invalid | memo1 §1 — `spec.outputs` is required (may be `{}` but must be present). |
+| `invalid/version-not-semver.yaml` | invalid | memo2 §2 D2 — `metadata.version: "1.0"` is not valid SemVer 2.0.0 (missing patch component). |
+| `invalid/capability-upper-case.yaml` | invalid | memo2 §3 D3 — identifier starts with an upper-case letter and has only one segment. |
+
+:::
+
+## Exercise 2 — Version `oe.greeting` using the D2 table
+
+Start from the `oe.greeting` capsule at version `0.1.0` (the memo1
+§3 worked example reproduced in the
+[lesson](index.qmd#a-valid-minimal-capsule)).
+
+### Step A — Tighten to `0.2.0` by adding an optional input
+
+Add a new input named `locale` that is **not** required, keeping the
+existing `value` input and the existing `greeting` output unchanged.
+Bump `metadata.version` from `0.1.0` to `0.2.0`. The resulting
+capsule is:
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Capsule
+metadata:
+  name: greeting
+  version: 0.2.0
+spec:
+  capability: oe.greeting
+  inputs:
+    value:
+      type: string
+      required: true
+    locale:
+      type: string
+  outputs:
+    greeting:
+      type: string
+  dependencies: []
+```
+
+**Why is this a minor bump?** The row **"Add an optional
+`spec.inputs` entry (with no `required: true`)"** in the memo2 §2
+D2 breaking-change table is classified **Compatible / minor**.
+Existing consumers still satisfy the contract because every
+previously-required input is still required, no existing input or
+output type changed, and the new input is omitted-by-default.
+
+### Step B — Remove the `greeting` output
+
+Starting from the `0.2.0` capsule in Step A, remove the `greeting`
+output entry entirely (leave `spec.outputs: {}`).
+
+**Why is this a major bump?** The row **"Remove a declared
+`spec.outputs` entry"** is classified **Breaking / major**. Any
+Pico or caller that read `greeting` from the previous contract no
+longer sees it, so the next version MUST be `1.0.0`, not `0.3.0`.
+
+::: {.callout-note collapse="true" title="Show the two post-change versions"}
+
+- Step A — version `0.2.0`, `oe.greeting` with required `value`,
+  optional `locale`, output `greeting`.
+- Step B (building on A) — version `1.0.0`, `oe.greeting` with
+  required `value`, optional `locale`, outputs `{}`.
+
+:::
+
+## Next
+
+Continue with the [Lab](lab.qmd).

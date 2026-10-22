@@ -1,0 +1,68 @@
+---
+title: "Summary · Define a capsule"
+---
+
+## Key takeaways
+
+- A **capsule** is a declarative contract for one capability. The
+  adopted v0.1 contract lives in
+  [`open-engineering-capsules/source`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md)
+  at commit `bf071c2c1b57`; the normative shape is
+  [`capsule.schema.json`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/capsule.schema.json)
+  and the executable arbiter is the published
+  [conformance fixture set](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/README.md).
+- The required fields at v0.1 are `apiVersion`, `kind`,
+  `metadata.{name,version}`, and `spec.{capability, inputs, outputs,
+  dependencies}` — the smallest set memo23 §4 Modules 2–4 cannot be
+  taught without (memo1 §1).
+- Everything else listed in memo23 §3.2 is **optional at v0.1** with
+  a one-line rationale (memo1 §1): `spec.purpose`,
+  `spec.interfaces`, `spec.events`, `spec.config`, `spec.secrets`,
+  `spec.lifecycle`, `spec.compatibility`, `spec.health`,
+  `spec.tests`, `spec.permissions`, `spec.resources`. v0.1
+  deliberately picks the smallest teachable field set.
+- Capability identifiers are not opaque strings. The
+  [memo2 §3 D3](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#3-d3--capability-identifier-grammar-and-2-amendment)
+  grammar `^[a-z][a-z0-9]*(-[a-z0-9]+)*(\.[a-z][a-z0-9]*(-[a-z0-9]+)*)+$`
+  is enforced by `capsule.schema.json` on both `spec.capability` and
+  every item of a Pico's `spec.capabilities`.
+- `metadata.version` MUST be valid SemVer 2.0.0. A Pico writes
+  three constraint forms: **bare** (`oe.greeting`, any version),
+  **caret** (`oe.greeting@0.1.0`, same major; for `0.x` same minor
+  and patch ≥ Z), and **exact** (`oe.greeting@=0.1.0`,
+  byte-equivalent only) — [memo2 §2 D2](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#2-d2--version-compatibility-rule).
+- The memo2 §2 D2 **breaking-change table** fixes the versioning
+  contract at the capsule level: removing an output, adding a new
+  required input, changing a declared type, or changing the
+  provided capability identifier are **breaking / major**; adding
+  an optional input or a new output is **compatible / minor**; a
+  prose-only change is **compatible / patch**.
+- A capsule document is a **contract, not an implementation**. It
+  carries no code. The reference implementation and validator live
+  in `open-engineering-capsule/source` ([memo2 §1 D1](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#1-d1--composition-validator-ownership));
+  the Academy does not fork or shadow them (memo23 §3.2).
+
+## Two dependency-management rules this module anchors
+
+From [`memo23.md`](../../../../memo23.md) §5:
+
+3. **Explicit dependencies.** `spec.dependencies` is required (and
+   may be `[]`); undeclared transitive capability requirements are
+   out of contract.
+6. **Compatibility checks.** `metadata.version` plus the memo2 §2
+   D2 constraint forms are the v0.1 contract surface a validator
+   uses to accept or reject a composition at author time, not at
+   first run.
+
+## What comes next
+
+- [Module 3 — Implement and test a capsule](../02-implement-and-test-a-capsule/index.qmd)
+  implements `oe.greeting` behind the contract defined here and
+  adds unit and contract tests (Greeting Capsule lab Steps 4–5).
+- [Module 4 — Compose a Pico](../03-compose-a-pico/index.qmd) binds
+  the capsule into a minimal Pico and walks the memo2 §2/§3 rules
+  by hand (Greeting Capsule lab Steps 6–7).
+
+## Next
+
+Take the [Quiz](quiz.qmd).
