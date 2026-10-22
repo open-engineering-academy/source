@@ -1,8 +1,9 @@
 ---
-title: "Exercise · Introduction"
+title: "Exercise · Understand a Pico"
 ---
 
-A short, guided task. Complete it before moving on to the lab.
+A short, guided inspection of the two files the Pico course already
+ships. Complete it before moving on to the lab.
 
 See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
 for the local install and editor setup.
@@ -12,48 +13,107 @@ for the local install and editor setup.
 
 ## Task
 
-Write a one-sentence description of a Pico **in your own words**, and list
-three examples of things in your day-to-day work that could plausibly be
-modeled as Picos.
+Read the two files below and answer three questions.
 
-::: {.callout-note}
-There is no single correct answer. The goal is to internalize the
-"Rules → Parser → Composer → Pico" mental model from the
-[lesson](index.qmd).
-:::
+1. Open [`definitions/pico.yaml`](../../../../definitions/pico.yaml) —
+   the OE Pico artefact contract this repository ships.
+2. Open the Hello Pico reference Rule in
+   [`labs/hello-pico/solution.qmd`](../../../../labs/hello-pico/solution.html)
+   (the `rules/hello.yaml` block).
+
+Answer:
+
+- **Q1.** Which fields does `definitions/pico.yaml` list as **required**
+  on an OE-shaped Pico (`spec.target.kind: Pico`)?
+- **Q2.** Which keys does the Hello Pico Rule use, and are those keys
+  the same as the required Pico fields?
+- **Q3.** For each anatomy item from
+  [`memo24.md`](../../../../memo24.md) §2.3 — **Face**, **Muscles**,
+  **Memory**, **Hands**, **Nervous System**, **Rules**, **Discovery**,
+  **Operations** — is it **required by schema** on every Pico, or is
+  it **optional** today?
 
 ## Success criteria
 
-- [ ] Your description mentions that a Pico is **declarative** and
-      **composable**.
-- [ ] You can name at least **three** candidate Picos.
-- [ ] For at least one candidate, you can sketch what the Rules might look
-      like in YAML.
+- [ ] You can name every required field in `definitions/pico.yaml`.
+- [ ] You can state the three keys of the Hello Pico Rule and how they
+      differ from the Pico shape.
+- [ ] You classify each of the eight anatomy items as required or
+      optional and can point at `definitions/pico.yaml` to justify
+      each answer.
 
 ## Automatable check
 
-If you sketched at least one Rule in YAML, save it as
-`rules/<your-slug>.yaml` under a scratch working directory and confirm
-it matches the reference Parser's flat `id` / `kind` / `value` shape
-using the `pico` CLI shipped in this repository (see the
+Keep this check — it is unchanged from the previous version of this
+exercise and demonstrates the current `pico parse` step runs
+end-to-end. From a scratch working directory, with the
 [Hello Pico one-time setup](../../../../labs/hello-pico/objectives.html#one-time-setup)
-for the `PATH` export):
+applied so `pico` resolves to this repository's `bin/pico`:
 
 ```bash
-pico parse rules/<your-slug>.yaml --out /tmp/parsed.json \
-  && echo "OK: parsed rules/<your-slug>.yaml"
+cat > /tmp/hello.yaml <<'YAML'
+id: rule.hello
+kind: greeting
+value: "Hello, Pico!"
+YAML
+pico parse /tmp/hello.yaml --out /tmp/parsed.json \
+  && echo "OK: parsed /tmp/hello.yaml"
 ```
 
 The command exits with status `0` and prints an `OK:` line when the
-sketch is well-formed. This is an optional accompaniment to the
-reflection questions — the exercise's primary goal remains
-internalizing the mental model, but any YAML you draft can now be
-mechanically validated.
+Rule matches the three-key shape the reference Parser accepts
+([`bin/pico`](../../../../bin/pico) lines 56 and 82–86).
 
-## Reflect
+## Worked answer
 
-- Which of your three examples is the simplest to model?
-- Which one would be the hardest, and why?
+::: {.callout-note collapse="true" title="Show worked answer"}
+
+**Q1 — Required fields in `definitions/pico.yaml`.**
+The target schema (`spec.target.kind: Pico`) requires:
+
+```
+apiVersion
+kind
+metadata.name
+spec.type
+spec.capabilities
+spec.implementation
+spec.state
+spec.events
+```
+
+No other top-level field is required; `spec.additionalProperties: true`
+means a Pico may carry extra sibling fields, but none of them is
+required by name.
+
+**Q2 — Keys in the Hello Pico Rule.**
+`rules/hello.yaml` uses three keys only: `id`, `kind`, `value`. These
+are the keys of a **Rule**, not of a Pico — the Hello Pico Rule is
+input to `pico parse` → `pico compose`, which emits a shell-script
+artefact. The required Pico fields above (`apiVersion`, `spec.type`,
+`spec.capabilities`, etc.) are a different, OE-shaped Pico resource
+contract. The Hello Pico lab exercises the Rules → Parser → Composer
+pipeline; it does not author an OE-shaped Pico resource against
+`definitions/pico.yaml`.
+
+**Q3 — Anatomy items: required by schema, or optional?**
+
+| Anatomy item (memo24 §2.3)      | Required by `definitions/pico.yaml`? | Why                                                                                   |
+|---------------------------------|---------------------------------------|---------------------------------------------------------------------------------------|
+| Face (Python)                   | Optional                              | Not named in the schema's `required` list.                                            |
+| Muscles (Rust+PyO3)             | Optional                              | Not named in the schema's `required` list.                                            |
+| Memory (Celld)                  | Optional                              | Not named in the schema's `required` list.                                            |
+| Hands (Composio)                | Optional                              | Not named in the schema's `required` list.                                            |
+| Nervous System (EMQX)           | Optional                              | Not named in the schema's `required` list.                                            |
+| Rules (OE Rules)                | Optional                              | Not named in the schema's `required` list.                                            |
+| Discovery (A2A)                 | Optional                              | Not named in the schema's `required` list.                                            |
+| Operations (OE Operations)      | Optional                              | Not named in the schema's `required` list.                                            |
+
+Every anatomy item is a *capability* a Pico may compose through
+`spec.capabilities`; none is named as a required field in the schema.
+A minimal Pico that declares `spec.capabilities: []` is still valid
+against `definitions/pico.yaml`.
+:::
 
 ## Next
 
