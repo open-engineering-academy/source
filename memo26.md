@@ -12,6 +12,8 @@ for capsules, symbol `Cl`) and is not an Academy artefact. Every YAML
 block in this memo is labelled **illustrative; not valid until adopted
 upstream** and has no on-disk consumer in this repository.
 
+This proposal has since been carried upstream as `open-engineering-capsules/source` memo1 (merged `90ba942`). Upstream memo2 (PR #4) adopts it and amends §2 so that a Pico's `spec.capabilities` entries are capability identifiers (e.g. `oe.greeting`) rather than capsule names, with the validator resolving capability → provider. §2 of this memo (binding by `metadata.name`) is therefore superseded by upstream memo2 §3; the §3 worked example below has been updated to use the capability identifier `oe.greeting`, but §2 is left as the original proposal for the historical record.
+
 ## Purpose
 
 Memo 23 (§3.2, §9 step 2) forbids inventing a course-specific capsule
@@ -116,7 +118,7 @@ metadata:
   name: greeting
   version: 0.1.0
 spec:
-  capability: greeting
+  capability: oe.greeting
   inputs:
     value:
       type: string
@@ -138,7 +140,7 @@ metadata:
 spec:
   type: greeter
   capabilities:
-    - greeting@0.1.0
+    - oe.greeting@0.1.0
   implementation: {}
   state: {}
   events: {}
