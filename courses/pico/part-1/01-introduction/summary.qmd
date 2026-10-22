@@ -1,23 +1,51 @@
 ---
-title: "Summary · Introduction"
+title: "Summary · Understand a Pico"
 ---
 
 ## Key takeaways
 
-- A **Pico** is a small declarative, composable Open Engineering artifact.
-- A Pico is produced by a pipeline: **Rules → Parser → Composer → Pico**.
-- Rules are authored in YAML; the Parser and Composer do the mechanical
-  work of turning Rules into a Pico.
-- The Pico course website itself is the **reference structure** for every
-  academy course: parts, lessons, exercises, labs, summaries, quizzes,
-  glossary, and a machine-readable `metadata.yaml`.
+- A **Pico** is a minimal core that composes explicit capabilities. The
+  core owns composition and the agreed runtime boundary; every other
+  concern belongs to a capability.
+- Four terms to keep separate: a **capability** is a provider-neutral
+  action; a **capsule definition** is a contract describing one
+  capability (proposed in memo26, not yet upstream); a **capsule
+  implementation** satisfies that contract and keeps its dependencies
+  local; a **composed Pico** binds capabilities rather than hard-wiring
+  frameworks.
+- [`definitions/pico.yaml`](../../../../definitions/pico.yaml) requires
+  `apiVersion`, `kind`, `metadata.name`, and
+  `spec.{type, capabilities, implementation, state, events}` — none of
+  the Pico anatomy items (Face, Muscles, Memory, Hands, Nervous System,
+  Rules, Discovery, Operations) is named as a required field.
+- Today's pipeline — Rules → Parser → Composer → Pico via
+  `bin/pico` — is dependency-free (Python 3 stdlib only) and is what
+  the `labs/hello-pico` lab exercises. "Composer" in this repository
+  means `pico compose` (parsed Rule → artefact), not capability
+  composition.
+- No canonical capsule contract exists upstream in
+  `open-engineering-capsules/source` yet (memo24 §2.1); the capsule
+  shape used in this lesson is the memo26 proposal, labelled as such.
+
+## Three dependency-management rules to internalise
+
+From [`memo23.md`](../../../../memo23.md) §5 (rules 1–3):
+
+1. **Minimal core.** Keep the Pico core responsible for composition and
+   the agreed runtime boundary, not every application capability.
+2. **Optional by default.** Databases, brokers, AI frameworks, and bot
+   platforms are not baseline requirements unless the Pico's stated
+   purpose requires them.
+3. **Explicit dependencies.** Declare required capabilities and
+   implementation/runtime requirements; do not rely on undocumented
+   transitive dependencies.
 
 ## What comes next
 
-- [Part 2 — Building](../../part-2/index.qmd) walks through the pipeline
-  end-to-end.
-- [Part 3 — Extending](../../part-3/index.qmd) covers composing multiple
-  Picos and connecting them to other artifacts.
+- [Part 2 — Building](../../part-2/index.qmd) walks through the
+  pipeline end-to-end.
+- [Part 3 — Extending](../../part-3/index.qmd) covers additional
+  capabilities a Pico may compose.
 
 ## Next
 

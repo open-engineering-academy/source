@@ -1,34 +1,86 @@
 ---
-title: "Quiz · Introduction"
+title: "Quiz · Understand a Pico"
 ---
 
 A short knowledge check. Answers are hidden behind callouts so you can
 self-grade after answering.
 
-## 1. What is a Pico?
+## 1. In one sentence, what is a Pico?
 
 ::: {.callout-tip collapse="true" title="Show answer"}
-A small, declarative, composable Open Engineering artifact described by
-Rules and produced by a Parser and a Composer.
+A minimal core that composes explicit capabilities, not an application
+that must pull in a framework stack. See the
+[lesson](index.qmd#what-a-pico-is-and-is-not).
 :::
 
-## 2. Name the three main components of the Pico pipeline.
+## 2. Match each term to its one-sentence meaning.
+
+a. **capability** — ?
+b. **capsule definition** — ?
+c. **capsule implementation** — ?
+d. **composed Pico** — ?
 
 ::: {.callout-tip collapse="true" title="Show answer"}
-**Rules**, **Parser**, and **Composer**.
+- **capability**: a named, provider-neutral action or function a Pico
+  may need (e.g. `greeting`, `email.send`).
+- **capsule definition**: a declarative contract describing one
+  capability (identity, version, inputs, outputs, dependencies). The
+  shape is the memo26 proposal and is not yet adopted upstream.
+- **capsule implementation**: the concrete code that satisfies a
+  capsule definition behind its contract, keeping third-party
+  dependencies local.
+- **composed Pico**: a Pico built by selecting a minimal core and
+  binding the capsule capabilities it needs, rather than hard-wiring a
+  framework stack.
 :::
 
-## 3. Which file describes the course in a machine-readable form?
+## 3. Which fields does `definitions/pico.yaml` require on an OE-shaped Pico, and does it name Face, Memory, or Nervous System as required?
 
 ::: {.callout-tip collapse="true" title="Show answer"}
-[`metadata.yaml`](../../metadata.yaml) at the root of the course.
+Required fields: `apiVersion`, `kind`, `metadata.name`, and
+`spec.{type, capabilities, implementation, state, events}`.
+
+No anatomy item (Face, Muscles, Memory, Hands, Nervous System, Rules,
+Discovery, Operations) is named as a required field. They are
+capabilities a Pico composes when its purpose requires them; the
+schema requires none of them by name.
 :::
 
-## 4. Where does the reusable "Hello Pico" lab live?
+## 4. When this course says "Composer", does it mean capability composition?
 
 ::: {.callout-tip collapse="true" title="Show answer"}
-Under the repository-root [`labs/hello-pico/`](../../../../labs/hello-pico/)
-directory, so it can be referenced from more than one course.
+No. In this repository, "Composer" refers to `pico compose`, which
+turns a parsed Rule into an executable shell-script artefact
+(`bin/pico` lines 56 and 82–86, verified in memo24 §2.4). It currently
+handles only `kind: greeting`. It is **not** a capability composer: it
+does not resolve capsule dependencies, bind interfaces, or check
+compatibility across capsule contracts. Capability composition is a
+separate, upstream-owned concern (memo26 §4 open question 4).
+:::
+
+## 5. Where does the capsule contract live, and does this course ask you to author a capsule file?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The capsule contract would live upstream in
+`open-engineering-capsules/source`. As of 2026-10-16 that repository
+contains only `README.md` and a generated-placeholder `metadata.yaml`
+(`lifecycle: proposed`) — no schema, no example, no composition rule
+(memo24 §2.1). The capsule shape shown in the lesson is the memo26
+proposal and is explicitly labelled as not yet adopted upstream. This
+course does **not** ask you to author or validate a capsule file.
+:::
+
+## 6. Why is coupling a Pico's core directly to a database, broker, or AI library costly?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Because every test, every environment, and every learner inherits the
+install, runtime, and version-skew burden of each dependency even when
+the capability under test does not need it. Keeping capabilities
+behind capsule contracts keeps implementation-specific dependencies
+local to the capability that uses them, so the core and every other
+capability remain testable in isolation. This is the motivation behind
+memo23 §5 rules 1–3 (minimal core, optional by default, explicit
+dependencies).
 :::
 
 ## Next

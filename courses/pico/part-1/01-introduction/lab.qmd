@@ -2,8 +2,21 @@
 title: "Lab · Hello Pico"
 ---
 
-The lab for this lesson is the shared **Hello Pico** lab. It lives at the
-repository root so it can be reused from other courses.
+The lab for this lesson is the shared **Hello Pico** lab. It lives at
+the repository root so it can be reused from other courses.
+
+## The smallest supported Pico today
+
+[`memo24.md`](../../../../memo24.md) §3 records that `labs/hello-pico`
+is the smallest end-to-end path a learner can complete today without
+installing Kubernetes, a message broker, a database, an AI library, or
+a bot platform. Its only prerequisites are a shell, a text editor,
+Python 3.8+ on `PATH`, and a local clone of this repository (which
+ships `bin/pico`).
+
+Use this lab to see the current Rules → Parser → Composer → Pico
+pipeline run from one Rule file to one executable artefact, before
+later lessons add any optional capability.
 
 ## Where to go
 
@@ -17,7 +30,19 @@ walkthrough. It uses the shared lab template with these pages:
 ## What you will produce
 
 By the end of the lab you will have a working `hello-world-pico` — the
-`produces` entry from the course [metadata](../../metadata.yaml).
+`produces` entry from the course [metadata](../../metadata.yaml) — and
+you will have exercised each stage of the pipeline named in the
+[lesson](index.qmd): a Rule in YAML, `pico parse`, `pico compose`, and
+one run of the composed artefact.
+
+## What this lab does *not* do
+
+This lab does not ask you to author a capsule file or an OE-shaped
+Pico resource. The capsule contract shown in the lesson is the memo26
+proposal and is not yet adopted upstream (see the lesson callout).
+Composing capability capsules is a later concern that depends on an
+upstream decision; this lab stays inside the dependency-free
+Rules → Parser → Composer pipeline.
 
 ## Next
 

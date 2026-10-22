@@ -1,54 +1,187 @@
 ---
-title: "1. Introduction"
-subtitle: "What is a Pico, and why build one?"
+title: "1. Understand a Pico"
+subtitle: "A minimal core that composes explicit capabilities."
 ---
 
 ## Learning objectives
 
 By the end of this lesson you will be able to:
 
-- Describe what a Pico is in one sentence.
-- Name the three main components (Rules, Parser, Composer) and their role.
-- Identify where a Pico sits in the Open Engineering ecosystem.
+- Describe a Pico as a minimal core that composes explicit capabilities,
+  rather than as an application that must pull in a database, broker,
+  AI framework, or bot platform from day one.
+- Distinguish the four terms **capability**, **capsule definition**,
+  **capsule implementation**, and **composed Pico**.
+- Read [`definitions/pico.yaml`](../../../../definitions/pico.yaml) and
+  state which of today's anatomy items are *required by schema* and
+  which are *optional*.
+- Explain why direct, framework-specific coupling makes a Pico harder
+  to test and evolve.
+- Place the existing Rules → Parser → Composer → Pico pipeline (the
+  `bin/pico` CLI shipped in this repository) correctly in that picture.
 
 ## Prerequisites
 
 - A working shell and text editor.
 - Comfort reading YAML.
-- No prior Pico experience is required.
+- Python 3.8+ on `PATH` (for the reference `bin/pico` CLI used in the
+  exercise and lab).
+- No Kubernetes, message broker, database, AI library, or bot platform
+  is required.
 
-## What is a Pico?
+## What a Pico is (and is not)
 
-A **Pico** is the smallest useful Open Engineering artifact: a declarative,
-composable unit described by **Rules** and produced by a **Parser** and a
-**Composer**. See the [Glossary](../../glossary.qmd) for full definitions of
-each term.
+A **Pico** is a small declarative Open Engineering artifact. The Pico
+*core* is responsible for composition and the agreed runtime boundary;
+every other concern — persistence, messaging, AI inference, tool
+integration, bot interfaces, operations — belongs to a *capability*
+that the Pico composes only when it needs it.
 
-::: {.callout-tip}
-If you can describe a thing with a handful of Rules and produce it from
-those Rules, you can model it as a Pico.
+A Pico should not require a framework stack to exist. If adding one
+capability forces the learner to install Kubernetes, a database, or a
+message broker, the capability has been baked into the core rather
+than composed into it.
+
+### Four terms, one sentence each
+
+- **Capability** — a named, provider-neutral action or function a Pico
+  may need (for example `greeting`, `email.send`, or
+  `github.issue.create`).
+- **Capsule definition** — a declarative contract describing one
+  capability (identity, version, inputs, outputs, dependencies). *This
+  shape is proposed upstream and does not yet exist as a committed
+  schema — see the callout below.*
+- **Capsule implementation** — the concrete code that satisfies a
+  capsule definition behind its contract, keeping third-party
+  dependencies local to the implementation.
+- **Composed Pico** — a Pico built by selecting a minimal core and
+  binding the capsule capabilities it needs, not by hard-wiring a
+  framework stack into the core.
+
+## What `definitions/pico.yaml` requires today
+
+[`definitions/pico.yaml`](../../../../definitions/pico.yaml) is the OE
+Pico artefact contract this repository ships. Its target schema
+requires exactly these fields on an OE-shaped Pico:
+
+```
+apiVersion
+kind
+metadata.name
+spec.type
+spec.capabilities      (list of capability names; may be empty)
+spec.implementation
+spec.state
+spec.events
+```
+
+The Pico anatomy listed in `open-engineering-picos/source/memo7.md`
+(verified in [`memo24.md`](../../../../memo24.md) §2.3) — **Face**
+(Python), **Muscles** (Rust+PyO3), **Memory** (Celld), **Hands**
+(Composio), **Nervous System** (EMQX), **Rules** (OE Rules),
+**Discovery** (A2A), **Operations** (Open Engineering Operations) — is
+*not* named by `definitions/pico.yaml` as a required field. The schema
+requires none of these anatomy items by name; each is a capability a
+Pico composes when its stated purpose needs it.
+
+::: {.callout-important}
+## Capsules are not a committed upstream contract yet
+
+Verification on 2026-10-16 (recorded in
+[`memo24.md`](../../../../memo24.md) §2.1) found that
+`open-engineering-capsules/source` contains only `README.md` and a
+generated-placeholder `metadata.yaml` (`lifecycle: proposed`). No
+capsule schema, convention, worked example, Composer, lifecycle
+document, or dependency model is committed upstream.
+
+The capsule shape used in this lesson — `kind: Capsule` with
+`spec.capability`, `spec.inputs`, `spec.outputs`, `spec.dependencies`
+— is the **memo26 proposal** addressed to
+`open-engineering-capsules/source`. It is **not yet adopted upstream**
+and this course does not ask you to author or validate a capsule file.
+When the owning repository publishes a canonical contract, the course
+will consume whatever is published.
 :::
 
-## The Rules → Parser → Composer pipeline
+## Why coupling the core to frameworks is costly
+
+A Pico whose core depends directly on a particular database, broker,
+AI library, or bot platform inherits the install, runtime, and
+version-skew burden of each one. The consequences are concrete:
+
+- A test for the greeting logic cannot run without starting the
+  broker, the database, and the bot runtime.
+- Replacing one dependency means editing the core instead of swapping
+  one capsule implementation behind its contract.
+- Learners must install the full stack to run the simplest example,
+  which is exactly what today's `labs/hello-pico` avoids by requiring
+  only a shell, a text editor, and Python 3.
+
+The capsule-first mental model keeps implementation-specific
+dependencies inside the capability that needs them, so the core — and
+every other capability — stays testable in isolation.
+
+## The current Rules → Parser → Composer → Pico pipeline
+
+The reference `bin/pico` CLI ([`bin/pico`](../../../../bin/pico))
+implements the pipeline the labs already use:
 
 ```
-Rules  ─────▶  Parser  ─────▶  Composer  ─────▶  Pico
-(YAML)         (reads Rules)   (produces output)  (hello-world-pico)
+Rules  ─────▶  Parser         ─────▶  Composer        ─────▶  Pico artefact
+(YAML)         (pico parse)           (pico compose)          (hello-world-pico)
 ```
 
-Part 2 walks through this pipeline in detail. This lesson focuses on
-vocabulary and the mental model.
+Composed-core view (ASCII, not to scale):
+
+```
+          ┌──────────────────────────────────────────┐
+          │              Pico (core)                 │
+          │  responsibilities: composition and the   │
+          │  agreed runtime boundary — nothing more  │
+          └───────┬─────────┬─────────┬──────────────┘
+                  │         │         │
+            ┌─────▼───┐ ┌───▼────┐ ┌──▼─────────┐
+            │ capsule │ │ capsule│ │ capsule    │   ← each capsule declares
+            │ (e.g.   │ │ (e.g.  │ │ (e.g.      │     a capability and keeps
+            │ greet-  │ │ memory)│ │ transport) │     its dependencies local
+            │ ing)    │ │        │ │            │
+            └─────────┘ └────────┘ └────────────┘
+```
+
+Today the pipeline is dependency-free and runs end-to-end against
+only Python 3 and `bin/pico`. The [exercise](exercise.qmd) and
+[lab](lab.qmd) stay inside that pipeline.
+
+::: {.callout-note}
+## "Composer" today means `pico compose`, not capability composition
+
+In this repository the Composer (defined in the
+[Glossary](../../glossary.qmd#composer)) is a **Rules → artefact code
+generator**: `pico compose` reads a parsed Rule, requires
+`kind: greeting`, and writes an executable shell script that prints
+the Rule's `value` ([`bin/pico`](../../../../bin/pico) lines 56 and
+82–86, verified in [`memo24.md`](../../../../memo24.md) §2.4). It is
+**not** a capability composer: it does not resolve capsule
+dependencies, bind interfaces, or check compatibility across capsule
+contracts. Capability composition is a separate concept that would
+require an upstream decision (see memo26 §4 open question 4). The two
+senses of "compose" are kept apart in this course.
+:::
 
 ## Lesson pages
 
-Every lesson in this course has the same page layout. Use it as the
-reference when authoring lessons in other courses.
+Every lesson in this course has the same page layout.
 
-- [Exercise](exercise.qmd) — a short, guided task you complete inline.
-- [Lab](lab.qmd) — a longer, hands-on activity, often linking to a
-  reusable lab under `labs/`.
-- [Summary](summary.qmd) — the key takeaways of the lesson.
-- [Quiz](quiz.qmd) — a short knowledge check.
+- [Exercise](exercise.qmd) — read `definitions/pico.yaml` and the
+  Hello Pico Rule; list required fields and classify each anatomy
+  item as required-by-schema or optional.
+- [Lab](lab.qmd) — the shared `labs/hello-pico` lab: the smallest
+  supported Pico today.
+- [Summary](summary.qmd) — key takeaways, including the first three
+  dependency-management rules from
+  [`memo23.md`](../../../../memo23.md) §5.
+- [Quiz](quiz.qmd) — short knowledge check on the four terms,
+  required-vs-optional, and the two senses of "compose".
 
 ## Next
 
