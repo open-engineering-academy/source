@@ -1,7 +1,10 @@
 ---
 title: "5. Hands"
 subtitle: "Giving a Pico the ability to act."
+extension-platforms: 'shell, YAML comfort; lesson lab adds Python 3 + PyYAML. The lesson itself contacts no external service.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ## Learning objectives
 

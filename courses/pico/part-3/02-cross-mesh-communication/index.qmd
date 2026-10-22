@@ -1,7 +1,10 @@
 ---
 title: "2. Cross-Mesh Communication"
 subtitle: "DIDComm, subscriptions, and relationship classes."
+extension-platforms: 'shell, YAML comfort; lab adds `bin/pico`.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ## Learning objectives
 

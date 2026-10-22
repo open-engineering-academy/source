@@ -2,35 +2,113 @@
 title: "Part 3 — Extending"
 ---
 
-Part 3 covers extending a Pico beyond a single, isolated artifact. You will
-give a Pico a cryptographic identity, connect Picos across meshes, separate
-who a Pico is from what it may do, and prepare a Pico for portability
-between execution environments.
+Part 3 is **Module 6 — Extend and operate the Pico** in the
+capsule-first course spine proposed in
+[`memo23.md`](../../../memo23.md) §4. Module 6 is **optional**: a
+learner adds one extension capability (persistence, event adapter, tool
+integration, or a bot interface) on top of a minimal Pico without
+redesigning the core. The lessons below each cover one such extension
+and are classified as *optional extension* in
+[`memo25.md`](../../../memo25.md).
 
-These lessons are based on the Pico-to-Pico identity architecture introduced
-in Pico Engine 1.6 and are designed to be completed in order after
-[Part 1 — Foundations](../part-1/index.qmd) and
-[Part 2 — Building](../part-2/index.qmd).
+These lessons use the Pico-to-Pico identity architecture introduced in
+Pico Engine 1.6 and are designed to be completed in order after
+[Part 1 — Foundations (Module 1)](../part-1/index.qmd). Part 2
+(Modules 2–5) is not yet available — see
+[Part 2 — Building](../part-2/index.qmd) for the single blocking
+upstream dependency.
 
-## Lessons
+## Lessons and their platform prerequisites
 
-- [1. Pico Identity](01-pico-identity/index.qmd) — did:webvh as a Pico's
-  public cryptographic identity and did:peer as relationship-specific
-  identity.
+Platform prerequisites below are taken from
+[`memo25.md`](../../../memo25.md) inventory table. Each Part 3 lesson
+and its co-located lab requires **no optional platform** — only a shell,
+a text editor, and Python 3 (plus `bin/pico` for lessons that run
+`pico parse`, and PyYAML for the Hands and Nervous System labs).
+
+- [1. Pico Identity](01-pico-identity/index.qmd) — `did:webvh` as a
+  Pico's public cryptographic identity and `did:peer` as
+  relationship-specific identity. **Platform prerequisite: none.**
 - [2. Cross-Mesh Communication](02-cross-mesh-communication/index.qmd) —
-  DIDComm, subscriptions as cryptographic relationships, and how parent/
-  child communication differs from external relationships.
+  DIDComm, subscriptions as cryptographic relationships, and how
+  parent/child communication differs from external relationships.
+  **Platform prerequisite: none.**
 - [3. Trust and Authorization](03-trust-and-authorization/index.qmd) —
   keeping identity and authorization separate, channel policy, and the
   implications for Open Engineering rules and parsers.
-- [4. Portability](04-portability/index.qmd) — what it takes to move a Pico
-  between engines without losing who it is.
-- [5. Hands](05-hands/index.qmd) — giving a Pico the ability to act on the
-  world, with provider-neutral capabilities and governed execution.
+  **Platform prerequisite: none.**
+- [4. Portability](04-portability/index.qmd) — what it takes to move a
+  Pico between engines without losing who it is.
+  **Platform prerequisite: none** (the lab adds a `bash` verification
+  script).
+- [5. Hands](05-hands/index.qmd) — giving a Pico the ability to act on
+  the world, with provider-neutral capabilities and governed execution.
+  **Platform prerequisite: none** for the lesson and its co-located lab
+  (both validate governance artefacts with Python 3 + PyYAML and open
+  no network connection).
+  - Follow-up: [Optional follow-up · Composio](05-hands/composio-followup.qmd)
+    — provider-adapter description only. **Platform prerequisite: none**
+    (no Composio account, SDK, or credential; non-runnable).
 - [6. Nervous System](06-nervous-system/index.qmd) — giving a Pico an
   event-driven way to sense, communicate, and coordinate through a
-  provider-neutral Pico Agent Transport, with EMQX/MQTT as a candidate
-  adapter.
+  provider-neutral Pico Agent Transport. **Platform prerequisite: none**
+  for the lesson and its co-located lab (Python 3 + PyYAML on local
+  YAML only; the lesson itself contacts no broker).
+  - Follow-up: [Optional follow-up · EMQX/MQTT adapter](06-nervous-system/emqx-adapter.qmd)
+    — adapter-mapping description only. **Platform prerequisite: none**
+    (no broker, no EMQX account, no credential; non-runnable).
+
+## Matched extension labs under `labs/`
+
+The lessons above are complemented by runnable extension labs that each
+require one optional platform. These are **not** on the
+zero-optional-platform path.
+
+- [`labs/hello-pico-hands-kubernetes/`](../../../labs/hello-pico-hands-kubernetes/)
+  — realizes the Part 3 Hands capability on a cluster.
+  **Platform prerequisite: Kubernetes + Manifold** (`docker`,
+  `minikube` v1.34+, `kubectl`; completed `labs/hello-pico-on-manifold/`).
+- [`labs/hello-pico-nervous-system-mqtt/`](../../../labs/hello-pico-nervous-system-mqtt/)
+  — maps the provider-neutral event envelope onto MQTT topics.
+  **Platform prerequisite: MQTT broker vocabulary** (local YAML
+  verifier; the prerequisite `labs/hello-two-picos/` transitively
+  requires **Kubernetes + Manifold**).
+- [`labs/hello-pico-on-manifold/`](../../../labs/hello-pico-on-manifold/)
+  and [`labs/hello-two-picos/`](../../../labs/hello-two-picos/) — hosted
+  runtime path on a cluster. **Platform prerequisite:
+  Kubernetes + Manifold.**
+- [`labs/hello-pico-fleet-wrangler/`](../../../labs/hello-pico-fleet-wrangler/)
+  — fleet-level composition over Manifold.
+  **Platform prerequisite: Kubernetes + Manifold** (both member labs
+  deployed on the shared `manifold-lab` profile).
+- [`labs/hello-pico-home-assistant/`](../../../labs/hello-pico-home-assistant/)
+  — attaches Home Assistant as a `ControlSurface` on top of the
+  Manifold-hosted Pico.
+  **Platform prerequisite: Kubernetes + Manifold + Home Assistant**.
+- [`labs/hello-pico-on-kubernetes/`](../../../labs/hello-pico-on-kubernetes/)
+  — Crossplane composition path for the same greeting.
+  **Platform prerequisite: Kubernetes + Crossplane + Helm.**
+
+## Zero-optional-platform learner — what to skip
+
+If you are following the **zero-optional-platform path** from the
+[course overview](../index.qmd), read Part 3 lessons 1–6 and their
+co-located labs, but **skip** the following links until you choose to
+add the matching platform:
+
+- From [lesson 5 (Hands)](05-hands/index.qmd), skip the sidebar link to
+  the runnable Kubernetes lab
+  [`labs/hello-pico-hands-kubernetes/`](../../../labs/hello-pico-hands-kubernetes/).
+- From [lesson 6 (Nervous System)](06-nervous-system/index.qmd), skip
+  the sidebar link to the runnable MQTT lab
+  [`labs/hello-pico-nervous-system-mqtt/`](../../../labs/hello-pico-nervous-system-mqtt/)
+  (and its transitive
+  [`labs/hello-two-picos/`](../../../labs/hello-two-picos/) +
+  [`labs/hello-pico-on-manifold/`](../../../labs/hello-pico-on-manifold/)
+  prerequisites).
+- Skip every lab in the "Matched extension labs under `labs/`" list
+  above (all require Kubernetes, Manifold, Crossplane, Home Assistant,
+  or related platforms).
 
 Each lesson follows the same page layout as the rest of the course — see the
 [course overview](../index.qmd) for the full pattern.

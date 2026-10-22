@@ -53,6 +53,56 @@ See the course descriptor in [`metadata.yaml`](metadata.yaml) for the
 machine-readable summary (id, level, duration, prerequisites, teaches,
 produces).
 
+## Six-module course spine
+
+The course spine follows the capsule-first module progression proposed in
+[`memo23.md`](../../memo23.md) §4. Each row names a module, summarises
+what it teaches in one line taken from memo23 §4, and points at the
+material in this repository today — or marks the module as **not yet
+available** when it depends on an upstream contract that has not been
+committed (see
+[`memo24.md`](../../memo24.md) §2.1).
+
+| # | Module | Teach (one line, memo23 §4) | Where it lives today |
+|---|---|---|---|
+| 1 | Understand a Pico | What a Pico is and the four terms *capability*, *capsule definition*, *capsule implementation*, *composed Pico*. | [Part 1 lesson 1 — Understand a Pico](part-1/01-introduction/index.qmd) and the shared [`labs/hello-pico/`](../../labs/hello-pico/) lab. |
+| 2 | Define a capsule | Capsule metadata and contract boundaries using the canonical capsule definition format. | Not yet available — waits on the upstream capsule contract ([`memo24.md`](../../memo24.md) §2.1, [`memo26.md`](../../memo26.md)). |
+| 3 | Implement and test a capsule | Implement one capability behind its contract with dependencies kept local; add unit and contract tests. | Not yet available — waits on the upstream capsule contract ([`memo24.md`](../../memo24.md) §2.1, [`memo26.md`](../../memo26.md)). |
+| 4 | Compose a Pico | Declarative composition of capsule capabilities; dependency resolution, interface binding, version compatibility, validation. | Not yet available — waits on the upstream capsule contract ([`memo24.md`](../../memo24.md) §2.1, [`memo26.md`](../../memo26.md)). |
+| 5 | Run and inspect the Pico | The boundary between composition and execution; runtime responsibilities, lifecycle, logging, health, failure handling. | Partially covered by [`labs/hello-pico/`](../../labs/hello-pico/) (the smallest supported run path, per memo23 §9 step 3); the full capsule-aware runtime path waits on the same upstream contract. |
+| 6 | Extend and operate the Pico | Add one optional capability (persistence, event adapter, tool integration, bot interface) without redesigning the core. | [Part 3 — Extending](part-3/index.qmd) lessons 1–6 and their matched extension labs (`labs/hello-pico-hands-kubernetes/`, `labs/hello-pico-nervous-system-mqtt/`, and the Manifold/Crossplane labs under `labs/`). |
+
+Modules 2–4 are intentionally **not yet runnable** in this course. They
+depend on a canonical capsule contract that is not yet committed to
+`open-engineering-capsules/source` (verified
+2026-10-16, [`memo24.md`](../../memo24.md) §2.1). This course will
+consume that contract when the owning repository publishes it; it does
+not define a second, course-specific one.
+
+## Zero-optional-platform path
+
+The shortest ordered walk a learner can complete today with **no**
+Kubernetes, no cluster, no broker, no Composio, no Home Assistant, no
+Sandcastle, no Crossplane, no `gh`/Flux, and no live hosted dependency
+— only a shell, a text editor, Python 3, and the in-repo `bin/pico` CLI
+— is (from [`memo25.md`](../../memo25.md) "Minimal zero-optional-platform
+path"):
+
+1. [Part 1 lesson 1 — Understand a Pico](part-1/01-introduction/index.qmd).
+2. [Part 1 lesson 1 — Exercise](part-1/01-introduction/exercise.qmd).
+3. [Part 1 lesson 1 — Lab](part-1/01-introduction/lab.qmd) → the shared [`labs/hello-pico/`](../../labs/hello-pico/) lab.
+4. [`labs/hello-pico/`](../../labs/hello-pico/) — author one Rule, run `pico parse` → `pico compose`, execute `./build/hello-world-pico` (the memo23 §9 step-3 minimum path).
+5. [Part 1 lesson 1 — Summary](part-1/01-introduction/summary.qmd) and [Quiz](part-1/01-introduction/quiz.qmd).
+6. [Part 2 — Building](part-2/index.qmd) (read-only scaffold explaining Modules 2–5 are reserved).
+7. [Part 3 lesson 1 — Pico Identity](part-3/01-pico-identity/index.qmd), [lesson 2 — Cross-Mesh Communication](part-3/02-cross-mesh-communication/index.qmd), [lesson 3 — Trust and Authorization](part-3/03-trust-and-authorization/index.qmd) and their `pico parse`-only labs.
+8. Optional: [Part 3 lesson 4 — Portability](part-3/04-portability/index.qmd) and its lab (adds a `bash` verification script, no platform).
+9. Optional: [Part 3 lesson 5 — Hands](part-3/05-hands/index.qmd) + its lab and [lesson 6 — Nervous System](part-3/06-nervous-system/index.qmd) + its lab (both validate governance artefacts with Python 3 + PyYAML, no network). A learner on the zero-optional path can read these but should **skip** each lesson's sidebar link to its "runnable Kubernetes" or MQTT lab until they choose to add that platform — see [Part 3 — Extending](part-3/index.qmd) for the explicit skip list.
+
+Everything else (the Manifold/Wrangler, Crossplane, Composio, Home
+Assistant, EMQX/MQTT, Sandcastle, and outer-delivery labs) requires at
+least one optional platform and belongs on the extension path per
+[`memo25.md`](../../memo25.md).
+
 ## How this course is structured
 
 The course is organized into **parts**, each part into **lessons**, and each
@@ -81,9 +131,9 @@ courses/pico/
 
 ## Start here
 
-- [Part 1 — Foundations](part-1/index.qmd)
-- [Part 2 — Building](part-2/index.qmd)
-- [Part 3 — Extending](part-3/index.qmd)
+- [Part 1 — Foundations (Module 1)](part-1/index.qmd)
+- [Part 2 — Building (Modules 2–5, not yet available)](part-2/index.qmd)
+- [Part 3 — Extending (Module 6, optional)](part-3/index.qmd)
 - [Labs](labs/index.qmd) and the shared [Hello Pico lab](../../labs/hello-pico/).
 - [Constructive realization](constructive-realization.qmd) — how
   Definition, Element, Realization, Constraint, and Validation map onto

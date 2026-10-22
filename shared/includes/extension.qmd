@@ -1,0 +1,12 @@
+::: {.callout-note title="Module 6 optional extension"}
+This page is a **Module 6 optional extension** per
+[`memo23.md`](../../../../memo23.md) §4 (dependency rule 2 — *optional
+by default* — in [`memo23.md`](../../../../memo23.md) §5). The
+beginner Part 1 →
+[`labs/hello-pico/`](../../../../labs/hello-pico/) path does **not**
+depend on this page; you can defer or skip it without blocking
+Part 1.
+
+**Platforms this page needs** (verbatim from the
+[`memo25.md`](../../../../memo25.md) inventory): {{< meta extension-platforms >}}
+:::

@@ -84,7 +84,7 @@ website:
     contents:
       - href: index.qmd
         text: Overview
-      - section: "Part 1 — Foundations"
+      - section: "Part 1 — Foundations (Module 1)"
         href: part-1/index.qmd
         contents:
           - section: "01 Introduction"
@@ -98,9 +98,9 @@ website:
                 text: Summary
               - href: part-1/01-introduction/quiz.qmd
                 text: Quiz
-      - section: "Part 2 — Building"
+      - section: "Part 2 — Building (Modules 2–5, not yet available)"
         href: part-2/index.qmd
-      - section: "Part 3 — Extending"
+      - section: "Part 3 — Extending (Module 6, optional)"
         href: part-3/index.qmd
         contents:
           - section: "01 Pico Identity"

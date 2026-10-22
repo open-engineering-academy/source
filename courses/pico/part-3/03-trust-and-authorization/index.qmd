@@ -1,7 +1,10 @@
 ---
 title: "3. Trust and Authorization"
 subtitle: "Identity determines who; policy determines what."
+extension-platforms: 'shell, YAML comfort; lab adds `bin/pico`.'
 ---
+
+{{< include ../../../../shared/includes/extension.qmd >}}
 
 ## Learning objectives
 
