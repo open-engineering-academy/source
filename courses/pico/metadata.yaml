@@ -42,6 +42,7 @@ produces:
   - hello-world-pico
 references_labs:
   - oe.lab.hello-pico
+  - oe.lab.greeting-capsule
   - oe.lab.hello-pico-hands-kubernetes
   - oe.lab.hello-pico-nervous-system-mqtt
 references_exercises:
