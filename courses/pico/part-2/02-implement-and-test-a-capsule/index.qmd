@@ -39,8 +39,7 @@ declared `spec.inputs`/`spec.outputs`. That calling shape is a
 for capsules belongs to `open-engineering-capsule/source` (the
 implementation org, memo2 §1 D1), which has published none yet
 ([`memo24.md`](../../../../memo24.md) §2.1 as updated by observation
-at upstream commit
-[`bf071c2c1b57`](https://github.com/open-engineering-capsule/source/tree/bf071c2c1b57)).
+at upstream commit `bf071c2c1b57`).
 When the implementation org publishes a convention, the Academy will
 consume it; this course will not fork or shadow it
 ([`memo23.md`](../../../../memo23.md) §3.2,

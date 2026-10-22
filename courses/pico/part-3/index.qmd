@@ -13,10 +13,11 @@ and are classified as *optional extension* in
 
 These lessons use the Pico-to-Pico identity architecture introduced in
 Pico Engine 1.6 and are designed to be completed in order after
-[Part 1 — Foundations (Module 1)](../part-1/index.qmd). Part 2
-(Modules 2–5) is not yet available — see
-[Part 2 — Building](../part-2/index.qmd) for the single blocking
-upstream dependency.
+[Part 1 — Foundations (Module 1)](../part-1/index.qmd).
+[Part 2 — Building](../part-2/index.qmd) covers Modules 2–4 (available)
+and Module 5 (not yet available — waits on a capsule-aware runtime
+(`open-engineering-picos/source` is memo-only) and memo2 follow-up (b);
+`labs/hello-pico/` remains the run path).
 
 ## Lessons and their platform prerequisites
 
