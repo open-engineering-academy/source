@@ -3,18 +3,26 @@
 
 Walks the repository, resolves inline markdown links ``[text](target)``
 relative to the containing file (or repository root for absolute paths),
-and reports any target that does not exist on disk. Honours Quarto's
-``.qmd``→``.html`` rendering equivalence and treats directory links as
-satisfied by a sibling ``index.qmd`` or ``index.html``.
+and classifies each resolved target as:
+
+- OK — target exists on disk, or the ``.html`` form has a sibling ``.qmd``.
+- ERROR — target does not exist on disk at all (hard-broken link).
+- WARNING — the target is an existing directory with no ``index.qmd`` or
+  ``index.html``. The on-disk resource is present, but the rendered site
+  will 404 on the directory URL. Reported separately so that resource
+  dirs (``downloads/``, ``solution/``, ``screenshots/``) are not
+  conflated with genuinely missing files.
 
 Skips protocol links (``http(s):``, ``mailto:``, ``tel:``, ``data:``),
-same-page anchors (``#...``), and the pruned build/output directories
-listed in ``PRUNED_DIR_NAMES``. Stdlib only; mirrors the exit-code and
-output conventions of ``scripts/oels_ci_validate.py``.
+same-page anchors (``#...``), inline-code spans, fenced code blocks,
+and the pruned build/output directories listed in ``PRUNED_DIR_NAMES``.
+Stdlib only; mirrors the exit-code and output conventions of
+``scripts/oels_ci_validate.py``.
 
 Exit codes:
-  0 — every resolved internal link exists
-  1 — one or more broken links were detected
+  0 — no errors (warnings may be present unless ``--strict``)
+  1 — one or more ERRORs (or WARNINGs under ``--strict``)
+  2 — setup failure (bad ``--root``)
 """
 from __future__ import annotations
 
@@ -78,28 +86,43 @@ def _resolve(target: str, source_dir: Path, repo_root: Path) -> Path:
     return (source_dir / target).resolve()
 
 
-def _exists(resolved: Path, trailing_slash: bool) -> bool:
+def _classify(resolved: Path, trailing_slash: bool) -> str:
+    """Return ``"ok"``, ``"warning"``, or ``"error"`` for a resolved target.
+
+    - ``"ok"`` — file exists, or ``.html`` form has a sibling ``.qmd``,
+      or the directory has an ``index.qmd``/``index.html`` page.
+    - ``"warning"`` — target resolves to an existing directory with no
+      ``index.qmd``/``index.html`` (resource dir without a page target).
+    - ``"error"`` — target does not exist on disk.
+    """
     if trailing_slash:
-        return resolved.is_dir() and (
-            (resolved / "index.qmd").exists() or (resolved / "index.html").exists()
-        )
+        if resolved.is_dir():
+            if (resolved / "index.qmd").exists() or (resolved / "index.html").exists():
+                return "ok"
+            return "warning"
+        return "error"
     if resolved.exists():
-        return True
+        if resolved.is_dir():
+            if (resolved / "index.qmd").exists() or (resolved / "index.html").exists():
+                return "ok"
+            return "warning"
+        return "ok"
     if resolved.suffix == ".html":
-        qmd_sibling = resolved.with_suffix(".qmd")
-        if qmd_sibling.exists():
-            return True
-    return False
+        if resolved.with_suffix(".qmd").exists():
+            return "ok"
+    return "error"
 
 
-def _check_file(path: Path, repo_root: Path) -> tuple[int, list[tuple[int, str, Path]]]:
-    errors: list[tuple[int, str, Path]] = []
+def _check_file(
+    path: Path, repo_root: Path
+) -> tuple[int, list[tuple[int, str, Path, str]]]:
+    findings: list[tuple[int, str, Path, str]] = []
     checked = 0
     source_dir = path.parent
     try:
         text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeDecodeError):
-        return checked, errors
+        return checked, findings
     in_fence = False
     fence_marker = ""
     for lineno, raw_line in enumerate(text.splitlines(), start=1):
@@ -128,9 +151,10 @@ def _check_file(path: Path, repo_root: Path) -> tuple[int, list[tuple[int, str, 
             checked += 1
             trailing_slash = cleaned.endswith("/")
             resolved = _resolve(cleaned, source_dir, repo_root)
-            if not _exists(resolved, trailing_slash):
-                errors.append((lineno, target, resolved))
-    return checked, errors
+            severity = _classify(resolved, trailing_slash)
+            if severity != "ok":
+                findings.append((lineno, target, resolved, severity))
+    return checked, findings
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -141,7 +165,11 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--quiet", action="store_true",
-        help="Suppress the per-run summary; print broken links only.",
+        help="Suppress the per-run summary; print findings only.",
+    )
+    ap.add_argument(
+        "--strict", action="store_true",
+        help="Treat WARNINGs (existing dirs without index.qmd/html) as errors.",
     )
     args = ap.parse_args(argv)
 
@@ -152,17 +180,26 @@ def main(argv: list[str] | None = None) -> int:
 
     total_checked = 0
     total_errors = 0
+    total_warnings = 0
     for source in _walk_sources(repo_root):
         rel = source.relative_to(repo_root)
-        checked, errors = _check_file(source, repo_root)
+        checked, findings = _check_file(source, repo_root)
         total_checked += checked
-        for lineno, target, resolved in errors:
-            print(f"{rel}:{lineno}: broken link -> {target} (resolved: {resolved})")
-            total_errors += 1
+        for lineno, target, resolved, severity in findings:
+            label = "ERROR broken link" if severity == "error" else "WARNING dir without index"
+            print(f"{rel}:{lineno}: {label} -> {target} (resolved: {resolved})")
+            if severity == "error":
+                total_errors += 1
+            else:
+                total_warnings += 1
 
     if not args.quiet:
-        print(f"verify-links: checked={total_checked} errors={total_errors}")
-    return 0 if total_errors == 0 else 1
+        print(
+            f"verify-links: checked={total_checked} "
+            f"errors={total_errors} warnings={total_warnings}"
+        )
+    failed = total_errors > 0 or (args.strict and total_warnings > 0)
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
