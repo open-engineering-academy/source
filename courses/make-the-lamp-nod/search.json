@@ -1,0 +1,1954 @@
+[
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html",
+    "href": "modules/12-make-the-lamp-nod.html",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "",
+    "text": "No new major technology. This module is the capstone exercise where everything composed in modules 0 through 11 produces a physical result.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#goal",
+    "href": "modules/12-make-the-lamp-nod.html#goal",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "",
+    "text": "No new major technology. This module is the capstone exercise where everything composed in modules 0 through 11 produces a physical result.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#the-exercise",
+    "href": "modules/12-make-the-lamp-nod.html#the-exercise",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "The exercise",
+    "text": "The exercise\n\nStep 1 — Open Home Assistant\nOpen the dashboard. The display reads:\nPixStars Lamp\nStatus: READY\n[ NOD ]\n\n\nStep 2 — Inspect actuator readiness\nVerify the Pico twin reports connected: true, torqueEnabled: true, moving: false, lastCommandStatus: completed (or null if this is the first execution). The safe limits are loaded. The servo is at center.\n\n\nStep 3 — Press NOD\nPress the NOD button.\n\n\nStep 4 — Observe the physical movement\nThe lamp lowers its head. It raises its head. It returns to center.\n\n\nStep 5 — Inspect the event trace\nThe observability output reports the complete chain:\nnod.requested  (correlation: 01H...XYZ)\nrule.executed\nactuator.commanded\nedge.command.sent\nservo.moving\nservo.position.changed\nnod.completed\n\n\nStep 6 — Inspect updated Pico state\nThe Pico twin’s state has updated. lastCommandStatus reads completed. actualPosition reads 0. moving reads false. The telemetry ascent path worked.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#the-pedagogical-payoff",
+    "href": "modules/12-make-the-lamp-nod.html#the-pedagogical-payoff",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "The pedagogical payoff",
+    "text": "The pedagogical payoff\nAfter working through definitions, Kubernetes, MiniKube, Crossplane, composition, Pico, Manifold, rules, events, digital twins, edge adapters, networking, device protocols, telemetry, Home Assistant, and observability — you reach this moment.\nThe dashboard says READY. You press NOD. The lamp lowers its head, raises it, returns to center. The telemetry updates. The event trace reports nod.completed.\nThat moment is the explanation of why all the preceding abstractions exist.\nEach abstraction exists because the system needs it: definitions to declare what should exist, Crossplane to compose it, Kubernetes to run it, Pico to twin it, Manifold to execute it, the edge adapter to translate it, the 74HCT245 to electrically bridge it, the AX-12A to physically move it. The telemetry brings it back. The observability proves it happened.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#definition-of-done-learner",
+    "href": "modules/12-make-the-lamp-nod.html#definition-of-done-learner",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "Definition of Done — Learner",
+    "text": "Definition of Done — Learner\nYou have completed this course when you can demonstrate all of the following:\n\nHome Assistant → NOD → Open Engineering → Pico → Manifold → ESP32 → AX-12A → physical nod\nThe complete execution is observable (correlation id, evidence at each step)\nThe simulated implementation works end-to-end (no hardware required)\nYou can explain the responsibility of each layer\nYou can trace a failure through the same observability path\n\nThe physical and the simulated implementations both demonstrate the same architecture. Neither is a shortcut for the other.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#returning-to-module-0",
+    "href": "modules/12-make-the-lamp-nod.html#returning-to-module-0",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "Returning to Module 0",
+    "text": "Returning to Module 0\nIn Module 0 — The Challenge, you saw the finished result: press a button, the lamp nods. You did not know how it worked.\nNow you do.\nYou know that the button press is a semantic request routed through a ControlSurface. You know that Open Engineering resolves the capability and creates an event. You know that Pico maintains a digital twin with desired and observed state. You know that Manifold executes a rule. You know that the edge adapter translates semantics to device protocol. You know that the 74HCT245 bridges voltage levels. You know that the AX-12A physically moves. You know that telemetry returns through the same chain. You know that correlation ties it all together.\nThe lamp nods. The architecture works.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#the-character-boundary",
+    "href": "modules/12-make-the-lamp-nod.html#the-character-boundary",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "The character boundary",
+    "text": "The character boundary\nThis course stops at explicit human instruction of a physical gesture. You pressed NOD. The lamp nodded. That is the complete scope.\nThe architecture deliberately does not cross the character boundary. There is no autonomous reasoning, no emotional intent, no gesture selection based on observation. Those belong to a future course:\nCharacter\n   ↓\nObservation\n   ↓\nReasoning\n   ↓\nEmotional/semantic intent\n   ↓\nGesture selection\n   ↓\nnod\n   ↓\nPhysical nod\nToday: the human presses NOD. Tomorrow: the character decides to nod. The actuator foundation built in this course survives that transition without rewriting a single layer below gesture intent.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#future-expansion",
+    "href": "modules/12-make-the-lamp-nod.html#future-expansion",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "Future expansion",
+    "text": "Future expansion\nThe architecture intentionally enables:\n\nMultiple actuators — head pitch, head yaw, base rotation, lamp arm, light\nGesture composition — look-left, look-right, shake-head, wake-up, sleep\nCharacter embodiment — a Character Pico that plans gestures through actuator Picos\nVoice — voice instruction decoded to gesture intent\nAI reasoning — observation, LLM reasoning, character decision, gesture intent\nChoreography — multiple capabilities coordinated with lighting, audio, speech, projection, movement, stage cues\n\nNone of these require replacing the architecture. They compose on top of it.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/12-make-the-lamp-nod.html#next",
+    "href": "modules/12-make-the-lamp-nod.html#next",
+    "title": "Module 12 — Make the Lamp Nod",
+    "section": "Next",
+    "text": "Next\nReturn to Module 0 — The Challenge to revisit the opening question with everything you now know. Or explore the architecture page to review the complete system map and glossary for the terms used throughout this course.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 12 — Make the Lamp Nod"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html",
+    "href": "modules/10-expose-the-capability.html",
+    "title": "Module 10 — Expose the Capability",
+    "section": "",
+    "text": "Wire Home Assistant to the Open Engineering runtime so a human can press NOD, CENTER, and STOP, and observe actuator state. Home Assistant is the first human control interface. It is NOT the controller.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#goal",
+    "href": "modules/10-expose-the-capability.html#goal",
+    "title": "Module 10 — Expose the Capability",
+    "section": "",
+    "text": "Wire Home Assistant to the Open Engineering runtime so a human can press NOD, CENTER, and STOP, and observe actuator state. Home Assistant is the first human control interface. It is NOT the controller.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#home-assistant-is-a-controlsurface",
+    "href": "modules/10-expose-the-capability.html#home-assistant-is-a-controlsurface",
+    "title": "Module 10 — Expose the Capability",
+    "section": "Home Assistant is a ControlSurface",
+    "text": "Home Assistant is a ControlSurface\nIn Phase 7 vocabulary, Home Assistant is a ControlSurface: an interface that lets a human express intent without becoming the runtime or the ontology owner. Every read and every write goes through the approved pico runtime CLI. Home Assistant does not talk to Kubernetes directly, does not implement the servo trajectory, and does not own actuator behavior.\nSee the Hello Pico on Home Assistant lab for the foundational ControlSurface pattern this module reuses.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#the-incorrect-and-correct-patterns",
+    "href": "modules/10-expose-the-capability.html#the-incorrect-and-correct-patterns",
+    "title": "Module 10 — Expose the Capability",
+    "section": "The incorrect and correct patterns",
+    "text": "The incorrect and correct patterns\nThe course teaches a critical distinction from memo5 section 24:\nIncorrect — Home Assistant implements the servo trajectory:\nHome Assistant\n     ↓\nposition 15\n     ↓\ndelay\n     ↓\nposition -8\n     ↓\ndelay\n     ↓\nposition 0\nCorrect — Home Assistant requests a capability; the architecture resolves it:\nHome Assistant\n     ↓\nnod (semantic request)\n     ↓\nOpen Engineering\n     ↓\ngesture behavior\n     ↓\nactuator implementation\nThe incorrect pattern couples the UI to the device protocol. The correct pattern allows any future interface — CLI, web app, AI agent, voice instruction — to request exactly the same capability without knowing Dynamixel Protocol 1.0.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#the-configuration-snippet",
+    "href": "modules/10-expose-the-capability.html#the-configuration-snippet",
+    "title": "Module 10 — Expose the Capability",
+    "section": "The configuration snippet",
+    "text": "The configuration snippet\nThe canonical configuration lives at home-assistant/configuration.yaml. It follows the same pattern proven by the Hello Pico Home Assistant lab: command_line sensor for observation, shell_command for safe control actions, input_button for UI triggers, and automation to bind them.\n\nObservation surface — command_line sensor\ncommand_line:\n  - sensor:\n      name: pixstars_head_state\n      unique_id: oe.course.make-the-lamp-nod.head_state\n      command: \"/config/make-the-lamp-nod/head-state.sh\"\n      scan_interval: 5\n      command_timeout: 10\nThis sensor reflects the Pico twin’s reported state via the CLI. Home Assistant observes what the approved CLI reports; it never reads state directly. The sensor surfaces connection status, head position, moving state, torque, last command, and last result.\n\n\nSafe control actions — shell_command\nshell_command:\n  pixstars_nod: \"pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.nod.requested --value '{}'\"\n  pixstars_center: \"pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.center.requested --value '{}'\"\n  pixstars_stop: \"pico runtime emit --lab make-the-lamp-nod --channel pixstars-head --eventtype pixstars.head.stop.requested --value '{}'\"\nEach shell_command emits exactly one semantic event. The pico runtime emit CLI is byte-equal to what a learner would type at a shell prompt. This is the same ControlSurface pattern as the Hello Pico lab — every write delegates to the approved CLI, which delegates to the Pico runtime.\n\n\nUI triggers — input_button\ninput_button:\n  pixstars_nod:\n    name: \"NOD\"\n  pixstars_center:\n    name: \"CENTER\"\n  pixstars_stop:\n    name: \"STOP\"\ninput_button is Home Assistant’s canonical UI-triggerable one-shot control primitive. The automation binds it to the shell_command without adding any state or logic of its own.\n\n\nAutomations\nautomation:\n  - alias: \"PixStars — nod on button press\"\n    id: oe.course.make-the-lamp-nod.nod_automation\n    mode: single\n    trigger:\n      - platform: state\n        entity_id: input_button.pixstars_nod\n    action:\n      - service: shell_command.pixstars_nod\nThe automations bind buttons to shell_commands. They contain no business logic. NOD is mandatory; CENTER and STOP are provided as additional safe controls.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#the-minimum-dashboard",
+    "href": "modules/10-expose-the-capability.html#the-minimum-dashboard",
+    "title": "Module 10 — Expose the Capability",
+    "section": "The minimum dashboard",
+    "text": "The minimum dashboard\nThe dashboard exposes actuator state and safe controls:\nPixStars Lamp\nConnection:       Connected\nHead position:    0\nMoving:           No\nTorque:           Enabled\nLast command:     nod\nLast result:      Success\n[ NOD ]\n[ CENTER ]\n[ STOP ]\nNOD is mandatory. CENTER and STOP should also be provided. The dashboard reflects runtime truth through the command_line sensor — it does not invent its own state.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#what-home-assistant-is-not",
+    "href": "modules/10-expose-the-capability.html#what-home-assistant-is-not",
+    "title": "Module 10 — Expose the Capability",
+    "section": "What Home Assistant is not",
+    "text": "What Home Assistant is not\n\n\n\n\n\n\nWarningHome Assistant is not the controller\n\n\n\n\nHome Assistant is not a runtime. Manifold is the runtime.\nHome Assistant is not an ontology owner. Open Engineering owns capabilities.\nHome Assistant is not a bypass around Kubernetes or the Pico runtime.\nHome Assistant requests nod. It does not decide when to nod, how to nod, or what positions the servo should reach.\n\n\n\nAny Home Assistant integration that talks to Kubernetes directly, implements a servo trajectory, or maintains its own actuator state violates the ControlSurface contract. All reads and writes must go through the approved pico runtime CLI.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#the-ascent-path",
+    "href": "modules/10-expose-the-capability.html#the-ascent-path",
+    "title": "Module 10 — Expose the Capability",
+    "section": "The ascent path",
+    "text": "The ascent path\nThe command_line sensor completes the closed loop. Telemetry flows:\nAX-12A → ESP32 → Pico twin → pico runtime inspect → command_line sensor → HA dashboard\nThe human sees the physical state reflected in the UI. This is not remote control — it is a minimal closed-loop cyber-physical architecture.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#exercise",
+    "href": "modules/10-expose-the-capability.html#exercise",
+    "title": "Module 10 — Expose the Capability",
+    "section": "Exercise",
+    "text": "Exercise\n\nMerge the configuration snippet from home-assistant/configuration.yaml into your Home Assistant configuration.yaml.\nVerify the command_line sensor reports actuator state.\nPress NOD and verify the shell_command fires.\nAdd one new sensor or button to the dashboard that exposes additional telemetry (for example, servo temperature or voltage if your hardware reports it).",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/10-expose-the-capability.html#next",
+    "href": "modules/10-expose-the-capability.html#next",
+    "title": "Module 10 — Expose the Capability",
+    "section": "Next",
+    "text": "Next\nModule 11 — Trace the Nod, where you learn observability and correlation — following a single nod request through every layer of the architecture.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 10 — Expose the Capability"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html",
+    "href": "modules/08-build-the-edge-adapter.html",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "",
+    "text": "Introduce the ESP32 adapter and teach the boundary between Open Engineering semantics and device protocol. The full edge-adapter reference lives at ../edge/esp32/edge-adapter.md.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#goal",
+    "href": "modules/08-build-the-edge-adapter.html#goal",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "",
+    "text": "Introduce the ESP32 adapter and teach the boundary between Open Engineering semantics and device protocol. The full edge-adapter reference lives at ../edge/esp32/edge-adapter.md.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#semantic-layering",
+    "href": "modules/08-build-the-edge-adapter.html#semantic-layering",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Semantic layering",
+    "text": "Semantic layering\nEvery layer answers a distinct question. Do not collapse them:\nWHY              Character meaning            \"PixStars agrees\"\n                    |\nWHAT             Gesture intent              \"nod\"\n                    |\nHOW -- LOGICAL    Gesture sequence            down -&gt; up -&gt; center\n                    |\nHOW -- DEVICE     Servo positions & speeds    safe, configured\n                    |\nHOW -- PROTOCOL   Dynamixel Protocol 1.0      register writes, packets\n                    |\nHOW -- ELECTRICAL ESP32 + 74HCT245            voltage levels, bus, direction\n                    |\nPHYSICS          AX-12A rotates lamp head    torque, rotation, motion\nRules of this layering:\n\nHigher layers request capabilities. They say what (“nod”), never how.\nLower layers implement capabilities. They decide how the gesture is realized, down to register values.\nThe ESP32 must not contain character reasoning. It understands actuator-level concepts (set-position, center, execute-motion, stop, get-position, get-temperature, get-status) – never concepts like agreement, disagreement, happiness, attention, or confusion.\nThe 74HCT245 is purely physical communication. It is where abstractions cross a hardware boundary of voltage levels, buses, and electrical communication.\n\nSee the architecture page for the full layering diagram and per-layer responsibility table.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#what-the-esp32-understands",
+    "href": "modules/08-build-the-edge-adapter.html#what-the-esp32-understands",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "What the ESP32 understands",
+    "text": "What the ESP32 understands\nThe ESP32 speaks actuator-level commands only:\nset-position      move the servo to a position\ncenter            return to center\nexecute-motion    run a configured motion sequence\nstop              halt motion\nget-position      report current position\nget-temperature   report temperature telemetry\nget-status        report status / health\nThe ESP32 MUST NOT interpret character meaning. It MUST NOT decide when PixStars should nod. Those decisions belong at the semantic layer.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#communication-direction",
+    "href": "modules/08-build-the-edge-adapter.html#communication-direction",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Communication direction",
+    "text": "Communication direction\nThe AX-12A uses Dynamixel Protocol 1.0 over a half-duplex UART. The ESP32 controls communication direction on the shared line (transmit vs receive). This direction management is one of the ESP32’s explicit responsibilities.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#messaging",
+    "href": "modules/08-build-the-edge-adapter.html#messaging",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Messaging",
+    "text": "Messaging\nThe semantic event reaches the ESP32 through a transport chain:\nSemantic event\n     |\n     v\nOpen Engineering messaging\n     |\n     v\ntransport adapter\n     |\n     v\nMQTT\n     |\n     v\nESP32\nThe semantic architecture MUST NOT become coupled to MQTT topic naming. This ensures that another transport can later replace MQTT without redefining nod. Transport details remain below the semantic event layer (the ESP32 is where HOW – PROTOCOL meets the device; see the architecture page for the full layering).",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#safety-at-the-edge",
+    "href": "modules/08-build-the-edge-adapter.html#safety-at-the-edge",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Safety at the edge",
+    "text": "Safety at the edge\nThe ESP32 enforces safety as defense in depth:\n\nEnforce configured safe limits even at the edge.\nEnforce the command timeout.\nSupport an emergency stop.\nReport actuator state, errors, and connectivity upward as telemetry.\nBoot to a safe startup state; return to center before shutdown.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#conversion-responsibility",
+    "href": "modules/08-build-the-edge-adapter.html#conversion-responsibility",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Conversion responsibility",
+    "text": "Conversion responsibility\nThe ESP32 receives a command such as set-position and produces the Dynamixel Protocol 1.0 packets (instruction/status packets, register addresses, checksums) that realize it. The nod sequence itself is decided at the semantic layer (see rules/nod-gesture.yaml); the ESP32 executes the lower level.\n\n\n\n\n\n\nTip\n\n\n\nThe ESP32 is the boundary where Open Engineering semantics become a device protocol. It implements HOW – DEVICE and HOW – PROTOCOL. It does not reason about WHY or WHAT.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#exercise",
+    "href": "modules/08-build-the-edge-adapter.html#exercise",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Exercise",
+    "text": "Exercise\nDefine the mapping from one semantic command to its device-level responsibilities. Choose center as the example:\n\nWhat semantic event triggers the command? (pixstars.head.center.requested)\nWhat device-level command does the ESP32 receive? (center)\nWhat Dynamixel Protocol 1.0 packets does the ESP32 produce? (register write to the goal-position register with the calibrated center value)\nWhat safety checks does the ESP32 apply? (safe limits, timeout, emergency stop)\nWhat telemetry does the ESP32 report? (position, temperature, status, connectivity)\n\nDocument the full mapping for one command before moving to the next module.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/08-build-the-edge-adapter.html#next",
+    "href": "modules/08-build-the-edge-adapter.html#next",
+    "title": "Module 08 — Build the Edge Adapter",
+    "section": "Next",
+    "text": "Next\nModule 09 – Connect the Physical AX-12A",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 08 — Build the Edge Adapter"
+    ]
+  },
+  {
+    "objectID": "modules/06-run-it-locally.html",
+    "href": "modules/06-run-it-locally.html",
+    "title": "Module 06 — Run It Locally",
+    "section": "",
+    "text": "Reuse the Kubernetes course for the canonical MiniKube home. This module does not re-teach MiniKube install, Pod creation, or Deployment management. The learner must already know Pods, Deployments, Services, ConfigMaps, Secrets, namespaces, controllers, and reconciliation.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 06 — Run It Locally"
+    ]
+  },
+  {
+    "objectID": "modules/06-run-it-locally.html#goal",
+    "href": "modules/06-run-it-locally.html#goal",
+    "title": "Module 06 — Run It Locally",
+    "section": "",
+    "text": "Reuse the Kubernetes course for the canonical MiniKube home. This module does not re-teach MiniKube install, Pod creation, or Deployment management. The learner must already know Pods, Deployments, Services, ConfigMaps, Secrets, namespaces, controllers, and reconciliation.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 06 — Run It Locally"
+    ]
+  },
+  {
+    "objectID": "modules/06-run-it-locally.html#local-architecture",
+    "href": "modules/06-run-it-locally.html#local-architecture",
+    "title": "Module 06 — Run It Locally",
+    "section": "Local architecture",
+    "text": "Local architecture\nMiniKube hosts the complete runtime on one developer workstation:\nDeveloper Workstation\n+-----------------------------------------------+\n| MiniKube                                      |\n|                                               |\n| Crossplane                                    |\n| Open Engineering resources                    |\n| Manifold                                      |\n| Pico runtime                                  |\n| event/messaging infrastructure                |\n| Home Assistant integration                    |\n| observability                                 |\n+-----------------------------------------------+\n                       |\n                       | LAN / Wi-Fi\n                       v\n                    ESP32\n                       |\n                       v\n                   74HCT245\n                       |\n                       v\n                    AX-12A\n                       |\n                       v\n                     Lamp\nSee MiniKube for installation, profiles, and cluster management. Everything inside the dashed box runs in MiniKube; the ESP32 connects over the local network.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 06 — Run It Locally"
+    ]
+  },
+  {
+    "objectID": "modules/06-run-it-locally.html#validation-commands",
+    "href": "modules/06-run-it-locally.html#validation-commands",
+    "title": "Module 06 — Run It Locally",
+    "section": "Validation commands",
+    "text": "Validation commands\nThese commands verify that the prerequisites for this course are present. They do not install anything – they confirm what the Kubernetes course already set up.\n\nKubernetes cluster\nkubectl cluster-info\nExpected: the control plane URL is reported and the cluster is reachable.\nkubectl get nodes\nExpected: at least one node in Ready state.\n\n\nCrossplane\nkubectl get pods -n crossplane-system\nExpected: the Crossplane pod is Running.\nkubectl get provider\nExpected: the Kubernetes Provider is Installed and Healthy.\n\n\nPico CLI\nwhich pico\npico --version\nExpected: the pico binary resolves on PATH and reports a version.\n\n\n\n\n\n\nTip\n\n\n\nIf any of these checks fail, return to the prerequisite course for the relevant technology and resolve it before continuing. The Kubernetes course is the canonical source for cluster setup; the Crossplane course covers Crossplane installation.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 06 — Run It Locally"
+    ]
+  },
+  {
+    "objectID": "modules/06-run-it-locally.html#exercise",
+    "href": "modules/06-run-it-locally.html#exercise",
+    "title": "Module 06 — Run It Locally",
+    "section": "Exercise",
+    "text": "Exercise\nRun every validation command above and confirm the expected output. If any command fails, identify which prerequisite course covers the fix and complete that step before proceeding to Module 07.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 06 — Run It Locally"
+    ]
+  },
+  {
+    "objectID": "modules/06-run-it-locally.html#next",
+    "href": "modules/06-run-it-locally.html#next",
+    "title": "Module 06 — Run It Locally",
+    "section": "Next",
+    "text": "Next\nModule 07 – Bring the Pico Alive",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 06 — Run It Locally"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html",
+    "href": "modules/04-simulate-the-actuator.html",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "",
+    "text": "Implement the actuator in simulation so nod runs without any physical hardware. This is the simulation-before-physics principle: every capability should be testable without hardware — in CI, by automated tests, and by any learner who does not own an ESP32, a servo, or a lamp.\nThis module shall be executable in CI. When you finish the exercise, the tests pass headlessly, with no physical device attached.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#goal",
+    "href": "modules/04-simulate-the-actuator.html#goal",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "",
+    "text": "Implement the actuator in simulation so nod runs without any physical hardware. This is the simulation-before-physics principle: every capability should be testable without hardware — in CI, by automated tests, and by any learner who does not own an ESP32, a servo, or a lamp.\nThis module shall be executable in CI. When you finish the exercise, the tests pass headlessly, with no physical device attached.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#two-adapters-one-contract",
+    "href": "modules/04-simulate-the-actuator.html#two-adapters-one-contract",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "Two adapters, one contract",
+    "text": "Two adapters, one contract\nWe support at least two actuator adapters:\n\nSimulatedActuator — runs now, no hardware.\nDynamixelAX12AActuator — the future physical adapter, added later.\n\nBoth implement the same logical actuator contract. Because the contract is identical, you can run the whole architecture against the simulation first:\nHome Assistant\n      ↓\n     nod\n      ↓\nPico\n      ↓\nSimulated Actuator\nand later swap in the physical device:\nHome Assistant\n      ↓\n     nod\n      ↓\nPico\n      ↓\nPhysical AX-12A\nwithout rewriting anything above the adapter. That property buys a lot:\n\nCI — the non-physical path is testable in every build.\nautomated testing — behavior is verified deterministically.\nlearners without hardware — the course is completable with no lamp.\ndevelopment safety — you can probe failure modes without moving metal.\ndebugging — state transitions are inspectable step by step.\nrepeatability — the simulation behaves identically every run.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#the-contract",
+    "href": "modules/04-simulate-the-actuator.html#the-contract",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "The contract",
+    "text": "The contract\nThe contract (simulation/simulated_actuator.py) defines the logical actuator operations and its state:\nclass ActuatorState:\n    desiredPosition: int = 0\n    actualPosition: int = 0\n    moving: bool = False\n    torqueEnabled: bool = True\n    connected: bool = True\n    temperature: Optional[float] = None\n    voltage: Optional[float] = None\n    lastCommand: Optional[str] = None\n    lastCommandStatus: Optional[str] = None\n    lastUpdated: Optional[str] = None\n\n\nclass SafeLimits:\n    def __init__(self, min_position=-30, max_position=30): ...\n    def within(self, position: int) -&gt; bool: ...\n\n\nclass ActuatorContract:\n    def nod(self) -&gt; str: ...\n    def center(self) -&gt; str: ...\n    def stop(self) -&gt; str: ...\n    def set_position(self, degrees: int) -&gt; str: ...\n    def get_state(self) -&gt; ActuatorState: ...\nConsumers call the capabilities (nod, center, stop, set_position) — never raw register writes. This is the same capability interface from Module 2, now as an executable contract.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#the-simulated-implementation",
+    "href": "modules/04-simulate-the-actuator.html#the-simulated-implementation",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "The simulated implementation",
+    "text": "The simulated implementation\nSimulatedActuator realizes that contract. nod runs the canonical gesture sequence center → down → up → center, updates the state at each step, and reports completion:\nclass SimulatedActuator(ActuatorContract):\n    def __init__(self, limits: SafeLimits | None = None):\n        self.limits = limits or SafeLimits()\n        self.state = ActuatorState()\n        self._connected = True\n\n    def nod(self) -&gt; str:\n        if not self._connected:\n            self.state.lastCommandStatus = \"failed\"\n            return \"nod failed: actuator unavailable\"\n        if not self.limits.within(self.state.actualPosition):\n            self.state.lastCommandStatus = \"failed\"\n            return \"command rejected: outside configured safe limits\"\n        self.state.lastCommand = \"nod\"\n        self.state.lastCommandStatus = \"executing\"\n        self.state.moving = True\n        for pos in (0, 15, -8, 0):\n            self.state.desiredPosition = pos\n            self.state.actualPosition = pos\n        self.state.moving = False\n        self.state.lastCommandStatus = \"completed\"\n        self.state.lastUpdated = self._now()\n        return \"nod completed\"\nNotice how the implementation realizes what the consumer requested. The consumer says nod(); the simulation decides the sequence, moves through it, tracks the state, and reports the outcome. SafeLimits enforce the configured minimum/maximum position so even the simulation rejects unsafe movement.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#the-tests",
+    "href": "modules/04-simulate-the-actuator.html#the-tests",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "The tests",
+    "text": "The tests\nAutomated tests verify the non-physical behavior (tests/test_simulated_actuator.py):\ndef test_nod_produces_expected_state_transitions(actuator):\n    actuator.nod()\n    st = actuator.get_state()\n    assert st.lastCommandStatus == \"completed\"\n    assert st.moving is False\n    assert st.lastCommand == \"nod\"\n\n\ndef test_invalid_movement_is_rejected(actuator):\n    actuator.set_position(9999)\n    assert actuator.get_state().lastCommandStatus == \"failed\"\n\n\ndef test_safe_limits_are_enforced():\n    narrow = SimulatedActuator(SafeLimits(min_position=-5, max_position=5))\n    assert \"rejected\" in narrow.set_position(15)\nThe test set also covers: accepting center, returning to center after a nod, the unavailable actuator producing an error, and desired vs observed state being tracked. The default CI pipeline runs the unit, integration, and simulation tests. Any hardware tests live separately and are opt-in — they never run in the default CI.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#the-desired-state-principle",
+    "href": "modules/04-simulate-the-actuator.html#the-desired-state-principle",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "The desired-state principle",
+    "text": "The desired-state principle\nA central lesson of this course:\n\nRequesting motion is not proof that motion occurred.\n\nCOMMAND SENT is not equivalent to GESTURE COMPLETED. The system always distinguishes the lifecycle of a command:\nrequested → accepted → executing → completed → failed\nThe simulation makes this visible in lastCommandStatus. Calling nod() moves it through executing to completed; an unavailable actuator moves it to failed. A consumer that only checked “did I send the command?” would miss the difference — and that difference is exactly what separates “the lamp nodded” from “I told it to nod.”\n\n\n\n\n\n\nTip\n\n\n\nThis is why Module 00 emphasized the event trace reporting nod.completed rather than merely command sent. The completion is the evidence; the send is just the attempt. See the Architecture — Desired-state principle.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#exercise",
+    "href": "modules/04-simulate-the-actuator.html#exercise",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "Exercise",
+    "text": "Exercise\nRun the tests and verify the state transitions:\ncd courses/make-the-lamp-nod/simulation\npython -m pytest ../tests/test_simulated_actuator.py -q\nAll tests should pass with no hardware connected.\nThen, in a Python shell (or a small script), walk through the states manually:\nfrom simulated_actuator import SimulatedActuator, SafeLimits\n\na = SimulatedActuator()\nprint(a.nod())\nprint(a.get_state().lastCommandStatus)   # completed\nprint(a.get_state().actualPosition)      # 0 (returned to center)\nprint(a.set_position(9999))              # rejected\nprint(a.get_state().lastCommandStatus)   # failed\nAnswer, using the output:\n\nWhat lastCommandStatus values does nod() pass through, and what does each mean?\nAfter a successful nod, where does actualPosition end up, and why?\nWhat happens when you request a position outside the safe limits, and which layer enforces that?\nWhy does the test for an unavailable actuator read actuator unavailable — and what does that have to do with the desired-state principle?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/04-simulate-the-actuator.html#next",
+    "href": "modules/04-simulate-the-actuator.html#next",
+    "title": "Module 04 — Simulate the Actuator",
+    "section": "Next",
+    "text": "Next\nThe capability now works headlessly. In the next module you compose it declaratively with Crossplane so that requesting an actuator builds its Pico, runtime, and connectivity for you: Module 05 — Compose the Actuator.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 04 — Simulate the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html",
+    "href": "modules/02-from-device-to-capability.html",
+    "title": "Module 02 — From Device to Capability",
+    "section": "",
+    "text": "Move from thinking about a device (an AX-12A servo) to thinking about a capability (a HeadPitchActuator that can nod). This is capability-oriented engineering, and it is one of the central lessons of the whole course.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#goal",
+    "href": "modules/02-from-device-to-capability.html#goal",
+    "title": "Module 02 — From Device to Capability",
+    "section": "",
+    "text": "Move from thinking about a device (an AX-12A servo) to thinking about a capability (a HeadPitchActuator that can nod). This is capability-oriented engineering, and it is one of the central lessons of the whole course.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#the-device-is-not-the-interface",
+    "href": "modules/02-from-device-to-capability.html#the-device-is-not-the-interface",
+    "title": "Module 02 — From Device to Capability",
+    "section": "The device is not the interface",
+    "text": "The device is not the interface\nA hardware-centric view says “I have an AX-12A servo; let me control its registers.” That is how you talk to a piece of metal — not how you express what you want from a system.\nWe transform that view:\nAX-12A servo            →      HeadPitchActuator\n(specific hardware)            (semantic capability)\n                                  └── nod\nThe capability is semantic. It must not expose raw Dynamixel register manipulation to the caller. The desired abstraction is:\nnod()\nnot:\nwriteRegister(30, 614)\nsleep(300)\nwriteRegister(30, 410)\n...\nThe second form leaks the how into every caller. Every consumer would have to know Dynamixel Protocol 1.0, register addresses, and timing — and would break the moment the hardware changed.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#the-principle",
+    "href": "modules/02-from-device-to-capability.html#the-principle",
+    "title": "Module 02 — From Device to Capability",
+    "section": "The principle",
+    "text": "The principle\n\nConsumers request capabilities. Implementations determine how those capabilities are realized.\n\nThis one sentence carries a lot:\n\nThe consumer says what it wants (nod), never how.\nThe implementation decides how the gesture is realized, down to register values.\nBecause the consumer never depends on the how, the implementation can be swapped freely — a simulated actuator today, a physical AX-12A tomorrow.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#the-capability-set",
+    "href": "modules/02-from-device-to-capability.html#the-capability-set",
+    "title": "Module 02 — From Device to Capability",
+    "section": "The capability set",
+    "text": "The capability set\nThe head-pitch actuator exposes a small, deliberate set of capabilities:\n\n\n\nCapability\nMeaning\n\n\n\n\nnod\nmandatory — the headline gesture\n\n\ncenter\nreturn to center position\n\n\nstop\nhalt current motion\n\n\nset-position\nmove to a specified position\n\n\n\nnod is the principal capability and the one this course is named for. center and stop are supporting safety and control capabilities that a human operator needs around it.\n\n\n\n\n\n\nTip\n\n\n\nNotice what is not in the list: write-register and raw-motion. Those are explicitly denied at the rules layer (see rules/nod.yaml). A consumer cannot accidentally reach past the capabilities into raw hardware.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#definitions-the-claim-and-the-xrd",
+    "href": "modules/02-from-device-to-capability.html#definitions-the-claim-and-the-xrd",
+    "title": "Module 02 — From Device to Capability",
+    "section": "Definitions: the claim and the XRD",
+    "text": "Definitions: the claim and the XRD\nIn Open Engineering you do not assemble the whole actuator by hand. You request the capability, and Crossplane composes everything needed to realize it. The claim expresses what you want:\n# definitions/actuator-claim.yaml\napiVersion: robotics.open-engineering.io/v1alpha1\nkind: Actuator\nmetadata:\n  name: pixstars-head\nspec:\n  capabilities:\n    - nod\n    - center\n    - stop\n  gesture:\n    name: nod\nSee definitions/actuator-claim.yaml.\nThe XRD (CompositeResourceDefinition) declares that Actuator capability type — its schema, its allowed capabilities, and its gesture shape:\n# definitions/actuator-xrd.yaml (excerpt)\napiVersion: apiextensions.crossplane.io/v1\nkind: CompositeResourceDefinition\nmetadata:\n  name: xactuators.robotics.open-engineering.io\nspec:\n  group: robotics.open-engineering.io\n  names:\n    kind: XActuator\n  claimNames:\n    kind: Actuator\n  versions:\n    - name: v1alpha1\n      served: true\n      referenceable: true\n      schema:\n        openAPIV3Schema:\n          type: object\n          properties:\n            spec:\n              type: object\n              properties:\n                capabilities:\n                  type: array\n                  items:\n                    type: string\n                    enum:\n                      - nod\n                      - center\n                      - stop\n                      - set-position\nSee definitions/actuator-xrd.yaml for the full schema. The important idea: the learner requests a semantic actuator capability, never raw servo registers.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#the-gesture-shape",
+    "href": "modules/02-from-device-to-capability.html#the-gesture-shape",
+    "title": "Module 02 — From Device to Capability",
+    "section": "The gesture shape",
+    "text": "The gesture shape\nThe nod gesture itself is a deterministic motion sequence. Its logical shape is fixed:\ncenter → slightly down → slightly up → center\nIts physical calibration values are separate and configurable — they must be calibrated against the real lamp (see rules/nod-gesture.yaml). This separation of logical gesture from physical calibration is another instance of the same principle: the capability is stable while the realization is tuned.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#many-interfaces-one-capability",
+    "href": "modules/02-from-device-to-capability.html#many-interfaces-one-capability",
+    "title": "Module 02 — From Device to Capability",
+    "section": "Many interfaces, one capability",
+    "text": "Many interfaces, one capability\nBecause nod is semantic, it can originate from many places — and none of them needs to know Dynamixel Protocol 1.0:\n\nHome Assistant\na CLI\na web application\nan automated test\nanother Pico\na workflow\nan AI agent\na character runtime\na voice instruction\na story timeline\n\nEvery one of those sources says the same thing — nod() — and the implementation decides how to realize it. That is why the capability model pays off: it keeps the what stable while the who and the how are free to vary.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#exercise",
+    "href": "modules/02-from-device-to-capability.html#exercise",
+    "title": "Module 02 — From Device to Capability",
+    "section": "Exercise",
+    "text": "Exercise\nPick a hardware device you know — a small motor, a light, a camera gimbal, a door lock — and express it as a small capability set:\n\nName its HeadPitchActuator-style logical capability (for example DoorLock).\nList 2–4 capabilities it exposes, with nod as the model: semantic verbs a consumer would request without knowing the hardware.\nState one capability you would deliberately deny (like raw-motion) and why.\nWrite the claim that requests one of those capabilities.\n\nThe exact YAML shape is less important than the reasoning: which verbs are semantic, which are hardware leakage, and why.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/02-from-device-to-capability.html#next",
+    "href": "modules/02-from-device-to-capability.html#next",
+    "title": "Module 02 — From Device to Capability",
+    "section": "Next",
+    "text": "Next\nA capability needs a home that tracks its state. In the next module we create that home as a digital twin: Module 03 — Create the Digital Twin.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 02 — From Device to Capability"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html",
+    "href": "modules/00-the-challenge.html",
+    "title": "Module 00 — The Challenge",
+    "section": "",
+    "text": "See the finished result first. Before we explain any of the machinery, you will watch the final moment this whole course exists to produce.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#goal",
+    "href": "modules/00-the-challenge.html#goal",
+    "title": "Module 00 — The Challenge",
+    "section": "",
+    "text": "See the finished result first. Before we explain any of the machinery, you will watch the final moment this whole course exists to produce.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#the-desired-result",
+    "href": "modules/00-the-challenge.html#the-desired-result",
+    "title": "Module 00 — The Challenge",
+    "section": "The desired result",
+    "text": "The desired result\nPress a button and make the lamp nod.\nThat is the entire challenge. Everything else in this course — every definition, every abstraction, every runtime, every wire — exists to make that one button press reach a physical object.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#the-final-moment",
+    "href": "modules/00-the-challenge.html#the-final-moment",
+    "title": "Module 00 — The Challenge",
+    "section": "The final moment",
+    "text": "The final moment\nThis is the dashboard near the end of the course:\nPixStars Lamp\nStatus: READY\n[ NOD ]\nYou press NOD. The lamp lowers its head. It raises its head. It returns to center. The telemetry updates. The event trace reports nod.completed.\nThat brief motion is the payoff for everything preceding it — it is the moment the abstractions stop being software and touch the physical world.\n\n\n\n\n\n\nTip\n\n\n\nHold this image in mind. When a later module feels abstract, ask: does this get me closer to the lamp nodding?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#the-vision",
+    "href": "modules/00-the-challenge.html#the-vision",
+    "title": "Module 00 — The Challenge",
+    "section": "The vision",
+    "text": "The vision\nThis course can be summarized in a single sentence:\n\nDeclare a meaningful capability in Open Engineering and follow it all the way until the physical world changes.\n\nA lamp nodding is a deliberately small example, but the architecture is not. The same path that carries nod to a lamp can carry a gesture, a voice, or a character’s decision to a physical body.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#the-conceptual-journey",
+    "href": "modules/00-the-challenge.html#the-conceptual-journey",
+    "title": "Module 00 — The Challenge",
+    "section": "The conceptual journey",
+    "text": "The conceptual journey\nnod will travel a long, layered path:\nHuman Intent\n     ↓\nHome Assistant\n     ↓\nOpen Engineering Capability\n     ↓\nPico Digital Twin\n     ↓\nManifold Runtime\n     ↓\nOpen Engineering Event\n     ↓\nEdge Adapter\n     ↓\nESP32\n     ↓\n74HCT245\n     ↓\nAX-12A\n     ↓\nMechanical Lamp Head\n     ↓\nPhysical Motion\nEvery arrow on this ladder is a contract. Each later module explains one side: what crosses the arrow, who owns it, how failure is represented, how it is tested, and how it is observed.\nThe Architecture page is the map you will follow, and the Glossary defines the terms as they are used here.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#simulation-first",
+    "href": "modules/00-the-challenge.html#simulation-first",
+    "title": "Module 00 — The Challenge",
+    "section": "Simulation first",
+    "text": "Simulation first\nYou do not need an ESP32, a servo, or a lamp to complete this course. We build it simulation first: a SimulatedActuator shares the exact same logical contract as the physical DynamixelAX12AActuator, so the whole path runs without hardware — in CI, in tests, and on any learner’s machine. The physical path is an explicit, opt-in extension of the same architecture; nothing has to be rewritten to move from simulation to physics.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#a-challenge-not-a-tutorial",
+    "href": "modules/00-the-challenge.html#a-challenge-not-a-tutorial",
+    "title": "Module 00 — The Challenge",
+    "section": "A challenge, not a tutorial",
+    "text": "A challenge, not a tutorial\nThis is a capstone. It composes what you already learned in Kubernetes, MiniKube, Crossplane, Pico, Manifold, and Home Assistant rather than re-teaching each one. You will be expected to reuse those courses rather than wait to be told everything again.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#exercise",
+    "href": "modules/00-the-challenge.html#exercise",
+    "title": "Module 00 — The Challenge",
+    "section": "Exercise",
+    "text": "Exercise\nBefore moving on, write down, in your own words:\n\nWhat exactly does “The lamp nods” prove about the architecture?\nWhich layer in the journey ladder is responsible for what is requested (nod) rather than how it is realized?\nWhy is it meaningful that the event trace reports nod.completed rather than simply command sent?\n\n\n\n\n\n\n\nTip\n\n\n\nKeep your answer to the last question. Module 4 returns to it as the desired-state principle.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "modules/00-the-challenge.html#next",
+    "href": "modules/00-the-challenge.html#next",
+    "title": "Module 00 — The Challenge",
+    "section": "Next",
+    "text": "Next\nReturn to this page at the end of the course — the final capstone is this exact moment, real and physical. Now begin with Module 01 — Meet the Physical System.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 00 — The Challenge"
+    ]
+  },
+  {
+    "objectID": "prerequisites.html",
+    "href": "prerequisites.html",
+    "title": "Prerequisites",
+    "section": "",
+    "text": "This course reuses the academy’s existing courses. It does not repeat them. Before you begin, you should be comfortable with the following, each with its authoritative source:",
+    "crumbs": [
+      "Home",
+      "Prerequisites"
+    ]
+  },
+  {
+    "objectID": "prerequisites.html#required-courses",
+    "href": "prerequisites.html#required-courses",
+    "title": "Prerequisites",
+    "section": "Required courses",
+    "text": "Required courses\n\n\n\nYou need\nSo that\nTaught by\n\n\n\n\nKubernetes basics (Pods, Deployments, Services, ConfigMaps, controllers, reconciliation)\nyou can run and reason about the local runtime\nKubernetes for Open Engineering\n\n\nMiniKube setup\nyou have a local cluster for this course\nKubernetes for Open Engineering — the canonical minikube home\n\n\nCrossplane (XRDs, XRs, Compositions, Composition Functions, reconciliation, providers)\nyou can declare “what should exist” declaratively\nCrossplane\n\n\nPico (Rules, Parser, Composer, Pico digital entities)\nyou can build a digital twin\nPico\n\n\nManifold (Pico runtime on Kubernetes, Wrangler channels)\nyou can run the Pico\nManifold\n\n\nHome Assistant as a control surface\nyou can expose a human interface\nHello Pico on Home Assistant",
+    "crumbs": [
+      "Home",
+      "Prerequisites"
+    ]
+  },
+  {
+    "objectID": "prerequisites.html#recommended-order",
+    "href": "prerequisites.html#recommended-order",
+    "title": "Prerequisites",
+    "section": "Recommended order",
+    "text": "Recommended order\nKubernetes\n   ↓\nMiniKube\n   ↓\nCrossplane\n   │\n   ├─────────────┐\n   ▼             ▼\nDefinitions    Pico\n   │             │\nConventions    Manifold\n   │             │\nRules           │\n   └──────┬──────┘\n          ▼\n    Home Assistant\n          │\n          ▼\n    MAKE THE LAMP NOD\nWhere your own background differs, existing canonical academy courses take precedence over this graph.",
+    "crumbs": [
+      "Home",
+      "Prerequisites"
+    ]
+  },
+  {
+    "objectID": "prerequisites.html#environment-you-will-need",
+    "href": "prerequisites.html#environment-you-will-need",
+    "title": "Prerequisites",
+    "section": "Environment you will need",
+    "text": "Environment you will need\n\nA workstation with MiniKube running (see the Kubernetes course).\nCrossplane installed in the cluster.\nThe bin/pico Open Engineering CLI.\nHome Assistant available as a control surface (see the Home Assistant lab).\nFor the simulation path: nothing else — this course is completable without hardware.\nFor the physical path: the PixStars anglepoise lamp (ESP32 + 74HCT245 + Dynamixel AX-12A). Hardware exercises are labelled and run entirely opt-in.",
+    "crumbs": [
+      "Home",
+      "Prerequisites"
+    ]
+  },
+  {
+    "objectID": "prerequisites.html#simulation-does-not-require-hardware",
+    "href": "prerequisites.html#simulation-does-not-require-hardware",
+    "title": "Prerequisites",
+    "section": "Simulation does not require hardware",
+    "text": "Simulation does not require hardware\nThis course is built simulation first. Modules 4, 7, and 12 work end-to-end using a simulated actuator, so you can complete the full course without an ESP32, a servo, or a lamp. The physical hardware path is an explicit, opt-in extension of the same architecture — nothing needs to be rewritten to move from simulation to physics.",
+    "crumbs": [
+      "Home",
+      "Prerequisites"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Make the Lamp Nod",
+    "section": "",
+    "text": "Press NOD in Home Assistant, and a physical lamp nods its head.\nThat simple gesture teaches something much bigger: how an Open Engineering declaration can travel through abstractions, a Pico digital twin, a runtime, an event, an edge adapter, and an electrical interface — until the physical world actually changes.\n\nDeclare a meaningful capability in Open Engineering and follow it all the way until the physical world changes.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#the-challenge",
+    "href": "index.html#the-challenge",
+    "title": "Make the Lamp Nod",
+    "section": "",
+    "text": "Press NOD in Home Assistant, and a physical lamp nods its head.\nThat simple gesture teaches something much bigger: how an Open Engineering declaration can travel through abstractions, a Pico digital twin, a runtime, an event, an edge adapter, and an electrical interface — until the physical world actually changes.\n\nDeclare a meaningful capability in Open Engineering and follow it all the way until the physical world changes.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#why-this-course-exists",
+    "href": "index.html#why-this-course-exists",
+    "title": "Make the Lamp Nod",
+    "section": "Why this course exists",
+    "text": "Why this course exists\nEverything you have learned separately — Kubernetes, MiniKube, Crossplane, Pico, Manifold, events, Home Assistant — is a single, cooperating system here. This is a capstone: it composes what you already know instead of teaching each technology again.\nIt is also the academy’s first cyber-physical course. Open Engineering is not only a way to describe and operate software; it is a method for composing cyber-physical systems.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#the-conceptual-journey",
+    "href": "index.html#the-conceptual-journey",
+    "title": "Make the Lamp Nod",
+    "section": "The conceptual journey",
+    "text": "The conceptual journey\nHuman Intent\n     ↓\nHome Assistant\n     ↓\nOpen Engineering Capability\n     ↓\nPico Digital Twin\n     ↓\nManifold Runtime\n     ↓\nOpen Engineering Event\n     ↓\nEdge Adapter\n     ↓\nESP32\n     ↓\n74HCT245\n     ↓\nAX-12A\n     ↓\nMechanical Lamp Head\n     ↓\nPhysical Motion\nThe final proof that the architecture works is:\nThe lamp nods.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#learning-path",
+    "href": "index.html#learning-path",
+    "title": "Make the Lamp Nod",
+    "section": "Learning path",
+    "text": "Learning path\nThe course is a single forward build wrapped by a challenge and a capstone:\n\nModule 0 — The Challenge: see the finished result before building it.\nModules 1–2 — The physical system and the capability: meet the hardware, then the semantic capability it exposes.\nModules 3–4 — Digital twin and simulation: model the actuator as a Pico, run it without hardware.\nModules 5–7 — Compose, run, bring alive: Crossplane, MiniKube, Manifold.\nModules 8–9 — The edge: the ESP32 adapter and the physical AX-12A.\nModules 10–12 — Expose, trace, and nod: Home Assistant, observability, and the capstone.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#reuse-first",
+    "href": "index.html#reuse-first",
+    "title": "Make the Lamp Nod",
+    "section": "Reuse-first",
+    "text": "Reuse-first\nThis course deliberately does not repeat your earlier courses. It links to them:\n\nKubernetes — the local cluster and MiniKube foundation.\nCrossplane — XRDs, XRs, Compositions, providers.\nPico — Rules, Parser, Composer, Pico digital entities.\nManifold — the Pico runtime execution environment.\nHello Pico on Home Assistant — Home Assistant as a control surface.\n\nThe prerequisites page lists exactly what you need, and the architecture page is the map you will follow.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "index.html#get-started",
+    "href": "index.html#get-started",
+    "title": "Make the Lamp Nod",
+    "section": "Get started",
+    "text": "Get started\nBegin with Module 0 — The Challenge, where you first see the lamp nod before learning how it is built.",
+    "crumbs": [
+      "Home",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "glossary.html",
+    "href": "glossary.html",
+    "title": "Glossary",
+    "section": "",
+    "text": "A physical device that produces motion. In this course, the Dynamixel AX-12A rotates the lamp head. Referenced as an abstraction, not a register bank.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#actuator",
+    "href": "glossary.html#actuator",
+    "title": "Glossary",
+    "section": "",
+    "text": "A physical device that produces motion. In this course, the Dynamixel AX-12A rotates the lamp head. Referenced as an abstraction, not a register bank.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#capability",
+    "href": "glossary.html#capability",
+    "title": "Glossary",
+    "section": "Capability",
+    "text": "Capability\nA semantic operation a consumer can request (for example nod), independent of how it is realized. Consumers request capabilities; implementations choose the realization.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#digital-twin",
+    "href": "glossary.html#digital-twin",
+    "title": "Glossary",
+    "section": "Digital twin",
+    "text": "Digital twin\nA Pico-based representation of the logical actuator and its state — distinct from merely mirroring a hardware register. Holds desired state and observed state.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#desired-state",
+    "href": "glossary.html#desired-state",
+    "title": "Glossary",
+    "section": "Desired state",
+    "text": "Desired state\nWhat the system has been asked to be (for example desiredPosition).",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#observed-state",
+    "href": "glossary.html#observed-state",
+    "title": "Glossary",
+    "section": "Observed state",
+    "text": "Observed state\nWhat the system reports it currently is (for example actualPosition).",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#edge-adapter",
+    "href": "glossary.html#edge-adapter",
+    "title": "Glossary",
+    "section": "Edge adapter",
+    "text": "Edge adapter\nHardware/software that sits at the boundary between Open Engineering semantics and a device protocol. The ESP32 is the edge adapter in this course: it speaks actuator-level commands to the AX-12A and never character meaning.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#home-assistant",
+    "href": "glossary.html#home-assistant",
+    "title": "Glossary",
+    "section": "Home Assistant",
+    "text": "Home Assistant\nA home automation platform used here strictly as a human control surface. It requests capabilities (nod, center, stop); it does not own the actuator behavior or implement a servo trajectory.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#control-surface",
+    "href": "glossary.html#control-surface",
+    "title": "Glossary",
+    "section": "Control surface",
+    "text": "Control surface\nThe Open Engineering term for an interface that lets a human (or another actor) express intent, without becoming the runtime or the ontology owner.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#pico",
+    "href": "glossary.html#pico",
+    "title": "Glossary",
+    "section": "Pico",
+    "text": "Pico\nThe Open Engineering abstraction for a declarative, composable digital entity described by Rules and produced by a Parser and a Composer. In this course a Pico represents the logical head-pitch actuator.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#manifold",
+    "href": "glossary.html#manifold",
+    "title": "Glossary",
+    "section": "Manifold",
+    "text": "Manifold\nThe Pico runtime execution environment: a Kubernetes-hosted RuntimeEnvironment that hosts a Pico Element and executes its rules when events arrive.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#crossplane",
+    "href": "glossary.html#crossplane",
+    "title": "Glossary",
+    "section": "Crossplane",
+    "text": "Crossplane\nDeclarative composition for the control plane. In this course it composes the resources needed to realize the requested actuator capability — what should exist.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#open-engineering-event",
+    "href": "glossary.html#open-engineering-event",
+    "title": "Glossary",
+    "section": "Open Engineering event",
+    "text": "Open Engineering event\nA semantic message that represents something happening in the system, carried below the semantic layer by a transport (for example MQTT). A nod request becomes an event such as pixstars.head.nod.requested.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#correlation-identifier",
+    "href": "glossary.html#correlation-identifier",
+    "title": "Glossary",
+    "section": "Correlation identifier",
+    "text": "Correlation identifier\nA unique identifier attached to every request so one nod can be followed through Home Assistant → event → Pico → rule → command → edge → servo → completion → telemetry.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#nod",
+    "href": "glossary.html#nod",
+    "title": "Glossary",
+    "section": "Nod",
+    "text": "Nod\nThe first, mandatory gesture. A deterministic motion sequence: center → slightly down → slightly up → return to center. Exact safe servo positions are configurable and calibrated, never hard-coded into generic definitions.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#simulation-before-physics",
+    "href": "glossary.html#simulation-before-physics",
+    "title": "Glossary",
+    "section": "Simulation-before-physics",
+    "text": "Simulation-before-physics\nThe principle that every capability should be testable without hardware. The SimulatedActuator and DynamixelAX12AActuator implement the same contract.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "glossary.html#safe-limits",
+    "href": "glossary.html#safe-limits",
+    "title": "Glossary",
+    "section": "Safe limits",
+    "text": "Safe limits\nConfigurable minimum/maximum positions, movement speed, timeout, emergency stop, and safe startup/shutdown states within which all physical movement must operate.",
+    "crumbs": [
+      "Home",
+      "Glossary"
+    ]
+  },
+  {
+    "objectID": "architecture.html",
+    "href": "architecture.html",
+    "title": "Architecture",
+    "section": "",
+    "text": "This page is the reference map for the whole course. Every module points back to it. If an arrow on this page cannot be explained, tested, or observed, the implementation is not yet complete.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#the-system-in-one-diagram",
+    "href": "architecture.html#the-system-in-one-diagram",
+    "title": "Architecture",
+    "section": "The system in one diagram",
+    "text": "The system in one diagram\nHOME ASSISTANT            ← human interface (control surface only)\n     │  nod (semantic request)\n     ▼\nOPEN ENGINEERING          ← capability resolution + events + identifiers\n     │  capability / event\n     ▼\nPICO TWIN                 ← pixstars-head-pitch digital twin (desired + observed)\n     │  rule\n     ▼\nMANIFOLD                  ← Pico runtime execution environment\n     │  actuator command\n     ▼\nEDGE ADAPTER              ← Open Engineering semantics → device protocol\n     │  network message\n     ▼\nESP32                     ← actuator-level commands; no character reasoning\n     │  Dynamixel Protocol 1.0\n     ▼\n74HCT245                  ← electrical interface (voltage levels, bus, direction)\n     │  electrical communication\n     ▼\nAX-12A                    ← physical actuator\n     │  rotation\n     ▼\nLAMP HEAD → NOD           ← physical motion\n     │  telemetry (ascent path)\n     ▼\n...back up to PICO and HOME ASSISTANT",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#two-halves-of-the-same-loop",
+    "href": "architecture.html#two-halves-of-the-same-loop",
+    "title": "Architecture",
+    "section": "Two halves of the same loop",
+    "text": "Two halves of the same loop\nThis course is not remote control. It is a minimal closed-loop cyber-physical architecture:\nCommand (descent):\nHuman → Home Assistant → Open Engineering → Pico → Manifold → Edge Adapter → ESP32 → AX-12A → physical nod\nTelemetry (ascent):\nPhysical device → telemetry → Edge Adapter → Pico state → Open Engineering → Home Assistant → human",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#semantic-layering-a-key-teaching-artifact",
+    "href": "architecture.html#semantic-layering-a-key-teaching-artifact",
+    "title": "Architecture",
+    "section": "Semantic layering (a key teaching artifact)",
+    "text": "Semantic layering (a key teaching artifact)\nEvery layer answers a distinct question. Do not collapse them:\nWHY              Character meaning            \"PixStars agrees\"\n                    ↓\nWHAT             Gesture intent              \"nod\"\n                    ↓\nHOW — LOGICAL    Gesture sequence            down → up → center\n                    ↓\nHOW — DEVICE     Servo positions & speeds    safe, configured\n                    ↓\nHOW — PROTOCOL   Dynamixel Protocol 1.0      register writes, packets\n                    ↓\nHOW — ELECTRICAL ESP32 + 74HCT245            voltage levels, bus, direction\n                    ↓\nPHYSICS          AX-12A rotates lamp head    torque, rotation, motion\nRules of this layering:\n\nHigher layers request capabilities. They say what (“nod”), never how.\nLower layers implement capabilities. They decide how the gesture is realized, down to register values.\nThe ESP32 must not contain character reasoning. It understands actuator-level concepts (set-position, center, execute-motion, stop, get-position, get-temperature, get-status) — never concepts like agreement, disagreement, happiness, attention, confusion.\nThe 74HCT245 is purely physical communication. It is not a semantic Open Engineering entity; it is where abstractions cross a hardware boundary of voltage levels, buses, and electrical communication.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#responsibilities-by-layer",
+    "href": "architecture.html#responsibilities-by-layer",
+    "title": "Architecture",
+    "section": "Responsibilities by layer",
+    "text": "Responsibilities by layer\n\n\n\n\n\n\n\n\nLayer\nResponsible for\nNot responsible for\n\n\n\n\nHome Assistant\nHuman interface; requesting nod, center, stop\nImplementing the servo trajectory; owning actuator behavior\n\n\nOpen Engineering\nCapabilities, identifiers, events, composition, observability\nDevice protocol details\n\n\nPico digital twin\nLogical head-pitch actuator; desired & observed state\nPhysics\n\n\nManifold / Pico runtime\nExecuting rules when events arrive\nDeciding what should exist (that is Crossplane)\n\n\nCrossplane\nDeclarative composition — what should exist\nRuntime behavior (what should happen)\n\n\nEdge adapter (ESP32)\nReceiving commands, validating, converting to Dynamixel Protocol 1.0, UART, reporting state\nCharacter semantics, when PixStars should nod\n\n\nAX-12A\nPhysical rotation of the head\nBeing the whole digital twin\n\n\n74HCT245\nElectrical interface\nAnything semantic",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#the-critical-separation-crossplane-vs-manifold",
+    "href": "architecture.html#the-critical-separation-crossplane-vs-manifold",
+    "title": "Architecture",
+    "section": "The critical separation: Crossplane vs Manifold",
+    "text": "The critical separation: Crossplane vs Manifold\nThis course makes one distinction explicit and keeps it:\n\nCrossplane answers: What should exist? (declarative composition).\nManifold / Pico runtime answers: What should happen? (runtime behavior).\n\nThese are not interchangeable. The thing being composed eventually controls a physical actuator — but composition and execution remain separate concerns.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#digital-twin-over-remote-control",
+    "href": "architecture.html#digital-twin-over-remote-control",
+    "title": "Architecture",
+    "section": "Digital twin over remote control",
+    "text": "Digital twin over remote control\nThe Pico twin maintains desired state and observed state:\ndesiredPosition   the position we asked for\nactualPosition    the position the actuator reports\nmoving            is the actuator in motion\ntorqueEnabled     is torque on\nconnected         is the actuator reachable\ntemperature       telemetry (where available)\nlastCommand       the most recent command\nlastCommandStatus requested | accepted | executing | completed | failed\nA difference between desired and observed is not inherently an error:\ndesiredPosition = +15°\nactualPosition  = +12°\nThis is evidence that the physical system is moving toward the desired state.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#capability-over-directives",
+    "href": "architecture.html#capability-over-directives",
+    "title": "Architecture",
+    "section": "Capability over directives",
+    "text": "Capability over directives\nThe principal capability is nod. Consumers request nod() — never:\nwriteRegister(30, 614)\nsleep(300)\nwriteRegister(30, 410)\n...\nConsumers request capabilities; implementations determine how those capabilities are realized.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#desired-state-principle",
+    "href": "architecture.html#desired-state-principle",
+    "title": "Architecture",
+    "section": "Desired-state principle",
+    "text": "Desired-state principle\n\nRequesting motion is not proof that motion occurred.\n\nCOMMAND SENT is not equivalent to GESTURE COMPLETED. The system always distinguishes:\nrequested → accepted → executing → completed → failed",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#every-arrow-is-a-contract",
+    "href": "architecture.html#every-arrow-is-a-contract",
+    "title": "Architecture",
+    "section": "Every arrow is a contract",
+    "text": "Every arrow is a contract\nFor every arrow in the system diagram, the course explains:\n\nwhat crosses the boundary,\nwho owns the contract,\nhow failure is represented,\nhow the interaction is tested,\nhow the interaction is observed.\n\nThe full per-arrow walkthrough lives in Module 11 — Trace the Nod.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "architecture.html#architectural-principles",
+    "href": "architecture.html#architectural-principles",
+    "title": "Architecture",
+    "section": "Architectural principles",
+    "text": "Architectural principles\nThis course reinforces the academy principles most relevant to physical systems:\n\nComposition over duplication — reuse academy courses and capabilities.\nSemantic interfaces over hardware interfaces — expose nod, not registers.\nDigital twin over remote control — maintain desired and observed state.\nDeclarative composition over manual assembly — use Crossplane.\nRuntime behavior separate from infrastructure — Crossplane vs Manifold.\nEdge adapters isolate hardware — the ESP32 knows the device, not character meaning.\nSimulation before physics — every capability is testable without hardware.\nEvidence over assumption — a sent command does not prove physical execution.\nSafe by design — movement operates inside explicitly configured boundaries.\nReplaceable implementations — the logical head actuator survives replacement of the AX-12A.",
+    "crumbs": [
+      "Home",
+      "Architecture"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html",
+    "href": "modules/01-meet-the-physical-system.html",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "",
+    "text": "Understand the physical boundary of the system: where Open Engineering abstractions stop and hardware begins. Meet the ESP32, the 74HCT245, and the AX-12A, and — just as importantly — what each one is not.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#goal",
+    "href": "modules/01-meet-the-physical-system.html#goal",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "",
+    "text": "Understand the physical boundary of the system: where Open Engineering abstractions stop and hardware begins. Meet the ESP32, the 74HCT245, and the AX-12A, and — just as importantly — what each one is not.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#the-physical-reference-architecture",
+    "href": "modules/01-meet-the-physical-system.html#the-physical-reference-architecture",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "The physical reference architecture",
+    "text": "The physical reference architecture\nThis course is anchored to a single, concrete physical chain:\nESP32\n  ↓\n74HCT245\n  ↓\nDynamixel AX-12A\n  ↓\nMechanical head pivot\n  ↓\nAnglepoise lamp head\nThe AX-12A provides the physical head-pitch degree of freedom. When the lamp “nods”, the AX-12A rotates the head pivot through the nod motion and the lamp head moves with it.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#the-esp32-is-an-edge-adapter",
+    "href": "modules/01-meet-the-physical-system.html#the-esp32-is-an-edge-adapter",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "The ESP32 is an edge adapter",
+    "text": "The ESP32 is an edge adapter\nThe ESP32 is where Open Engineering semantics cross into a device protocol. Its responsibilities are deliberately narrow:\n\nnetwork connectivity\nreceiving actuator commands\nvalidating device-level commands\nconverting commands to Dynamixel Protocol 1.0\ncommunicating with the AX-12A\nmanaging UART communication and communication direction where required\nreporting actuator state, errors, and connectivity\nexposing health information\n\nThe ESP32 understands actuator-level concepts only:\nset-position      move the servo to a position\ncenter            return to center\nexecute-motion    run a configured motion sequence\nstop              halt motion\nget-position      report current position\nget-temperature   report temperature telemetry\nget-status        report status / health\n\n\n\n\n\n\nTip\n\n\n\nThe ESP32 must not contain character reasoning. It must not decide when the lamp should nod, and it must not interpret agreement, disagreement, happiness, attention, or confusion. Those concepts belong at higher semantic layers — never in the edge adapter. See the edge adapter reference for the full specification.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#the-74hct245-is-purely-physical",
+    "href": "modules/01-meet-the-physical-system.html#the-74hct245-is-purely-physical",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "The 74HCT245 is purely physical",
+    "text": "The 74HCT245 is purely physical\nThe 74HCT245 sits between the ESP32 and the AX-12A. In this course it has no semantic role at all. It belongs entirely to the physical communication implementation:\nOpen Engineering\n     ↓\nESP32 edge adapter\n     ↓\nelectrical interface\n     ↓\n74HCT245\n     ↓\nAX-12A\nThis is the place where abstractions cross a hardware boundary of voltage levels, buses, and electrical communication. The 74HCT245 is not a semantic Open Engineering entity; it is a component that makes the electrical interface work. Do not search it for meaning — search for electrical correctness.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#the-ax-12a-is-the-actuator-not-the-twin",
+    "href": "modules/01-meet-the-physical-system.html#the-ax-12a-is-the-actuator-not-the-twin",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "The AX-12A is the actuator, not the twin",
+    "text": "The AX-12A is the actuator, not the twin\nThe AX-12A is the physical actuator. It does the rotating. But it is not the complete digital representation of anything:\nPico\n │\n │ represents\n ▼\nLogical Head-Pitch Actuator\n │\n │ currently implemented by\n ▼\nAX-12A\nThe distinction matters: the logical head-pitch actuator is a capability and a state model, while the AX-12A is one current physical implementation of it. A future implementation could replace the AX-12A with another servo without changing the semantic capability exposed to higher layers.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#where-this-fits-on-your-machine",
+    "href": "modules/01-meet-the-physical-system.html#where-this-fits-on-your-machine",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "Where this fits on your machine",
+    "text": "Where this fits on your machine\nThe Open Engineering runtime runs in a local Kubernetes cluster via MiniKube, on your workstation, and talks to the ESP32 over the LAN:\nDeveloper Workstation\n┌───────────────────────────────────────────────┐\n│ MiniKube                                      │\n│                                               │\n│ Crossplane                                    │\n│ Open Engineering resources                    │\n│ Manifold                                      │\n│ Pico runtime                                  │\n│ event/messaging infrastructure                │\n│ Home Assistant integration                    │\n│ observability                                 │\n└───────────────────────────────────────────────┘\n                       │\n                       │ LAN / Wi-Fi\n                       ▼\n                    ESP32\n                       │\n                       ▼\n                    74HCT245\n                       │\n                       ▼\n                    AX-12A\n                       │\n                       ▼\n                      Lamp\nThe Prerequisites page lists what you need installed; the Architecture page is the map of the whole system.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#where-we-stop-in-this-course",
+    "href": "modules/01-meet-the-physical-system.html#where-we-stop-in-this-course",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "Where we stop in this course",
+    "text": "Where we stop in this course\nPhysical hardware has no intelligence. This module is deliberately character-free: the course stops at explicit human instruction of a physical gesture. Nothing here infers, reasons, or decides to nod — a human asks, and the physical system moves. Character behavior is a future layer that builds on top of this physical foundation, never inside it.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#exercise",
+    "href": "modules/01-meet-the-physical-system.html#exercise",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "Exercise",
+    "text": "Exercise\nExplain, in your own words:\n\nWhat three responsibilities does the ESP32 have, and which three things is it explicitly forbidden from doing?\nWhy is the 74HCT245 described as “purely physical communication” rather than a semantic entity?\nWhat is the difference between the logical head-pitch actuator and the AX-12A?\nTrace the command set-position and the physical chain it must pass through from the ESP32 to the lamp head.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/01-meet-the-physical-system.html#next",
+    "href": "modules/01-meet-the-physical-system.html#next",
+    "title": "Module 01 — Meet the Physical System",
+    "section": "Next",
+    "text": "Next\nThe physical chain gives us a device. In the next module we turn that device into a capability: Module 02 — From Device to Capability.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 01 — Meet the Physical System"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html",
+    "href": "modules/03-create-the-digital-twin.html",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "",
+    "text": "Create the digital twin: the pixstars-head-pitch Pico. The Pico represents the logical actuator and its state — not merely a hardware register. It is the home where a capability (nod) lives, is tracked, and is observed.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#goal",
+    "href": "modules/03-create-the-digital-twin.html#goal",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "",
+    "text": "Create the digital twin: the pixstars-head-pitch Pico. The Pico represents the logical actuator and its state — not merely a hardware register. It is the home where a capability (nod) lives, is tracked, and is observed.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#reuse-the-pico-course",
+    "href": "modules/03-create-the-digital-twin.html#reuse-the-pico-course",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Reuse the Pico course",
+    "text": "Reuse the Pico course\nA Pico is a declarative, composable digital entity described by Rules and produced by a Parser and a Composer. We reuse that model exactly rather than inventing a new format.\n\nPico course\nPico Glossary\n\n\n\n\n\n\n\nTip\n\n\n\nThe Pico is the logical head-pitch actuator. The AX-12A is one current implementation of it. The Pico’s capability must survive replacing the AX-12A with another servo — the Pico describes what the actuator is, not which servo currently realizes it.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#the-canonical-pico",
+    "href": "modules/03-create-the-digital-twin.html#the-canonical-pico",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "The canonical Pico",
+    "text": "The canonical Pico\nHere is the canonical Pico representing the logical PixStars head-pitch actuator (picos/pixstars-head-pitch.yaml):\napiVersion: open-engineering.io/v1alpha1\nkind: Pico\nmetadata:\n  name: pixstars-head-pitch\nspec:\n  type: actuator\n  capabilities:\n    - nod\n    - center\n    - stop\n    - set-position\n  implementation:\n    deviceClass: dynamixel\n    model: AX-12A\n  state:\n    desiredPosition: 0\n    actualPosition: 0\n    moving: false\n    torqueEnabled: true\n    connected: true\n    temperature: null\n    voltage: null\n    lastCommand: null\n    lastCommandStatus: null\n    lastUpdated: null\n  events:\n    subscribesTo:\n      channel: pixstars-head\n      eventTypes:\n        - pixstars.head.nod.requested\n        - pixstars.head.center.requested\n        - pixstars.head.stop.requested\n    emits:\n      - pixstars.head.nod.completed\n      - pixstars.head.nod.failed\n      - pixstars.head.state.updated\nThree parts carry the meaning:\n\ncapabilities — what the actuator can do (nod, center, stop, set-position). This is the semantic interface from Module 2.\nimplementation — the current device class and model (Dynamixel AX-12A). This is replaceable: swap it for another servo and the capability survives.\nstate — the twin’s picture of the actuator, split into desired and observed fields.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#desired-state-vs-observed-state",
+    "href": "modules/03-create-the-digital-twin.html#desired-state-vs-observed-state",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Desired state vs observed state",
+    "text": "Desired state vs observed state\nThe state model keeps desired state and observed state explicitly separate:\ndesiredPosition   the position we asked for\nactualPosition    the position the actuator reports\nmoving            is the actuator in motion\ntorqueEnabled     is torque on\nconnected         is the actuator reachable\ntemperature       telemetry (where available)\nlastCommand       the most recent command\nlastCommandStatus requested | accepted | executing | completed | failed\nThis distinction must be taught explicitly:\ndesiredPosition = +15°\nactualPosition  = +12°\nThis is not an error. It is evidence that the physical system is moving toward the desired state. A digital twin that only mirrored one number could not tell “moving correctly” from “failed”. Because we keep both, the difference between them is meaningful signal, not noise.\n\n\n\n\n\n\nTip\n\n\n\nSee the Architecture page — Digital twin over remote control — for the full list of state fields and the example where +15° desired vs +12° actual is evidence of motion, not failure.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#identity",
+    "href": "modules/03-create-the-digital-twin.html#identity",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Identity",
+    "text": "Identity\nEvery important Open Engineering entity uses the canonical Open Engineering identifier conventions — we do not create a separate identity scheme. At minimum identities exist for:\n\nthe physical actuator\nthe Pico digital twin\nthe actuator capability\nthe edge adapter\nthe runtime instance\nthe relevant events\n\nEach nod also carries a correlation identifier so one request can be traced through Home Assistant → event → Pico → rule → command → edge → servo → completion → telemetry. With identities in place, you can follow a single execution end to end instead of hoping the pieces line up.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#events",
+    "href": "modules/03-create-the-digital-twin.html#events",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Events",
+    "text": "Events\nThe twin does its work through events. It subscribes to requests (nod, center, stop) and emits results (nod.completed, nod.failed, state.updated). The request→result loop is what makes the digital twin observable: you can watch a command enter, state change, and a result come out.\nThe rule that governs what the Pico is permitted to do lives in rules/nod.yaml. Notice it allows the semantic capabilities and denies actuator.write-register and actuator.raw-motion — the device-level leakage we excluded in Module 2.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#link-back-to-architecture",
+    "href": "modules/03-create-the-digital-twin.html#link-back-to-architecture",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Link back to architecture",
+    "text": "Link back to architecture\nThe Pico twin sits in the middle of the closed loop — it holds the desired and observed state that makes the system a digital twin over remote control, not mere remote control. See Architecture — Digital twin over remote control.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#exercise",
+    "href": "modules/03-create-the-digital-twin.html#exercise",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Exercise",
+    "text": "Exercise\nExtend the state model or add a telemetry field:\n\nAdd a new field to state (for example voltage already exists, so try something like load, health, or lastError) and give it a sensible initial value in the Pico YAML above.\nUpdate the events section if your field would emit a new event type, and name that event with the canonical dotted style.\nAdd the corresponding identity for that event so it can be traced.\nExplain, in one or two sentences, whether your new field is desired state, observed state, or both — and why.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/03-create-the-digital-twin.html#next",
+    "href": "modules/03-create-the-digital-twin.html#next",
+    "title": "Module 03 — Create the Digital Twin",
+    "section": "Next",
+    "text": "Next\nA digital twin with state is only useful if we can run it. In the next module we prove the nod capability works without any hardware: Module 04 — Simulate the Actuator.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 03 — Create the Digital Twin"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html",
+    "href": "modules/05-compose-the-actuator.html",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "",
+    "text": "Reuse the existing Crossplane course for XRDs, XRs, Compositions, Composition Functions, reconciliation, and providers. This module does not repeat foundational Crossplane material. It answers the more advanced question: What happens when the thing being composed eventually controls a physical actuator?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#goal",
+    "href": "modules/05-compose-the-actuator.html#goal",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "",
+    "text": "Reuse the existing Crossplane course for XRDs, XRs, Compositions, Composition Functions, reconciliation, and providers. This module does not repeat foundational Crossplane material. It answers the more advanced question: What happens when the thing being composed eventually controls a physical actuator?",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#crossplane-composes-manifold-executes",
+    "href": "modules/05-compose-the-actuator.html#crossplane-composes-manifold-executes",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "Crossplane composes; Manifold executes",
+    "text": "Crossplane composes; Manifold executes\nThis course makes one separation explicit and keeps it:\n\nCrossplane answers: What should exist? (declarative composition).\nManifold / Pico runtime answers: What should happen? (runtime behavior).\n\nThese are not interchangeable. The thing being composed eventually controls a physical actuator – but composition and execution remain separate concerns. See the Crossplane course for the full treatment of XRDs, XRs, Compositions, Composition Functions, reconciliation, and providers.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#the-capability-claim",
+    "href": "modules/05-compose-the-actuator.html#the-capability-claim",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "The capability claim",
+    "text": "The capability claim\nA developer or learner does NOT manually assemble every runtime resource. Instead, they declare what they want:\napiVersion: robotics.open-engineering.io/v1alpha1\nkind: Actuator\nmetadata:\n  name: pixstars-head\nspec:\n  capabilities:\n    - nod\n    - center\n    - stop\n  gesture:\n    name: nod\nThis is the claim (../definitions/actuator-claim.yaml): “I want a head-pitch actuator that can nod, center, and stop.” The learner does NOT define the Pico, the runtime registration, the event connectivity, the edge-adapter configuration, the observability, or the Home Assistant exposure. Crossplane composes all of those.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#the-xrd",
+    "href": "modules/05-compose-the-actuator.html#the-xrd",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "The XRD",
+    "text": "The XRD\nThe XRD (../definitions/actuator-xrd.yaml) defines the shape of the new higher-level API:\napiVersion: apiextensions.crossplane.io/v1\nkind: CompositeResourceDefinition\nmetadata:\n  name: xactuators.robotics.open-engineering.io\nspec:\n  group: robotics.open-engineering.io\n  names:\n    kind: XActuator\n    plural: xactuators\n  claimNames:\n    kind: Actuator\n    plural: actuators\n  versions:\n    - name: v1alpha1\n      served: true\n      referenceable: true\n      schema:\n        openAPIV3Schema:\n          type: object\n          properties:\n            spec:\n              type: object\n              properties:\n                capabilities:\n                  type: array\n                  items:\n                    type: string\n                    enum:\n                      - nod\n                      - center\n                      - stop\n                      - set-position\n                gesture:\n                  type: object\n                  properties:\n                    name:\n                      type: string\n                      enum:\n                        - nod\n                    calibration:\n                      type: object\n                      properties:\n                        center:\n                          type: integer\n                        down:\n                          type: integer\n                        up:\n                          type: integer\n                        repetitions:\n                          type: integer\n                        speed:\n                          type: string\n              required:\n                - capabilities\nThe claim kind is Actuator; the composite resource kind is XActuator. This follows the same pattern as the Hello Pico on Kubernetes lab where XHelloWorldPico is the XR and HelloWorldPico is the claim.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#what-crossplane-composes",
+    "href": "modules/05-compose-the-actuator.html#what-crossplane-composes",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "What Crossplane composes",
+    "text": "What Crossplane composes\nThe Composition (../compositions/actuator.yaml) declares how an instance of the Actuator claim is realized. Conceptually:\nActuator XR\n    |\n    +-- Pico representation          (pixstars-head-pitch)\n    +-- runtime registration         (Manifold RuntimeEnvironment registration)\n    +-- event connectivity           (Wrangler Channel + subscription)\n    +-- edge-adapter configuration   (ESP32 endpoint + command set)\n    +-- observability                (correlation, telemetry)\n    +-- Home Assistant exposure      (control surface)\nEach branch is a composed resource. The learner requests a semantic actuator capability; Crossplane composes the dependencies needed to realize it. This is declarative composition over manual assembly.\nThe Composition itself:\napiVersion: apiextensions.crossplane.io/v1\nkind: Composition\nmetadata:\n  name: xactuators.robotics.open-engineering.io\nspec:\n  compositeTypeRef:\n    apiVersion: robotics.open-engineering.io/v1alpha1\n    kind: XActuator\n  mode: Pipeline\n  pipeline:\n    - step: patch-selection\n      functionRef:\n        name: function-patch-and-transform\n      input:\n        apiVersion: pt.fn.crossplane.io/v1beta1\n        kind: Resources\n        resources:\n          - name: pico-representation\n            base:\n              apiVersion: open-engineering.io/v1alpha1\n              kind: Pico\n          - name: runtime-registration\n            base:\n              apiVersion: manifold.open-engineering.io/v1alpha1\n              kind: RuntimeRegistration\n              spec:\n                runtime: manifold\n          - name: event-connectivity\n            base:\n              apiVersion: wrangler.open-engineering.io/v1alpha1\n              kind: Channel\n              spec:\n                name: pixstars-head\n                eventTypes:\n                  - pixstars.head.nod.requested\n          - name: edge-adapter-config\n            base:\n              apiVersion: edge.open-engineering.io/v1alpha1\n              kind: EdgeAdapterConfig\n          - name: observability\n            base:\n              apiVersion: observability.open-engineering.io/v1alpha1\n              kind: CorrelationConfig\n          - name: home-assistant-exposure\n            base:\n              apiVersion: home-assistant.open-engineering.io/v1alpha1\n              kind: ControlSurfaceExposure\nThis mirrors the same Pipeline-mode Composition pattern taught in the Crossplane course and used in the Hello Pico on Kubernetes lab.\n\n\n\n\n\n\nTip\n\n\n\nDeclarative composition means the learner writes one YAML file (the claim) and Crossplane produces every dependent resource. The alternative – manually creating the Pico, the runtime registration, the Channel, the edge-adapter Config, the observability config, and the Home Assistant exposure – is exactly what Crossplane eliminates.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#exercise",
+    "href": "modules/05-compose-the-actuator.html#exercise",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "Exercise",
+    "text": "Exercise\nExtend the composition with an additional composed resource. For example, add a NotificationConfig resource that emits a status event when the actuator composition completes. Follow the same base + patches pattern already present in ../compositions/actuator.yaml and consult the Crossplane course for the full Composition pipeline syntax.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/05-compose-the-actuator.html#next",
+    "href": "modules/05-compose-the-actuator.html#next",
+    "title": "Module 05 — Compose the Actuator",
+    "section": "Next",
+    "text": "Next\nModule 06 – Run It Locally",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 05 — Compose the Actuator"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html",
+    "href": "modules/07-bring-the-pico-alive.html",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "",
+    "text": "Reuse the Manifold course for the Pico runtime execution environment. Manifold provides the RuntimeEnvironment; the Pico engine hosts the Pico Element; Wrangler declares the InteractionTopology. This module does not repeat foundational Manifold material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#goal",
+    "href": "modules/07-bring-the-pico-alive.html#goal",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "",
+    "text": "Reuse the Manifold course for the Pico runtime execution environment. Manifold provides the RuntimeEnvironment; the Pico engine hosts the Pico Element; Wrangler declares the InteractionTopology. This module does not repeat foundational Manifold material.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#runtime-substrate-vocabulary",
+    "href": "modules/07-bring-the-pico-alive.html#runtime-substrate-vocabulary",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "Runtime substrate vocabulary",
+    "text": "Runtime substrate vocabulary\nThe runtime vocabulary follows the Phase 7 constructive-realization contract:\n\n\n\n\n\n\n\nLayer\nRole\n\n\n\n\nKubernetes\nRuntimeSubstrate – the underlying execution layer\n\n\nManifold\nRuntimeEnvironment – Kubernetes-hosted host for Pico Elements\n\n\nPico engine\nIn-process host inside Manifold that runs Pico Elements\n\n\nWrangler\nInteractionTopology authoring – declares Channels and subscriptions\n\n\nCrossplane\nRealization step – composes runtime resources onto the substrate\n\n\n\nSee the Manifold course for the full treatment of RuntimeSubstrate, RuntimeEnvironment, InteractionTopology, Channel, EventType, and Observation.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#the-pico-digital-twin",
+    "href": "modules/07-bring-the-pico-alive.html#the-pico-digital-twin",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "The Pico digital twin",
+    "text": "The Pico digital twin\nThe pixstars-head-pitch Pico (../picos/pixstars-head-pitch.yaml) represents the logical head-pitch actuator and its state – not merely a hardware register:\napiVersion: open-engineering.io/v1alpha1\nkind: Pico\nmetadata:\n  name: pixstars-head-pitch\nspec:\n  type: actuator\n  capabilities:\n    - nod\n    - center\n    - stop\n    - set-position\n  implementation:\n    deviceClass: dynamixel\n    model: AX-12A\n  state:\n    desiredPosition: 0\n    actualPosition: 0\n    moving: false\n    torqueEnabled: true\n    connected: true\n    temperature: null\n    voltage: null\n    lastCommand: null\n    lastCommandStatus: null\n    lastUpdated: null\n  events:\n    subscribesTo:\n      channel: pixstars-head\n      eventTypes:\n        - pixstars.head.nod.requested\n        - pixstars.head.center.requested\n        - pixstars.head.stop.requested\n    emits:\n      - pixstars.head.nod.completed\n      - pixstars.head.nod.failed\n      - pixstars.head.state.updated\nThe Pico subscribes to the pixstars-head Channel for the event type pixstars.head.nod.requested. When that event arrives, the runtime evaluates the Rules and executes the configured behavior.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#rules-gate",
+    "href": "modules/07-bring-the-pico-alive.html#rules-gate",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "Rules gate",
+    "text": "Rules gate\nThe Rules (../rules/nod.yaml) define what the Pico is permitted to do:\nrules:\n  - capability: actuator.nod\n    effect: allow\n    constraints:\n      actuator: pixstars-head-pitch\n      gate:\n        connected: true\n        ready: true\n        withinSafeLimits: true\n  - capability: actuator.center\n    effect: allow\n    constraints:\n      actuator: pixstars-head-pitch\n  - capability: actuator.stop\n    effect: allow\n    constraints:\n      actuator: pixstars-head-pitch\n  - capability: actuator.set-position\n    effect: allow\n    constraints:\n      actuator: pixstars-head-pitch\n      withinSafeLimits: true\n  - capability: actuator.write-register\n    effect: deny\n  - capability: actuator.raw-motion\n    effect: deny\nThe nod gate requires three conditions: connected: true, ready: true, and withinSafeLimits: true. If any condition is not met, the nod is rejected. Raw register writes and raw motion are explicitly denied – the Pico exposes semantic capabilities, never device-level operations.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#runtime-behavior",
+    "href": "modules/07-bring-the-pico-alive.html#runtime-behavior",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "Runtime behavior",
+    "text": "Runtime behavior\nWhen a pixstars.head.nod.requested event arrives, the Pico runtime executes:\nON pixstars.head.nod.requested\nIF actuator.connected\nAND actuator.ready\nAND actuator.withinSafeLimits\nTHEN execute nod\nELSE report failure\nRuntime behavior is separate from infrastructure. Crossplane determines what should exist; Manifold determines what should happen. This separation is explicit in the architecture.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#simulated-nod",
+    "href": "modules/07-bring-the-pico-alive.html#simulated-nod",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "Simulated nod",
+    "text": "Simulated nod\nThe nod gesture is a deterministic motion sequence (see rules/nod-gesture.yaml):\ncenter (0) -&gt; down (+15) -&gt; up (-8) -&gt; center (0)\nIn simulation, the Pico processes the event, evaluates the Rules gate, runs the gesture sequence against a SimulatedActuator, and emits pixstars.head.nod.completed. The state transitions are observable:\nrequested -&gt; accepted -&gt; executing -&gt; completed\n\n\n\n\n\n\nTip\n\n\n\nA sent command is not proof that motion occurred. The system always distinguishes requested, accepted, executing, completed, and failed. This is the desired-state principle.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#exercise",
+    "href": "modules/07-bring-the-pico-alive.html#exercise",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "Exercise",
+    "text": "Exercise\n\nRegister the pixstars-head-pitch Pico with the Manifold RuntimeEnvironment (follow the registration pattern from the Manifold course).\nEmit a simulated pixstars.head.nod.requested event onto the pixstars-head Channel.\nObserve the Pico response: the Rules gate opens, the nod gesture executes in simulation, and pixstars.head.nod.completed is emitted.\nVerify the Pico state reflects the completed command.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/07-bring-the-pico-alive.html#next",
+    "href": "modules/07-bring-the-pico-alive.html#next",
+    "title": "Module 07 — Bring the Pico Alive",
+    "section": "Next",
+    "text": "Next\nModule 08 – Build the Edge Adapter",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 07 — Bring the Pico Alive"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html",
+    "href": "modules/09-connect-the-physical-ax12.html",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "",
+    "text": "WarningHardware module — opt-in\n\n\n\nThis module requires the PixStars reference hardware: ESP32, 74HCT245 level-shifter, Dynamixel AX-12A servo, and the physical anglepoise lamp. It is an explicit extension of the simulation-first architecture. Modules 4, 7, and 12 can be completed without hardware. Only proceed here if you have the physical system wired and powered.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#goal",
+    "href": "modules/09-connect-the-physical-ax12.html#goal",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Goal",
+    "text": "Goal\nConnect the ESP32 edge adapter to the physical AX-12A through the 74HCT245 electrical interface. Execute a safe, ordered calibration sequence. Only after every step succeeds may the nod gesture be enabled.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#the-physical-chain",
+    "href": "modules/09-connect-the-physical-ax12.html#the-physical-chain",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "The physical chain",
+    "text": "The physical chain\nESP32 edge adapter\n     ↓\n74HCT245 (electrical interface — voltage levels, bus, direction)\n     ↓\nDynamixel AX-12A\n     ↓\nMechanical lamp head pivot\nThe 74HCT245 is purely physical communication. It is where Open Engineering abstractions cross a hardware boundary of voltage levels, buses, and electrical communication. It never appears as a semantic Open Engineering entity. See the edge adapter reference for the ESP32’s full responsibility set.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#why-this-module-exists",
+    "href": "modules/09-connect-the-physical-ax12.html#why-this-module-exists",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Why this module exists",
+    "text": "Why this module exists\nModules 1 through 8 built the complete software architecture: definitions, digital twin, simulation, Crossplane composition, MiniKube runtime, Manifold execution, and the ESP32 edge adapter firmware. That entire chain works without hardware. This module is the first point where a physical servo moves.\nPhysical actuation introduces safety requirements that purely virtual systems do not have. Unrestricted servo movement can damage the lamp, the servo, or injure the learner. Every step in this module exists because of that reality.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#the-safe-sequence",
+    "href": "modules/09-connect-the-physical-ax12.html#the-safe-sequence",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "The safe sequence",
+    "text": "The safe sequence\nThe safe sequence is defined in memo5 section 14:\nDiscover\n   ↓\nConnect\n   ↓\nRead current state\n   ↓\nEstablish safe limits\n   ↓\nTest small movement\n   ↓\nReturn to center\n   ↓\nEnable gesture\nEach step must complete successfully before the next begins. There are no shortcuts.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#step-1-connectivity-test",
+    "href": "modules/09-connect-the-physical-ax12.html#step-1-connectivity-test",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Step 1 — Connectivity test",
+    "text": "Step 1 — Connectivity test\nVerify that the ESP32 can communicate with the AX-12A over the 74HCT245. This tests the electrical boundary: UART direction management, Dynamixel Protocol 1.0 packet exchange, and servo presence detection.\npico runtime inspect --lab make-the-lamp-nod --pico pixstars-head-pitch\nExpected: the actuator reports connected: true. If the actuator is unreachable, check wiring, power, UART direction control on the ESP32, and 74HCT245 bus orientation before proceeding.\n\n\n\n\n\n\nTipEvidence\n\n\n\nConnectivity is the first piece of evidence. A connected: false response is a clear, observable failure — not an assumption that things are probably wired correctly.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#step-2-telemetry-read",
+    "href": "modules/09-connect-the-physical-ax12.html#step-2-telemetry-read",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Step 2 — Telemetry read",
+    "text": "Step 2 — Telemetry read\nRead the current servo state: position, temperature, torque status, and error flags. This confirms the telemetry ascent path works:\nAX-12A → ESP32 → Pico twin → Open Engineering → observable state\nThe Pico twin’s observed state fields should populate with live values. A missing or stale telemetry value means the ascent path is broken — do not proceed to movement until telemetry flows.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#step-3-safe-limit-configuration",
+    "href": "modules/09-connect-the-physical-ax12.html#step-3-safe-limit-configuration",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Step 3 — Safe-limit configuration",
+    "text": "Step 3 — Safe-limit configuration\nLoad the safe limits from rules/nod-gesture.yaml:\nsafety:\n  minPosition: -30\n  maxPosition: 30\n  movementSpeed: safe\n  commandTimeoutMs: 2000\n  emergencyStop: true\n  safeStartupState: center\n  safeShutdownState: center\nThese boundaries govern every physical movement the system will perform. The learner MUST NOT execute unrestricted servo movement. The configured limits are the outer boundary; the nod sequence positions (center 0, down +15, up -8) sit well within them.\n\n\n\n\n\n\nWarningSafety boundary\n\n\n\nThe positions in nod-gesture.yaml are illustrative until calibrated against the physical lamp. The logical nod sequence (center down up center) is fixed; the numeric values are configurable and must be calibrated before any gesture executes. This distinction between logical gesture and physical calibration is a core teaching point — see the architecture semantic layering.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#step-4-small-movement",
+    "href": "modules/09-connect-the-physical-ax12.html#step-4-small-movement",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Step 4 — Small movement",
+    "text": "Step 4 — Small movement\nCommand a small, controlled movement within the safe limits. Verify the servo responds and that the telemetry reports the changing actualPosition. Verify the movement does not exceed configured limits.\nThis is the first physical motion in the course. The descent path is:\ncommand → ESP32 → Dynamixel Protocol 1.0 → 74HCT245 → AX-12A → rotation\nAnd the ascent path returns:\nrotation → telemetry → ESP32 → Pico twin → observed state\nBoth directions must work before proceeding.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#step-5-return-to-center",
+    "href": "modules/09-connect-the-physical-ax12.html#step-5-return-to-center",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Step 5 — Return to center",
+    "text": "Step 5 — Return to center\nCommand the servo back to center (position 0). Verify the Pico twin’s actualPosition converges to the desiredPosition. This confirms the closed-loop cyber-physical architecture: commanded state and observed state closing to agreement.\nA difference between desired and observed is not inherently an error. desiredPosition = 0 and actualPosition = 3 means the servo is moving toward the desired state. Evidence over assumption.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#step-6-stop-test",
+    "href": "modules/09-connect-the-physical-ax12.html#step-6-stop-test",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Step 6 — Stop test",
+    "text": "Step 6 — Stop test\nTrigger an emergency stop. Verify the servo halts immediately and reports the stopped state. The emergency stop must work at any point during movement. If it does not, do not enable gesture execution.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#enabling-the-gesture",
+    "href": "modules/09-connect-the-physical-ax12.html#enabling-the-gesture",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Enabling the gesture",
+    "text": "Enabling the gesture\nOnly after all six steps succeed may the nod gesture be enabled. Enabling the gesture means the Manifold runtime is permitted to execute the nod rule against the physical actuator. Until this point, the system has been in a calibration-only mode.\nThe nod sequence itself is defined in rules/nod-gesture.yaml:\nnod:\n  center: 0\n  down: 15\n  up: -8\n  repetitions: 1\n  speed: safe\nThe logical gesture is fixed: center, slightly down, slightly up, return to center. The numeric positions are calibrated values, not hard-coded generic definitions. The ESP32 receives actuator-level commands (set-position, center, execute-motion) and never interprets the gesture’s semantic meaning.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#checklist",
+    "href": "modules/09-connect-the-physical-ax12.html#checklist",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Checklist",
+    "text": "Checklist\n\n\n\nStep\nWhat you verified\n\n\n\n\n1\nESP32 ↔︎ AX-12A connectivity through 74HCT245\n\n\n2\nTelemetry flows: position, temperature, torque, errors\n\n\n3\nSafe limits loaded: min, max, speed, timeout, emergency stop\n\n\n4\nSmall movement succeeds within safe limits\n\n\n5\nReturn to center succeeds; desired/observed converge\n\n\n6\nEmergency stop halts servo immediately\n\n\n7\nGesture enabled only after steps 1-6 pass",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#what-you-have-proven",
+    "href": "modules/09-connect-the-physical-ax12.html#what-you-have-proven",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "What you have proven",
+    "text": "What you have proven\nThe physical boundary is working. The ESP32 edge adapter converts Open Engineering semantics into Dynamixel Protocol 1.0 packets, the 74HCT245 manages the electrical interface, and the AX-12A rotates the lamp head. Telemetry returns through the same chain to the Pico twin.\nThis is the point where the cyber-physical architecture becomes real. The architecture page arrow map now has physical evidence behind every arrow from Manifold downward.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/09-connect-the-physical-ax12.html#next",
+    "href": "modules/09-connect-the-physical-ax12.html#next",
+    "title": "Module 09 — Connect the Physical AX-12A",
+    "section": "Next",
+    "text": "Next\nModule 10 — Expose the Capability, where Home Assistant becomes the first human control interface for the physical lamp.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 09 — Connect the Physical AX-12A"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html",
+    "href": "modules/11-trace-the-nod.html",
+    "title": "Module 11 — Trace the Nod",
+    "section": "",
+    "text": "The complete forward execution must be observable. This module teaches you to follow a single nod request through every arrow in the architecture and identify the evidence at each boundary.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#goal",
+    "href": "modules/11-trace-the-nod.html#goal",
+    "title": "Module 11 — Trace the Nod",
+    "section": "",
+    "text": "The complete forward execution must be observable. This module teaches you to follow a single nod request through every arrow in the architecture and identify the evidence at each boundary.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#the-15-step-chain",
+    "href": "modules/11-trace-the-nod.html#the-15-step-chain",
+    "title": "Module 11 — Trace the Nod",
+    "section": "The 15-step chain",
+    "text": "The 15-step chain\nWhen a human presses NOD, the following happens. Every step is observable.\n 1. User presses NOD\n 2. Home Assistant emits a nod request\n 3. Open Engineering resolves the target capability\n 4. An event is created\n 5. The Pico receives the event\n 6. Manifold executes the applicable rule\n 7. The nod gesture becomes actuator commands\n 8. Commands are sent to the ESP32 edge adapter\n 9. ESP32 translates to Dynamixel Protocol 1.0\n10. Commands pass through the electrical interface (74HCT245)\n11. AX-12A moves\n12. Lamp head moves\n13. Telemetry is returned\n14. Pico observed state changes\n15. Home Assistant reflects the updated state\nSteps 1 through 12 are the descent (command) path. Steps 13 through 15 are the ascent (telemetry) path. Together they form a closed loop — not remote control.\nSee the full arrow map in the architecture page and the C4 diagram.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#correlation",
+    "href": "modules/11-trace-the-nod.html#correlation",
+    "title": "Module 11 — Trace the Nod",
+    "section": "Correlation",
+    "text": "Correlation\nEvery nod request carries a correlation identifier. This is a unique identifier attached at creation time so one nod can be followed through Home Assistant, event, Pico, rule, command, edge, servo, completion, and telemetry. The correlation id is the thread that ties the entire execution together.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#the-lifecycle",
+    "href": "modules/11-trace-the-nod.html#the-lifecycle",
+    "title": "Module 11 — Trace the Nod",
+    "section": "The lifecycle",
+    "text": "The lifecycle\nThe system distinguishes between requesting and completing. This is the desired-state principle from the architecture:\nrequested → accepted → executing → completed → failed\nCOMMAND SENT is not equivalent to GESTURE COMPLETED. Requesting motion is not proof that motion occurred. Evidence over assumption.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#trace-nod.requested-through-nod.completed",
+    "href": "modules/11-trace-the-nod.html#trace-nod.requested-through-nod.completed",
+    "title": "Module 11 — Trace the Nod",
+    "section": "Trace: nod.requested through nod.completed",
+    "text": "Trace: nod.requested through nod.completed\n\nnod.requested\nHome Assistant fires shell_command.pixstars_nod. The approved CLI emits one event: pixstars.head.nod.requested. The correlation id is created.\nEvidence: event created with correlation id and event type.\n\n\nrule.executed\nManifold receives the event. The Pico twin’s rule fires: the nod capability is resolved, safe limits are checked, and actuator commands are generated.\nEvidence: rule executed; rule name and correlation id logged.\n\n\nactuator.commanded\nThe nod sequence (center, down, up, center) is decomposed into actuator-level position commands. These are semantic commands — not yet Dynamixel register writes.\nEvidence: actuator commands generated; target positions and speeds recorded.\n\n\nedge.command.sent\nManifold sends the actuator commands to the ESP32 edge adapter. The correlation id travels with the command across the network boundary.\nEvidence: command sent to edge adapter; correlation id and command details logged.\n\n\nservo.moving\nThe ESP32 converts to Dynamixel Protocol 1.0, sends register writes through the 74HCT245 electrical interface, and the AX-12A begins moving. Telemetry reports moving: true.\nEvidence: servo in motion; position changing toward target.\n\n\nservo.position.changed\nTelemetry reports the actual position changing: center → down → up → center. The Pico twin’s actualPosition field updates with each telemetry sample.\nEvidence: position telemetry at each step of the sequence.\n\n\nnod.completed\nThe servo has reached the final center position. Telemetry reports moving: false and actualPosition converges to desiredPosition. The Pico twin’s lastCommandStatus transitions to completed.\nEvidence: final state reported; correlation id with completed status.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#failure-scenarios",
+    "href": "modules/11-trace-the-nod.html#failure-scenarios",
+    "title": "Module 11 — Trace the Nod",
+    "section": "Failure scenarios",
+    "text": "Failure scenarios\nThe course deliberately teaches failure modes. Each produces a clear, observable result.\n\n\n\n\n\n\n\nFailure\nExpected result\n\n\n\n\nServo unavailable\nnod failed: actuator unavailable\n\n\nESP32 disconnected\nedge adapter unavailable\n\n\nUnsafe requested position\ncommand rejected: outside configured safe limits\n\n\nTimeout (servo does not reach target)\ngesture failed: actuator did not reach expected state\n\n\nRuntime unavailable\ncapability reports degraded/unavailable\n\n\n\n\n\n\n\n\n\nTipEvidence over assumption\n\n\n\nEvery failure is observable. The system does not pretend execution succeeded when it did not. A missing response is not a success — it is a gap in evidence that demands investigation.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#the-semantic-layering-in-the-trace",
+    "href": "modules/11-trace-the-nod.html#the-semantic-layering-in-the-trace",
+    "title": "Module 11 — Trace the Nod",
+    "section": "The semantic layering in the trace",
+    "text": "The semantic layering in the trace\nThe trace makes the semantic layering concrete. At each step, a different layer is responsible:\n\n\n\nStep\nLayer\nQuestion answered\n\n\n\n\nnod.requested\nWHAT — gesture intent\n“What should happen?”\n\n\nrule.executed\nHOW — logical\n“What sequence of positions?”\n\n\nactuator.commanded\nHOW — device\n“What positions and speeds?”\n\n\nedge.command.sent\nHOW — protocol\n“What Dynamixel packets?”\n\n\nservo.moving\nHOW — electrical\n“What voltage, what direction?”\n\n\nnod.completed\nWHAT — gesture intent\n“Did the nod happen?”\n\n\n\nThe ESP32 never answers “Why did PixStars nod?” That is a question for a character layer that does not exist in this course. The character boundary is explicit — see memo5 section 27.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#exercise",
+    "href": "modules/11-trace-the-nod.html#exercise",
+    "title": "Module 11 — Trace the Nod",
+    "section": "Exercise",
+    "text": "Exercise\n\nTrigger a nod from Home Assistant or the CLI.\nIdentify the correlation id in the observability output.\nFor each of the seven evidence steps above, find the corresponding log entry or state change.\nIntroduce one failure condition (for example, disconnect the servo) and trace the failure through the same observability path.\nConfirm the system reports a clear failure, not a silent success.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  },
+  {
+    "objectID": "modules/11-trace-the-nod.html#next",
+    "href": "modules/11-trace-the-nod.html#next",
+    "title": "Module 11 — Trace the Nod",
+    "section": "Next",
+    "text": "Next\nModule 12 — Make the Lamp Nod, the capstone exercise where everything comes together.",
+    "crumbs": [
+      "Home",
+      "Modules",
+      "Module 11 — Trace the Nod"
+    ]
+  }
+]

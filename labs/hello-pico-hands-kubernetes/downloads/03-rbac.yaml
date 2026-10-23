@@ -1,0 +1,51 @@
+# Namespaced authorization boundary for the Pico's Kubernetes Hands.
+#
+# The ServiceAccount is the on-cluster identity the Pico engine Pod runs
+# as. The Role grants only two verbs (get, patch) on ConfigMaps, and is
+# further constrained by `resourceNames` to the two ConfigMaps this Pico
+# owns: its state ConfigMap and its append-only events ConfigMap.
+#
+# No `delete`, `deletecollection`, `create`, `update`, or `*` verb. No
+# access to any other namespace. No cluster-scoped RBAC. A valid
+# ServiceAccount token MUST NOT imply broader authorization — the Role's
+# resourceNames enforce the Pico-owned ConfigMap surface at the API
+# server level.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pico-hello-hands
+  namespace: hands
+  labels:
+    oe.academy/pico: hello-hands-pico
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pico-hello-hands
+  namespace: hands
+  labels:
+    oe.academy/pico: hello-hands-pico
+    oe.academy/authorization-boundary: pico-owned-configmaps
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames:
+      - pico-hello-hands-state
+      - pico-hello-hands-events
+    verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pico-hello-hands
+  namespace: hands
+  labels:
+    oe.academy/pico: hello-hands-pico
+subjects:
+  - kind: ServiceAccount
+    name: pico-hello-hands
+    namespace: hands
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pico-hello-hands

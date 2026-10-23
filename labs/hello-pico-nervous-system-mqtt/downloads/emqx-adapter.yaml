@@ -1,0 +1,47 @@
+# EMQX adapter description for the Hello Pico Nervous System lab.
+#
+# The Pico architecture treats MQTT/EMQX as ONE possible transport
+# adapter, not the semantic owner of the Pico protocol. This document
+# describes how an EMQX broker WOULD be attached to the provider-neutral
+# envelope defined by `envelope.schema.json` and the topic map defined
+# by `mqtt-topics.yaml`.
+#
+# NOTE: This lab makes no attempt to talk to a live EMQX broker. It
+# ships no credentials, no broker URLs, and no shared secrets. The
+# adapter status below is deliberately `optional-not-executed` and the
+# verifier asserts that.
+apiVersion: pico.oe.academy/v1alpha1
+kind: TransportAdapter
+metadata:
+  name: hello-nervous-system-emqx
+spec:
+  adapter: emqx
+  status: optional-not-executed
+  implements: hello-nervous-system-mqtt
+  # Neutral placeholders. NO real endpoint. The lab does not connect.
+  endpoint_placeholder: "tcp://<broker-host>:<broker-port>"
+  auth:
+    # The lab does NOT ship credentials. A real deployment would bind
+    # a secret at deploy time; this field documents the shape only.
+    mechanism_placeholder: "mutual-tls"
+    identity_source: source.pico
+    # Publishing to a topic is not authorization; the broker ACL is
+    # only the outer perimeter. Authorization decisions remain with the
+    # Pico Ruleset over envelope.authorization.
+    acl_binding: broker-perimeter-only
+  identity_mapping:
+    # How to derive per-connection transport identity from the Pico's
+    # stable identity in a live deployment.
+    mqtt_client_id: "mqtt-{pico_short}-{session_suffix}"
+    stable_identity_field: source.pico
+    transport_identity_field: source.transport.mqtt.client_id
+  presence:
+    source: broker-lwt-and-presence-topics
+    exposes_to_discovery: true
+  bridging:
+    # Optional: how EMQX MQTT frames map back into the Manifold
+    # RuntimeEnvironment used by the Hello Two Picos lab. The lab does
+    # not activate this bridge; the mapping is documented so learners
+    # can see there is no second runtime.
+    manifold_channel_binding: "wrangler-channel-per-topic-suffix"
+    runtime_substrate: kubernetes

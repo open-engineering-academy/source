@@ -1,0 +1,53 @@
+# Composition that turns an XHelloWorldPico XR into concrete Kubernetes
+# Managed Resources on the cluster. This is the Crossplane equivalent of the
+# Pico Composer: it takes the validated declarative input and produces the
+# concrete artifact — here, a Kubernetes Job that prints the greeting.
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: hello-world-pico.oe.academy
+spec:
+  compositeTypeRef:
+    apiVersion: oe.academy/v1alpha1
+    kind: XHelloWorldPico
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        resources:
+          - name: greeting-job
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: batch/v1
+                    kind: Job
+                    metadata:
+                      name: hello-world-pico
+                      namespace: default
+                    spec:
+                      backoffLimit: 0
+                      template:
+                        spec:
+                          restartPolicy: Never
+                          containers:
+                            - name: greet
+                              image: busybox:1.36
+                              command:
+                                - /bin/sh
+                                - -c
+                                - 'echo "$GREETING"'
+                              env:
+                                - name: GREETING
+                                  value: PLACEHOLDER
+                providerConfigRef:
+                  name: kubernetes-default
+            patches:
+              - fromFieldPath: spec.value
+                toFieldPath: spec.forProvider.manifest.spec.template.spec.containers[0].env[0].value

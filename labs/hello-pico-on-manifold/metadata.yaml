@@ -1,0 +1,49 @@
+id: oe.lab.hello-pico-on-manifold
+title: Hello Pico on Manifold
+level: intermediate
+duration: 60m
+prerequisites:
+  - oe.lab.hello-pico
+  - oe.course.manifold
+  - oe.course.kubernetes
+teaches:
+  - Manifold as a Kubernetes-hosted RuntimeEnvironment
+  - Pico engine as an in-process Pico host
+  - Wrangler channels and subscriptions (single-channel topology)
+  - Single-event, single-response Pico behaviour
+  - Runtime Observation captured as lab evidence
+produces:
+  - hello-world-pico-on-manifold
+referenced_by:
+  - oe.course.manifold
+constructive_role: realization
+realizes:
+  - oe.course.manifold
+realization_pattern: pico-on-manifold-single-channel
+runtime_substrate: kubernetes
+runs_on: manifold-on-kubernetes
+interaction_topology: downloads/topology.yaml
+control_surfaces:
+  - python-cli
+depends_on:
+  - oe.lab.hello-pico
+validated_by:
+  - "walkthrough.qmd Step 5 — kubectl wait pod/pico-engine Ready"
+  - "walkthrough.qmd Step 7 — downloads/verify.sh sends one event and confirms one 'Hello, Pico!' response line"
+  - "walkthrough.qmd Step 8 — captured build/hello-world-pico-on-manifold/observation.txt contains the response"
+lifecycle_state: operational
+evidence:
+  - check: "walkthrough.qmd Step 5 — kubectl wait pod/pico-engine Ready"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 5 shows the Manifold-hosted Pico engine Pod becoming Ready."
+  - check: "walkthrough.qmd Step 7 — downloads/verify.sh sends one event and confirms one 'Hello, Pico!' response line"
+    path: downloads/verify.sh
+    description: "Shipped verify.sh sends exactly one event onto the Wrangler-declared channel and asserts exactly one matching response line appears in the Pico engine's logs."
+  - check: "walkthrough.qmd Step 8 — captured build/hello-world-pico-on-manifold/observation.txt contains the response"
+    path: walkthrough.qmd
+    description: "Rendered walkthrough Step 8 captures observation.txt — the single Observation the hosted Pico produced in response to the single event."
+feedback:
+  - observation: "Keeping the topology at one Pico and one Channel makes the runtime story auditable end-to-end: the Wrangler-declared subscription, the single event on the wire, and the single log line the Pico engine prints all line up one-for-one."
+    about: hello-world-pico-on-manifold
+    refines: oe.course.manifold
+    observation_source: manifold-on-kubernetes
