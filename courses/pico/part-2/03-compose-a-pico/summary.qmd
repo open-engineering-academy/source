@@ -1,0 +1,80 @@
+---
+title: "Summary · Compose a Pico"
+---
+
+## Key takeaways
+
+- **Declarative composition** of a Pico means binding each entry of
+  its `spec.capabilities` to exactly one installed capsule whose
+  `spec.capability` matches the identifier and whose
+  `metadata.version` satisfies the stated constraint. The required
+  Pico field set in
+  [`definitions/pico.yaml`](../../../../definitions/pico.yaml) does
+  not change (memo2 §3 D3 §2 amendment).
+- **Two course terms, kept separate** (memo2 §4 D4):
+  - **Rule compilation** = `bin/pico compose` in this repository,
+    verified in [`memo24.md`](../../../../memo24.md) §2.4 as a
+    Rule → artefact code generator. Not a capability composer.
+  - **Capability composition / resolution** = the new operation
+    defined in memo2 §4 D4. Normative semantics live in
+    `open-engineering-capsules/source`; the reference CLI lives in
+    `open-engineering-capsule/source`.
+- **Three version constraints** (memo2 §2 D2): **bare** (any),
+  **caret** `@X.Y.Z` (same major, version ≥ requested; `0.x` requires
+  same minor and patch ≥ requested), **exact** `@=X.Y.Z` (strict
+  equality). Every `metadata.version` MUST be
+  [SemVer 2.0.0](https://semver.org/spec/v2.0.0.html).
+- **Three v0.1 outcomes** (memo2 §1 D1, §3 D3 §2 amendment):
+  `resolved` (exactly one surviving provider),
+  `error: no-matching-provider` (zero survivors), and
+  `error: multiple-matching-providers` (two or more survivors).
+  Explicit provider selection is reserved for v0.2 via an
+  upstream-owned `spec.composition` block; v0.1 Picos SHOULD NOT
+  declare it.
+- **Capability identifiers follow a fixed grammar** (memo2 §3 D3):
+  two or more dot-separated lower-case segments; conforming examples
+  `oe.greeting`, `github.issue.create`, `pico.state.set`; the
+  authoritative home of the grammar will move to
+  `open-engineering-conventions/pico-conventions/capability.schema.json`
+  once committed (memo2 §5 follow-up (c)).
+- **The Academy ships no resolver.** The lesson teaches hand
+  resolution against the ten upstream scenarios and the
+  [`labs/greeting-capsule/`](../../../../labs/greeting-capsule/)
+  Step 7 report. When the reference validator ships
+  (memo2 §5 follow-up (b)), the Academy MAY add a thin delegating
+  `pico resolve` wrapper that calls it — no local re-implementation
+  (memo2 §4 D4).
+
+## Three dependency-management rules this lesson exercises
+
+From [`memo23.md`](../../../../memo23.md) §5:
+
+- **Rule 3 — Explicit dependencies.** `spec.capabilities` declares,
+  by capability identifier, exactly what a Pico needs; nothing is
+  implicit or transitive.
+- **Rule 6 — Compatibility checks.** The caret / exact / bare / `0.x`
+  rules of memo2 §2 D2 are the contract-level compatibility check at
+  v0.1; the breaking-change table in memo2 §2 D2 governs when a new
+  capsule version requires a major bump.
+- **Rule 7 — Reproducibility.** `@=X.Y.Z` (exact) is the
+  "pin to this version" form used when reproducibility across
+  environments matters more than tracking a line.
+
+## What validates this today
+
+| Check | Mechanism | Where |
+|---|---|---|
+| Capsule schema | Upstream `capsule.schema.json` fetched into `build/upstream/` | Lab Step 3 |
+| Pico shape | `definitions/pico.yaml` → `spec.schema` via a Python one-liner | Lab Step 6 |
+| Resolution | **By hand**, against the upstream scenarios; no Academy resolver (memo2 §5 follow-up (b) pending) | Lab Step 7, exercise Tasks A/B |
+
+## What comes next
+
+- Module 5 (planned under [Part 2](../index.qmd)) covers running and
+  inspecting the composed Pico.
+- Module 6 (optional extensions under [Part 3](../../part-3/index.qmd))
+  explores additional capabilities a Pico may compose.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

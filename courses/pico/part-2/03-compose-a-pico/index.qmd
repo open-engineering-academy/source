@@ -1,0 +1,264 @@
+---
+title: "4. Compose a Pico"
+subtitle: "Declarative capability composition under the adopted v0.1 rules."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Describe **declarative composition** of capsule capabilities as the
+  operation that binds each entry of a Pico's `spec.capabilities` to
+  exactly one installed capsule, per the capability-identifier binding
+  adopted in upstream [`memo2`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md)
+  §3 D3.
+- Read a capability requirement and classify its version constraint as
+  **caret** (`@X.Y.Z`), **exact** (`@=X.Y.Z`), or **bare** (no suffix),
+  and apply the matching rule from memo2 §2 D2 — including the `0.x`
+  variant — by hand.
+- State the two resolution outcomes (`resolved`, `error`) and the
+  three v0.1 error labels (`no-matching-provider`,
+  `multiple-matching-providers`, grammar violation) that a conforming
+  resolver MUST produce.
+- Keep two course terms separate: **rule compilation** (what
+  `bin/pico compose` does today, verified in
+  [`memo24.md`](../../../../memo24.md) §2.4) and
+  **capability composition / resolution** (the new operation defined
+  in memo2 §4 D4).
+- Explain why the Academy ships **no resolver** at v0.1 and what
+  validates a Pico composition today.
+
+## Prerequisites
+
+- Lesson [1. Understand a Pico](../../part-1/01-introduction/index.qmd)
+  and lessons 2 (Define a capsule) and 3 (Implement and test a
+  capsule) of [Part 2](../index.qmd).
+- A working shell and text editor; Python 3.8+ on `PATH`.
+- A local clone of this repository (ships `bin/pico` and
+  `definitions/pico.yaml`).
+- No Kubernetes, message broker, database, AI library, or bot platform
+  is required.
+
+## Two terms, kept separate
+
+Upstream memo2 §4 D4 fixes this terminology for the Academy and the
+Pico ecosystem. Keep the two apart; they refer to different
+operations in different repositories.
+
+- **Rule compilation** — what `bin/pico compose` in this repository
+  does. Input: one parsed Rule (today only `kind: greeting`). Output:
+  one executable shell-script artefact. Verified in
+  [`memo24.md`](../../../../memo24.md) §2.4. It does **not** read
+  capsule definitions, it does **not** resolve `spec.capabilities`,
+  and it does **not** check version compatibility.
+- **Capability composition / resolution** — the new operation defined
+  in memo2 §4 D4. Input: one Pico definition and a set of installed
+  capsule definitions. Output: a resolved composition manifest that
+  pins each entry of `spec.capabilities` to a specific capsule
+  `metadata.name` + version. The normative semantics live in
+  `open-engineering-capsules/source`; the reference command-line
+  implementation lives in `open-engineering-capsule/source`
+  (memo2 §1 D1, §4 D4). The Academy ships **no resolver** and will
+  not fork validation (memo2 §4 D4 Consequences for the Academy).
+
+## The capability-identifier binding (memo2 §3 D3)
+
+A Pico says *what capability it needs* in its existing
+`spec.capabilities: [string]` field (the Academy's
+[`definitions/pico.yaml`](../../../../definitions/pico.yaml) requires
+this field; no schema change here, see
+[Lesson 1 — Understand a Pico](../../part-1/01-introduction/index.qmd#what-definitions-pico-yaml-requires-today)).
+Each item is a **capability identifier** — matching the grammar
+below — optionally followed by a **version constraint**.
+
+A capsule says *what capability it provides* through its
+`spec.capability` field, whose value is a single capability
+identifier matching the same grammar.
+
+Resolution walks every item of `spec.capabilities` and keeps the
+installed capsules whose `spec.capability` equals the identifier **and**
+whose `metadata.version` satisfies the stated constraint. The outcomes
+are fixed:
+
+- Exactly one surviving provider → `outcome: resolved`.
+- Zero surviving providers → `outcome: error`, `error: no-matching-provider`.
+- Two or more surviving providers → `outcome: error`,
+  `error: multiple-matching-providers`. In v0.1, explicit provider
+  selection is **not** available; `spec.composition` is reserved for
+  v0.2 (memo2 §3 D3 §2 amendment).
+
+### Grammar (memo2 §3 D3)
+
+Capability identifiers are two or more dot-separated lower-case
+segments:
+
+```
+^[a-z][a-z0-9]*(-[a-z0-9]+)*(\.[a-z][a-z0-9]*(-[a-z0-9]+)*)+$
+```
+
+Accepted: `oe.greeting`, `github.issue.create`, `pico.state.set`.
+Rejected: `Greeting` (upper-case, single segment), `oe..greeting`
+(empty segment), `oe_greeting` (underscore, no dot separator).
+
+### Version constraints (memo2 §2 D2)
+
+| Form | Constraint | Match rule |
+|---|---|---|
+| `name` (bare) | `any` | Any `metadata.version` matches. |
+| `name@X.Y.Z` (`X ≥ 1`) | `caret` | Same major as `X`, version ≥ `X.Y.Z`. |
+| `name@0.Y.Z` | `caret` (0.x) | Same minor `Y`, patch ≥ `Z`. |
+| `name@=X.Y.Z` | `exact` | `metadata.version` strictly equals `X.Y.Z`. |
+
+Every `metadata.version` MUST itself be a valid
+[SemVer 2.0.0](https://semver.org/spec/v2.0.0.html) string.
+
+## Worked resolution — the `oe.greeting` example
+
+Upstream memo1 §3 publishes the following Pico and capsule side by
+side. Here we resolve the Pico against the capsule **by hand**, using
+the memo2 rules.
+
+Pico (requires one capability):
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: hello-pico
+spec:
+  type: greeter
+  capabilities:
+    - oe.greeting@0.1.0
+  implementation: {}
+  state: {}
+  events: {}
+```
+
+Capsule (installed; provides one capability):
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Capsule
+metadata:
+  name: greeting
+  version: 0.1.0
+spec:
+  capability: oe.greeting
+  inputs:
+    value: { type: string, required: true }
+  outputs:
+    greeting: { type: string }
+  dependencies: []
+```
+
+Steps:
+
+1. **Parse the requirement.** `oe.greeting@0.1.0` → identifier
+   `oe.greeting`, version suffix `@0.1.0`. Per memo2 §2 D2 the leading
+   `@` without `=` is a **caret** constraint.
+2. **Grammar check (§3 D3).** `oe.greeting` matches the pattern — two
+   segments, both start with a lower-case letter, no illegal
+   character. The capsule's `spec.capability` is identical. ✔
+3. **Enumerate candidate providers.** Among installed capsules,
+   those whose `spec.capability` equals `oe.greeting`: one match —
+   `greeting` at version `0.1.0`.
+4. **Apply the version constraint (§2 D2, `0.x` rule).** For `0.x`,
+   caret requires the **same minor** and **patch ≥ Z**. Requirement
+   `0.1.0` → candidate `0.1.0`: same minor (`1`), patch `0 ≥ 0`. ✔
+5. **Check uniqueness (§3 D3 §2 amendment).** Exactly one candidate
+   survives; two or more would be
+   `error: multiple-matching-providers`. ✔
+6. **Emit the resolution.**
+
+```yaml
+outcome: resolved
+resolution:
+  - requirement: oe.greeting@0.1.0
+    constraint: caret
+    provider: { name: greeting, version: "0.1.0" }
+```
+
+That block is byte-equivalent to the `expected` block of the upstream
+`fixtures/scenarios/resolve-greeting.yaml` fixture at pinned commit
+`bf071c2c1b57` — the worked fixture under memo2 §5 follow-up (a).
+
+## The 10 upstream scenarios
+
+The capsule contract repository publishes a conformance fixture set
+alongside the schema (memo2 §5 follow-up (a)). The
+`fixtures/scenarios/*.yaml` subset — ten files — covers every outcome
+and every v0.1 clause this lesson teaches. Each scenario is
+self-describing: a Pico's `spec.capabilities`, a set of installed
+providers (minimal shape), and the `expected` outcome a conforming
+resolver MUST produce.
+
+The table below lists every scenario, its expected outcome, and the
+memo2 clause it exercises. All ten are fetched into the lab's
+untracked `build/upstream/fixtures/scenarios/` directory by the lab's
+`solution/fetch-upstream.sh`.
+
+| Scenario file | Expected outcome | Error label (if any) | Clause exercised |
+|---|---|---|---|
+| `bare-match-any.yaml` | `resolved` | — | §2 D2 bare → `any` version |
+| `caret-match.yaml` | `resolved` | — | §2 D2 caret, `≥1.0` same major, version ≥ requested |
+| `caret-nomatch-major.yaml` | `error` | `no-matching-provider` | §2 D2 caret, no cross-major |
+| `duplicate-provider.yaml` | `error` | `multiple-matching-providers` | §3 D3 >1 provider = error (v0.1) |
+| `exact-match.yaml` | `resolved` | — | §2 D2 `@=` strict equality |
+| `exact-nomatch-patch.yaml` | `error` | `no-matching-provider` | §2 D2 `@=` rejects even a patch bump |
+| `missing-provider.yaml` | `error` | `no-matching-provider` | §1 D1 / §3 D3 no provider = error |
+| `resolve-greeting.yaml` | `resolved` | — | §4 D4 worked fixture (memo1 §3) |
+| `zerox-different-minor-nomatch.yaml` | `error` | `no-matching-provider` | §2 D2 `0.x` caret, no cross-minor |
+| `zerox-same-minor-match.yaml` | `resolved` | — | §2 D2 `0.x` caret, same minor + patch ≥ requested |
+
+The lesson's [exercise](exercise.qmd) hand-resolves four of the ten
+scenarios and compares each result against the fixture's `expected`
+block.
+
+## What validates this today
+
+Three claims — and three only — can be checked in the Academy today.
+Everything else waits on memo2 §5 follow-up (b).
+
+- **Capsule schema validation — yes.** The lab's Step 3 runs
+  `jsonschema.validate(...)` against the normative
+  `capsule.schema.json` fetched from `open-engineering-capsules/source`
+  at commit `bf071c2c1b57` (see
+  [`labs/greeting-capsule/walkthrough.qmd`](../../../../labs/greeting-capsule/walkthrough.qmd#step-3-validate-it-against-the-upstream-schema)).
+  Valid fixtures validate; the shipped invalid fixture is rejected
+  with the stated memo1 §1 message.
+- **Pico-definition validation — yes, via the repository's existing
+  means.** The lab's Step 6 extracts `spec.schema` from
+  [`definitions/pico.yaml`](../../../../definitions/pico.yaml) and
+  runs JSON Schema 2020-12 validation on `solution/pico.yaml` with
+  `python3 -c '...jsonschema.validate(...)'`. No dedicated Pico
+  validator CLI exists in this repository and none is added here; this
+  is the Pico-shape check the repository already supports.
+- **Capability composition / resolution — by hand, until follow-up
+  (b) ships.** The reference resolver belongs to
+  `open-engineering-capsule/source` (memo2 §1 D1, §4 D4) under memo2
+  §5 follow-up (b), which has not been published yet. The Academy
+  therefore resolves `spec.capabilities` by hand against each
+  installed capsule, in the shape of the upstream scenarios. **No
+  Academy resolver exists and none will be added by this lesson.**
+  When follow-up (b) ships, the Academy MAY add a thin delegating
+  `pico resolve` wrapper that calls the reference implementation;
+  this lesson will link to it rather than fork validation.
+
+## What this lesson does *not* ask you to do
+
+- **Author or ship any resolver.** No Academy resolver — not even as
+  a snippet. Resolution is done by hand in the exercise and in
+  [`labs/greeting-capsule/`](../../../../labs/greeting-capsule/) steps
+  6–7, in the shape of the upstream scenarios.
+- **Modify `definitions/pico.yaml`.** The capability-identifier
+  binding (memo2 §3 D3 §2 amendment) requires no schema change on the
+  Pico side; `spec.capabilities: [string]` is already present.
+- **Introduce a `spec.composition` block.** It is reserved for v0.2
+  and owned upstream; v0.1 Picos SHOULD NOT declare it (memo2 §3 D3
+  §2 amendment).
+
+## Next
+
+Continue with the [Exercise](exercise.qmd), then the shared
+[Greeting Capsule lab](lab.qmd) (steps 6–7), the
+[Summary](summary.qmd), and the [Quiz](quiz.qmd).

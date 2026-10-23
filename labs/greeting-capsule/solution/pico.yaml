@@ -1,0 +1,11 @@
+apiVersion: open-engineering.io/v1alpha1
+kind: Pico
+metadata:
+  name: hello-pico
+spec:
+  type: greeter
+  capabilities:
+    - oe.greeting@0.1.0
+  implementation: {}
+  state: {}
+  events: {}

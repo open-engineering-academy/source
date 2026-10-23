@@ -11,6 +11,16 @@ encounter a consistent experience across the academy.
 - **[Hello Pico](hello-pico/)** — a first Pico walkthrough,
   referenced from the [pico course](../courses/pico/). Machine-readable
   descriptor: [`labs/hello-pico/metadata.yaml`](hello-pico/metadata.yaml).
+- **[Greeting Capsule](greeting-capsule/)** — the first end-to-end
+  capsule lab (memo23 §9 step 4): define, validate, implement, test
+  and compose the `oe.greeting` capsule against the **adopted** v0.1
+  capsule contract in `open-engineering-capsules/source` at pinned
+  commit `bf071c2c1b57`, then resolve the Pico's capability
+  requirement by hand in the shape of upstream
+  `fixtures/scenarios/resolve-greeting.yaml`. Referenced from the
+  [pico course](../courses/pico/) Part 2 Modules 2–4. Machine-readable
+  descriptor:
+  [`labs/greeting-capsule/metadata.yaml`](greeting-capsule/metadata.yaml).
 - **[Hello Pico on Kubernetes](hello-pico-on-kubernetes/)** — the first
   Crossplane lab: compose the same greeting onto a local Kubernetes
   cluster using an `XHelloWorldPico` XRD, a pipeline-mode Composition,

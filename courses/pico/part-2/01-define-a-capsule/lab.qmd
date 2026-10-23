@@ -1,0 +1,75 @@
+---
+title: "Lab · Greeting Capsule (Steps 1–3)"
+---
+
+The lab for this lesson is the shared
+[**Greeting Capsule**](../../../../labs/greeting-capsule/) lab. It
+lives at the repository root so later Part 2 lessons can reuse the
+same solution tree.
+
+For Module 2 ("Define a capsule") only **Steps 1–3** of the
+walkthrough are in scope: fetch the upstream artefacts, author
+`solution/capsule.yaml` from memo1 §3, and validate it against the
+upstream `capsule.schema.json`. Later modules pick up at Step 4
+(implementation and tests) and Step 6 (compose the Pico).
+
+## What this lab covers for Module 2
+
+- [Step 1 — Fetch the upstream artefacts](../../../../labs/greeting-capsule/walkthrough.html#step-1-fetch-the-upstream-artefacts)
+  downloads the pinned
+  [`capsule.schema.json`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/capsule.schema.json)
+  and the fixture set used by the exercise into the lab-local,
+  untracked `build/upstream/` directory.
+- [Step 2 — Write the capsule document](../../../../labs/greeting-capsule/walkthrough.html#step-2-write-the-capsule-document)
+  authors `solution/capsule.yaml` verbatim from
+  [memo1 §3](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md#3-worked-example-illustrative-not-valid-until-adopted-upstream)
+  with the capability identifier conformed to memo2 §3 D3.
+- [Step 3 — Validate it against the upstream schema](../../../../labs/greeting-capsule/walkthrough.html#step-3-validate-it-against-the-upstream-schema)
+  runs the JSON Schema 2020-12 validator against `capsule.yaml` and
+  against one upstream invalid fixture, confirming the schema accepts
+  the valid document and rejects the invalid one for the stated
+  reason.
+
+## Where to go
+
+Open the [Greeting Capsule lab](../../../../labs/greeting-capsule/)
+and follow the walkthrough through the end of Step 3:
+
+- [Objectives and prerequisites](../../../../labs/greeting-capsule/objectives.html)
+- [Walkthrough](../../../../labs/greeting-capsule/walkthrough.html) —
+  stop after Step 3 for this module.
+- [Solution](../../../../labs/greeting-capsule/solution.html) — the
+  reference `solution/capsule.yaml` matches the capsule block in this
+  lesson's [index](index.qmd#a-valid-minimal-capsule).
+
+## What you will produce
+
+By the end of Step 3 you will have:
+
+- an untracked `labs/greeting-capsule/build/upstream/` directory
+  holding the pinned `capsule.schema.json` and fixtures (never
+  committed — the lab-local `.gitignore` excludes `build/`);
+- `labs/greeting-capsule/solution/capsule.yaml`, which validates
+  against the upstream schema;
+- a confirmed rejection of one upstream invalid fixture with the
+  error message named in its `# fails:` comment.
+
+That evidence satisfies memo23 §4 Module 2 ("a valid capsule
+definition and contract tests or validation rules") at the
+contract level; Module 3 adds the implementation and test tier.
+
+## What this lab does *not* do (in Module 2)
+
+- It does **not** implement the capsule in Python. The function
+  harness in [Step 4](../../../../labs/greeting-capsule/walkthrough.html#step-4-implement-the-capability)
+  is a course-local teaching convention and is covered by
+  Module 3 ("Implement and test a capsule").
+- It does **not** compose a Pico or hand-resolve the capability.
+  Steps 6 and 7 are covered by Module 4 ("Compose a Pico").
+- It does **not** copy the upstream schema into the Academy tree.
+  The lab fetches it per-run and reads it from the untracked
+  `build/upstream/` directory (memo23 §3.2, memo2 §5 (a)).
+
+## Next
+
+Continue with the [Summary](summary.qmd).

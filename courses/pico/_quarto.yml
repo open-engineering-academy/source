@@ -16,6 +16,21 @@ project:
     - part-1/01-introduction/summary.qmd
     - part-1/01-introduction/quiz.qmd
     - part-2/index.qmd
+    - part-2/01-define-a-capsule/index.qmd
+    - part-2/01-define-a-capsule/exercise.qmd
+    - part-2/01-define-a-capsule/lab.qmd
+    - part-2/01-define-a-capsule/summary.qmd
+    - part-2/01-define-a-capsule/quiz.qmd
+    - part-2/02-implement-and-test-a-capsule/index.qmd
+    - part-2/02-implement-and-test-a-capsule/exercise.qmd
+    - part-2/02-implement-and-test-a-capsule/lab.qmd
+    - part-2/02-implement-and-test-a-capsule/summary.qmd
+    - part-2/02-implement-and-test-a-capsule/quiz.qmd
+    - part-2/03-compose-a-pico/index.qmd
+    - part-2/03-compose-a-pico/exercise.qmd
+    - part-2/03-compose-a-pico/lab.qmd
+    - part-2/03-compose-a-pico/summary.qmd
+    - part-2/03-compose-a-pico/quiz.qmd
     - part-3/index.qmd
     - part-3/01-pico-identity/index.qmd
     - part-3/01-pico-identity/exercise.qmd
@@ -98,8 +113,42 @@ website:
                 text: Summary
               - href: part-1/01-introduction/quiz.qmd
                 text: Quiz
-      - section: "Part 2 — Building (Modules 2–5, not yet available)"
+      - section: "Part 2 — Building (Modules 2–4; Module 5 pending)"
         href: part-2/index.qmd
+        contents:
+          - section: "01 Define a capsule"
+            href: part-2/01-define-a-capsule/index.qmd
+            contents:
+              - href: part-2/01-define-a-capsule/exercise.qmd
+                text: Exercise
+              - href: part-2/01-define-a-capsule/lab.qmd
+                text: Lab
+              - href: part-2/01-define-a-capsule/summary.qmd
+                text: Summary
+              - href: part-2/01-define-a-capsule/quiz.qmd
+                text: Quiz
+          - section: "02 Implement and test a capsule"
+            href: part-2/02-implement-and-test-a-capsule/index.qmd
+            contents:
+              - href: part-2/02-implement-and-test-a-capsule/exercise.qmd
+                text: Exercise
+              - href: part-2/02-implement-and-test-a-capsule/lab.qmd
+                text: Lab
+              - href: part-2/02-implement-and-test-a-capsule/summary.qmd
+                text: Summary
+              - href: part-2/02-implement-and-test-a-capsule/quiz.qmd
+                text: Quiz
+          - section: "03 Compose a Pico"
+            href: part-2/03-compose-a-pico/index.qmd
+            contents:
+              - href: part-2/03-compose-a-pico/exercise.qmd
+                text: Exercise
+              - href: part-2/03-compose-a-pico/lab.qmd
+                text: Lab
+              - href: part-2/03-compose-a-pico/summary.qmd
+                text: Summary
+              - href: part-2/03-compose-a-pico/quiz.qmd
+                text: Quiz
       - section: "Part 3 — Extending (Module 6, optional)"
         href: part-3/index.qmd
         contents:

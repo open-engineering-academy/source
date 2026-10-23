@@ -1,0 +1,84 @@
+---
+title: "Objectives & prerequisites"
+description: "What the Greeting Capsule lab teaches and what you need before starting."
+---
+
+## Learning objectives
+
+::: {.callout-note title="Learning objectives"}
+- Define a capsule document against the adopted upstream contract
+  (`apiVersion: open-engineering.io/v1alpha1`, `kind: Capsule`,
+  memo1 §1 required fields).
+- Validate it against the upstream `capsule.schema.json` with a
+  JSON Schema 2020-12 validator, and see one upstream invalid
+  fixture fail for the stated reason.
+- Implement the declared capability in a single stdlib Python
+  function behind its `spec.inputs`/`spec.outputs`, including a
+  structured error on a missing required input.
+- Test the implementation with `unittest`, including a contract
+  test that reads the capsule document and asserts each declared
+  input/output name and type is honoured.
+- Compose the capsule into a minimal Pico definition using
+  `spec.capabilities: [oe.greeting@0.1.0]` and validate the Pico
+  against the Academy's `definitions/pico.yaml`.
+- Resolve the Pico's capability requirement against the capsule
+  **by hand**, applying memo2 §2 D2 (SemVer / caret / `0.x`) and
+  memo2 §3 D3 (grammar), and record the result in the shape of
+  the upstream `fixtures/scenarios/resolve-greeting.yaml` scenario.
+:::
+
+## Prerequisites
+
+::: {.callout-note title="Prerequisites"}
+- A working shell (bash or zsh).
+- A text editor and comfort reading YAML and Python.
+- **Python 3.8+** on your `PATH`.
+- The Python packages `jsonschema` and `pyyaml` (install with
+  `python3 -m pip install jsonschema pyyaml`).
+- `curl` on your `PATH` for `solution/fetch-upstream.sh`.
+- A local clone of this repository.
+- Completion of the
+  [Pico · Part 1 · Introduction](../../courses/pico/part-1/01-introduction/index.html)
+  lesson and the [Hello Pico](../hello-pico/index.html) lab (or
+  equivalent).
+:::
+
+::: {.callout-note title="Not needed"}
+This lab needs no database, broker, AI library, bot platform, or
+Kubernetes. There is no runtime to launch and no network service to
+reach beyond `raw.githubusercontent.com` for the one-off upstream
+fetch.
+:::
+
+## Environment
+
+- Operating system: macOS, Linux, or WSL.
+- Required tools: bash or zsh, Python 3.8+, `curl`, and a text editor.
+- Estimated time: **45–60 minutes**.
+
+## One-time setup
+
+From a fresh shell, clone the Academy source repository (if you have
+not already), install the two Python dependencies, and move into the
+lab directory:
+
+```bash
+git clone <academy-source-repo-url> oea
+cd oea
+python3 -m pip install --user jsonschema pyyaml
+cd labs/greeting-capsule
+```
+
+**Placeholders**
+
+- `<academy-source-repo-url>` — the clone URL of the Open Engineering
+  Academy source repository you were given access to.
+
+## Related lessons
+
+- [Pico · Part 2 · Define a capsule](../../courses/pico/part-2/01-define-a-capsule/index.html)
+  — Module 2 will point at Steps 1–3 of this lab for evidence.
+- [Pico · Part 2 · Implement and test a capsule](../../courses/pico/part-2/02-implement-and-test-a-capsule/index.html)
+  — Module 3 will point at Steps 4–5.
+- [Pico · Part 2 · Compose a Pico](../../courses/pico/part-2/03-compose-a-pico/index.html)
+  — Module 4 will point at Steps 6–7.

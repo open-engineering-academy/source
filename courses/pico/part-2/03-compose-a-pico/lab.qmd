@@ -1,0 +1,89 @@
+---
+title: "Lab · Compose a Pico (Greeting Capsule, steps 6–7)"
+---
+
+The lab for this lesson is the shared **Greeting Capsule** lab under
+[`labs/greeting-capsule/`](../../../../labs/greeting-capsule/). This
+Module 4 lesson exercises **steps 6 and 7** of that lab, which cover
+composing a minimal Pico and resolving its capability requirement by
+hand.
+
+## Why these two steps
+
+Memo23 §9 step 4 ("Create the first lab") assigns one end-to-end
+capsule lab to Part 2, and memo2 §4 D4 fixes the two course terms
+used here:
+
+- **Step 6 — Compose a minimal Pico and validate it.** Produces
+  [`labs/greeting-capsule/solution/pico.yaml`](../../../../labs/greeting-capsule/solution/pico.yaml)
+  and runs the Pico-shape check against the repository's existing
+  [`definitions/pico.yaml`](../../../../definitions/pico.yaml). This
+  is the only Pico-shape contract the Academy ships today; no new
+  Pico validator CLI is added.
+- **Step 7 — Resolve the capability by hand.** Produces
+  [`labs/greeting-capsule/solution/resolution.md`](../../../../labs/greeting-capsule/solution/resolution.md)
+  in the shape of upstream
+  `fixtures/scenarios/resolve-greeting.yaml`. The reference resolver
+  belongs to `open-engineering-capsule/source` (memo2 §1 D1, §4 D4)
+  under memo2 §5 follow-up (b), which has not been published yet.
+  The step records the hand resolution against the one installed
+  provider — exactly as this lesson's [index](index.qmd) teaches.
+
+## Where to go
+
+- [Lab index](../../../../labs/greeting-capsule/index.qmd)
+- [Objectives and prerequisites](../../../../labs/greeting-capsule/objectives.qmd)
+- [Walkthrough](../../../../labs/greeting-capsule/walkthrough.qmd)
+  — follow **Step 6** and **Step 7** for this lesson.
+- [Solution report](../../../../labs/greeting-capsule/solution.qmd)
+- Step 6 artefact:
+  [`solution/pico.yaml`](../../../../labs/greeting-capsule/solution/pico.yaml)
+- Step 7 artefact:
+  [`solution/resolution.md`](../../../../labs/greeting-capsule/solution/resolution.md)
+
+Steps 1–5 (fetch, define, validate, implement, test) belong to
+Modules 2 and 3; this Module 4 lesson relies on their artefacts
+(`solution/capsule.yaml`, `solution/greeting.py`, the passing test
+suite) but does not re-run them.
+
+## What you will produce (steps 6–7 only)
+
+- A minimal composing Pico at `solution/pico.yaml` that declares one
+  capability requirement, `oe.greeting@0.1.0`, under
+  `spec.capabilities`.
+- A `valid` print from the Pico-shape check (Step 6).
+- A hand resolution report at `solution/resolution.md` whose
+  `outcome` / `resolution` block is byte-equivalent to the upstream
+  `fixtures/scenarios/resolve-greeting.yaml` `expected:` block at
+  pinned commit `bf071c2c1b57`.
+
+## What this lab does *not* do
+
+- **No Academy resolver.** The lab records the hand resolution; it
+  does not ship or invoke a resolver (memo2 §4 D4 Consequences for
+  the Academy; memo2 §5 follow-up (b) is pending).
+- **No fork of the upstream schema or scenarios.** `build/upstream/`
+  is populated by `solution/fetch-upstream.sh` and is listed in the
+  lab-local `.gitignore`; nothing under it is committed (memo23 §3.2
+  / memo26 §5).
+- **No new Pico validator CLI.** Step 6 uses the repository's
+  existing `definitions/pico.yaml` via a short Python one-liner. The
+  Academy adds no dedicated validator in this lesson.
+
+## Verification quoted from the lab
+
+Step 6 — expected output `valid`:
+
+```bash
+cd labs/greeting-capsule
+python3 -c 'import yaml, jsonschema; d=yaml.safe_load(open("../../definitions/pico.yaml")); jsonschema.validate(yaml.safe_load(open("solution/pico.yaml")), d["spec"]["schema"]); print("valid")'
+```
+
+Step 7 — compare the `outcome` / `resolution` block in
+`solution/resolution.md` against the `expected:` block of
+`build/upstream/fixtures/scenarios/resolve-greeting.yaml`. They
+should be byte-equivalent.
+
+## Next
+
+Continue with the [Summary](summary.qmd).

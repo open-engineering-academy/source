@@ -1,0 +1,131 @@
+---
+title: "Exercise · Implement and test a capsule"
+---
+
+A short, guided exercise against the shared Greeting Capsule lab.
+Complete the lab's [Steps 1–3](../../../../labs/greeting-capsule/walkthrough.html)
+first so you have a validated `solution/capsule.yaml` and the
+reference `solution/greeting.py` in place.
+
+See the [Open Engineering Language Server (OELS) onboarding guide](../../../../oels.qmd)
+for the local install and editor setup.
+
+{{< include ../../../../shared/includes/oels.qmd >}}
+
+## Tasks
+
+Work from inside `labs/greeting-capsule/` in your local clone.
+
+### Task 1 — Add a contract-test case the solution lacks
+
+Open [`solution/tests/test_contract.py`](../../../../labs/greeting-capsule/solution/tests/test_contract.py).
+The ContractTests class asserts the capability identifier, that each
+declared-required input raises `MissingRequiredInput` when absent,
+and that declared input/output names and types are honoured. It does
+**not** assert the capsule's `apiVersion` and `kind` match the
+upstream-adopted contract constants — a contract fact a learner
+would want caught at test time.
+
+Add one `unittest` method to `ContractTests` that reads the capsule
+document and asserts `apiVersion == "open-engineering.io/v1alpha1"`
+and `kind == "Capsule"`, matching the adopted upstream
+[`capsule.schema.json`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/capsule.schema.json)
+at commit `bf071c2c1b57`. For example:
+
+```python
+def test_apiversion_and_kind_match_adopted_upstream(self) -> None:
+    self.assertEqual(self.capsule["apiVersion"], "open-engineering.io/v1alpha1")
+    self.assertEqual(self.capsule["kind"], "Capsule")
+```
+
+Re-run the test suite:
+
+```bash
+python3 -m unittest discover -s solution/tests
+```
+
+Expected tail: `Ran 9 tests in 0.001s` / `OK`. The new case passes
+without changing `greeting.py` because the capsule document already
+carries the two adopted constants (lab Step 2).
+
+### Task 2 — Break the contract deliberately and watch a test fail
+
+Edit `solution/greeting.py` only — not `solution/capsule.yaml` — and
+rename the returned output from `greeting` to `greet`:
+
+```python
+return {"greet": f"Hello, {value}!"}   # was: {"greeting": ...}
+```
+
+Re-run the suite:
+
+```bash
+python3 -m unittest discover -s solution/tests
+```
+
+Observe:
+
+- `test_greeting.py :: test_returns_greeting_output` fails: the
+  expected literal dict changed shape. (Unit test — specific
+  behaviour drifted.)
+- `test_contract.py :: test_declared_input_names_and_types_are_honoured`
+  fails: `set(result.keys()) == {"greet"}` is not equal to the
+  declared output set `{"greeting"}` read from `capsule.yaml`.
+
+The second failure is the **contract test's job**: regardless of what
+example value the implementation returns, the output *names* must
+match what the capsule says it produces. A contract test derived at
+test time from `capsule.yaml` catches this class of drift — a drive-by
+rename, an accidental key change, a copy-paste — without re-encoding
+the contract in Python assertions.
+
+Revert the edit (`return {"greeting": ...}`) before continuing.
+
+### Task 3 — Map a code change to the D2 breaking-change table
+
+[memo2 §2 D2](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#2-d2--version-compatibility-rule)
+publishes the breaking-change table reproduced in
+[Module 2 Lesson](../01-define-a-capsule/index.qmd#version-compatibility-constraints-memo2-2-d2).
+Decide which row each of the following changes maps to and whether a
+major, minor, or patch bump is required.
+
+| Change (made to `capsule.yaml` and the matching code) | D2 row | Required bump |
+|---|---|---|
+| **A.** Rename the output `greeting` to `message` across capsule and code. | ? | ? |
+| **B.** Add a new optional input `locale: {type: string}` (no `required: true`); the implementation returns the same output when `locale` is absent. | ? | ? |
+| **C.** Add a new optional output `rendered_at: {type: string}` carrying an ISO-8601 timestamp. | ? | ? |
+| **D.** Fix a typo in the one-line description above `spec.inputs:` — no field is added, removed, or renamed. | ? | ? |
+
+## Worked answer
+
+::: {.callout-note collapse="true" title="Show worked answer"}
+**Task 1.** The added method reads `self.capsule` set up in
+`setUpClass` and asserts the two adopted constants. The suite now
+reports `Ran 9 tests`.
+
+**Task 2.** `test_returns_greeting_output` (unit) and
+`test_declared_input_names_and_types_are_honoured` (contract) both
+fail. The unit failure says *the specific example changed*. The
+contract failure says *the implementation stopped honouring the names
+the capsule declares* — the key check is
+`set(result.keys()) == set(self.outputs.keys())` where the right-hand
+set is read from `capsule.yaml`.
+
+**Task 3.** Reading rows from
+[memo2 §2 D2](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#2-d2--version-compatibility-rule):
+
+| Change | D2 row | Required bump |
+|---|---|---|
+| **A.** Rename output `greeting` → `message` | "Remove a declared `spec.outputs` entry" (the old name disappears; a new one appears). | **Breaking → major** |
+| **B.** Add new optional input `locale` | "Add an optional `spec.inputs` entry (no `required: true`)" | **Compatible → minor** |
+| **C.** Add new optional output `rendered_at` | "Add a new `spec.outputs` entry" | **Compatible → minor** |
+| **D.** Fix a one-line description typo | "Documentation-only change" | **Compatible → patch** |
+
+Row A is a reminder that *renaming* a declared output is a two-step
+D2 change (remove old; add new) and therefore breaking: an existing
+Pico that read the old key would stop finding it.
+:::
+
+## Next
+
+Continue with the [Lab](lab.qmd).

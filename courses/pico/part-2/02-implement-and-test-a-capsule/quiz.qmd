@@ -1,0 +1,105 @@
+---
+title: "Quiz · Implement and test a capsule"
+---
+
+A short knowledge check. Answers are hidden behind callouts so you can
+self-grade after answering.
+
+## 1. What is the only public surface a capsule implementation may rely on?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+The capsule's `spec.inputs` and `spec.outputs` as declared in
+`capsule.yaml` — their names and declared types. Everything else
+(language, state, internal libraries) is implementation detail that
+the contract neither sees nor constrains. See the
+[lesson](index.qmd#implementing-behind-the-contract).
+:::
+
+## 2. What is the difference between a unit test and a contract test for this capsule?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+A **unit test** asserts specific behaviour of the implementation
+(for example, `greeting({"value": "Pico"}) == {"greeting":
+"Hello, Pico!"}`) — a failure says the specific example changed.
+
+A **contract test** reads `solution/capsule.yaml` at test time and
+asserts the implementation honours each declared input/output name
+and type and raises `MissingRequiredInput` for each declared-required
+input — a failure says the implementation has drifted from the
+contract, regardless of whether any one example still works. See the
+[lesson table](index.qmd#unit-tests-vs-contract-tests).
+:::
+
+## 3. The `oe.greeting` implementation renames its returned key from `greeting` to `greet` but leaves `capsule.yaml` unchanged. Which test fails and why is that the contract test's job?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+`test_contract.py :: test_declared_input_names_and_types_are_honoured`
+fails because `set(result.keys()) == {"greet"}` is no longer equal to
+the declared output set `{"greeting"}` read from `capsule.yaml`. This
+is the contract test's job: catching the class of drift (rename,
+copy-paste, type change) that a unit test cannot see unless the exact
+example happens to hit it. The exercise walks through this failure.
+See the [exercise](exercise.qmd#task-2-break-the-contract-deliberately-and-watch-a-test-fail).
+:::
+
+## 4. Where should a non-stdlib dependency used by a capsule implementation be pinned, and where should it NOT be pinned?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+It should be pinned in the **capsule implementation's own packaging
+manifest** (for example, a `requirements.txt` or `pyproject.toml`
+inside that capsule's directory) and imported only inside that
+implementation. It should **not** be pinned in `bin/pico`, in the
+Pico core, or in a sibling capsule — those paths would turn a local
+implementation choice into a transitive requirement on everything a
+Pico composes. See memo23 §5 rules 2 and 3, and the
+[lesson](index.qmd#keeping-dependencies-local).
+:::
+
+## 5. How should a capsule implementation handle a missing declared-required input?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+Raise a **named, catchable** exception (here,
+`MissingRequiredInput("value")`) that carries the missing input's
+name — not a generic `KeyError`, not a stack trace from somewhere
+deep in the function. The contract test iterates over every
+declared-required input in `capsule.yaml` and asserts the exception's
+`.name` matches, so a future capsule that adds a second required
+input will fail the test until the implementation handles it the same
+way. This is memo23 §5 rule 9 (Graceful failure) at the capability
+boundary.
+:::
+
+## 6. Does this course publish an upstream convention for how to call a capsule implementation from a Pico?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+No. The function-call shape used in the lab
+(`greeting(inputs: dict) -> dict`) is a **course-local teaching
+harness only**. The implementation convention for capsules belongs
+to `open-engineering-capsule/source` (the implementation org, memo2
+§1 D1), which has published none yet — `memo24.md` §2.1 as updated by
+observation at upstream commit `bf071c2c1b57` records that both the
+definitions-org and the implementation-org for capsules exist, that
+the definitions org now ships `capsule.schema.json`, but that the
+implementation org still contains only `README.md` and a
+generated-placeholder `metadata.yaml`. When the implementation org
+publishes a convention, the Academy will consume it (memo23 §3.2,
+memo26 §5).
+:::
+
+## 7. A learner renames an output `greeting` to `message` across both `capsule.yaml` and `greeting.py`. Which row of the memo2 §2 D2 breaking-change table does that match, and which version bump is required?
+
+::: {.callout-tip collapse="true" title="Show answer"}
+It matches the row **"Remove a declared `spec.outputs` entry"** —
+renaming is a two-step D2 change (the old name disappears; a new one
+appears). The classification is **Breaking**, so the required bump
+is **major** (`0.1.0 → 1.0.0`, or for a `0.x` capsule the equivalent
+`0.1.0 → 0.2.0` under memo2 §2 D2's `0.x` rule). An existing Pico
+that read the old key would stop finding it; the major bump prevents
+caret-pinned consumers from picking the new capsule up automatically.
+See the [exercise worked answer](exercise.qmd#worked-answer).
+:::
+
+## Next
+
+Return to [Part 2](../index.qmd) or continue to the next module
+([Module 4 — Compose a Pico](../03-compose-a-pico/index.qmd)).

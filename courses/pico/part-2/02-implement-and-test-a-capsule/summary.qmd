@@ -1,0 +1,74 @@
+---
+title: "Summary · Implement and test a capsule"
+---
+
+## Key takeaways
+
+- A capsule's `spec.inputs` and `spec.outputs` are the **only** public
+  surface an implementation may rely on. Everything else — language,
+  state, internal libraries — is implementation detail that the
+  contract neither sees nor constrains.
+- A capsule implementation keeps its third-party dependencies
+  **local** to itself. The reference `oe.greeting` implementation
+  needs none; Python stdlib suffices. If a capability needed
+  `httpx`, it would be pinned in that capsule implementation's own
+  manifest, not in `bin/pico` and not in a sibling capsule.
+- **Unit tests** cover specific behaviour (e.g. `greeting({"value":
+  "Pico"})` returns `{"greeting": "Hello, Pico!"}`). **Contract
+  tests** are derived at test time from `capsule.yaml` and catch
+  drift between code and contract (e.g. a renamed output key, a
+  changed declared type, a new required input the implementation
+  does not handle). The split keeps one source of truth for the
+  contract and one for the implementation.
+- A declared-required input that is absent raises a **named,
+  catchable** exception (`MissingRequiredInput("value")`) that
+  carries the input's name — not a generic `KeyError` and not a
+  stack trace. Satisfies memo23 §5 rule 9 (Graceful failure) at the
+  capability boundary.
+- Diagnostics belong on `logging`, not a framework: log the
+  capability identifier and `metadata.version` once per process at
+  the first call, and log each `MissingRequiredInput` with the input
+  name. The reference stdlib implementation ships without the log
+  calls today; the [exercise](exercise.qmd) walks through where they
+  would go.
+- The call shape used in this lesson (`greeting(inputs: dict) ->
+  dict`) is a **course-local teaching harness**. The implementation
+  convention for capsules belongs to `open-engineering-capsule/source`
+  (memo2 §1 D1), which has published none yet
+  ([`memo24.md`](../../../../memo24.md) §2.1 as updated by observation
+  at upstream commit `bf071c2c1b57`). When published, the Academy
+  will consume it ([`memo23.md`](../../../../memo23.md) §3.2,
+  [`memo26.md`](../../../../memo26.md) §5).
+
+## Dependency-management rules this lesson exercises
+
+From [`memo23.md`](../../../../memo23.md) §5:
+
+1. **Minimal core.** The Pico core does not import `greeting.py`; a
+   future Composer would resolve a capability requirement to any
+   capsule whose `spec.capability` matches.
+2. **Optional by default.** `oe.greeting` adds no database, broker,
+   AI library, or bot platform to the baseline.
+4. **Contract-based integration.** The contract test reads
+   `capsule.yaml` and asserts the implementation honours each
+   declared name and type — the contract is the only interface.
+5. **Independent testing.** `python3 -m unittest discover -s
+   solution/tests` runs the capsule's tests without any Pico, any
+   runtime, or any network dependency.
+9. **Graceful failure.** `MissingRequiredInput` names the missing
+   input; no generic exceptions escape the capability boundary.
+10. **Observable operation.** Capability identifier and version are
+    logged at first call; each structured error is logged with its
+    input name (framework-free `logging`).
+
+## What comes next
+
+- [Part 2 · Module 4 — Compose a Pico](../03-compose-a-pico/index.qmd)
+  takes the implemented capsule and composes it into a minimal Pico
+  (Steps 6–7 of the shared lab).
+- [Part 3 · Extending](../../part-3/index.qmd) covers additional
+  capabilities a Pico may compose on top of a working capsule.
+
+## Next
+
+Take the [Quiz](quiz.qmd).

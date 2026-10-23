@@ -8,6 +8,33 @@ lessons can link to a single definition instead of redefining terms.
 ## Composer
 A component that takes parsed Rules and produces a Pico output artifact.
 
+## Rule compilation
+What `bin/pico compose` does in this repository: parse a Rule
+document and emit one executable shell-script artifact (Rule →
+artifact). Upstream
+[memo2 §4 D4](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#4-d4--two-terms-kept-separate)
+fixes this term for the Academy and the Pico ecosystem: rule
+compilation reads **no** capsule definitions, resolves **no**
+`spec.capabilities`, and performs **no** version-compatibility check.
+Distinct from capability composition / resolution. See
+[Part 2 · Module 4 — Compose a Pico](part-2/03-compose-a-pico/index.qmd#two-terms-kept-separate).
+
+## Capability composition / resolution
+The operation that binds each entry of a Pico's `spec.capabilities`
+to **exactly one** installed capsule whose `spec.capability` matches
+the identifier and whose `metadata.version` satisfies the stated
+constraint (capability identifier → provider capsule). Defined by
+upstream
+[memo2 §4 D4](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#4-d4--two-terms-kept-separate)
+at pinned commit `bf071c2c1b57`: input is one Pico definition and a
+set of installed capsule definitions, output is a resolved composition
+manifest. Normative semantics live in
+`open-engineering-capsules/source`; the reference CLI lives in
+`open-engineering-capsule/source`. The Academy ships no resolver and
+does not fork validation (memo2 §4 D4 Consequences for the Academy).
+Distinct from rule compilation. See
+[Part 2 · Module 4 — Compose a Pico](part-2/03-compose-a-pico/index.qmd#the-capability-identifier-binding-memo2-3-d3).
+
 ## Constraint
 A condition a valid Element must satisfy (for example, "the Pico responds
 to the `hello` event"). See

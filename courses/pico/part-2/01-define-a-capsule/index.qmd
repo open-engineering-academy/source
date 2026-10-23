@@ -1,0 +1,167 @@
+---
+title: "1. Define a capsule"
+subtitle: "The adopted v0.1 capsule contract: identity, capability, inputs/outputs, dependencies and versions."
+---
+
+## Learning objectives
+
+By the end of this lesson you will be able to:
+
+- Name the required capsule-metadata fields and the contract
+  boundaries a capsule declares (adopted upstream in
+  [`memo1.md` §1](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md#1-required-field-set-minimal)).
+- Describe what a capsule declares about its inputs, outputs,
+  configuration, dependencies and version at v0.1, and which of
+  those fields are required versus optional (and why).
+- Distinguish a capsule **contract** from any particular capsule
+  **implementation**, and point at `spec.capability` as the binding
+  surface a Pico resolves against.
+
+These objectives map one-to-one to the three "Teach" bullets of
+[`memo23.md`](../../../../memo23.md) §4 Module 2.
+
+## Prerequisites
+
+- Completed [Part 1 · Understand a Pico](../../part-1/01-introduction/index.qmd).
+- A working shell and text editor.
+- Comfort reading YAML.
+- Python 3.8+ on `PATH` for the validator command referenced in the
+  [Exercise](exercise.qmd) and [Lab](lab.qmd).
+
+## What a capsule is
+
+A **capsule** is a declarative contract for one capability. The
+[adopted v0.1 contract](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md)
+is a `kind: Capsule` document with four groups of required fields
+and a small set of optional fields. The normative schema lives at
+[`capsule.schema.json`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/capsule.schema.json)
+in `open-engineering-capsules/source` at commit `bf071c2c1b57`; the
+accompanying [conformance fixture set](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/README.md)
+is the executable arbiter of what a conforming capsule looks like.
+
+## Required and optional fields at v0.1
+
+The table below is reproduced from
+[memo1 §1](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md#1-required-field-set-minimal)
+at `bf071c2c1b57`. Required fields are the smallest set the course
+Modules 2–4 cannot be taught without; every other field listed in
+memo23 §3.2 is optional at v0.1 with a stated rationale.
+
+| Required field | Role | Why required at v0.1 |
+|---|---|---|
+| `apiVersion`, `kind`, `metadata.name`, `metadata.version` | Identity and version | Module 2 cannot address a capsule or pin a version without them. |
+| `spec.capability` | Capability name | Module 4 must bind a Pico's declared capability requirement to exactly one capsule by name. |
+| `spec.inputs`, `spec.outputs` | Inputs and outputs | Module 3 tests a capsule against its contract; a contract with no inputs/outputs is not testable. |
+| `spec.dependencies` | Capability dependencies | Module 4's dependency resolution and memo23 §5 rule 3 (Explicit dependencies) require declared dependencies; may be `[]`. |
+
+Optional at v0.1 (each with a one-line rationale in memo1 §1):
+`spec.purpose`, `spec.interfaces`, `spec.events`, `spec.config`,
+`spec.secrets`, `spec.lifecycle`, `spec.compatibility`, `spec.health`,
+`spec.tests`, `spec.permissions`, `spec.resources`. v0.1 picks the
+smallest field set that keeps Modules 2–4 teachable; the owning
+repository may promote any optional field to required in a later
+version.
+
+### A valid minimal capsule
+
+The worked example from
+[memo1 §3](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md#3-worked-example-illustrative-not-valid-until-adopted-upstream),
+restated at the identifier grammar adopted in memo2 §3 D3 and
+published verbatim as
+[`fixtures/valid/greeting.yaml`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/fixtures/valid/greeting.yaml):
+
+```yaml
+apiVersion: open-engineering.io/v1alpha1
+kind: Capsule
+metadata:
+  name: greeting
+  version: 0.1.0
+spec:
+  capability: oe.greeting
+  inputs:
+    value:
+      type: string
+      required: true
+  outputs:
+    greeting:
+      type: string
+  dependencies: []
+```
+
+## Capability identifier grammar (memo2 §3 D3)
+
+A capability identifier is two or more dot-separated lower-case
+segments; each segment starts with a lower-case ASCII letter and
+otherwise contains lower-case ASCII letters, ASCII digits, or single
+internal hyphens. The pattern, published in
+[memo2 §3 D3](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#3-d3--capability-identifier-grammar-and-2-amendment)
+and enforced by `capsule.schema.json`:
+
+```
+^[a-z][a-z0-9]*(-[a-z0-9]+)*(\.[a-z][a-z0-9]*(-[a-z0-9]+)*)+$
+```
+
+Conforming examples (every conforming validator MUST accept):
+`oe.greeting`, `github.issue.create`, `pico.state.set`.
+
+Non-conforming examples (every conforming validator MUST reject):
+`Greeting` (single segment, upper-case start), `oe..greeting` (empty
+segment), `oe_greeting` (underscore not in the segment alphabet).
+
+## Version compatibility constraints (memo2 §2 D2)
+
+Every `metadata.version` MUST be a valid
+[SemVer 2.0.0](https://semver.org/spec/v2.0.0.html) string.
+[memo2 §2 D2](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md#2-d2--version-compatibility-rule)
+defines three constraint forms a Pico may write in its
+`spec.capabilities`:
+
+| Written form | Meaning |
+|---|---|
+| `oe.greeting` | Bare — any version matches. |
+| `oe.greeting@0.1.0` | Caret — same major and version ≥ `0.1.0`; for `0.x`, same minor and patch ≥ `0`. |
+| `oe.greeting@=0.1.0` | Exact — only `0.1.0` matches. |
+
+The same section fixes the contract-level **breaking-change table**:
+
+| Change in the capsule contract | Classification | Required bump |
+|---|---|---|
+| Remove a declared `spec.outputs` entry | Breaking | major |
+| Add a new required `spec.inputs` entry | Breaking | major |
+| Change the declared `type` of any input or output | Breaking | major |
+| Change the `spec.capability` identifier | Breaking | major |
+| Add an optional `spec.inputs` entry (no `required: true`) | Compatible | minor |
+| Add a new `spec.outputs` entry | Compatible | minor |
+| Documentation-only change | Compatible | patch |
+
+## Contract, not implementation
+
+A capsule document is a **contract**: it names a capability, declares
+inputs and outputs by name and type, and pins a version — nothing
+more. It carries no code and no runtime concern. The code that
+satisfies the contract is a **capsule implementation**, which belongs
+to `open-engineering-capsule/source` (the implementation org, memo2
+§1 D1); the Academy does not fork or shadow it (memo23 §3.2). A Pico
+composes a capability by writing a capability identifier into its
+`spec.capabilities`; the reference validator resolves that identifier
+to any installed capsule whose `spec.capability` matches and whose
+`metadata.version` satisfies the stated constraint (memo2 §3 D3,
+`fixtures/scenarios/resolve-greeting.yaml`). The contract is what
+makes two independent implementations substitutable; everything
+specific to one implementation stays inside that implementation.
+
+## Lesson pages
+
+- [Exercise](exercise.qmd) — classify six upstream fixtures as valid
+  or invalid *before* running the validator, then version a capsule
+  against the memo2 §2 D2 table.
+- [Lab](lab.qmd) — Steps 1–3 of the shared
+  [`labs/greeting-capsule/`](../../../../labs/greeting-capsule/)
+  lab: fetch, author `capsule.yaml`, validate.
+- [Summary](summary.qmd) — key takeaways and memo23 §5 rules 3 and 6.
+- [Quiz](quiz.qmd) — short knowledge check on the grammar, the D2
+  table, and what is optional at v0.1.
+
+## Next
+
+Continue with the [Exercise](exercise.qmd).

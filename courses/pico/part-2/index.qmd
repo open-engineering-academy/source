@@ -1,48 +1,75 @@
 ---
-title: "Part 2 — Building"
+title: "Part 2 — Building (Modules 2–4; Module 5 pending)"
 ---
 
-Part 2 is the planned home of **Modules 2–5** in the capsule-first course
-spine proposed in [`memo23.md`](../../../memo23.md) §4. It will walk a
-learner from defining one capsule, through implementing and testing it,
-to composing and running a minimal Pico.
+Part 2 walks you from defining one capsule, through implementing and
+testing it, to composing a minimal Pico and resolving its capability
+requirement by hand against the installed capsule. Modules 2–4 are
+runnable today against the **adopted v0.1 capsule contract** in
+[`open-engineering-capsules/source`](https://github.com/open-engineering-capsules/source/tree/bf071c2c1b57)
+at pinned commit `bf071c2c1b57`
+([`memo1.md`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo1.md),
+[`memo2.md`](https://github.com/open-engineering-capsules/source/blob/bf071c2c1b57/memo2.md)).
+Module 5 remains deferred — see below.
 
-## What Modules 2–5 will teach
+## Modules 2–4 (available)
 
-One line per module, taken from [`memo23.md`](../../../memo23.md) §4:
+Each module pairs a lesson under `part-2/` with the matching steps of
+the shared [`labs/greeting-capsule/`](../../../labs/greeting-capsule/)
+lab:
 
-- **Module 2 — Define a capsule** — capsule metadata and contract
-  boundaries using the canonical capsule definition format.
-- **Module 3 — Implement and test a capsule** — implement one small
-  capability behind its contract, keeping third-party dependencies
-  local, and cover it with unit and contract tests.
-- **Module 4 — Compose a Pico** — declaratively compose the Module 3
-  capsule into a minimal Pico; demonstrate dependency resolution,
-  interface binding, version compatibility, and validation.
-- **Module 5 — Run and inspect the Pico** — run the composed Pico,
-  invoke its capability, and inspect its logs and health information.
+- **Module 2 — [Define a capsule](01-define-a-capsule/index.qmd)** —
+  capsule metadata and contract boundaries against the adopted v0.1
+  capsule contract. Pairs with
+  [`labs/greeting-capsule/`](../../../labs/greeting-capsule/) Steps
+  1–3 (fetch upstream artefacts, author `solution/capsule.yaml`,
+  JSON-Schema validate).
+- **Module 3 — [Implement and test a capsule](02-implement-and-test-a-capsule/index.qmd)** —
+  implement `oe.greeting` behind the capsule contract in stdlib
+  Python, keep dependencies local to the implementation, and cover
+  the code with unit and contract tests. Pairs with
+  [`labs/greeting-capsule/`](../../../labs/greeting-capsule/) Steps
+  4–5.
+- **Module 4 — [Compose a Pico](03-compose-a-pico/index.qmd)** —
+  declarative capability composition under memo2 §2 D2 / §3 D3 / §4
+  D4; compose a minimal Pico and resolve `spec.capabilities` by hand
+  against the installed capsule in the shape of upstream
+  `fixtures/scenarios/resolve-greeting.yaml`. Pairs with
+  [`labs/greeting-capsule/`](../../../labs/greeting-capsule/) Steps
+  6–7.
 
-## Single blocking dependency
+## Module 5 (deferred)
 
-Modules 2–5 are **not yet available** and do not yet have lessons under
-`part-2/`. They depend on one upstream artefact: a canonical **capsule
-contract** published by `open-engineering-capsules/source`.
+**Module 5 — Run and inspect the Pico** is **not yet available**: it
+waits on a capsule-aware runtime (`open-engineering-picos/source` is
+memo-only) and memo2 §5 follow-up (b) (the reference capability
+resolver). Until those ship,
+[`labs/hello-pico/`](../../../labs/hello-pico/) remains the run path
+(partially covered by hello-pico, per
+[`memo23.md`](../../../memo23.md) §9 step 3). This course will consume
+the upstream runtime and resolver when they publish; it does not
+define a second, course-specific one
+([`memo23.md`](../../../memo23.md) §3.2).
 
-Verification on 2026-10-16 (recorded in
-[`memo24.md`](../../../memo24.md) §2.1) found that
-`open-engineering-capsules/source` contains only `README.md` and a
-generated-placeholder `metadata.yaml` (`lifecycle: proposed`). No
-capsule schema, convention, worked example, Composer, lifecycle
-document, or dependency model is committed upstream. The capsule shape
-discussed in [Part 1 lesson 1](../part-1/01-introduction/index.qmd) is
-the [`memo26.md`](../../../memo26.md) proposal addressed to that
-repository; it is **proposed, not yet adopted upstream**.
+## Part 2 prerequisites
 
-Until the owning repository publishes a canonical capsule contract,
-this course **does not ask you to author or validate a capsule file**
-under Part 2. The three Part 1 pages, the shared
-[`labs/hello-pico/`](../../../labs/hello-pico/) lab, and the Part 3
-Module 6 extensions remain the runnable content.
+- A working shell and text editor; Python 3.8+ on `PATH`.
+- `jsonschema` and `pyyaml` installed for the lab's schema and shape
+  checks: `python3 -m pip install --user jsonschema pyyaml`.
+- `curl` on `PATH` (the lab's `solution/fetch-upstream.sh` falls back
+  to `gh api` only when `curl` is denied by the upstream private
+  repository).
+- Completed [Part 1 · Understand a Pico](../part-1/01-introduction/index.qmd).
+
+## Pinned upstream commit
+
+Everything Part 2 fetches, quotes, or links from the capsule
+contract repository is pinned at
+[`bf071c2c1b57`](https://github.com/open-engineering-capsules/source/tree/bf071c2c1b57).
+The lab's `solution/fetch-upstream.sh` script downloads the normative
+`capsule.schema.json` and the ten `fixtures/scenarios/*.yaml` from
+that commit into the untracked `labs/greeting-capsule/build/upstream/`
+directory; no schema or resolver is vendored into the Academy tree.
 
 See the [course overview](../index.qmd) for the six-module course
 spine and the zero-optional-platform path.
