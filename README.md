@@ -41,6 +41,7 @@ quarto render courses/pico
 ```
 
 Rendered output for the root site lands in `docs/`.
+Verify internal `.qmd`/`.md` links across the repo with `python3 scripts/verify_links.py` (stdlib only; reports ERROR for missing targets and WARNING for existing dirs without `index.qmd`; flags: `--root <dir>`, `--quiet`, `--strict`).
 
 ## Run the Pico reference path
 
